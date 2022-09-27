@@ -1,7 +1,7 @@
 package bangiay.com.controller;
 
 public class ProductController {
-	String a = "NAMTHANH";
+	String a = "NAMTHANH123123";
 	
 	
 }
