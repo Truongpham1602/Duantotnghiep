@@ -1,4 +1,4 @@
-package bangiay.com.dto;
+package bangiay.com.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

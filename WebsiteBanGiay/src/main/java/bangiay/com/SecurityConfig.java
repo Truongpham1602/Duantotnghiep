@@ -1,5 +1,6 @@
 package bangiay.com;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import bangiay.com.dto.UserDTO;
+import bangiay.com.DTO.*;
 
 @Configuration
 @EnableWebSecurity
@@ -39,5 +40,6 @@ public class SecurityConfig{
 	        		password("{noop}"+u.getPassWord()).roles("zxc").build());
 		}
         return new InMemoryUserDetailsManager(userDetails);
+
 	}
 }

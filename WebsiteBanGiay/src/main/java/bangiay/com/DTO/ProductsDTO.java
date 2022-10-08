@@ -20,4 +20,5 @@ public class ProductsDTO {
     private Date modified;
     private String modifier;
     private String urlVideo;
+     
 }
