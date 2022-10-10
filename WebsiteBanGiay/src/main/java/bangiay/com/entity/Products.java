@@ -1,28 +1,31 @@
-package bangiay.com.Entitys;
+package bangiay.com.entity;
+
+import java.util.Date;
 
 import javax.persistence.*;
-
 import lombok.Data;
 
+@SuppressWarnings("serial") //ngăn chặn các cảnh báo liên quan đến trường serialVersionUID bị thiếu.
 @Data
 @Entity
 @Table(name = "products")
 public class Products {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "size_id")
-    private Integer sizeId;
+    private Long sizeId;
 
     @Column(name = "categori_id")
-    private Integer categoriId;
+    private Long categoriId;
 
     @Column(name = "product_name")
     private String productName;
 
     @Column(name = "code")
-    private Integer code;
+    private Long code;
 
     @Column(name = "color")
     private String color;
@@ -31,7 +34,8 @@ public class Products {
     private String description;
 
     @Column(name = "created")
-    private java.sql.Timestamp created;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
 
     @Column(name = "creator")
     private String creator;
@@ -43,11 +47,13 @@ public class Products {
     private Double quantity;
 
     @Column(name = "modified")
-    private java.sql.Timestamp modified;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modified;
 
     @Column(name = "modifier")
     private String modifier;
 
     @Column(name = "url_video")
     private String urlVideo;
-}
+
+    }

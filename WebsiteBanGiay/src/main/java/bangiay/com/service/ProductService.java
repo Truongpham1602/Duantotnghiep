@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.ProductsDTO;
 import bangiay.com.dao.ProductDao;
-import bangiay.com.entity.Product;
+import bangiay.com.entity.Products;
 
 @Service
 public class ProductService {
@@ -20,7 +20,7 @@ public class ProductService {
 	private ModelMapper modelMapper;
 	
 	public List<ProductsDTO> findAll(){
-		List<Product> pro = proDAO.findAll();
+		List<Products> pro = proDAO.findAll();
 		List<ProductsDTO> result = pro.stream().map(d -> modelMapper.map(d,ProductsDTO.class)).collect(Collectors.toList());
 		return result;
 	}

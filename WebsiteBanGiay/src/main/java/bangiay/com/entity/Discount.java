@@ -5,34 +5,28 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "comment")
-public class Comment {
+@Table(name = "discount")
+public class Discount {
     @Id
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "product_id")
-    private Integer productId;
-
-    @Column(name = "content")
-    private String content;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "created")
-    private String created;
+    private java.sql.Timestamp created;
 
     @Column(name = "creator")
-    private String creator;
+    private java.sql.Timestamp creator;
 
     @Column(name = "modified")
     private java.sql.Timestamp modified;
 
     @Column(name = "modifier")
     private java.sql.Timestamp modifier;
-
-    @Column(name = "status")
-    private java.lang.Byte status;
 
 }

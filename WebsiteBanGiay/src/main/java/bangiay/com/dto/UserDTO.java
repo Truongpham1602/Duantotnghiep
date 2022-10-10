@@ -1,16 +1,22 @@
 package bangiay.com.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserDTO {
-	private String email;
-	private String phone_Number;
-	private String PassWord;
-	private String address;
-	private String fullName;
+    private Integer id;
+    private Integer roleId;
+    private String password;
+    private String fullname;
+    private String telephone;
+    private String email;
+    private String address;
+    private java.sql.Timestamp createat;
+    private java.sql.Timestamp updateat;
+    private java.lang.Byte status;
+    private String image;
+    private java.sql.Timestamp modified;
+    private java.sql.Timestamp modifier;
+
+
 }

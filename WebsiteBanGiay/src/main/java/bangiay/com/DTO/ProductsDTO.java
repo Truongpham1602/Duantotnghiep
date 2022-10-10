@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 public class ProductsDTO {
-    private Integer id;
-    private Integer sizeId;
-    private Integer categoriId;
+    private Long id;
+    private Long sizeId;
+    private Long categoriId;
     private String productName;
     private Integer code;
     private String color;
@@ -20,5 +20,5 @@ public class ProductsDTO {
     private Date modified;
     private String modifier;
     private String urlVideo;
-     
+
 }

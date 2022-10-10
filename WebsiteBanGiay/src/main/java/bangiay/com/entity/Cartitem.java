@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "comment")
-public class Comment {
+@Table(name = "cartitem")
+public class Cartitem {
     @Id
     @Column(name = "id")
     private Integer id;
@@ -17,20 +17,20 @@ public class Comment {
     @Column(name = "product_id")
     private Integer productId;
 
-    @Column(name = "content")
-    private String content;
-
     @Column(name = "created")
-    private String created;
+    private java.sql.Timestamp created;
 
     @Column(name = "creator")
-    private String creator;
+    private java.sql.Timestamp creator;
 
     @Column(name = "modified")
     private java.sql.Timestamp modified;
 
     @Column(name = "modifier")
     private java.sql.Timestamp modifier;
+
+    @Column(name = "quantity")
+    private Double quantity;
 
     @Column(name = "status")
     private java.lang.Byte status;
