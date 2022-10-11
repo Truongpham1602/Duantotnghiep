@@ -85,7 +85,7 @@ public class ProductDTO {
         return this.created;
     }
 
-    public void setCreated(java.sql.Timestamp created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
@@ -101,7 +101,7 @@ public class ProductDTO {
         return this.modified;
     }
 
-    public void setModified(java.sql.Timestamp modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 
