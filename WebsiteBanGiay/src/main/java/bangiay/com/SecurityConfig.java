@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -32,14 +33,13 @@ public class SecurityConfig{
 	public InMemoryUserDetailsManager configureAuthentication() {
 		List<UserDTO> userdto = new ArrayList<UserDTO>();
 		List<UserDetails> userDetails = new ArrayList<UserDetails>();
-		userdto.add(new UserDTO("admin", "0123456789", "123", "Hà Nội", "Nguyễn A"));
-		userdto.add(new UserDTO("user", "0123456788", "123", "Hà Nội", "Nguyễn B"));
-		userdto.add(new UserDTO("staff", "0123456787", "123", "Hà Nội", "Nguyễn C"));
+		userdto.add(new UserDTO(1, 2, "123", "AAA", "123456789", null, null, null, null, null, null, null, null));
+		userdto.add(new UserDTO(1, 2, "123", "AAA", "987654321", null, null, null, null, null, null, null, null));
 		for (UserDTO u : userdto) {
-			userDetails.add(User.withUsername(u.getPhone_Number()).
-	        		password("{noop}"+u.getPassWord()).roles("zxc").build());
+			userDetails.add(User.withUsername(u.getTelephone()).
+	        		password("{noop}"+u.getPassword()).roles("zxc").build());
 		}
         return new InMemoryUserDetailsManager(userDetails);
-
 	}
+	
 }
