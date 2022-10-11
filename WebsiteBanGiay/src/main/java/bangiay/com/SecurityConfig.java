@@ -32,13 +32,13 @@ public class SecurityConfig{
 	public InMemoryUserDetailsManager configureAuthentication() {
 		List<UserDTO> userdto = new ArrayList<UserDTO>();
 		List<UserDetails> userDetails = new ArrayList<UserDetails>();
-		userdto.add(new UserDTO("admin", "0123456789", "123", "Hà Nội", "Nguyễn A"));
-		userdto.add(new UserDTO("user", "0123456788", "123", "Hà Nội", "Nguyễn B"));
-		userdto.add(new UserDTO("staff", "0123456787", "123", "Hà Nội", "Nguyễn C"));
-		for (UserDTO u : userdto) {
-			userDetails.add(User.withUsername(u.getPhone_Number()).
-	        		password("{noop}"+u.getPassWord()).roles("zxc").build());
-		}
+//		userdto.add(new UserDTO("admin", "0123456789", "123", "Hà Nội", "Nguyễn A"));
+//		userdto.add(new UserDTO("user", "0123456788", "123", "Hà Nội", "Nguyễn B"));
+//		userdto.add(new UserDTO("staff", "0123456787", "123", "Hà Nội", "Nguyễn C"));
+//		for (UserDTO u : userdto) {
+//			userDetails.add(User.withUsername(u.getPhone_Number()).
+//	        		password("{noop}"+u.getPassWord()).roles("zxc").build());
+//		}
         return new InMemoryUserDetailsManager(userDetails);
 
 	}
