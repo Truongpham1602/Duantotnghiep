@@ -24,9 +24,6 @@ public class UserDTO {
     private java.sql.Timestamp modified;
     private String modifier;
     private Integer status;
-    private java.sql.Timestamp createat;
-    private Integer roleId;
-    private java.sql.Timestamp updateat;
 
     public Integer getId() {
         return this.id;
@@ -132,27 +129,4 @@ public class UserDTO {
         this.status = status;
     }
 
-    public java.sql.Timestamp getCreateat() {
-        return this.createat;
-    }
-
-    public void setCreateat(java.sql.Timestamp createat) {
-        this.createat = createat;
-    }
-
-    public Integer getRoleId() {
-        return this.roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public java.sql.Timestamp getUpdateat() {
-        return this.updateat;
-    }
-
-    public void setUpdateat(java.sql.Timestamp updateat) {
-        this.updateat = updateat;
-    }
 }
