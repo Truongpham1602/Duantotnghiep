@@ -1,51 +1,19 @@
-package bangiay.com.entity;
+package bangiay.com.DTO;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "voucher")
-public class Voucher {
-    @Id
-    @Column(name = "ID")
+public class VoucherDTO {
     private Integer id;
-
-    @Column(name = "NAME")
     private String name;
-
-    @Column(name = "CATEGORY_ID")
     private Integer categoryId;
-
-    @Column(name = "DESCRIPTION")
     private String description;
-
-    @Column(name = "QUANTITY")
     private Integer quantity;
-
-    @Column(name = "EFFECT_FROM")
     private java.sql.Timestamp effectFrom;
-
-    @Column(name = "EFFECT_UNTIL")
     private java.sql.Timestamp effectUntil;
-
-    @Column(name = "CREATED")
     private java.sql.Timestamp created;
-
-    @Column(name = "CREATOR")
     private String creator;
-
-    @Column(name = "MODIFIED")
     private java.sql.Timestamp modified;
-
-    @Column(name = "MODIFIER")
     private String modifier;
-
-    @Column(name = "VALUE")
     private Integer value;
-
-    @Column(name = "TYPE")
     private Integer type;
-
-    @Column(name = "discount_id")
     private Integer discountId;
 
     public Integer getId() {

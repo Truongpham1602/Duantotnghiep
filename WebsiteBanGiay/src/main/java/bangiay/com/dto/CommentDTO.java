@@ -1,39 +1,15 @@
-package bangiay.com.entity;
+package bangiay.com.DTO;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "comment")
-public class Comment {
-    @Id
-    @Column(name = "ID")
+public class CommentDTO {
     private Integer id;
-
-    @Column(name = "USER_ID")
     private Integer userId;
-
-    @Column(name = "PRODUCT_ID")
     private Integer productId;
-
-    @Column(name = "PARENT_ID")
     private Integer parentId;
-
-    @Column(name = "CONTENT")
     private String content;
-
-    @Column(name = "CREATED")
     private java.sql.Timestamp created;
-
-    @Column(name = "CREATOR")
     private String creator;
-
-    @Column(name = "modified")
     private java.sql.Timestamp modified;
-
-    @Column(name = "modifier")
     private java.sql.Timestamp modifier;
-
-    @Column(name = "status")
     private java.lang.Byte status;
 
     public Integer getId() {

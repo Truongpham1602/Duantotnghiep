@@ -1,30 +1,12 @@
-package bangiay.com.entity;
+package bangiay.com.DTO;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "size")
-public class Size {
-    @Id
-    @Column(name = "id")
+public class SizeDTO {
     private Integer id;
-
-    @Column(name = "SIZE")
     private String size;
-
-    @Column(name = "quantity")
     private Integer quantity;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "product_id")
     private Integer productId;
-
-    @Column(name = "status")
     private java.lang.Byte status;
 
     public Integer getId() {

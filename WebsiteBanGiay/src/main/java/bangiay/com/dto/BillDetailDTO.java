@@ -1,30 +1,12 @@
-package bangiay.com.entity;
+package bangiay.com.DTO;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "bill_detail")
-public class BillDetail {
-    @Id
-    @Column(name = "ID")
+public class BillDetailDTO {
     private Integer id;
-
-    @Column(name = "BILL_ID")
     private Integer billId;
-
-    @Column(name = "PRODUCT_ID")
     private Integer productId;
-
-    @Column(name = "VOUCHER_ID")
     private Integer voucherId;
-
-    @Column(name = "QUANTITY")
     private Integer quantity;
-
-    @Column(name = "PRICE")
     private Double price;
-
-    @Column(name = "discount")
     private String discount;
 
     public Integer getId() {

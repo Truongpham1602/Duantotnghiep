@@ -3,17 +3,29 @@ package bangiay.com.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bill")
-public class Bill {
+@Table(name = "orders")
+public class Orders {
     @Id
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "USER_ID")
-    private Integer userId;
+    @Column(name = "VOUCHER_ID")
+    private Integer voucherId;
 
     @Column(name = "CODE")
     private String code;
+
+    @Column(name = "PRODUCT_ID")
+    private Integer productId;
+
+    @Column(name = "USER_ID")
+    private Integer userId;
+
+    @Column(name = "QUANTITY")
+    private Integer quantity;
+
+    @Column(name = "PRICE")
+    private Double price;
 
     @Column(name = "NAME_RECIPIENT")
     private String nameRecipient;
@@ -23,6 +35,12 @@ public class Bill {
 
     @Column(name = "ADDRESS")
     private String address;
+
+    @Column(name = "EFFECT_FROM")
+    private java.sql.Timestamp effectFrom;
+
+    @Column(name = "EFFECT_UNTIL")
+    private java.sql.Timestamp effectUntil;
 
     @Column(name = "CREATED")
     private java.sql.Timestamp created;
@@ -36,11 +54,8 @@ public class Bill {
     @Column(name = "MODIFIER")
     private String modifier;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "name_recipients")
-    private String nameRecipients;
+    @Column(name = "STATUS")
+    private Integer status;
 
     public Integer getId() {
         return this.id;
@@ -48,6 +63,30 @@ public class Bill {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVoucherId() {
+        return this.voucherId;
+    }
+
+    public void setVoucherId(Integer voucherId) {
+        this.voucherId = voucherId;
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Integer getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public Integer getUserId() {
@@ -58,12 +97,20 @@ public class Bill {
         this.userId = userId;
     }
 
-    public String getCode() {
-        return this.code;
+    public Integer getQuantity() {
+        return this.quantity;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getNameRecipient() {
@@ -88,6 +135,22 @@ public class Bill {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public java.sql.Timestamp getEffectFrom() {
+        return this.effectFrom;
+    }
+
+    public void setEffectFrom(java.sql.Timestamp effectFrom) {
+        this.effectFrom = effectFrom;
+    }
+
+    public java.sql.Timestamp getEffectUntil() {
+        return this.effectUntil;
+    }
+
+    public void setEffectUntil(java.sql.Timestamp effectUntil) {
+        this.effectUntil = effectUntil;
     }
 
     public java.sql.Timestamp getCreated() {
@@ -122,19 +185,11 @@ public class Bill {
         this.modifier = modifier;
     }
 
-    public String getDescription() {
-        return this.description;
+    public Integer getStatus() {
+        return this.status;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getNameRecipients() {
-        return this.nameRecipients;
-    }
-
-    public void setNameRecipients(String nameRecipients) {
-        this.nameRecipients = nameRecipients;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

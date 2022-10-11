@@ -1,18 +1,8 @@
-package bangiay.com.entity;
+package bangiay.com.DTO;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "role")
-public class Role {
-    @Id
-    @Column(name = "ID")
+public class RoleDTO {
     private Integer id;
-
-    @Column(name = "ROLE_NAME")
     private String roleName;
-
-    @Column(name = "name")
     private String name;
 
     public Integer getId() {
