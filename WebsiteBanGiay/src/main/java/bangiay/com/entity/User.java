@@ -45,14 +45,6 @@ public class User {
     @Column(name = "STATUS")
     private Integer status;
 
-    @Column(name = "createat")
-    private java.sql.Timestamp createat;
-
-    @Column(name = "role_id")
-    private Integer roleId;
-
-    @Column(name = "updateat")
-    private java.sql.Timestamp updateat;
 
     public Integer getId() {
         return this.id;
@@ -158,27 +150,4 @@ public class User {
         this.status = status;
     }
 
-    public java.sql.Timestamp getCreateat() {
-        return this.createat;
-    }
-
-    public void setCreateat(java.sql.Timestamp createat) {
-        this.createat = createat;
-    }
-
-    public Integer getRoleId() {
-        return this.roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public java.sql.Timestamp getUpdateat() {
-        return this.updateat;
-    }
-
-    public void setUpdateat(java.sql.Timestamp updateat) {
-        this.updateat = updateat;
-    }
 }
