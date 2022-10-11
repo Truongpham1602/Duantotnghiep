@@ -1,46 +1,23 @@
-package bangiay.com.entity;
+package bangiay.com.DTO;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "bill")
-public class Bill {
-    @Id
-    @Column(name = "ID")
+public class OrdersDTO {
     private Integer id;
-
-    @Column(name = "USER_ID")
-    private Integer userId;
-
-    @Column(name = "CODE")
+    private Integer voucherId;
     private String code;
-
-    @Column(name = "NAME_RECIPIENT")
+    private Integer productId;
+    private Integer userId;
+    private Integer quantity;
+    private Double price;
     private String nameRecipient;
-
-    @Column(name = "TELEPHONE")
     private String telephone;
-
-    @Column(name = "ADDRESS")
     private String address;
-
-    @Column(name = "CREATED")
+    private java.sql.Timestamp effectFrom;
+    private java.sql.Timestamp effectUntil;
     private java.sql.Timestamp created;
-
-    @Column(name = "CREATOR")
     private String creator;
-
-    @Column(name = "MODIFIED")
     private java.sql.Timestamp modified;
-
-    @Column(name = "MODIFIER")
     private String modifier;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "name_recipients")
-    private String nameRecipients;
+    private Integer status;
 
     public Integer getId() {
         return this.id;
@@ -48,6 +25,30 @@ public class Bill {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVoucherId() {
+        return this.voucherId;
+    }
+
+    public void setVoucherId(Integer voucherId) {
+        this.voucherId = voucherId;
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Integer getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public Integer getUserId() {
@@ -58,12 +59,20 @@ public class Bill {
         this.userId = userId;
     }
 
-    public String getCode() {
-        return this.code;
+    public Integer getQuantity() {
+        return this.quantity;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getNameRecipient() {
@@ -88,6 +97,22 @@ public class Bill {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public java.sql.Timestamp getEffectFrom() {
+        return this.effectFrom;
+    }
+
+    public void setEffectFrom(java.sql.Timestamp effectFrom) {
+        this.effectFrom = effectFrom;
+    }
+
+    public java.sql.Timestamp getEffectUntil() {
+        return this.effectUntil;
+    }
+
+    public void setEffectUntil(java.sql.Timestamp effectUntil) {
+        this.effectUntil = effectUntil;
     }
 
     public java.sql.Timestamp getCreated() {
@@ -122,19 +147,11 @@ public class Bill {
         this.modifier = modifier;
     }
 
-    public String getDescription() {
-        return this.description;
+    public Integer getStatus() {
+        return this.status;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getNameRecipients() {
-        return this.nameRecipients;
-    }
-
-    public void setNameRecipients(String nameRecipients) {
-        this.nameRecipients = nameRecipients;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

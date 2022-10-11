@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import bangiay.com.DTO.ProductsDTO;
+import bangiay.com.DTO.ProductDTO;
 import bangiay.com.service.ProductService;
 
 @RequestMapping(value = "/product")
@@ -18,7 +18,7 @@ public class ProductController {
 	private ProductService proService;
 	
 	@GetMapping("/find-all")
-	public ResponseEntity<List<ProductsDTO>> getAllPro(){
+	public ResponseEntity<List<ProductDTO>> getAllPro(){
 		return ResponseEntity.ok().body(proService.findAll());
 	}
 }
