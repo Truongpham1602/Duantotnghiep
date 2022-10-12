@@ -5,7 +5,7 @@ public class MediaDTO {
     private Integer productId;
     private String url;
     private Integer description;
-    private java.lang.Byte type;
+    private String type;
 
     public Integer getId() {
         return this.id;
@@ -39,11 +39,11 @@ public class MediaDTO {
         this.description = description;
     }
 
-    public java.lang.Byte getType() {
+    public String getType() {
         return this.type;
     }
 
-    public void setType(java.lang.Byte type) {
+    public void setType(String type) {
         this.type = type;
     }
 }

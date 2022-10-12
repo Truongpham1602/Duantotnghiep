@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "product")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
 
@@ -48,7 +48,7 @@ public class Product {
     private String modifier;
 
     @Column(name = "STATUS")
-    private Boolean status;
+    private Integer status;
 
     public Long getId() {
         return this.id;
@@ -146,11 +146,11 @@ public class Product {
         this.modifier = modifier;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return this.status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

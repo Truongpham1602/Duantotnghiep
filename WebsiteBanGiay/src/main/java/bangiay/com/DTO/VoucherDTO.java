@@ -14,7 +14,6 @@ public class VoucherDTO {
     private String modifier;
     private Integer value;
     private Integer type;
-    private Integer discountId;
 
     public Integer getId() {
         return this.id;
@@ -118,13 +117,5 @@ public class VoucherDTO {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public Integer getDiscountId() {
-        return this.discountId;
-    }
-
-    public void setDiscountId(Integer discountId) {
-        this.discountId = discountId;
     }
 }

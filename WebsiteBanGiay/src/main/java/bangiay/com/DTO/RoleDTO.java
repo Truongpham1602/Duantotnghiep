@@ -3,7 +3,6 @@ package bangiay.com.DTO;
 public class RoleDTO {
     private Integer id;
     private String roleName;
-    private String name;
 
     public Integer getId() {
         return this.id;
@@ -19,13 +18,5 @@ public class RoleDTO {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

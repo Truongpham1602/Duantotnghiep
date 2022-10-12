@@ -15,8 +15,8 @@ public class Orders {
     @Column(name = "CODE")
     private String code;
 
-    @Column(name = "PRODUCT_ID")
-    private Integer productId;
+    @Column(name = "SIZE_ID")
+    private Integer sizeId;
 
     @Column(name = "USER_ID")
     private Integer userId;
@@ -81,12 +81,12 @@ public class Orders {
         this.code = code;
     }
 
-    public Integer getProductId() {
-        return this.productId;
+    public Integer getSizeId() {
+        return this.sizeId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setSizeId(Integer sizeId) {
+        this.sizeId = sizeId;
     }
 
     public Integer getUserId() {

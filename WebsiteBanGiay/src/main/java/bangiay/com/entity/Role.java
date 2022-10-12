@@ -12,9 +12,6 @@ public class Role {
     @Column(name = "ROLE_NAME")
     private String roleName;
 
-    @Column(name = "name")
-    private String name;
-
     public Integer getId() {
         return this.id;
     }
@@ -29,13 +26,5 @@ public class Role {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

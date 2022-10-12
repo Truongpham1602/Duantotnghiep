@@ -6,26 +6,17 @@ import javax.persistence.*;
 @Table(name = "size")
 public class Size {
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
+
+    @Column(name = "PRODUCT_ID")
+    private Integer productId;
 
     @Column(name = "SIZE")
     private String size;
 
-    @Column(name = "quantity")
+    @Column(name = "QUANTITY")
     private Integer quantity;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "product_id")
-    private Integer productId;
-
-    @Column(name = "status")
-    private java.lang.Byte status;
 
     public Integer getId() {
         return this.id;
@@ -33,6 +24,14 @@ public class Size {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public String getSize() {
@@ -49,37 +48,5 @@ public class Size {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getProductId() {
-        return this.productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public java.lang.Byte getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(java.lang.Byte status) {
-        this.status = status;
     }
 }
