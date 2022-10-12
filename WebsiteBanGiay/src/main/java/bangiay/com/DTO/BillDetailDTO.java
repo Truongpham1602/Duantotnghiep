@@ -3,11 +3,10 @@ package bangiay.com.DTO;
 public class BillDetailDTO {
     private Integer id;
     private Integer billId;
-    private Integer productId;
+    private Integer sizeId;
     private Integer voucherId;
     private Integer quantity;
     private Double price;
-    private String discount;
 
     public Integer getId() {
         return this.id;
@@ -25,12 +24,12 @@ public class BillDetailDTO {
         this.billId = billId;
     }
 
-    public Integer getProductId() {
-        return this.productId;
+    public Integer getSizeId() {
+        return this.sizeId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setSizeId(Integer sizeId) {
+        this.sizeId = sizeId;
     }
 
     public Integer getVoucherId() {
@@ -55,13 +54,5 @@ public class BillDetailDTO {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public String getDiscount() {
-        return this.discount;
-    }
-
-    public void setDiscount(String discount) {
-        this.discount = discount;
     }
 }

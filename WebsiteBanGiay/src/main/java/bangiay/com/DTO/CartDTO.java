@@ -1,13 +1,14 @@
 package bangiay.com.DTO;
 
-public class CommentDTO {
+public class CartDTO {
     private Integer id;
     private Integer userId;
-    private Integer productId;
-    private Integer parentId;
-    private String content;
+    private Integer sizeId;
+    private Integer quantity;
     private java.sql.Timestamp created;
     private String creator;
+    private java.sql.Timestamp modified;
+    private String modifier;
     private Integer status;
 
     public Integer getId() {
@@ -26,28 +27,20 @@ public class CommentDTO {
         this.userId = userId;
     }
 
-    public Integer getProductId() {
-        return this.productId;
+    public Integer getSizeId() {
+        return this.sizeId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setSizeId(Integer sizeId) {
+        this.sizeId = sizeId;
     }
 
-    public Integer getParentId() {
-        return this.parentId;
+    public Integer getQuantity() {
+        return this.quantity;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public java.sql.Timestamp getCreated() {
@@ -64,6 +57,22 @@ public class CommentDTO {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public java.sql.Timestamp getModified() {
+        return this.modified;
+    }
+
+    public void setModified(java.sql.Timestamp modified) {
+        this.modified = modified;
+    }
+
+    public String getModifier() {
+        return this.modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
     }
 
     public Integer getStatus() {

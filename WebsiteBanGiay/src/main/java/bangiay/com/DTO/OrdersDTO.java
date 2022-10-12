@@ -4,7 +4,7 @@ public class OrdersDTO {
     private Integer id;
     private Integer voucherId;
     private String code;
-    private Integer productId;
+    private Integer sizeId;
     private Integer userId;
     private Integer quantity;
     private Double price;
@@ -43,12 +43,12 @@ public class OrdersDTO {
         this.code = code;
     }
 
-    public Integer getProductId() {
-        return this.productId;
+    public Integer getSizeId() {
+        return this.sizeId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setSizeId(Integer sizeId) {
+        this.sizeId = sizeId;
     }
 
     public Integer getUserId() {

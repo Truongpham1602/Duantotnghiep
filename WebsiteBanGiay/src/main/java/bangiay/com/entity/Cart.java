@@ -3,17 +3,20 @@ package bangiay.com.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "cart")
+public class Cart {
     @Id
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "PAREN_ID")
-    private Integer parenId;
+    @Column(name = "USER_ID")
+    private Integer userId;
 
-    @Column(name = "NAMECATE")
-    private String namecate;
+    @Column(name = "SIZE_ID")
+    private Integer sizeId;
+
+    @Column(name = "QUANTITY")
+    private Integer quantity;
 
     @Column(name = "CREATED")
     private java.sql.Timestamp created;
@@ -27,6 +30,9 @@ public class Category {
     @Column(name = "MODIFIER")
     private String modifier;
 
+    @Column(name = "STATUS")
+    private Integer status;
+
     public Integer getId() {
         return this.id;
     }
@@ -35,20 +41,28 @@ public class Category {
         this.id = id;
     }
 
-    public Integer getParenId() {
-        return this.parenId;
+    public Integer getUserId() {
+        return this.userId;
     }
 
-    public void setParenId(Integer parenId) {
-        this.parenId = parenId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getNamecate() {
-        return this.namecate;
+    public Integer getSizeId() {
+        return this.sizeId;
     }
 
-    public void setNamecate(String namecate) {
-        this.namecate = namecate;
+    public void setSizeId(Integer sizeId) {
+        this.sizeId = sizeId;
+    }
+
+    public Integer getQuantity() {
+        return this.quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public java.sql.Timestamp getCreated() {
@@ -81,5 +95,13 @@ public class Category {
 
     public void setModifier(String modifier) {
         this.modifier = modifier;
+    }
+
+    public Integer getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

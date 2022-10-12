@@ -27,14 +27,8 @@ public class Comment {
     @Column(name = "CREATOR")
     private String creator;
 
-    @Column(name = "modified")
-    private java.sql.Timestamp modified;
-
-    @Column(name = "modifier")
-    private java.sql.Timestamp modifier;
-
-    @Column(name = "status")
-    private java.lang.Byte status;
+    @Column(name = "STATUS")
+    private Integer status;
 
     public Integer getId() {
         return this.id;
@@ -92,27 +86,11 @@ public class Comment {
         this.creator = creator;
     }
 
-    public java.sql.Timestamp getModified() {
-        return this.modified;
-    }
-
-    public void setModified(java.sql.Timestamp modified) {
-        this.modified = modified;
-    }
-
-    public java.sql.Timestamp getModifier() {
-        return this.modifier;
-    }
-
-    public void setModifier(java.sql.Timestamp modifier) {
-        this.modifier = modifier;
-    }
-
-    public java.lang.Byte getStatus() {
+    public Integer getStatus() {
         return this.status;
     }
 
-    public void setStatus(java.lang.Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

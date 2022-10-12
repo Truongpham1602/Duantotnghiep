@@ -45,9 +45,6 @@ public class Voucher {
     @Column(name = "TYPE")
     private Integer type;
 
-    @Column(name = "discount_id")
-    private Integer discountId;
-
     public Integer getId() {
         return this.id;
     }
@@ -150,13 +147,5 @@ public class Voucher {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public Integer getDiscountId() {
-        return this.discountId;
-    }
-
-    public void setDiscountId(Integer discountId) {
-        this.discountId = discountId;
     }
 }

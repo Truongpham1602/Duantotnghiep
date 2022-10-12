@@ -128,5 +128,4 @@ public class UserDTO {
     public void setStatus(Integer status) {
         this.status = status;
     }
-
 }

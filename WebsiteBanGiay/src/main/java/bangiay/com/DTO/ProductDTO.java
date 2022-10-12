@@ -15,7 +15,7 @@ public class ProductDTO {
     private String creator;
     private Date modified;
     private String modifier;
-    private Boolean status;
+    private Integer status;
 
     public Long getId() {
         return this.id;
@@ -113,11 +113,11 @@ public class ProductDTO {
         this.modifier = modifier;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return this.status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

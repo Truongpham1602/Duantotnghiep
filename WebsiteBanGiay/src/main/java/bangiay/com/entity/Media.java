@@ -19,7 +19,7 @@ public class Media {
     private Integer description;
 
     @Column(name = "TYPE")
-    private java.lang.Byte type;
+    private String type;
 
     public Integer getId() {
         return this.id;
@@ -53,11 +53,11 @@ public class Media {
         this.description = description;
     }
 
-    public java.lang.Byte getType() {
+    public String getType() {
         return this.type;
     }
 
-    public void setType(java.lang.Byte type) {
+    public void setType(String type) {
         this.type = type;
     }
 }

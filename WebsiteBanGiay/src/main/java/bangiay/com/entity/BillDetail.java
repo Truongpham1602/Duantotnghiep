@@ -12,8 +12,8 @@ public class BillDetail {
     @Column(name = "BILL_ID")
     private Integer billId;
 
-    @Column(name = "PRODUCT_ID")
-    private Integer productId;
+    @Column(name = "SIZE_ID")
+    private Integer sizeId;
 
     @Column(name = "VOUCHER_ID")
     private Integer voucherId;
@@ -23,9 +23,6 @@ public class BillDetail {
 
     @Column(name = "PRICE")
     private Double price;
-
-    @Column(name = "discount")
-    private String discount;
 
     public Integer getId() {
         return this.id;
@@ -43,12 +40,12 @@ public class BillDetail {
         this.billId = billId;
     }
 
-    public Integer getProductId() {
-        return this.productId;
+    public Integer getSizeId() {
+        return this.sizeId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setSizeId(Integer sizeId) {
+        this.sizeId = sizeId;
     }
 
     public Integer getVoucherId() {
@@ -73,13 +70,5 @@ public class BillDetail {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public String getDiscount() {
-        return this.discount;
-    }
-
-    public void setDiscount(String discount) {
-        this.discount = discount;
     }
 }

@@ -2,16 +2,12 @@ package bangiay.com.DTO;
 
 public class CategoryDTO {
     private Integer id;
+    private Integer parenId;
     private String namecate;
     private java.sql.Timestamp created;
     private String creator;
     private java.sql.Timestamp modified;
     private String modifier;
-    private Integer parenId;
-    private String code;
-    private String description;
-    private String name;
-    private String status;
 
     public Integer getId() {
         return this.id;
@@ -19,6 +15,14 @@ public class CategoryDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getParenId() {
+        return this.parenId;
+    }
+
+    public void setParenId(Integer parenId) {
+        this.parenId = parenId;
     }
 
     public String getNamecate() {
@@ -59,45 +63,5 @@ public class CategoryDTO {
 
     public void setModifier(String modifier) {
         this.modifier = modifier;
-    }
-
-    public Integer getParenId() {
-        return this.parenId;
-    }
-
-    public void setParenId(Integer parenId) {
-        this.parenId = parenId;
-    }
-
-    public String getCode() {
-        return this.code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

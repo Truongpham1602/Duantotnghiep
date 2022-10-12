@@ -11,8 +11,6 @@ public class BillDTO {
     private String creator;
     private java.sql.Timestamp modified;
     private String modifier;
-    private String description;
-    private String nameRecipients;
 
     public Integer getId() {
         return this.id;
@@ -92,21 +90,5 @@ public class BillDTO {
 
     public void setModifier(String modifier) {
         this.modifier = modifier;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getNameRecipients() {
-        return this.nameRecipients;
-    }
-
-    public void setNameRecipients(String nameRecipients) {
-        this.nameRecipients = nameRecipients;
     }
 }
