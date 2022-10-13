@@ -1,6 +1,5 @@
 package bangiay.com.DTO;
 
-<<<<<<< HEAD:WebsiteBanGiay/src/main/java/bangiay/com/DTO/UserDTO.java
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-=======
->>>>>>> dev_truong:WebsiteBanGiay/src/main/java/bangiay/com/dto/UserDTO.java
 public class UserDTO {
     private Integer id;
     private Integer rolerId;
