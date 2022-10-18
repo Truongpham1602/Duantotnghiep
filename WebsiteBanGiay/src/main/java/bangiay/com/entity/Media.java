@@ -2,15 +2,19 @@ package bangiay.com.entity;
 
 import javax.persistence.*;
 
+import lombok.Data;
+
 @Entity
+@Data
 @Table(name = "media")
 public class Media {
     @Id
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "PRODUCT_ID")
-    private Integer productId;
+    @ManyToOne
+   	@JoinColumn(name="PRODUCT_ID")
+    private Product product;
 
     @Column(name = "URL")
     private String url;
@@ -20,44 +24,4 @@ public class Media {
 
     @Column(name = "TYPE")
     private String type;
-
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getProductId() {
-        return this.productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public String getUrl() {
-        return this.url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(Integer description) {
-        this.description = description;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }
