@@ -2,12 +2,16 @@ package bangiay.com.controller;
 
 import bangiay.com.entity.Cart;
 import bangiay.com.service.CartService;
+import net.minidev.json.JSONUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Controller
 public class CartController {
@@ -54,9 +58,11 @@ public class CartController {
         existingcart.setUserId(cart.getUserId());
         existingcart.setSizeId(cart.getSizeId());
         existingcart.setQuantity(cart.getQuantity());
-        existingcart.setCreated(cart.getCreated());
+        //existingcart.setCreated(cart.getCreated());
+        existingcart.setCreated(new Timestamp(System.currentTimeMillis()));
         existingcart.setCreator(cart.getCreator());
-        existingcart.setModified(cart.getModified());
+        //existingcart.setModified(cart.getModified());
+        existingcart.setModified(new Timestamp(System.currentTimeMillis()));
         existingcart.setModifier(cart.getModifier());
         existingcart.setStatus(cart.getStatus());
 
