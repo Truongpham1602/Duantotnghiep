@@ -9,7 +9,7 @@ public class HomeController {
 
 	@RequestMapping({"/home","home/index"})
 	public String index() {
-		return "redirect:/layout/index1";
+		return "layout/index.html";
 	}
 	
 	@GetMapping("/login")

@@ -2,18 +2,23 @@ package bangiay.com.entity;
 
 import javax.persistence.*;
 
+import lombok.Data;
+
 @Entity
+@Data
 @Table(name = "comment")
 public class Comment {
     @Id
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "USER_ID")
-    private Integer userId;
+    @ManyToOne
+	@JoinColumn(name="USER_ID")
+    private User user;
 
-    @Column(name = "PRODUCT_ID")
-    private Integer productId;
+    @ManyToOne
+	@JoinColumn(name="PRODUCT_ID")
+    private Product product;
 
     @Column(name = "PARENT_ID")
     private Integer parentId;
@@ -29,68 +34,4 @@ public class Comment {
 
     @Column(name = "STATUS")
     private Integer status;
-
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getProductId() {
-        return this.productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public Integer getParentId() {
-        return this.parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public java.sql.Timestamp getCreated() {
-        return this.created;
-    }
-
-    public void setCreated(java.sql.Timestamp created) {
-        this.created = created;
-    }
-
-    public String getCreator() {
-        return this.creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 }
