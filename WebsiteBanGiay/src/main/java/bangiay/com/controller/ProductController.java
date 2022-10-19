@@ -21,4 +21,6 @@ public class ProductController {
 	public ResponseEntity<List<ProductDTO>> getAllPro(){
 		return ResponseEntity.ok().body(proService.findAll());
 	}
+	
+	
 }

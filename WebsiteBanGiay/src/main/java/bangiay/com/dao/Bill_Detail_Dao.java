@@ -12,6 +12,6 @@ import bangiay.com.entity.Product;
 
 @Repository
 public interface Bill_Detail_Dao extends JpaRepository<BillDetail, Long>{
-	@Query(value="SELECT b FROM billdetail b desc")
-	public List<Product> GetProductDESC();
+//	@Query(value="SELECT b FROM billdetail b desc")
+//	public List<Product> GetProductDESC();
 }
