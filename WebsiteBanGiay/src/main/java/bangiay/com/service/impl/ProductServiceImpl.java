@@ -25,6 +25,11 @@ public class ProductServiceImpl implements ProductService{
 		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d,ProductDTO.class)).collect(Collectors.toList());
 		return result;
 	}
+	
+	@Override
+	public Product finById(long id) {
+		return proDAO.findById(id).get();
+	}
 
 	@Override
 	public Product save(Product product) {
