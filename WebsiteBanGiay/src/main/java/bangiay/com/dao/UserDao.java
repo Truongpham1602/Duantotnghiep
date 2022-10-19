@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import bangiay.com.entity.User;
 
 @Repository
-public interface UserDao extends JpaRepository<User, String>{
+public interface UserDao extends JpaRepository<User, Long>{
 
 }
