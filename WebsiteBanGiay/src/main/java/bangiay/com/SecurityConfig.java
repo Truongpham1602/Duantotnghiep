@@ -22,34 +22,31 @@ public class SecurityConfig{
 
 	@Bean
     public SecurityFilterChain filterChains(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests().antMatchers("/admin/**").hasRole("ADMIN")
+        http.authorizeHttpRequests().antMatchers("/admins/**").hasRole("ADMIN")
         .antMatchers("/staff/**").hasAnyRole("ADMIN", "STAFF")
         .antMatchers("/**").permitAll()
         .and().formLogin().and().csrf().disable();
         return http.build();
     }
-	
-	@Bean
-	public InMemoryUserDetailsManager configureAuthentication() {
-		List<UserDTO> userdto = new ArrayList<UserDTO>();
-		List<UserDetails> userDetails = new ArrayList<UserDetails>();
-<<<<<<< HEAD
-		userdto.add(new UserDTO(1, 2, "123", "AAA", "123456789", null, null, null, null, null, null, null, null));
-		userdto.add(new UserDTO(1, 2, "123", "AAA", "987654321", null, null, null, null, null, null, null, null));
-		for (UserDTO u : userdto) {
-			userDetails.add(User.withUsername(u.getTelephone()).
-	        		password("{noop}"+u.getPassword()).roles("zxc").build());
-		}
-=======
-//		userdto.add(new UserDTO("admin", "0123456789", "123", "Hà Nội", "Nguyễn A"));
-//		userdto.add(new UserDTO("user", "0123456788", "123", "Hà Nội", "Nguyễn B"));
-//		userdto.add(new UserDTO("staff", "0123456787", "123", "Hà Nội", "Nguyễn C"));
+//	
+//	@Bean
+//	public InMemoryUserDetailsManager configureAuthentication() {
+//		List<UserDTO> userdto = new ArrayList<UserDTO>();
+//		List<UserDetails> userDetails = new ArrayList<UserDetails>();
+//		userdto.add(new UserDTO(1, 2, "123", "AAA", "123456789", null, null, null, null, null, null, null, null));
+//		userdto.add(new UserDTO(1, 2, "123", "AAA", "987654321", null, null, null, null, null, null, null, null));
 //		for (UserDTO u : userdto) {
-//			userDetails.add(User.withUsername(u.getPhone_Number()).
-//	        		password("{noop}"+u.getPassWord()).roles("zxc").build());
+//			userDetails.add(User.withUsername(u.getTelephone()).
+//	        		password("{noop}"+u.getPassword()).roles("zxc").build());
 //		}
->>>>>>> marter
-        return new InMemoryUserDetailsManager(userDetails);
-	}
+////		userdto.add(new UserDTO("admin", "0123456789", "123", "Hà Nội", "Nguyễn A"));
+////		userdto.add(new UserDTO("user", "0123456788", "123", "Hà Nội", "Nguyễn B"));
+////		userdto.add(new UserDTO("staff", "0123456787", "123", "Hà Nội", "Nguyễn C"));
+////		for (UserDTO u : userdto) {
+////			userDetails.add(User.withUsername(u.getPhone_Number()).
+////	        		password("{noop}"+u.getPassWord()).roles("zxc").build());
+////		}
+//        return new InMemoryUserDetailsManager(userDetails);
+//	}
 	
 }
