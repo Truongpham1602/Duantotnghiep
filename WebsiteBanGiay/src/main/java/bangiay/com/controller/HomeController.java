@@ -9,7 +9,12 @@ public class HomeController {
 
 	@RequestMapping({"/home","home/index"})
 	public String index() {
-		return "layout/index.html";
+		return "layout/index";
+	}
+	
+	@RequestMapping("/admin")
+	public String admin() {
+		return "admin/index";
 	}
 	
 	@GetMapping("/login")
