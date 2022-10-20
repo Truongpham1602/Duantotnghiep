@@ -7,9 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-	@RequestMapping({"/home","home/index"})
-	public String index() {
-		return "layout/index.html";
+	@RequestMapping({"/home","home/index"}) 
+	public String index() { 
+		return "layout/index"; 
+	}
+	
+	@RequestMapping({"/admin"})
+	public String admin() {
+		return "redirect:/assets/admin/index.html";
 	}
 	
 	@GetMapping("/login")
