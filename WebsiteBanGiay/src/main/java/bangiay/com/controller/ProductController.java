@@ -22,4 +22,6 @@ public class ProductController {
 	public ResponseEntity<List<Product>> getAllPro(){
 		return ResponseEntity.ok().body(proService.findAll());
 	}
+	
+	
 }
