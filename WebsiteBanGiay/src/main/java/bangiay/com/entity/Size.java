@@ -1,32 +1,24 @@
 package bangiay.com.entity;
 
 import javax.persistence.*;
+
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 @Table(name = "size")
 public class Size {
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "product_id")
-    private Integer productId;
+    @ManyToOne
+   	@JoinColumn(name="PRODUCT_ID")
+    private Product product;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "size")
+    @Column(name = "SIZE")
     private String size;
 
-    @Column(name = "quantity")
-    private Double quantity;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "status")
-    private java.lang.Byte status;
-
+    @Column(name = "QUANTITY")
+    private Integer quantity;
 }

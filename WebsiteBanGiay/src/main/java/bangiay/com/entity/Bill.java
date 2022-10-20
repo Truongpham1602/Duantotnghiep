@@ -1,39 +1,39 @@
 package bangiay.com.entity;
 
 import javax.persistence.*;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "bill")
 public class Bill {
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+	@JoinColumn(name="USER_ID")
+    private User user;
 
-    @Column(name = "code")
+    @Column(name = "CODE")
     private String code;
 
-    @Column(name = "name_recipients")
-    private String nameRecipients;
+    @Column(name = "NAME_RECIPIENT")
+    private String nameRecipient;
 
-    @Column(name = "telephone")
+    @Column(name = "TELEPHONE")
     private String telephone;
 
-    @Column(name = "address")
+    @Column(name = "ADDRESS")
     private String address;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "created")
+    @Column(name = "CREATED")
     private java.sql.Timestamp created;
 
-    @Column(name = "creator")
-    private java.sql.Timestamp creator;
+    @Column(name = "CREATOR")
+    private String creator;
 
+    @Column(name = "MODIFIED")
+    private java.sql.Timestamp modified;
 
+    @Column(name = "MODIFIER")
+    private String modifier;
 }

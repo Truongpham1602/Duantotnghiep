@@ -1,47 +1,51 @@
 package bangiay.com.entity;
 
 import javax.persistence.*;
+
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 @Table(name = "voucher")
 public class Voucher {
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "category_id")
-    private Integer categoryId;
-
-    @Column(name = "discount_id")
-    private Integer discountId;
-
-    @Column(name = "name")
+    @Column(name = "NAME")
     private String name;
 
-    @Column(name = "description")
+    @ManyToOne
+   	@JoinColumn(name="CATEGORY_ID")
+    private Category category;
+
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "quantity")
-    private Double quantity;
+    @Column(name = "QUANTITY")
+    private Integer quantity;
 
-    @Column(name = "effect_from")
-    private String effectFrom;
+    @Column(name = "EFFECT_FROM")
+    private java.sql.Timestamp effectFrom;
 
-    @Column(name = "effect_until")
-    private String effectUntil;
+    @Column(name = "EFFECT_UNTIL")
+    private java.sql.Timestamp effectUntil;
 
-    @Column(name = "created")
+    @Column(name = "CREATED")
     private java.sql.Timestamp created;
 
-    @Column(name = "creator")
-    private java.sql.Timestamp creator;
+    @Column(name = "CREATOR")
+    private String creator;
 
-    @Column(name = "modified")
+    @Column(name = "MODIFIED")
     private java.sql.Timestamp modified;
 
-    @Column(name = "modifier")
-    private java.sql.Timestamp modifier;
+    @Column(name = "MODIFIER")
+    private String modifier;
 
+    @Column(name = "VALUE")
+    private Integer value;
+
+    @Column(name = "TYPE")
+    private Integer type;
 }

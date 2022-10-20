@@ -1,10 +1,22 @@
 package bangiay.com.DTO;
 
-import lombok.Data;
-
-@Data
 public class RoleDTO {
     private Integer id;
-    private String name;
+    private String roleName;
 
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRoleName() {
+        return this.roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 }

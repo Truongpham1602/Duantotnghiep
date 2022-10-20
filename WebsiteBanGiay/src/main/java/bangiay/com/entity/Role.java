@@ -1,17 +1,30 @@
 package bangiay.com.entity;
 
 import javax.persistence.*;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "role")
 public class Role {
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "ROLE_NAME")
+    private String roleName;
 
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRoleName() {
+        return this.roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 }

@@ -1,41 +1,32 @@
 package bangiay.com.entity;
 
 import javax.persistence.*;
+
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 @Table(name = "category")
 public class Category {
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "PAREN_ID")
+    private Integer parenId;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "NAMECATE")
+    private String namecate;
 
-    @Column(name = "created")
+    @Column(name = "CREATED")
     private java.sql.Timestamp created;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "CREATOR")
+    private String creator;
 
-    @Column(name = "like")
-    private String like;
-
-    @Column(name = "code")
-    private String code;
-
-    @Column(name = "creator")
-    private java.sql.Timestamp creator;
-
-    @Column(name = "modified")
+    @Column(name = "MODIFIED")
     private java.sql.Timestamp modified;
 
-    @Column(name = "modifier")
-    private java.sql.Timestamp modifier;
-
+    @Column(name = "MODIFIER")
+    private String modifier;
 }

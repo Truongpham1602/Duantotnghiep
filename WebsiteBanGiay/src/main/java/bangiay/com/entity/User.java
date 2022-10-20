@@ -1,50 +1,51 @@
 package bangiay.com.entity;
 
 import javax.persistence.*;
+
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 @Table(name = "user")
 public class User {
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "role_id")
-    private Integer roleId;
+    @ManyToOne
+   	@JoinColumn(name="ROLER_ID")
+    private Role roler;
 
-    @Column(name = "password")
+    @Column(name = "FullNAME")
+    private String fullName;
+
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "fullname")
-    private String fullname;
-
-    @Column(name = "telephone")
-    private String telephone;
-
-    @Column(name = "email")
+    @Column(name = "EMAIL")
     private String email;
 
-    @Column(name = "address")
+    @Column(name = "TELEPHONE")
+    private String telephone;
+
+    @Column(name = "ADDRESS")
     private String address;
 
-    @Column(name = "createat")
-    private java.sql.Timestamp createat;
-
-    @Column(name = "updateat")
-    private java.sql.Timestamp updateat;
-
-    @Column(name = "status")
-    private java.lang.Byte status;
-
-    @Column(name = "image")
+    @Column(name = "Image")
     private String image;
 
-    @Column(name = "modified")
+    @Column(name = "CREATED")
+    private java.sql.Timestamp created;
+
+    @Column(name = "CREATOR")
+    private String creator;
+
+    @Column(name = "MODIFIED")
     private java.sql.Timestamp modified;
 
-    @Column(name = "modifier")
-    private java.sql.Timestamp modifier;
+    @Column(name = "MODIFIER")
+    private String modifier;
 
+    @Column(name = "STATUS")
+    private Integer status;
 }

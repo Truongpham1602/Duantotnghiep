@@ -1,38 +1,37 @@
 package bangiay.com.entity;
 
 import javax.persistence.*;
+
 import lombok.Data;
 
-@Data
 @Entity
+@Data
 @Table(name = "comment")
 public class Comment {
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+	@JoinColumn(name="USER_ID")
+    private User user;
 
-    @Column(name = "product_id")
-    private Integer productId;
+    @ManyToOne
+	@JoinColumn(name="PRODUCT_ID")
+    private Product product;
 
-    @Column(name = "content")
+    @Column(name = "PARENT_ID")
+    private Integer parentId;
+
+    @Column(name = "CONTENT")
     private String content;
 
-    @Column(name = "created")
-    private String created;
+    @Column(name = "CREATED")
+    private java.sql.Timestamp created;
 
-    @Column(name = "creator")
+    @Column(name = "CREATOR")
     private String creator;
 
-    @Column(name = "modified")
-    private java.sql.Timestamp modified;
-
-    @Column(name = "modifier")
-    private java.sql.Timestamp modifier;
-
-    @Column(name = "status")
-    private java.lang.Byte status;
-
+    @Column(name = "STATUS")
+    private Integer status;
 }
