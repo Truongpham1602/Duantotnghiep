@@ -19,7 +19,7 @@ public class ProductController {
 	private ProductService proService;
 	
 	@GetMapping("/find-all")
-	public ResponseEntity<List<Product>> getAllPro(){
+	public ResponseEntity<List<ProductDTO>> getAllPro(){
 		return ResponseEntity.ok().body(proService.findAll());
 	}
 }

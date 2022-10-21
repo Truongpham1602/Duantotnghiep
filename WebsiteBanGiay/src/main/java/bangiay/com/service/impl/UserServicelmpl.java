@@ -1,6 +1,11 @@
 package bangiay.com.service.impl;
 
 
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +18,9 @@ import bangiay.com.service.UserService;
 public class UserServicelmpl implements UserService{
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public User save(User user) {
@@ -22,6 +30,12 @@ public class UserServicelmpl implements UserService{
 	@Override
 	public void delete(long id) {
 		userDao.deleteById(id);
+	}
+
+	public List<User> findAll() {
+		List<User> lstuser = this.userDao.findAll();
+		List<User> result = lstuser.stream().map(d -> modelMapper.map(d, User.class)).collect(Collectors.toList());
+		return result;
 	}
 	
 
