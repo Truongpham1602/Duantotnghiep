@@ -13,39 +13,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.ProductDTO;
-import bangiay.com.entity.Product;
 import bangiay.com.service.ProductService;
 
 @RestController
 @RequestMapping("/rest/product")
 public class ProductRestController {
 	@Autowired
-	private ProductService proServi;
+	ProductService productService;
 	
-	@GetMapping
-	public List<ProductDTO> getAll(){
-		return proServi.findAll();
+	@GetMapping("/index")
+	public List<ProductDTO> findAll() {
+		return productService.findAll();
 	}
 	
-	@GetMapping("{id}")
-	public Product getOne(@PathVariable("id")Long id) {
-		return proServi.finById(id);
-	}
-	
-	@PostMapping
-	public Product post(@RequestBody Product product) {
-		proServi.save(product);
-		return product;
-	}
-	
-	@PutMapping("{id}")
-	public Product put(@PathVariable("id") Long id, @RequestBody Product product) {
-		proServi.save(product);
-		return product;
-	}
-	
-	@DeleteMapping("{id}")
+	@DeleteMapping("/delete?{id}")
 	public void delete(@PathVariable("id") Long id) {
-		proServi.delete(id);
+		productService.delete(id);
+	}
+	
+	@PostMapping("/post")
+	public ProductDTO post(@RequestBody ProductDTO productDTO) {
+		return productService.save(productDTO);
+	}
+	
+	@PutMapping("/put?{id}")
+	public ProductDTO put(@RequestBody @PathVariable("id") Long id, ProductDTO productDTO) {
+		return productService.save(productDTO);
 	}
 }
