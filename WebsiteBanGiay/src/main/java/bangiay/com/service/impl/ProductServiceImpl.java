@@ -20,20 +20,24 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public List<Product> findAll(){
+	public List<ProductDTO> findAll(){
 		List<Product> pro = proDAO.findAll();
-		List<Product> result = pro.stream().map(d -> modelMapper.map(d,Product.class)).collect(Collectors.toList());
+		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d,ProductDTO.class)).collect(Collectors.toList());
 		return result;
 	}
 	
 	@Override
-	public Product finById(long id) {
-		return proDAO.findById(id).get();
+	public ProductDTO finById(long id) {
+		Product product = proDAO.findById(id).get();
+		ProductDTO productdto =  modelMapper.map(product, ProductDTO.class);
+		return productdto;
 	}
 
 	@Override
-	public Product save(Product product) {
-		return proDAO.save(product);
+	public ProductDTO save(ProductDTO productDTO) {
+		Product product =  modelMapper.map(productDTO, Product.class);
+		this.proDAO.save(product);
+		return productDTO;
 	}
 
 	@Override

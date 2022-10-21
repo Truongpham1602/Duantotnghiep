@@ -12,9 +12,13 @@ public class HomeController {
 		return "layout/index"; 
 	}
 	
+//	@RequestMapping({"/admin"})
+//	public String admin() {
+//		return "redirect:/assets/admin/index.html";
+//	}
 	@RequestMapping({"/admin"})
 	public String admin() {
-		return "redirect:/assets/admin/index.html";
+		return "redirect:/assets/admin/product/index.html";
 	}
 	
 	@GetMapping("/login")
