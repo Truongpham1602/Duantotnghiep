@@ -27,22 +27,21 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public Product finById(long id) {
-		return proDAO.findById(id).get();
+	public ProductDTO finById(long id) {
+		Product product = proDAO.findById(id).get();
+		ProductDTO productdto =  modelMapper.map(product, ProductDTO.class);
+		return productdto;
 	}
 
 	@Override
-	public Product save(Product product) {
-		return proDAO.save(product);
+	public ProductDTO save(ProductDTO productDTO) {
+		Product product =  modelMapper.map(productDTO, Product.class);
+		this.proDAO.save(product);
+		return productDTO;
 	}
 
 	@Override
 	public void delete(long id) {
 		proDAO.deleteById(id);
 	}
-	
-//	@Override
-//	public List<Product> findByCategoryId(String cid){
-//		return proDAO.findByCategoryId(cid);
-//	}
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.ProductDTO;
-import bangiay.com.entity.Product;
 import bangiay.com.service.ProductService;
 
 @RequestMapping(value = "/product")
@@ -29,7 +28,7 @@ public class ProductController {
 	
 	@GetMapping("/find-by-id/{id}")
 	public ResponseEntity<?> findById(Model model,@PathVariable("id")Long id){
-		Product item = proService.finById(id);
+		ProductDTO item = proService.finById(id);
 		model.addAttribute("item", item);
 		return ResponseEntity.ok(item);
 	}
