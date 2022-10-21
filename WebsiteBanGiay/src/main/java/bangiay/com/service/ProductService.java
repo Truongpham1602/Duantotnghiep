@@ -15,4 +15,5 @@ public interface ProductService {
 	
 	public void delete(long id);
 	
+//	public List<Product> findByCategoryId(String cid);
 }

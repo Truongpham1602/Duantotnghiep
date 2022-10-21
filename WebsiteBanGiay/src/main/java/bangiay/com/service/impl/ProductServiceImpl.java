@@ -40,4 +40,9 @@ public class ProductServiceImpl implements ProductService{
 	public void delete(long id) {
 		proDAO.deleteById(id);
 	}
+	
+//	@Override
+//	public List<Product> findByCategoryId(String cid){
+//		return proDAO.findByCategoryId(cid);
+//	}
 }
