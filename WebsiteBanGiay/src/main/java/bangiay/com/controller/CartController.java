@@ -1,81 +1,53 @@
 package bangiay.com.controller;
 
+import bangiay.com.DTO.request.CartDTO;
+import bangiay.com.DTO.respon.ResponCartDTO;
 import bangiay.com.entity.Cart;
 import bangiay.com.service.CartService;
-import net.minidev.json.JSONUtil;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class CartController {
+    @Autowired
     private CartService cartService;
+    @Autowired
+    private ModelMapper modelMapper;
+    private static Logger logger = LoggerFactory.getLogger(CartController.class);
 
-    public CartController(CartService cartService) {
-        super();
-        this.cartService = cartService;
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<ResponCartDTO>>getAll() {
+        return ResponseEntity.ok().body(cartService.findAll());
     }
-    @GetMapping("/cart")
-    public String listcart(Model model) {
-        model.addAttribute("cart", cartService.getAll());
-        return "cart";
+    @GetMapping("/getOneById")
+    @CrossOrigin
+    public ResponseEntity<ResponCartDTO> getOneById(@RequestParam("id") Integer id) {
+        Cart cart = cartService.findByID(id);
+        ResponCartDTO responCartDTO = modelMapper.map(cart, ResponCartDTO.class);
+        return ResponseEntity.ok().body(responCartDTO);
     }
-    @GetMapping("/cart/new")
-    public String createCartForm(Model model) {
+    @PostMapping(value = "/update")
+    public ResponseEntity<CartDTO> update(@RequestParam(name = "id") Integer id,@RequestBody  CartDTO cartDTO) {
+        cartDTO.setId(id);
 
-        // create cart object to hold cart form data
-        Cart cart = new Cart();
-        model.addAttribute("cart", cart);
-        return "create_cart";
-
+        return ResponseEntity.ok().body(cartService.updateCart(cartDTO));
     }
-    @PostMapping("/cart")
-    public String saveCart(@ModelAttribute("cart") Cart cart) {
-        cartService.save(cart);
-        return "redirect:/cart";
+    @PostMapping(value = "/create")
+    public ResponseEntity<CartDTO> create(@RequestBody CartDTO dto) {
+        return ResponseEntity.ok().body(cartService.createCart(dto) );
     }
-
-    @GetMapping("/cart/edit/{id}")
-    public String editCartForm(@PathVariable Integer id, Model model) {
-        model.addAttribute("cart", cartService.getById(id));
-        return "edit_cart";
-    }
-
-    @PostMapping("/cart/{id}")
-    public String updateCart(@PathVariable Integer id,
-                                @ModelAttribute("cart") Cart cart,
-                                Model model) {
-
-        // get cart from database by id
-        Cart existingcart = cartService.getById(id);
-        existingcart.setId(id);
-        existingcart.setUserId(cart.getUserId());
-        existingcart.setSizeId(cart.getSizeId());
-        existingcart.setQuantity(cart.getQuantity());
-        //existingcart.setCreated(cart.getCreated());
-        existingcart.setCreated(new Timestamp(System.currentTimeMillis()));
-        existingcart.setCreator(cart.getCreator());
-        //existingcart.setModified(cart.getModified());
-        existingcart.setModified(new Timestamp(System.currentTimeMillis()));
-        existingcart.setModifier(cart.getModifier());
-        existingcart.setStatus(cart.getStatus());
-
-        // save updated cart object
-        cartService.update(existingcart);
-        return "redirect:/cart";
-    }
-
-    // handler method to handle delete cart request
-
-    @GetMapping("/cart/{id}")
-    public String deletecart(@PathVariable Integer id) {
+    @PostMapping(value = "/delete")
+    public ResponseEntity<String> delete(@RequestParam(name = "id") Integer id) {
+        logger.info("Deleted cart with id : " + id);
         cartService.deleteById(id);
-        return "redirect:/cart";
+        return ResponseEntity.ok().body("Delete cart id " + id + " successfully!");
     }
 }
