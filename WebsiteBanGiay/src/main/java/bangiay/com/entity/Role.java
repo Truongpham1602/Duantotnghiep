@@ -7,16 +7,17 @@ import javax.persistence.*;
 public class Role {
     @Id
     @Column(name = "ID")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "ROLE_NAME")
     private String roleName;
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
