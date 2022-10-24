@@ -16,7 +16,7 @@ public class RoleService {
 		return roleDAO.save(role);
 	}
 	public Role update(Role role,Long id) {
-		Role r = roleDAO.findById(id).orElseThrow();
+		Role r = roleDAO.findById(id).orElse(null);
 		r.setRoleName(role.getRoleName());
 		return roleDAO.save(r);
 	}

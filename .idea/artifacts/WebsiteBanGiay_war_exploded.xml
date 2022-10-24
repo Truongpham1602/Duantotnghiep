@@ -29,6 +29,15 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-context:5.3.23" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.7.3" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.3.23" />
+          <element id="library" level="project" name="Maven: io.springfox:springfox-swagger-ui:3.0.0" />
+          <element id="library" level="project" name="Maven: io.springfox:springfox-spring-webmvc:3.0.0" />
+          <element id="library" level="project" name="Maven: io.springfox:springfox-spi:3.0.0" />
+          <element id="library" level="project" name="Maven: io.springfox:springfox-schema:3.0.0" />
+          <element id="library" level="project" name="Maven: io.springfox:springfox-core:3.0.0" />
+          <element id="library" level="project" name="Maven: io.springfox:springfox-spring-web:3.0.0" />
+          <element id="library" level="project" name="Maven: io.github.classgraph:classgraph:4.8.83" />
+          <element id="library" level="project" name="Maven: org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.plugin:spring-plugin-metadata:2.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.7.4" />
           <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf-spring5:3.0.15.RELEASE" />
           <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf:3.0.15.RELEASE" />

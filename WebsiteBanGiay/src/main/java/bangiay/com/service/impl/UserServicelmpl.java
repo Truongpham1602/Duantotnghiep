@@ -20,7 +20,7 @@ public class UserServicelmpl implements UserService{
 	}
 
 	@Override
-	public void delete(long id) {
+	public void delete(Integer id) {
 		userDao.deleteById(id);
 	}
 	
