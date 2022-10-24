@@ -1,25 +1,29 @@
 package bangiay.com.rest.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import bangiay.com.service.ProductService;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import bangiay.com.DTO.ProductDTO;
+import bangiay.com.entity.Cart;
+import bangiay.com.service.CartService;
+import bangiay.com.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/rest/product")
+@RequestMapping("/Cart")
 public class ProductRestController {
+    @Autowired
+    CartService cartService;
+//    @GetMapping("/index")
+//    public List<Cart>cartList(){
+//        return cartService.findAll();
+//    }
+//    @PostMapping("/create")
+//    public Cart cartcreate(@RequestBody Cart cart){
+//        return cartService.createCart(cart);
+//    }
+
 	@Autowired
 	ProductService productService;
 
