@@ -11,6 +11,4 @@ public interface ProductService {
 	public ProductDTO finById(long id);
 	
 	public void delete(long id);
-	
-//	public List<Product> findByCategoryId(String cid);
 }
