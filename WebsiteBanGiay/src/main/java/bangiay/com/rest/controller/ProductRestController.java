@@ -41,4 +41,9 @@ public class ProductRestController {
 	public ProductDTO put(@RequestBody @PathVariable("id") Long id, ProductDTO productDTO) {
 		return productService.save(productDTO);
 	}
+	
+	@PutMapping("/find?{id}")
+	public ProductDTO finByID(@RequestBody @PathVariable("id") Long id, ProductDTO productDTO) {
+		return productService.finById(id);
+	}
 }
