@@ -1,6 +1,5 @@
 package bangiay.com.controller;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +39,11 @@ public class HomeController {
 //		List<Bill_Detail_DTO> top7CategorySeller = billService.top7CategorySeller();
 //		model.addAttribute("top7CategorySeller", top7CategorySeller);
 		return "layout/index";
+	}
+	
+	@RequestMapping("/admin")
+	public String admin() {
+		return "assets/admin/index.html";
 	}
 	
 	@GetMapping("/login")
