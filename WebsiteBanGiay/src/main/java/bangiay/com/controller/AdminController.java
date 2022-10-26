@@ -26,9 +26,9 @@ public class AdminController {
 	}
 	
 	// Hiển thị product theo id
-	@GetMapping("/admin/product/findByID?{id}")
-	public String findByIdPro(Model model, @PathVariable("id") Long id) {
-		model.addAttribute(ResponseEntity.ok().body(proService.finById(id)));
-		return "admin/product/index";
-	}
+//	@GetMapping("/admin/product/findByID?{id}")
+//	public String findByIdPro(Model model, @PathVariable("id") Long id) {
+//		model.addAttribute(ResponseEntity.ok().body(proService.finById(id)));
+//		return "admin/product/index";
+//	}
 }
