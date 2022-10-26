@@ -27,7 +27,7 @@ public class ProductController {
 	
 	// Hiển thị product theo id
 	@GetMapping("/admin/product/findByID")
-	public ResponseEntity<ProductDTO> getByID(@PathVariable("id") Long id){
+	public ResponseEntity<ProductDTO> getByID(@PathVariable("id") Integer id){
 		return ResponseEntity.ok().body(proService.finById(id));
 	}
 }

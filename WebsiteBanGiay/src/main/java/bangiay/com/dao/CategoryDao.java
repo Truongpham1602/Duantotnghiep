@@ -3,9 +3,9 @@ package bangiay.com.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import bangiay.com.entity.Product;
+import bangiay.com.entity.Category;
 
 @Repository
-public interface ProductDao extends JpaRepository<Product, Integer>{
-	
+public interface CategoryDao extends JpaRepository<Category, Integer>{
+
 }

@@ -6,6 +6,7 @@ import bangiay.com.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("admin/product")
 public class ProductRestController {
@@ -27,23 +29,24 @@ public class ProductRestController {
 		return productService.findAll();
 	}
 	
-	@DeleteMapping("/delete?{id}")
-	public void delete(@PathVariable("id") Long id) {
+	@DeleteMapping("/delete/{id}")
+	public void delete(@PathVariable("id") int id) {
 		productService.delete(id);
 	}
 	
 	@PostMapping("/post")
 	public ProductDTO post(@RequestBody ProductDTO productDTO) {
-		return productService.save(productDTO);
+		return productService.create(productDTO);
 	}
 	
-	@PutMapping("/put?{id}")
-	public ProductDTO put(@RequestBody @PathVariable("id") Long id, ProductDTO productDTO) {
-		return productService.save(productDTO);
+	@PutMapping("/put/{id}")
+	public ProductDTO put(@PathVariable("id") Integer id, @RequestBody ProductDTO productDTO) {
+		productDTO.setId(id);
+		return productService.update(productDTO);
 	}
 	
-	@PutMapping("/find?{id}")
-	public ProductDTO finByID(@RequestBody @PathVariable("id") Long id, ProductDTO productDTO) {
+	@GetMapping("/find/{id}")
+	public ProductDTO finByID(@RequestBody @PathVariable("id") int id, ProductDTO productDTO) {
 		return productService.finById(id);
 	}
 }
