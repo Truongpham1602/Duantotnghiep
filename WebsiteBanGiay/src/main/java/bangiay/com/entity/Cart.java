@@ -1,24 +1,19 @@
 package bangiay.com.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
-import lombok.Data;
+
 
 @Entity
 @Data
 @Table(name = "cart")
 public class Cart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-
-    @ManyToOne
-	@JoinColumn(name="USER_ID")
-    private User user;
-
-    @ManyToOne
-	@JoinColumn(name="SIZE_ID")
-    private Size size;
 
     @Column(name = "QUANTITY")
     private Integer quantity;
@@ -37,4 +32,13 @@ public class Cart {
 
     @Column(name = "STATUS")
     private Integer status;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID",referencedColumnName = "id")
+    private User USER_ID;
+
+    @ManyToOne
+    @JoinColumn(name = "SIZE_ID")
+    private Size SIZE_ID;
+
 }

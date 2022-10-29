@@ -6,11 +6,11 @@ import bangiay.com.DTO.ProductDTO;
 public interface ProductService {
 	public List<ProductDTO> findAll();
 	
-	public ProductDTO save(ProductDTO productDTO);
+	public ProductDTO create(ProductDTO productDTO);
 	
-	public ProductDTO finById(long id);
+	public ProductDTO update(ProductDTO productDTO);
 	
-	public void delete(long id);
+	public ProductDTO finById(int id);
 	
-//	public List<Product> findByCategoryId(String cid);
+	public void delete(int id);
 }

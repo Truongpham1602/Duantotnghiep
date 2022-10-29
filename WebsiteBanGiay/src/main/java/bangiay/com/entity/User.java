@@ -1,8 +1,9 @@
 package bangiay.com.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
-import lombok.Data;
 
 @Entity
 @Data
@@ -48,4 +49,5 @@ public class User {
 
     @Column(name = "STATUS")
     private Integer status;
+
 }
