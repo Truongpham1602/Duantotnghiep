@@ -1,6 +1,5 @@
 package bangiay.com.DTO;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 import lombok.Data;
@@ -18,7 +17,7 @@ public class ProductDTO {
     private Integer quantity;
     private Timestamp created;
     private String creator;
-    private Time modified;
+    private Timestamp modified;
     private String modifier;
     private Integer status;
 

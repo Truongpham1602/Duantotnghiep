@@ -1,7 +1,9 @@
 package bangiay.com.service.impl;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -28,7 +30,9 @@ public class ProductServiceImpl implements ProductService{
 	
 	public List<ProductDTO> findAll(){
 		List<Product> pro = proDAO.findAll();
-		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d,ProductDTO.class)).collect(Collectors.toList());
+		List<ProductDTO> result = pro.stream().map(
+			d -> modelMapper.map(d,ProductDTO.class)).collect(Collectors.toList()
+		);
 		for (int i=0; i<pro.size();i++) {
 			result.get(i).setName_cate(pro.get(i).getCategory().getNamecate());
 		}
@@ -48,16 +52,24 @@ public class ProductServiceImpl implements ProductService{
 		product.setCategory(this.cateDao.findById(1).get());
 		product.setCreated(Timestamp.from(Instant.now()));
 		this.proDAO.save(product);
+		productDTO.setId(product.getId());
+		productDTO.setName_cate(product.getCategory().getNamecate());
+		productDTO.setCreated(new Timestamp(product.getCreated().getTime()));
 		return productDTO;
 	}
 	
 	@Override
 	public ProductDTO update(ProductDTO productDTO) {
 		Product product = modelMapper.map(productDTO, Product.class);
-		product.setCategory(this.cateDao.findById(1).get());
-		product.setCreated(product.getCreated());
+		Product p = proDAO.findById(productDTO.getId()).get();
+		product.setCategory(this.cateDao.findById(productDTO.getCategoryId()).get());
+		product.setCreated(p.getCreated());
 		product.setModified(Timestamp.from(Instant.now()));
 		this.proDAO.save(product);
+		productDTO.setId(product.getId());
+		productDTO.setModified(new Timestamp(product.getModified().getTime()));
+		productDTO.setCreated(new Timestamp(p.getCreated().getTime()));
+		productDTO.setName_cate(product.getCategory().getNamecate());
 		return productDTO;
 	}
 
