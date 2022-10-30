@@ -1,9 +1,10 @@
 package bangiay.com.service.impl;
 
 import bangiay.com.DTO.request.BillDTO;
+import bangiay.com.DTO.request.CartDTO;
 import bangiay.com.DTO.respon.ResponBillDTO;
-import bangiay.com.DTO.respon.ResponCartDTO;
 import bangiay.com.dao.BillDao;
+import bangiay.com.dao.UserDao;
 import bangiay.com.entity.Bill;
 import bangiay.com.entity.Cart;
 import bangiay.com.service.BillService;
@@ -21,12 +22,25 @@ public class BillServiceIml implements BillService {
     private BillDao billDao;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private UserDao userDao;
 
     @Override
-    public Bill createBill(Bill bill) {
-        billDao.save(bill);
-        return bill;
+    public BillDTO createBill(BillDTO billDTO) {
+        Bill bill= modelMapper.map(billDTO, Bill.class);
+        bill.setUSER_ID(userDao.findById(billDTO.getUserId()).orElse(null));
+        bill.setCode(billDTO.getCode());
+        bill.setNameRecipient(bill.getNameRecipient());
+        bill.setTelephone(bill.getTelephone());
+        bill.setAddress(bill.getAddress());
+        bill.setCreated(Timestamp.from(Instant.now()));
+        billDTO.setCreator(bill.getCreator());
+        Bill bill1 = billDao.save(bill);
+        billDTO.setModifier(bill1.getModifier());
+        billDTO.setId(bill1.getId());
+        return billDTO;
     }
+
 
     @Override
     public List<ResponBillDTO> findAll() {

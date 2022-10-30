@@ -11,8 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface BillService {
-    Bill createBill(Bill bill);
-
+    BillDTO createBill(BillDTO billDTO);
     List<ResponBillDTO> findAll();
 
     BillDTO updateBill(BillDTO billDTO);

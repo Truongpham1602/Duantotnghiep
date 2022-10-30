@@ -9,10 +9,9 @@ import javax.persistence.*;
 @Table(name = "bill")
 public class Bill {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-
-
 
     @Column(name = "CODE")
     private String code;
