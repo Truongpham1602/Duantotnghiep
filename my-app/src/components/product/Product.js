@@ -3,6 +3,7 @@ import axios from 'axios';
 import CreateProduct from './CreateProduct';
 import UpdateProduct from './UpdateProduct';
 import useCallGetAPI from '../../customHook/CallGetApi';
+// import Tables from '../../customHook/Table';
 import {
   Table
 } from 'reactstrap';
@@ -106,7 +107,7 @@ const Product = () => {
               <th>STT</th>
               <th>Name</th>
               <th>Color</th>
-              <th>Price</th>
+              {/* <th>Price</th> */}
               <th>Quantity</th>
               <th>Category</th>
               <th>Description</th>
@@ -128,7 +129,7 @@ const Product = () => {
                     </th>
                     <td id="category">{item.name}</td>
                     <td id="category">{item.color}</td>
-                    <td id="price">{item.price}</td>
+                    {/* <td id="price">{item.price}</td> */}
                     <td id="quantity">{item.quantity}</td>
                     <td id="category">{item.name_cate}</td>
                     <td id="description">{item.description}</td>

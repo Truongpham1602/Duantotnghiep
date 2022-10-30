@@ -1,74 +1,145 @@
-import { React } from 'react';
-import {
-    Table
-} from 'reactstrap';
+// import React, { useState } from "react";
+// import {
+//     Table
+// } from 'reactstrap';
 
-const Tables = (data) => {
+// const Tables = (props) => {
 
+//     const {
+//         title = "Table", list, colNames, pageNum = 0, pageSize = 10,
+//         onUpdate,
+//         onDelete,
+//         onCreate,
 
+//     } = props;
+//     const [page, setPage] = useState(pageNum);
+//     const [formattedList, setFormattedList] = useState(list);
+//     const [isCreateModal, setIsCreateModal] = useState(false)
+//     const [isUpdateModal, setisUpdateModal] = useState(false)
 
-    <Table bordered>
-        <thead>
-            {data.map((item, index) => {
-                return (
-                    <th>STT</th>
+//     const createModal = () => {
+//         setIsCreateModal(!isCreateModal)
+//     }
 
-                )
-            })}
-            <tr>
-                <th>STT</th>
-                <th>Name</th>
-                <th>Color</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Category</th>
-                <th>Description</th>
-                <th>CreateDate</th>
-                <th>UpdateDate</th>
-                <th colspan="1">Action</th>
-                <th colspan="1">
-                    <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Create</button>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {!isLoading && dataProduct && dataProduct.length > 0 &&
-                dataProduct.map((item, index) => {
-                    return (
-                        <tr key={item.id}>
-                            <th scope="row" id="">
-                                {index + 1}
-                            </th>
-                            <td id="category">{item.name}</td>
-                            <td id="category">{item.color}</td>
-                            <td id="price">{item.price}</td>
-                            <td id="quantity">{item.quantity}</td>
-                            <td id="category">{item.name_cate}</td>
-                            <td id="description">{item.description}</td>
-                            <td id="created">{item.created}</td>
-                            <td id="modified">{item.modified}</td>
-                            {/* <td id="image">
-                                                <image src={`image/${item.id}`} width="150" height="170" />
-                                            </td> */}
-                            <td>
-                                <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editProduct(item.id); updateModal() }}>Update</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger delete" id="delete" onClick={() => { deleteProduct(item.id) }} >Delete</button>
-                            </td>
-                        </tr>
-                    )
-                })
-            }
+//     const updateModal = () => {
+//         setisUpdateModal(!isUpdateModal)
+//     }
 
-            {isLoading &&
-                <tr>
-                    <h3>Loading...</h3>
-                </tr>
-            }
-        </tbody>
-    </Table>
+//     const getColumnLength = () => {
+//         const hasActions = onDelete;
+//         return hasActions ? colNames.length + 1 : colNames.length;
+//     };
 
-}
+//     const onBack = () => {
+//         setPage(page - 1 > -1 ? page - 1 : page);
+//     };
 
-export default Tables;
+//     const onNext = () => {
+//         setPage(page + 1 < list.length / pageSize ? page + 1 : page);
+//     };
+
+//     const groupBy = (colName) => {
+//         const groupedList = {};
+
+//         list.forEach((item) => {
+//             const value = item[colName] || "Unknown";
+//             if (!groupedList[value]) {
+//                 groupedList[value] = [];
+//             }
+//             groupedList[value].push(item);
+//         });
+
+//         setFormattedList(Object.values(groupedList).flat(Infinity));
+//     };
+
+//     return (
+//         <div>
+//             {formattedList.length > 0 && (
+//                 <Table
+//                     bordered
+//                     cellSpacing="0"
+//                 >
+//                     <thead>
+//                         <tr>
+//                             <th colSpan={getColumnLength()}>
+//                                 <h3>{title}</h3>
+//                             </th>
+//                         </tr>
+//                         <tr>
+//                             {colNames.map((headerItem, index) => (
+//                                 <th key={index} onClick={() => groupBy(headerItem)}>
+//                                     {headerItem.toUpperCase()}
+//                                 </th>
+//                             ))}
+//                             {onDelete &&
+//                                 <>
+//                                     <th>Actions</th>
+//                                     <th>
+//                                         <button
+//                                             class="btn btn-primary" type='buttom'
+//                                             onClick={() => { onCreate(); createModal() }}
+//                                         >
+//                                             ADD
+//                                         </button></th>
+//                                 </>
+//                             }
+//                         </tr>
+//                     </thead>
+//                     <tbody>
+//                         {Object.values(
+//                             formattedList.slice(pageSize * page, pageSize * page + pageSize)
+//                         ).map((obj, index) => (
+//                             <tr key={index}>
+//                                 {Object.values(obj).map((value, index2) => (
+//                                     <td
+//                                         key={index2}
+//                                         className="hoverable"
+//                                         onClick={() => onUpdate(obj)}
+//                                     >
+//                                         {value}
+//                                     </td>
+//                                 ))}
+//                                 {onUpdate && (
+//                                     <td>
+//                                         <button
+//                                             class="btn btn-primary update" type='buttom'
+//                                             onClick={() => onUpdate(obj.id)}
+//                                         >
+//                                             Edit
+//                                         </button>
+//                                     </td>
+//                                 )}
+//                                 {onDelete && (
+//                                     <td>
+//                                         <button
+//                                             onClick={() => onDelete(obj.id)}
+//                                             class="btn btn-primary update" type='buttom'
+//                                         >
+//                                             Delete
+//                                         </button>
+//                                     </td>
+//                                 )}
+//                             </tr>
+//                         ))}
+//                     </tbody>
+//                     <tfoot>
+//                         <tr>
+//                             <td colSpan={getColumnLength()}>
+//                                 ;\
+//                                 <button className="hoverable" onClick={onBack}>
+//                                     Back
+//                                 </button>
+//                                 <label>{page + 1}</label>
+//                                 <button className="hoverable" onClick={onNext}>
+//                                     Next
+//                                 </button>
+//                             </td>
+//                         </tr>
+//                     </tfoot>
+//                 </Table>
+//             )}
+//         </div>
+//     );
+// }
+
+// export default Tables;
