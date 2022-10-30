@@ -1,17 +1,17 @@
 package bangiay.com.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "bill")
 public class Bill {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-
-    @ManyToOne
-	@JoinColumn(name="USER_ID")
-    private User user;
 
     @Column(name = "CODE")
     private String code;
@@ -36,4 +36,9 @@ public class Bill {
 
     @Column(name = "MODIFIER")
     private String modifier;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User USER_ID;
+
+
 }
