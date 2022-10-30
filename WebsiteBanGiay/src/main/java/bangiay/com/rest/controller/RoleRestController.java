@@ -27,7 +27,7 @@ public class RoleRestController {
 		return roleService.create(role);
 	}
 	@GetMapping("/get/{id}")
-	public Role get(@PathVariable Long id) throws Exception{
+	public Role get(@PathVariable Integer id) throws Exception{
 		return roleService.findById(id);
 	}
 	@GetMapping("/get")
@@ -35,11 +35,11 @@ public class RoleRestController {
 		return roleService.findAll();
 	}
 	@PutMapping("/update/{id}")
-	public Role update(@RequestBody Role role,@PathVariable Long id) {
+	public Role update(@RequestBody Role role,@PathVariable Integer id) {
 		return roleService.update(role, id);
 	}
 	@DeleteMapping("/delete/{id}")
-	public void deleteById(@PathVariable Long id) {
+	public void deleteById(@PathVariable Integer id) {
 		roleService.delete(id);
 	}
 }

@@ -18,17 +18,17 @@ public class RoleServiceImpl implements RoleService{
 		return roleDAO.save(role);
 	}
 	@Override
-	public Role update(Role role,Long id) {
+	public Role update(Role role,Integer id) {
 		Role r = roleDAO.findById(id).orElseThrow();
 		r.setRoleName(role.getRoleName());
 		return roleDAO.save(r);
 	}
 	@Override
-	public void delete (Long  id) {
+	public void delete (Integer id) {
 		roleDAO.delete(roleDAO.findById(id).get());
 	}
 	@Override
-	public Role findById(Long id)throws Exception {
+	public Role findById(Integer id)throws Exception {
 		return roleDAO.findById(id).orElseThrow(()->new Exception("Role is not exists" + id));
 	}
 	@Override
