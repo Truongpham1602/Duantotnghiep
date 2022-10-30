@@ -1,17 +1,16 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
-import CreateProduct from './CreateProduct';
+import CreateProduct from './CreateBill';
 import UpdateProduct from './UpdateProduct';
 import useCallGetAPI from '../../customHook/CallGetApi';
-// import Tables from '../../customHook/Table';
 import {
   Table
 } from 'reactstrap';
 
-// class Product extends React.Component {
-const Product = () => {
+// class Bill extends React.Component {
+const Bill = () => {
 
-  const [product, setProduct] = useState({});
+  const [bill, setBill] = useState({});
   const [dataProduct, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [isCreateModal, setIsCreateModal] = useState(false)
@@ -35,7 +34,7 @@ const Product = () => {
     }
   }
 
-  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/product/index`);
+  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/bill/index`);
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
@@ -56,8 +55,8 @@ const Product = () => {
 
   const editProduct = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:8080/admin/product/find/${id}`)
-      setProduct(res.data)
+      const res = await axios.get(`http://localhost:8080/admin/bill/find/${id}`)
+      setBill(res.data)
     } catch (error) {
       console.log(error.message)
     }
@@ -66,7 +65,7 @@ const Product = () => {
   const deleteProduct = async (id) => {
     // e.preventDefault();
     try {
-      await axios.delete(`http://localhost:8080/admin/product/delete/${id}`)
+      await axios.delete(`http://localhost:8080/admin/bill/delete/${id}`)
       let copyList = dataProduct;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
@@ -104,13 +103,13 @@ const Product = () => {
         isUpdateModal={isUpdateModal}
         toggleModal={updateModal}
         updateData={updateData}
-        product={product}
+        bill={bill}
       />
       <div>
         <Table bordered>
           <thead>
             <tr>
-              <th colSpan='10'><h3>Product</h3></th>
+              <th colSpan='10'><h3>Bill</h3></th>
             </tr>
             <tr>
               <th>STT</th>
@@ -186,7 +185,7 @@ const Product = () => {
 
 }
 
-export default Product;
+export default Bill;
 
 
 /* <div class="row">
@@ -386,7 +385,7 @@ $(document).ready(function(){
              formGroupSelector: '.form-group',
              errorSelector: '.form-message',
              rules: [
-               Validator.isRequired('#name', 'Vui lòng nhập tên Product'),
+               Validator.isRequired('#name', 'Vui lòng nhập tên Bill'),
                Validator.isRequired('#price', 'Vui lòng nhập Price'),
                Validator.isPrice('#price', 'Price không đúng định dạng'),
                Validator.isRequired('#createdDate', 'Vui lòng chọn Date')
@@ -430,7 +429,7 @@ $(document).ready(function(){
              formGroupSelector: '.form-group',
              errorSelector: '.form-message',
              rules: [
-               Validator.isRequired('#name', 'Vui lòng nhập tên Product'),
+               Validator.isRequired('#name', 'Vui lòng nhập tên Bill'),
                Validator.isRequired('#price', 'Vui lòng nhập Price'),
                Validator.isPrice('#price', 'Price không đúng định dạng'),
                Validator.isRequired('#createdDate', 'Vui lòng chọn Date'),

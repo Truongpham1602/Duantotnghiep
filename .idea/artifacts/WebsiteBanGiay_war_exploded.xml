@@ -14,6 +14,18 @@
           <element id="module-output" name="WebsiteBanGiay" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.springdoc:springdoc-openapi-ui:1.6.4" />
+          <element id="library" level="project" name="Maven: org.springdoc:springdoc-openapi-webmvc-core:1.6.4" />
+          <element id="library" level="project" name="Maven: org.springdoc:springdoc-openapi-common:1.6.4" />
+          <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-core:2.1.12" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.12.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.4" />
+          <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-annotations:2.1.12" />
+          <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-models:2.1.12" />
+          <element id="library" level="project" name="Maven: org.webjars:swagger-ui:4.1.3" />
+          <element id="library" level="project" name="Maven: org.webjars:webjars-locator-core:0.50" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.4" />
+          <element id="library" level="project" name="Maven: io.github.classgraph:classgraph:4.8.138" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-security:2.7.4" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.7.4" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.7.4" />
@@ -35,7 +47,6 @@
           <element id="library" level="project" name="Maven: io.springfox:springfox-schema:3.0.0" />
           <element id="library" level="project" name="Maven: io.springfox:springfox-core:3.0.0" />
           <element id="library" level="project" name="Maven: io.springfox:springfox-spring-web:3.0.0" />
-          <element id="library" level="project" name="Maven: io.github.classgraph:classgraph:4.8.83" />
           <element id="library" level="project" name="Maven: org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.plugin:spring-plugin-metadata:2.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.7.4" />
@@ -48,7 +59,6 @@
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-json:2.7.4" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.13.4" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.4" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.4" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.4" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.13.4" />

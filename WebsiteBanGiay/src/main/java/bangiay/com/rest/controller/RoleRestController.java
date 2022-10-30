@@ -1,6 +1,8 @@
-package bangiay.com.controller;
+package bangiay.com.rest.controller;
 
 import java.util.List;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.entity.Role;
-import bangiay.com.service.RoleService;
+import bangiay.com.service.impl.*;
 
 @RestController
 @RequestMapping("/role/")
-public class RoleController {
+public class RoleRestController {
 	@Autowired
-	RoleService roleService;
+	RoleServiceImpl roleService;
 	@PostMapping("/create")
 	public Role create(@RequestBody Role role) {
 		return roleService.create(role);

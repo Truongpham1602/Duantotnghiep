@@ -1,41 +1,40 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
-import CreateProduct from './CreateProduct';
-import UpdateProduct from './UpdateProduct';
+import CreateUser from './CreateUser';
+import UpdateUser from './UpdateUser';
 import useCallGetAPI from '../../customHook/CallGetApi';
-// import Tables from '../../customHook/Table';
 import {
   Table
 } from 'reactstrap';
 
-// class Product extends React.Component {
-const Product = () => {
+// class User extends React.Component {
+const User = () => {
 
-  const [product, setProduct] = useState({});
-  const [dataProduct, setData] = useState([]);
-  const [page, setPage] = useState(0);
+  const [user, setUser] = useState({});
+  const [dataUser, setData] = useState([]);
+
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
 
   const updateData = (res, type) => {
     if (type === 'create') {
-      let copydata = dataProduct;
+      let copydata = dataUser;
       copydata.unshift(res);
       console.log(copydata);
       setData(copydata);
-      console.log(dataProduct);
+      console.log(dataUser);
     }
     else if (type === 'update') {
-      let copydata = dataProduct;
+      let copydata = dataUser;
       let getIndex = copydata.findIndex((p) => { return p.id === res.id });
       copydata.fill(res, getIndex, getIndex + 1);
       console.log(copydata);
       setData(copydata)
-      console.log(dataProduct);
+      console.log(dataUser);
     }
   }
 
-  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/product/index`);
+  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/user/index`);
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
@@ -56,8 +55,8 @@ const Product = () => {
 
   const editProduct = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:8080/admin/product/find/${id}`)
-      setProduct(res.data)
+      const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`)
+      setUser(res.data)
     } catch (error) {
       console.log(error.message)
     }
@@ -66,8 +65,8 @@ const Product = () => {
   const deleteProduct = async (id) => {
     // e.preventDefault();
     try {
-      await axios.delete(`http://localhost:8080/admin/product/delete/${id}`)
-      let copyList = dataProduct;
+      await axios.delete(`http://localhost:8080/admin/user/delete/${id}`)
+      let copyList = dataUser;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
       // updateData(res.data)
@@ -83,40 +82,31 @@ const Product = () => {
   //   })
   // }
 
-  const onBack = () => {
-    setPage(page - 1 > -1 ? page - 1 : page);
-  };
 
-  const onNext = () => {
-    setPage(page + 7 < dataProduct.length / 7 ? page + 7 : page);
-  };
 
 
 
   return (
     <>
-      <CreateProduct
+      <CreateUser
         isCreateModal={isCreateModal}
         toggleModal={createModal}
         updateData={updateData}
       />
-      <UpdateProduct
+      <UpdateUser
         isUpdateModal={isUpdateModal}
         toggleModal={updateModal}
         updateData={updateData}
-        product={product}
+        user={user}
       />
       <div>
         <Table bordered>
           <thead>
             <tr>
-              <th colSpan='10'><h3>Product</h3></th>
-            </tr>
-            <tr>
               <th>STT</th>
               <th>Name</th>
               <th>Color</th>
-              {/* <th>Price</th> */}
+              <th>Price</th>
               <th>Quantity</th>
               <th>Category</th>
               <th>Description</th>
@@ -129,10 +119,8 @@ const Product = () => {
             </tr>
           </thead>
           <tbody>
-            {!isLoading && dataProduct && dataProduct.length > 0 &&
-              Object.values(
-                dataProduct.slice(7 * page, 7 * page + 7)
-              ).map((item, index) => {
+            {!isLoading && dataUser && dataUser.length > 0 &&
+              dataUser.map((item, index) => {
                 return (
                   <tr key={item.id}>
                     <th scope="row" id="">
@@ -140,7 +128,7 @@ const Product = () => {
                     </th>
                     <td id="category">{item.name}</td>
                     <td id="category">{item.color}</td>
-                    {/* <td id="price">{item.price}</td> */}
+                    <td id="price">{item.price}</td>
                     <td id="quantity">{item.quantity}</td>
                     <td id="category">{item.name_cate}</td>
                     <td id="description">{item.description}</td>
@@ -166,19 +154,6 @@ const Product = () => {
               </tr>
             }
           </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan='10'>
-                <button className="hoverable" onClick={onBack}>
-                  Back
-                </button>
-                <label style={{ margin: '0 10px' }}>{page + 1}</label>
-                <button className="hoverable" onClick={onNext}>
-                  Next
-                </button>
-              </td>
-            </tr>
-          </tfoot>
         </Table>
       </div>
     </>
@@ -186,7 +161,7 @@ const Product = () => {
 
 }
 
-export default Product;
+export default User;
 
 
 /* <div class="row">
@@ -275,7 +250,7 @@ export default Product;
                     <option value="0">Chưa có hàng</option>
                  </select>
                  </div>
-                 <div class="col-md-7 form-group">
+                 <div class="col-md-10 form-group">
                  <label  class="form-label">Category</label> 
                  <select name = "category" id = "categoryud" class="form-select" >
                       <c:forEach items="${ category }" var="c">
@@ -352,7 +327,7 @@ export default Product;
                         <option value="0">Chưa có hàng</option>
                      </select>
                  </div>
-                 <div class="col-md-7 form-group">
+                 <div class="col-md-10 form-group">
                  <label  class="form-label">Category</label> 
                  <select name = "category" id = "category" class="form-select" >
                       <c:forEach items="${ category }" var="c">
@@ -386,7 +361,7 @@ $(document).ready(function(){
              formGroupSelector: '.form-group',
              errorSelector: '.form-message',
              rules: [
-               Validator.isRequired('#name', 'Vui lòng nhập tên Product'),
+               Validator.isRequired('#name', 'Vui lòng nhập tên User'),
                Validator.isRequired('#price', 'Vui lòng nhập Price'),
                Validator.isPrice('#price', 'Price không đúng định dạng'),
                Validator.isRequired('#createdDate', 'Vui lòng chọn Date')
@@ -430,7 +405,7 @@ $(document).ready(function(){
              formGroupSelector: '.form-group',
              errorSelector: '.form-message',
              rules: [
-               Validator.isRequired('#name', 'Vui lòng nhập tên Product'),
+               Validator.isRequired('#name', 'Vui lòng nhập tên User'),
                Validator.isRequired('#price', 'Vui lòng nhập Price'),
                Validator.isPrice('#price', 'Price không đúng định dạng'),
                Validator.isRequired('#createdDate', 'Vui lòng chọn Date'),
