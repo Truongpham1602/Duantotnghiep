@@ -61,18 +61,16 @@ const Tables = (props) => {
                                     {headerItem.toUpperCase()}
                                 </th>
                             ))}
-                            {onDelete &&
-                                <>
-                                    <th>Actions</th>
-                                    <th>
-                                        <button
-                                            class="btn btn-primary" type='buttom'
-                                            onClick={() => { onCreate() }}
-                                        >
-                                            ADD
-                                        </button></th>
-                                </>
-                            }
+                            <>
+                                <th>Actions</th>
+                                <th>
+                                    <button
+                                        class="btn btn-primary" type='buttom'
+                                        onClick={() => { onCreate() }}
+                                    >
+                                        ADD
+                                    </button></th>
+                            </>
                         </tr>
                     </thead>
                     <tbody>

@@ -1,43 +1,61 @@
 package bangiay.com.service.impl;
 
+import bangiay.com.DTO.BillDetailDTO;
+import bangiay.com.DTO.OrdersDTO;
 import bangiay.com.DTO.request.BillDTO;
-import bangiay.com.DTO.request.CartDTO;
 import bangiay.com.DTO.respon.ResponBillDTO;
 import bangiay.com.dao.BillDao;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.Bill;
-import bangiay.com.entity.Cart;
 import bangiay.com.service.BillService;
+import bangiay.com.service.Bill_DetailService;
+import bangiay.com.service.OrderService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
-public class BillServiceIml implements BillService {
+public class BillServiceImpl implements BillService {
     @Autowired
     private BillDao billDao;
+    
     @Autowired
     private ModelMapper modelMapper;
+    
     @Autowired
     private UserDao userDao;
-
+    
+    @Autowired
+    private OrderService orderService;
+    
+    @Autowired
+    private Bill_DetailService bill_DetailService;
+    
     @Override
-    public BillDTO createBill(BillDTO billDTO) {
+    public BillDTO createBill(BillDTO billDTO, Integer size_Id) {
         Bill bill= modelMapper.map(billDTO, Bill.class);
         bill.setUSER_ID(userDao.findById(billDTO.getUserId()).orElse(null));
-        bill.setCode(billDTO.getCode());
-        bill.setNameRecipient(bill.getNameRecipient());
-        bill.setTelephone(bill.getTelephone());
-        bill.setAddress(bill.getAddress());
         bill.setCreated(Timestamp.from(Instant.now()));
+        // Insert Bill to DB
+        this.billDao.save(bill);
+        billDTO.setCreated(bill.getCreated());
         billDTO.setCreator(bill.getCreator());
-        Bill bill1 = billDao.save(bill);
-        billDTO.setModifier(bill1.getModifier());
-        billDTO.setId(bill1.getId());
+        billDTO.setId(bill.getId());
+        // find OrderBySize_ID
+        List<OrdersDTO> lstOrder = this.orderService.findOrderBySize_ID(size_Id);
+    	List<BillDetailDTO> lstBillDetail = new ArrayList<BillDetailDTO>();
+    	for (int i = 0; i < lstOrder.size(); i++) {
+			if(lstOrder.get(i).getStatus()==true) {
+				lstBillDetail.add(new BillDetailDTO(null, bill.getId(), size_Id, lstOrder.get(i).getSizeId(), lstOrder.get(i).getQuantity(), lstOrder.get(i).getPrice()));
+			}
+		}
+    	this.bill_DetailService.createAll(lstBillDetail);
         return billDTO;
     }
 
@@ -71,7 +89,9 @@ public class BillServiceIml implements BillService {
     }
 
     @Override
-    public Bill findByID(Integer id) {
-        return billDao.findById(id).orElseThrow(() -> new RuntimeException( "Bill isn't existed"));
+    public BillDTO findByID(Integer id) {
+        Bill bill = billDao.findById(id).orElseThrow(() -> new RuntimeException( "Bill isn't existed"));
+        BillDTO billDTO = modelMapper.map(bill, BillDTO.class);
+    	return billDTO;
     }
 }

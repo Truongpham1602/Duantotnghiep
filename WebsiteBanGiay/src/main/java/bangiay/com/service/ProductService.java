@@ -10,7 +10,7 @@ public interface ProductService {
 	
 	public ProductDTO update(ProductDTO productDTO);
 	
-	public ProductDTO finById(int id);
+	public ProductDTO finById(Integer id);
 	
-	public void delete(int id);
+	public void delete(Integer id);
 }

@@ -14,7 +14,8 @@ function App() {
       {/* <header className="App-header"> */}
       <Routes>
         <Route path="/" element={<Home />} >
-          <Route path="home" element={<> <Home /></>} />
+
+          {/* <Route path="cart" element={<> <Cart /></>} /> */}
         </Route>
         <Route path="admin" element={<> <Admin /></>} >
           <Route path="" element={<> <Product /></>} />

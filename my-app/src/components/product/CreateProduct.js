@@ -199,7 +199,7 @@ const CreateProduct = (props) => {
                                                 name="category"
                                                 placeholder=""
                                                 type="select"
-                                                onChange={(event) => handleOnchangeInput(event, 'category')}
+                                                onChange={(event) => handleOnchangeInput(event, 'categoryId')}
                                             >
                                                 <option value='1'>
                                                     1

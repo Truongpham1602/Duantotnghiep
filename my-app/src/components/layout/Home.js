@@ -1,6 +1,7 @@
 import React from "react";
 import Nav from './NavPage';
 import HeaderPage from './HeaderPage';
+// import { Outlet } from "react-router-dom";
 // class Home extends React.Component {
 const Home = () => {
 

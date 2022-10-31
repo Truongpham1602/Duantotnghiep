@@ -1,9 +1,7 @@
 package bangiay.com.service.impl;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -40,7 +38,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public ProductDTO finById(int id) {
+	public ProductDTO finById(Integer id) {
 		Product product = proDAO.findById(id).get();
 		ProductDTO productdto = modelMapper.map(product, ProductDTO.class);
 		return productdto;
@@ -75,7 +73,7 @@ public class ProductServiceImpl implements ProductService{
 
 
 	@Override
-	public void delete(int id) {
+	public void delete(Integer id) {
 		proDAO.deleteById(id);
 	}
 }
