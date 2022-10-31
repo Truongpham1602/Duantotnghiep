@@ -1,8 +1,8 @@
 package bangiay.com.entity;
 
-import javax.persistence.*;
-
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -21,4 +21,5 @@ public class Size {
 
     @Column(name = "QUANTITY")
     private Integer quantity;
+
 }

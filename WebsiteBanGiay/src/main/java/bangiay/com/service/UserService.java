@@ -2,13 +2,16 @@ package bangiay.com.service;
 
 import java.util.List;
 
-import bangiay.com.entity.User;
+import bangiay.com.DTO.UserDTO;
 
 public interface UserService {
+public List<UserDTO> findAll();
 	
-	public List<User> findAll();
+	public UserDTO create(UserDTO userDTO);
 	
-	public User save(User user);
+	public UserDTO update(UserDTO userDTO);
 	
-	public void delete(Integer id);
+	public UserDTO finById(int id);
+	
+	public void delete(int id);
 }

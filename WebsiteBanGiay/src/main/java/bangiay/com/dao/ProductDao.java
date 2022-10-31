@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import bangiay.com.entity.Product;
 
 @Repository
-public interface ProductDao extends JpaRepository<Product, Long>{
+public interface ProductDao extends JpaRepository<Product, Integer>{
 	
 }
