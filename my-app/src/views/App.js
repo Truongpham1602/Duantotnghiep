@@ -2,7 +2,7 @@ import './App.scss';
 import Admin from '../components/layout/Admin';
 import Home from '../components/layout/Home';
 import Product from '../components/product/Product';
-
+import User from '../components/user/User';
 import {
   Routes,
   Route
@@ -17,8 +17,9 @@ function App() {
           <Route path="home" element={<> <Home /></>} />
         </Route>
         <Route path="admin" element={<> <Admin /></>} >
-          <Route path="" element={<> <Product /></>} />
+          <Route path="" element={<> <Product /><User/></>} />
           <Route path="product" element={<> <Product /></>} />
+          <Route path="user" element={<> <User /></>} />
         </Route>
       </Routes>
       {/* </header> */}
