@@ -43,6 +43,7 @@ public class UserServicelmpl implements UserService {
 		user.setCreated(Timestamp.from(Instant.now()));
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
+		userDTO.setNameRole(user.getRoler().getRoleName());
 		return userDTO;
 	}
 
@@ -53,6 +54,8 @@ public class UserServicelmpl implements UserService {
 		user.setCreated(user.getCreated());
 		user.setModified(Timestamp.from(Instant.now()));
 		this.userDao.save(user);
+		userDTO.setId(user.getId());
+		userDTO.setNameRole(user.getRoler().getRoleName());
 		return userDTO;
 	}
 

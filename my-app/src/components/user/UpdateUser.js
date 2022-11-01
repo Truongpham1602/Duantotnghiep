@@ -30,7 +30,7 @@ const UpdateUser = (props) => {
     const updateUser = async () => {
         try {
             const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`, {
-                rolerId: user.rolerId,
+                roleId: user.roleId,
                 fullName: user.fullName,
                 password: user.password,
                 email: user.email,
