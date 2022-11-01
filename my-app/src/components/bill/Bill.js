@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
-import CreateProduct from './CreateBill';
-import UpdateProduct from './UpdateProduct';
+import CreateBill from './CreateBill';
+import UpdateBill from './UpdateBill';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import {
   Table
@@ -11,38 +11,38 @@ import {
 const Bill = () => {
 
   const [bill, setBill] = useState({});
-  const [dataProduct, setData] = useState([]);
+  const [dataBill, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
 
   const updateData = (res, type) => {
     if (type === 'create') {
-      let copydata = dataProduct;
+      let copydata = dataBill;
       copydata.unshift(res);
       console.log(copydata);
       setData(copydata);
-      console.log(dataProduct);
+      console.log(dataBill);
     }
     else if (type === 'update') {
-      let copydata = dataProduct;
+      let copydata = dataBill;
       let getIndex = copydata.findIndex((p) => { return p.id === res.id });
       copydata.fill(res, getIndex, getIndex + 1);
       console.log(copydata);
       setData(copydata)
-      console.log(dataProduct);
+      console.log(dataBill);
     }
   }
 
-  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/bill/index`);
+  const { data: databil, isLoading } = useCallGetAPI(`http://localhost:8080/admin/bill/index`);
   useEffect(() => {
-    if (dataPro && dataPro.length > 0) {
-      setData(dataPro)
-      console.log(dataPro);
+    if (databil && databil.length > 0) {
+      setData(databil)
+      console.log(databil);
     }
     // setData(dataPro)
     // console.log(isLoading);
-  }, [dataPro])
+  }, [databil])
 
   const createModal = () => {
     setIsCreateModal(!isCreateModal)
@@ -53,7 +53,7 @@ const Bill = () => {
   }
 
 
-  const editProduct = async (id) => {
+  const editBill = async (id) => {
     try {
       const res = await axios.get(`http://localhost:8080/admin/bill/find/${id}`)
       setBill(res.data)
@@ -62,11 +62,11 @@ const Bill = () => {
     }
   }
 
-  const deleteProduct = async (id) => {
+  const deleteBill = async (id) => {
     // e.preventDefault();
     try {
       await axios.delete(`http://localhost:8080/admin/bill/delete/${id}`)
-      let copyList = dataProduct;
+      let copyList = dataBill;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
       // updateData(res.data)
@@ -87,19 +87,19 @@ const Bill = () => {
   };
 
   const onNext = () => {
-    setPage(page + 7 < dataProduct.length / 7 ? page + 7 : page);
+    setPage(page + 7 < dataBill.length / 7 ? page + 7 : page);
   };
 
 
 
   return (
     <>
-      <CreateProduct
+      <CreateBill
         isCreateModal={isCreateModal}
         toggleModal={createModal}
         updateData={updateData}
       />
-      <UpdateProduct
+      <UpdateBill
         isUpdateModal={isUpdateModal}
         toggleModal={updateModal}
         updateData={updateData}
@@ -112,14 +112,14 @@ const Bill = () => {
               <th colSpan='10'><h3>Bill</h3></th>
             </tr>
             <tr>
-              <th>STT</th>
-              <th>Name</th>
-              <th>Color</th>
-              {/* <th>Price</th> */}
-              <th>Quantity</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th>CreateDate</th>
+              <th>UserId</th>
+              <th>Code</th>
+              <th>Name_Recipient</th>
+              <th>Telephone</th>
+              <th>Address</th>
+              <th>Created</th>
+              <th>Creator</th>
+              <th>UpdateBy</th>
               <th>UpdateDate</th>
               <th colspan="1">Action</th>
               <th colspan="1">
@@ -128,31 +128,27 @@ const Bill = () => {
             </tr>
           </thead>
           <tbody>
-            {!isLoading && dataProduct && dataProduct.length > 0 &&
+            {!isLoading && dataBill && dataBill.length > 0 &&
               Object.values(
-                dataProduct.slice(7 * page, 7 * page + 7)
+                dataBill.slice(7 * page, 7 * page + 7)
               ).map((item, index) => {
                 return (
                   <tr key={item.id}>
                     <th scope="row" id="">
                       {index + 1}
                     </th>
-                    <td id="category">{item.name}</td>
-                    <td id="category">{item.color}</td>
-                    {/* <td id="price">{item.price}</td> */}
-                    <td id="quantity">{item.quantity}</td>
-                    <td id="category">{item.name_cate}</td>
-                    <td id="description">{item.description}</td>
+                    <td id="user">{item.userId}</td>
+                    <td id="code">{item.code}</td>
+                    <td id="name_recipient">{item.name_recipient}</td>
+                    <td id="telephone">{item.telephone}</td>
+                    <td id="address">{item.address}</td>
                     <td id="created">{item.created}</td>
                     <td id="modified">{item.modified}</td>
-                    {/* <td id="image">
-                                                <image src={`image/${item.id}`} width="150" height="170" />
-                                            </td> */}
                     <td>
-                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editProduct(item.id); updateModal() }}>Update</button>
+                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editBill(item.id); updateModal() }}>Update</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => { deleteProduct(item.id) }} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => { deleteBill(item.id) }} >Delete</button>
                     </td>
                   </tr>
                 )

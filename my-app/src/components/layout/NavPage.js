@@ -29,24 +29,26 @@ const NavPage = (args) => {
     return (
         <div>
             <Navbar {...args} color="info" light expand="md" container='fluid' >
-                <NavbarBrand><Link style={{ textDecoration: 'none', color: 'black' }} to='/'  >WebLuTra</Link></NavbarBrand>
+                <NavbarBrand>
+                    <Link style={{ textDecoration: 'none', color: 'black' }} to='/'  >WebLuTra</Link>
+                </NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="me-auto" navbar>
                         <NavItem>
-                            <NavLink><Link style={{ textDecoration: 'none', color: 'black' }} to='/admin'  >Admin</Link></NavLink>
+                            <Link style={{ textDecoration: 'none', color: 'black' }} to='/admin'  >Admin</Link>
                         </NavItem>
                         <NavItem>
-                            <NavLink>
-                                <Link style={{ textDecoration: 'none', color: 'black' }} to='/admin'  >Giày Nam</Link>
-                            </NavLink>
+                            <Link style={{ textDecoration: 'none', color: 'black' ,marginLeft :'10px'}} to='/cart'>Cart</Link>
                         </NavItem>
                         <UncontrolledDropdown nav inNavbar>
                             <DropdownToggle nav caret>
                                 Options
                             </DropdownToggle>
                             <DropdownMenu right>
-                                <DropdownItem><Link style={{ textDecoration: 'none', color: 'black' }} to='/admin'  >Option 1</Link></DropdownItem>
+                                <DropdownItem>
+                                    <Link style={{ textDecoration: 'none', color: 'black' }} to='/admin'  >Option 1</Link>
+                                </DropdownItem>
                                 <DropdownItem>Option 2</DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem>Reset</DropdownItem>

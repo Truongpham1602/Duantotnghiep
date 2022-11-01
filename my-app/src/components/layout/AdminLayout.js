@@ -1,5 +1,6 @@
 import React from "react";
 import Product from "../product/Product";
+import Bill from "../bill/Bill";
 import Admin from "./Admin";
 import {
     Route

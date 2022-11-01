@@ -66,7 +66,7 @@ function Example(args) {
             <CarouselItem
                 onExiting={() => setAnimating(true)}
                 onExited={() => setAnimating(false)}
-                key={item.src}
+                key={item.key}
             >
                 <img src={item.src} alt={item.altText} style={{ width: '100%', height: '100%' }} />
                 <CarouselCaption

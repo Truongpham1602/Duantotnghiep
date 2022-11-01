@@ -49,6 +49,10 @@ const Admin = () => {
                                         <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                         Dashboard
                                     </NavLink>
+                                    <NavLink className="nav-link" to="bill" activeClassName="active">
+                                        <div className="sb-nav-link-icon"><i className='fas fa-store-alt-slash'></i></div>
+                                        Bill
+                                    </NavLink>
                                     <NavLink className="nav-link" to="product" activeClassName="active">
                                         <div className="sb-nav-link-icon"><i className='fas fa-store-alt-slash'></i></div>
                                         Product

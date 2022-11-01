@@ -8,10 +8,10 @@ import {
 } from 'reactstrap';
 
 
-const Product_Rest_API_URL = 'http://localhost:8080/admin/product';
+const Bill_Rest_API_URL = 'http://localhost:8080/admin/bill';
 
 // class CreateProduct extends Component {
-const CreateProduct = (props) => {
+const CreateBill = (props) => {
     // constructor(props) {
     //     super(props);
     //     state = {
@@ -24,15 +24,15 @@ const CreateProduct = (props) => {
     const { isCreateModal, toggleModal, updateData } = props;
     const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
     // const [updateData, setUpdateData] = useState(props);
-    const [product, setProduct] = useState({});
+    const [bill, setBill] = useState({});
 
 
 
     const handleOnchangeInput = (event, id) => {
-        let copyProduct = { ...product };
-        copyProduct[id] = event.target.value;
-        setProduct({
-            ...copyProduct
+        let copyBill = { ...bill };
+        copyBill[id] = event.target.value;
+        setBill({
+            ...copyBill
         })
     }
 
@@ -47,17 +47,18 @@ const CreateProduct = (props) => {
     //     }
     // }
 
-    const createProduct = () => {
+    const CreateBill = () => {
         try {
             const z = async () => {
-                let res = await axios.post(Product_Rest_API_URL + '/post', {
-                    categoryId: product.categoryId,
-                    color: product.color,
-                    name: product.name,
-                    description: product.description,
-                    code: product.code,
-                    price: product.price,
-                    quantity: product.quantity
+                let res = await axios.post(Bill_Rest_API_URL + '/post', {
+                    userId: bill.userId,
+                    code: bill.code,
+                    name_recipient: bill.name_recipient,
+                    telephone: bill.telephone,
+                    address: bill.address,
+                    created: bill.created,
+                    modified: bill.modified
+                  
                 })
                 let data = (res && res.data) ? res.data : []
                 data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
@@ -109,7 +110,7 @@ const CreateProduct = (props) => {
 
     const toggle = () => {
         toggleModal()
-        setProduct({})
+        setBill({})
     }
 
 
@@ -125,31 +126,48 @@ const CreateProduct = (props) => {
                         <Row>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="name">
-                                        Name
+                                    <Label for="userId">
+                                        User
                                     </Label>
                                     <Input
-                                        id="name"
-                                        name="name"
+                                        id="userId"
+                                        name="userId"
                                         placeholder=""
-                                        type="text"
-                                        value={product.name}
-                                        onChange={(event) => handleOnchangeInput(event, 'name')}
-                                    />
+                                        type="select"
+                                        value={bill.userId}
+                                        onChange={(event) => handleOnchangeInput(event, 'userId')}
+                                    >
+                                    <option value='1'>
+                                        1
+                                    </option>
+                                    <option value='2'>
+                                        2
+                                    </option>
+                                    </Input>
+                                   
+                                    
                                 </FormGroup>
                             </Col>
+                            <Col md={1}>
+                                        <Label for="user">
+                                            Thêm
+                                        </Label>
+                                        <Button color="secondary">
+                                            +
+                                        </Button>
+                                    </Col>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="color">
-                                        Color
+                                    <Label for="code">
+                                         Code
                                     </Label>
                                     <Input
-                                        id="color"
-                                        name="color"
+                                        id="code"
+                                        name="code"
                                         placeholder=""
                                         type="text"
-                                        value={product.color}
-                                        onChange={(event) => handleOnchangeInput(event, 'color')}
+                                        value={bill.code}
+                                        onChange={(event) => handleOnchangeInput(event, 'code')}
                                     />
                                 </FormGroup>
                             </Col>
@@ -157,31 +175,31 @@ const CreateProduct = (props) => {
                         <Row>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="price">
-                                        Price
+                                    <Label for="name_recipient">
+                                        Name_Recipient
                                     </Label>
                                     <Input
-                                        id="price"
-                                        name="price"
+                                        id="name_recipient"
+                                        name="name_recipient"
                                         placeholder=""
                                         type="text"
-                                        value={product.price}
-                                        onChange={(event) => handleOnchangeInput(event, 'price')}
+                                        value={bill.name_recipient}
+                                        onChange={(event) => handleOnchangeInput(event, 'name_recipient')}
                                     />
                                 </FormGroup>
                             </Col>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="quantity">
-                                        Quantity
+                                    <Label for="telephone">
+                                         Telephone
                                     </Label>
                                     <Input
-                                        id="quantity"
-                                        name="quantity"
+                                        id="telephone"
+                                        name="telephone"
                                         placeholder=""
                                         type="text"
-                                        value={product.quantity}
-                                        onChange={(event) => handleOnchangeInput(event, 'quantity')}
+                                        value={bill.telephone}
+                                        onChange={(event) => handleOnchangeInput(event, 'telephone')}
                                     />
                                 </FormGroup>
                             </Col>
@@ -191,36 +209,26 @@ const CreateProduct = (props) => {
                                 <Row>
                                     <Col md={10}>
                                         <FormGroup>
-                                            <Label for="category">
-                                                Category
+                                            <Label for="address">
+                                                Address
                                             </Label>
                                             <Input
-                                                id="category"
-                                                name="category"
+                                                id="address"
+                                                name="address"
                                                 placeholder=""
-                                                type="select"
-                                                onChange={(event) => handleOnchangeInput(event, 'category')}
+                                                type="text"
+                                                onChange={(event) => handleOnchangeInput(event, 'address')}
                                             >
-                                                <option value='1'>
-                                                    1
-                                                </option>
-                                                <option value='2'>
-                                                    2
-                                                </option>
+                
                                             </Input>
                                         </FormGroup>
                                     </Col>
-                                    <Col md={1}>
-                                        <Label for="category">
-                                            Thêm
-                                        </Label>
-                                        <Button color="secondary">
-                                            +
-                                        </Button>
-                                    </Col>
+                                   
                                 </Row>
+                                
                             </Col>
-                            <Col md={6}>
+                        </Row> 
+                            {/* <Col md={6}>
                                 <Row>
                                     <Col md={10}>
                                         <FormGroup>
@@ -248,7 +256,7 @@ const CreateProduct = (props) => {
                                         </FormGroup>
                                     </Col>
                                     <Col md={1}>
-                                        <Label for="category">
+                                        <Label for="user">
                                             Thêm
                                         </Label>
                                         <Button color="secondary">
@@ -256,9 +264,9 @@ const CreateProduct = (props) => {
                                         </Button>
                                     </Col>
                                 </Row>
-                            </Col>
-                        </Row>
-                        <Row>
+                            </Col>*/}
+                        
+                        {/* <Row>
                             <Col md={12}>
                                 <FormGroup>
                                     <Label for="description">
@@ -274,11 +282,11 @@ const CreateProduct = (props) => {
                                     />
                                 </FormGroup>
                             </Col>
-                        </Row>
+                        </Row> */}
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={(e) => { createProduct(e); handleOnchangeInput(e, 'category'); handleOnchangeInput(e, 'size') }}>
+                    <Button color="primary" onClick={(e) => { CreateBill(e); handleOnchangeInput(e, 'user')}}>
                         Add New
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>
@@ -291,4 +299,4 @@ const CreateProduct = (props) => {
 
 }
 
-export default CreateProduct;
+export default CreateBill;
