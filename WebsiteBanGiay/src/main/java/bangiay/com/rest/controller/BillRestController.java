@@ -39,12 +39,13 @@ public class BillRestController {
     @PostMapping(value = "/update")
     public ResponseEntity<BillDTO> update(@RequestParam(name = "id") Integer id, @RequestBody BillDTO billDTO) {
         billDTO.setId(id);
-
         return ResponseEntity.ok().body(billService.updateBill(billDTO));
     }
-    @PostMapping(value = "/create")
-    public ResponseEntity<BillDTO> create(@RequestBody BillDTO billDTO, Integer size_Id) {
-    	return ResponseEntity.ok().body(billService.createBill(billDTO, size_Id) );
+    @PostMapping(value = "/create/{user_IdOrTelephone}")
+    public ResponseEntity<BillDTO> create(
+		@RequestBody BillDTO billDTO, @PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone
+    ) {
+    	return ResponseEntity.ok().body(billService.createBill(billDTO, user_IdOrTelephone) );
     }
     @PostMapping(value = "/delete")
     public ResponseEntity<String> delete(@RequestParam(name = "id") Integer id) {
