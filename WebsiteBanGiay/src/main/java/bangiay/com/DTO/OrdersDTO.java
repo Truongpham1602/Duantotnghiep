@@ -24,6 +24,6 @@ public class OrdersDTO {
     private String creator;
     private java.sql.Timestamp modified;
     private String modifier;
-    private Boolean status;
+    private Integer status;
 
 }

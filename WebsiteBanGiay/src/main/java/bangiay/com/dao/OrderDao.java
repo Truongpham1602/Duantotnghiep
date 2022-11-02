@@ -10,6 +10,6 @@ import bangiay.com.entity.Orders;
 
 @Repository
 public interface OrderDao extends JpaRepository <Orders, Integer>{
-	@Query("SELECT o FROM Orders o WHERE o.size=?1")
-	List<Orders> getOrderBySize_ID(Integer size_Id);
+	@Query("SELECT o FROM Orders o WHERE o.user.id=?1 or o.telephone=?1")
+	List<Orders> getOrderBySize_ID(Integer user_IdOrTelephone);
 }

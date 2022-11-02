@@ -38,9 +38,12 @@ public class BillServiceImpl implements BillService {
     private Bill_DetailService bill_DetailService;
     
     @Override
-    public BillDTO createBill(BillDTO billDTO, Integer size_Id) {
+    public BillDTO createBill(BillDTO billDTO, Integer user_IdOrName_Recipient) {
+    	List<OrdersDTO> lstOrder = this.orderService.findOrderBySize_ID(user_IdOrName_Recipient);
         Bill bill= modelMapper.map(billDTO, Bill.class);
-        bill.setUSER_ID(userDao.findById(billDTO.getUserId()).orElse(null));
+        if(billDTO.getUserId()!=null) {
+        	bill.setUSER_ID(userDao.findById(billDTO.getUserId()).orElse(null));
+        }
         bill.setCreated(Timestamp.from(Instant.now()));
         // Insert Bill to DB
         this.billDao.save(bill);
@@ -48,13 +51,18 @@ public class BillServiceImpl implements BillService {
         billDTO.setCreator(bill.getCreator());
         billDTO.setId(bill.getId());
         // find OrderBySize_ID
-        List<OrdersDTO> lstOrder = this.orderService.findOrderBySize_ID(size_Id);
-    	List<BillDetailDTO> lstBillDetail = new ArrayList<BillDetailDTO>();
-    	for (int i = 0; i < lstOrder.size(); i++) {
-			if(lstOrder.get(i).getStatus()==true) {
-				lstBillDetail.add(new BillDetailDTO(null, bill.getId(), size_Id, lstOrder.get(i).getSizeId(), lstOrder.get(i).getQuantity(), lstOrder.get(i).getPrice()));
-			}
-		}
+        List<BillDetailDTO> lstBillDetail = new ArrayList<BillDetailDTO>();
+        for (int i = 0; i < lstOrder.size(); i++) {
+        	if(lstOrder.get(i).getStatus()==1) {
+        		if(lstOrder.get(i).getTelephone()!=null) {
+        		}
+        		if(lstOrder.get(i).getVoucherId()!=null) {
+        			lstBillDetail.add(new BillDetailDTO(null, bill.getId(), lstOrder.get(i).getSizeId(), lstOrder.get(i).getVoucherId(), lstOrder.get(i).getQuantity(), lstOrder.get(i).getPrice()));
+        		}else {
+        			lstBillDetail.add(new BillDetailDTO(null, bill.getId(), lstOrder.get(i).getSizeId(), null, lstOrder.get(i).getQuantity(), lstOrder.get(i).getPrice()));
+        		}
+        	}
+        }
     	this.bill_DetailService.createAll(lstBillDetail);
         return billDTO;
     }
