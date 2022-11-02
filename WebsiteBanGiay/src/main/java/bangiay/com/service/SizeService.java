@@ -15,6 +15,8 @@ public interface SizeService {
 	
 	public SizeDTO findById(Integer id);
 	
+	public SizeDTO findSizeByProductId(Integer id);
+	
 	public void delete(Integer id);
 	
 }

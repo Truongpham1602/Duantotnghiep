@@ -44,4 +44,12 @@ public class SizeServiceImpl implements SizeService{
 	public void delete(Integer id) {
 		sizeDAO.deleteById(id);
 	}
+
+	@Override
+	public SizeDTO findSizeByProductId(Integer id) {
+		Size Size = sizeDAO.findSizeByProduct_id(id).get(1);
+		SizeDTO Sizedto =  modelMapper.map(Size, SizeDTO.class);
+		return Sizedto;
+	}
+
 }
