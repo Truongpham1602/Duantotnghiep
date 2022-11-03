@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { getProducts } from "../../../services/product";
 
 const Home = () => {
-    console.log('home page');
-  return (
-    <div>Home page</div>
-  )
-}
+  const [products, setProducts] = useState([]);
 
-export default Home
+  useEffect(() => {
+    const getAll = async () => {
+      const { data } = await getProducts();
+      console.log(data);
+      setProducts(data);
+    };
+    getAll();
+  }, []);
+
+  return (
+    <div>
+      <div>
+        {products
+          ? products.map((product) => {
+              return (
+                <div key={product.id}>
+                  <p>Tên : {product.name}</p>
+                  <p>Giá : {product.price}</p>
+                </div>
+              );
+            })
+          : null}
+      </div>
+    </div>
+  );
+};
+
+export default Home;

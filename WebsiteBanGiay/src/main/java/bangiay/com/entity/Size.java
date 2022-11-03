@@ -3,6 +3,7 @@ package bangiay.com.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,5 +22,8 @@ public class Size {
 
     @Column(name = "QUANTITY")
     private Integer quantity;
+
+    @OneToMany(mappedBy = "SIZE_ID", cascade = CascadeType.ALL)
+    private List<Cart> cartList;
 
 }

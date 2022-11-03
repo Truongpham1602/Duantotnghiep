@@ -9,6 +9,7 @@ import lombok.Data;
 @Table(name = "media")
 public class Media {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 

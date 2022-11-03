@@ -1,12 +1,15 @@
 package bangiay.com.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 public class User {
     @Id
@@ -54,6 +57,7 @@ public class User {
 
     @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
     private List<Bill> billList;
-
+    @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
+    private List<Cart> cartList;
 
 }

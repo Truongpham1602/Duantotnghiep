@@ -12,5 +12,5 @@ public interface CartService {
     //Page<User> findAll(Pageable pageable);
     CartDTO updateCart(CartDTO cartDTO);
     void deleteById(Integer id);
-    Cart findByID(Integer id);
+    CartDTO findByID(Integer id);
 }

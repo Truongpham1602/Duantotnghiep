@@ -1,18 +1,23 @@
 package bangiay.com.service.impl;
 
+import bangiay.com.DTO.ProductDTO;
+import bangiay.com.DTO.UserDTO;
 import bangiay.com.DTO.request.CartDTO;
 import bangiay.com.DTO.respon.ResponCartDTO;
 import bangiay.com.dao.CartDao;
 import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.Cart;
+import bangiay.com.entity.User;
 import bangiay.com.service.CartService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +39,10 @@ public class CartServiceiml implements CartService {
     public CartDTO createCart(CartDTO cartDTO) {
         Cart cart= modelMapper.map(cartDTO, Cart.class);
         cart.setCreated(Timestamp.from(Instant.now()));
+        System.out.println(cartDTO.getSize_id());
+        if (cartDTO.getSize_id() == null){
+            System.out.println("tronggggggggggg");
+        }
         cart.setSIZE_ID(sizeDao.findById(cartDTO.getSize_id()).orElse(null));
         cart.setUSER_ID(userDao.findById(cartDTO.getUser_id()).orElse(null));
         Cart cartSave = cartDao.save(cart);
@@ -58,10 +67,20 @@ public class CartServiceiml implements CartService {
     }
 
     @Override
-    public List<ResponCartDTO> findAll() {
-        return cartDao.findAll().stream()
-                .map(cart -> modelMapper.map(cart, ResponCartDTO.class))
-                .collect(Collectors.toList());
+    public List<ResponCartDTO>findAll() {
+        List<Cart> cartList = cartDao.findAll();
+        List<ResponCartDTO> responCartDTOList = new ArrayList<>();
+        ResponCartDTO responCartDTO = new ResponCartDTO();
+        for (int i = 0; i < cartList.size(); i++) {
+            responCartDTO.setStatus(cartList.get(i).getStatus());
+            responCartDTO.setQuantity(cartList.get(i).getQuantity());
+            responCartDTO.setModifier(cartList.get(i).getModifier());
+            responCartDTO.setCreator(cartList.get(i).getCreator());
+            responCartDTO.setUser_id(cartList.get(i).getUSER_ID().getId());
+            responCartDTO.setSize_id(cartList.get(i).getSIZE_ID().getId());
+            responCartDTOList.add(responCartDTO);
+        }
+        return responCartDTOList;
     }
 
 
@@ -74,7 +93,19 @@ public class CartServiceiml implements CartService {
     }
 
     @Override
-    public Cart findByID(Integer id) {
-        return cartDao.findById(id).orElseThrow(() -> new RuntimeException( "User isn't existed"));
+    public CartDTO findByID(Integer id) {
+//        Cart cart = cartDao.findById(id).get();
+//        CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+//        return cartDTO;
+          Cart cart = cartDao.findById(id).get();
+          CartDTO cartDTO = new CartDTO();
+        cartDTO.setStatus(cart.getStatus());
+        cartDTO.setQuantity(cart.getQuantity());
+        cartDTO.setModifier(cart.getModifier());
+        cartDTO.setCreator(cart.getCreator());
+        cartDTO.setUser_id(cart.getUSER_ID().getId());
+        cartDTO.setSize_id(cart.getSIZE_ID().getId());
+
+        return cartDTO;
     }
 }

@@ -1,14 +1,32 @@
 package bangiay.com.DTO.request;
+import lombok.*;
 
-import lombok.Data;
-
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CartDTO {
     private Integer id;
+
     private Integer quantity;
-    private Integer user_id;
-    private Integer size_id;
+
+
+    private java.sql.Timestamp created;
+
     private String creator;
+
+
+    private java.sql.Timestamp modified;
+
+
     private String modifier;
+
+
     private Integer status;
+
+
+    private Integer user_id;
+
+
+    private Integer size_id;
 }

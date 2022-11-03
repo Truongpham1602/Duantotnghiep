@@ -1,6 +1,8 @@
 package bangiay.com.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
 
 import javax.persistence.*;
 
@@ -32,11 +34,11 @@ public class Cart {
 
     @Column(name = "STATUS")
     private Integer status;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "USER_ID",referencedColumnName = "id")
     private User USER_ID;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "SIZE_ID")
     private Size SIZE_ID;
