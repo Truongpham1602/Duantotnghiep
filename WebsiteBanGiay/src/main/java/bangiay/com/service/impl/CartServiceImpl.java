@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.request.CartDTO;
-import bangiay.com.DTO.respon.ResponCartDTO;
 import bangiay.com.dao.CartDao;
 import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.UserDao;
@@ -23,10 +22,9 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private CartDao cartDao;
+
 	@Autowired
 	private SizeDao sizeDao;
-	@Autowired
-	private CartDTO cartDTO;
 
 	@Autowired
 	UserDao userDao;
@@ -40,8 +38,8 @@ public class CartServiceImpl implements CartService {
 		cart.setSIZE_ID(sizeDao.findById(cartDTO.getSize_id()).orElse(null));
 		cart.setUSER_ID(userDao.findById(cartDTO.getUser_id()).orElse(null));
 		Cart cartSave = cartDao.save(cart);
-		cartDTO.setCreator(cartSave.getCreator());
-		cartDTO.setModifier(cartSave.getModifier());
+//		cartDTO.setCreator(cartSave.getCreator());
+//		cartDTO.setModifier(cartSave.getModifier());
 		cartDTO.setId(cartSave.getId());
 		return cartDTO;
 	}
@@ -54,16 +52,17 @@ public class CartServiceImpl implements CartService {
 		cart.setModified(Timestamp.from(Instant.now()));
 		cart.setStatus(1);
 		Cart cartSave = cartDao.save(cart);
-		cartDTO.setCreator(cartSave.getCreator());
-		cartDTO.setModifier(cartSave.getModifier());
+//		cartDTO.setCreator(cartSave.getCreator());
+//		cartDTO.setModifier(cartSave.getModifier());
 		cartDTO.setId(cartSave.getId());
 		// return modelMapper.map(cart, CartDTO.class);
 		return cartDTO;
 	}
 
 	@Override
-	public List<ResponCartDTO> findAll() {
-		return cartDao.findAll().stream().map(cart -> modelMapper.map(cart, ResponCartDTO.class))
+	public List<CartDTO> findAll() {
+
+		return cartDao.findAll().stream().map(cart -> modelMapper.map(cart, CartDTO.class))
 				.collect(Collectors.toList());
 	}
 
@@ -83,8 +82,12 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public List<CartDTO> addToCartDTONoUser(CartDTO cartDTO) {
-		this.cartDTO.setLstCartNoUser(lstCart);
 		lstCart.add(cartDTO);
+		return lstCart;
+	}
+
+	@Override
+	public List<CartDTO> getCartNoUser() {
 		return lstCart;
 	}
 }

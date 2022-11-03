@@ -32,7 +32,7 @@ public class CartRestController {
 	private static Logger logger = LoggerFactory.getLogger(CartController.class);
 
 	@GetMapping("/getAll")
-	public ResponseEntity<List<ResponCartDTO>> getAll() {
+	public ResponseEntity<List<CartDTO>> getAll() {
 		return ResponseEntity.ok().body(cartService.findAll());
 	}
 
@@ -47,7 +47,6 @@ public class CartRestController {
 	@PostMapping(value = "/update")
 	public ResponseEntity<CartDTO> update(@RequestParam(name = "id") Integer id, @RequestBody CartDTO cartDTO) {
 		cartDTO.setId(id);
-
 		return ResponseEntity.ok().body(cartService.updateCart(cartDTO));
 	}
 
