@@ -1,40 +1,14 @@
 package bangiay.com.DTO;
 
-public class SizeDTO {
-    private Integer id;
-    private Integer productId;
-    private String size;
-    private Integer quantity;
+import java.io.Serializable;
 
-    public Integer getId() {
-        return this.id;
-    }
+import lombok.Data;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+@Data
+public class SizeDTO implements Serializable {
+	private Integer id;
+	private Integer productId;
+	private String size;
+	private Integer quantity;
 
-    public Integer getProductId() {
-        return this.productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public String getSize() {
-        return this.size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public Integer getQuantity() {
-        return this.quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

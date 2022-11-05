@@ -9,13 +9,16 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.SerializationUtils;
 
-import bangiay.com.DTO.request.CartDTO;
+import bangiay.com.DTO.CartDTO;
+import bangiay.com.DTO.SizeDTO;
 import bangiay.com.dao.CartDao;
 import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.Cart;
 import bangiay.com.service.CartService;
+import bangiay.com.service.SizeService;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -27,6 +30,9 @@ public class CartServiceImpl implements CartService {
 	private SizeDao sizeDao;
 
 	@Autowired
+	SizeService sizeService;
+
+	@Autowired
 	UserDao userDao;
 	@Autowired
 	private ModelMapper modelMapper;
@@ -35,8 +41,8 @@ public class CartServiceImpl implements CartService {
 	public CartDTO createCart(CartDTO cartDTO) {
 		Cart cart = modelMapper.map(cartDTO, Cart.class);
 		cart.setCreated(Timestamp.from(Instant.now()));
-		cart.setSIZE_ID(sizeDao.findById(cartDTO.getSize_id()).orElse(null));
-		cart.setUSER_ID(userDao.findById(cartDTO.getUser_id()).orElse(null));
+		cart.setSize(sizeDao.findById(cartDTO.getSize_Id()).orElse(null));
+		cart.setUser(userDao.findById(cartDTO.getUser_Id()).orElse(null));
 		Cart cartSave = cartDao.save(cart);
 //		cartDTO.setCreator(cartSave.getCreator());
 //		cartDTO.setModifier(cartSave.getModifier());
@@ -61,9 +67,24 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public List<CartDTO> findAll() {
-
 		return cartDao.findAll().stream().map(cart -> modelMapper.map(cart, CartDTO.class))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<CartDTO> findByUser_Id(Integer user_Id) {
+		List<Cart> lstCart = this.cartDao.findByUser_Id(user_Id);
+		List<CartDTO> lstCartDTO = lstCart.stream().map(cart -> modelMapper.map(cart, CartDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < lstCart.size(); i++) {
+			lstCartDTO.get(i).setName_Product(lstCart.get(i).getSize().getProduct().getName());
+			lstCartDTO.get(i).setPrice(lstCart.get(i).getSize().getProduct().getPrice());
+			lstCartDTO.get(i).setQuantityTotal(lstCart.get(i).getSize().getProduct().getQuantity());
+			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(lstCart.get(i).getSize().getProduct().getId());
+			byte[] data = SerializationUtils.serialize(lstSizeDTO);
+			lstCartDTO.get(i).setSize(SerializationUtils.deserialize(data));
+		}
+		return lstCartDTO;
 	}
 
 	@Override

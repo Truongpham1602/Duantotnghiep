@@ -5,7 +5,10 @@ import UpdateProduct from './UpdateProduct';
 import useCallGetAPI from '../../customHook/CallGetApi';
 // import Tables from '../../customHook/Table';
 import {
-  Table
+  UncontrolledAccordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem, Table
 } from 'reactstrap';
 
 // class Product extends React.Component {
@@ -91,10 +94,103 @@ const Product = () => {
     setPage(page + 7 < dataProduct.length / 7 ? page + 7 : page);
   };
 
-
+  const [cate, setCate] = useState([
+    {
+      id: 1,
+      name: 'cateparen1',
+      parenid: ''
+    },
+    {
+      id: 2,
+      name: 'cateparen2',
+      parenid: ''
+    },
+    {
+      id: 3,
+      name: 'cateparen3',
+      parenid: ''
+    },
+    {
+      id: 4,
+      name: 'childrent1',
+      parenid: 1
+    },
+    {
+      id: 5,
+      name: 'childrent3',
+      parenid: 3
+    },
+    {
+      id: 6,
+      name: 'cateparen6',
+      parenid: ''
+    },
+    {
+      id: 7,
+      name: 'childrent2',
+      parenid: 2
+    },
+    {
+      id: 8,
+      name: 'childrent4',
+      parenid: 4
+    }
+  ]);
 
   return (
     <>
+      <div>
+        <UncontrolledAccordion
+          // defaultOpen={[
+          //   '1',
+          //   '2'
+          // ]}
+          stayOpen
+        >
+          <AccordionItem>
+            {cate.map(item => {
+              if (item.parenid === '') {
+
+                <AccordionItem>
+                  <AccordionHeader targetId={item.id}>{item.name}</AccordionHeader>
+                  <AccordionBody accordionId={item.id}>
+
+                  </AccordionBody>
+                </AccordionItem>
+              }
+            })
+
+            }
+            <AccordionHeader targetId="1">Accordion Item 1</AccordionHeader>
+            <AccordionBody accordionId="1">
+              {/* <Accordion open={open} toggle={toggle}> */}
+              <AccordionHeader targetId="4">Nam</AccordionHeader>
+              <AccordionBody accordionId="4">vcv</AccordionBody>
+              {/* </Accordion> */}
+            </AccordionBody>
+          </AccordionItem>
+          <AccordionItem>
+            <AccordionHeader targetId="2">Accordion Item 2</AccordionHeader>
+            <AccordionBody accordionId="2">
+              <strong>This is the second item&#39;s accordion body.</strong>
+              You can modify any of this with custom CSS or overriding our default
+              variables. It&#39;s also worth noting that just about any HTML can
+              go within the <code>.accordion-body</code>, though the transition
+              does limit overflow.
+            </AccordionBody>
+          </AccordionItem>
+          <AccordionItem>
+            <AccordionHeader targetId="3">Accordion Item 3</AccordionHeader>
+            <AccordionBody accordionId="3">
+              <strong>This is the third item&#39;s accordion body.</strong>
+              You can modify any of this with custom CSS or overriding our default
+              variables. It&#39;s also worth noting that just about any HTML can
+              go within the <code>.accordion-body</code>, though the transition
+              does limit overflow.
+            </AccordionBody>
+          </AccordionItem>
+        </UncontrolledAccordion>
+      </div>
       <CreateProduct
         isCreateModal={isCreateModal}
         toggleModal={createModal}

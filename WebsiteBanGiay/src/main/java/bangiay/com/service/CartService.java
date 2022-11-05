@@ -2,7 +2,7 @@ package bangiay.com.service;
 
 import java.util.List;
 
-import bangiay.com.DTO.request.CartDTO;
+import bangiay.com.DTO.CartDTO;
 import bangiay.com.entity.Cart;
 
 public interface CartService {
@@ -20,5 +20,7 @@ public interface CartService {
 	List<CartDTO> addToCartDTONoUser(CartDTO cartDTO);
 
 	List<CartDTO> getCartNoUser();
+
+	List<CartDTO> findByUser_Id(Integer user_Id);
 //    List<CartDTO> getCartNoUser();
 }

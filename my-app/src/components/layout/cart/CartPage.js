@@ -2,27 +2,42 @@ import { React, useState, useEffect } from 'react';
 import NumericInput from 'react-numeric-input';
 import { Link } from "react-router-dom";
 import "./CartPage.css";
+import axios from 'axios';
 import useCallGetAPI from "../../../customHook/CallGetApi";
 
 const Cart = () => {
 
     const [lstproduct, setLstProduct] = useState([])
-    const [lstcart, setLstCart] = useState([useCallGetAPI(`http://localhost:8080/cart/getAll`)])
+    const { data: dataCart } = useCallGetAPI(``)
     const [totalPrice, setTotalPrice] = useState()
-
+    const [lstcart, setLstCart] = useState([])
+    const [source, setSource] = useState()
 
     useEffect(() => {
-
-        let total;
+        axios
+            .get(
+                'http://localhost:8080/cart/getByUser_Id/1',
+                { responseType: 'arraybuffer' },
+            )
+            .then(response => {
+                const base64 = btoa(
+                    new Uint8Array(response.data).reduce(
+                        (data, byte) => data + String.fromCharCode(byte),
+                        '',
+                    ),
+                );
+                setSource("data:;base64," + base64);
+            });
+        let total = 0;
         const setTotal = () => {
-            lstcart.map(item => {
+            setLstCart(dataCart)
+            dataCart.map(item => {
                 total += item.price
             })
             setTotalPrice(total)
         }
-
-        lstcart && setTotal()
-    }, [lstcart])
+        dataCart && setTotal()
+    }, [dataCart])
 
     return (
         <div className="container-fluid">
@@ -48,12 +63,12 @@ const Cart = () => {
                                     <div className="cart-infor">
                                         <div className="thumbnail">
                                             <a href="#">
-                                                <img src={lstcart.image} alt={lstcart.name} />
+                                                <img src={source} alt={lstcart.name} />
                                             </a>
                                         </div>
                                         <div className="detail">
                                             <div className="name">
-                                                <a href="#">{lstcart.name}</a>
+                                                <a href="#">{lstcart.name_Product}</a>
                                             </div>
                                             <div className="description">{lstcart.description}</div>
                                             <div className="price">{lstcart.price}</div>
@@ -62,7 +77,7 @@ const Cart = () => {
 
                                     <div className="cart-quantity">
                                         <div className="quantity">
-                                            <NumericInput min={0} max={lstcart.quantity} value={lstcart.quantity} />
+                                            <NumericInput min={0} max={lstcart.quantityTotal} value={lstcart.quantity} />
                                         </div>
 
                                         <div className="remove">
@@ -88,7 +103,7 @@ const Cart = () => {
                     <div className="summary">
                         <ul>
                             <li>
-                                Tổng Cộng: <span>$26.97</span>
+                                Tổng Cộng: <span>{totalPrice}</span>
                             </li>
                             <li>
                                 Giảm: <span>$5.00</span>

@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import bangiay.com.DTO.request.CartDTO;
-import bangiay.com.DTO.respon.ResponCartDTO;
+import bangiay.com.DTO.CartDTO;
 import bangiay.com.controller.CartController;
 import bangiay.com.entity.Cart;
 import bangiay.com.service.CartService;
@@ -36,11 +36,16 @@ public class CartRestController {
 		return ResponseEntity.ok().body(cartService.findAll());
 	}
 
+	@GetMapping("/getByUser_Id/{user_Id}")
+	public ResponseEntity<List<CartDTO>> getCartByUser_Id(@PathVariable("user_Id") Integer user_Id) {
+		return ResponseEntity.ok().body(cartService.findByUser_Id(user_Id));
+	}
+
 	@GetMapping("/getOneById")
 	@CrossOrigin
-	public ResponseEntity<ResponCartDTO> getOneById(@RequestParam("id") Integer id) {
+	public ResponseEntity<CartDTO> getOneById(@RequestParam("id") Integer id) {
 		Cart cart = cartService.findByID(id);
-		ResponCartDTO responCartDTO = modelMapper.map(cart, ResponCartDTO.class);
+		CartDTO responCartDTO = modelMapper.map(cart, CartDTO.class);
 		return ResponseEntity.ok().body(responCartDTO);
 	}
 
@@ -64,6 +69,7 @@ public class CartRestController {
 
 	@PostMapping(value = "/addToCart")
 	public ResponseEntity<List<CartDTO>> addToCart(@RequestBody CartDTO dto) {
+		System.out.println(dto);
 		return ResponseEntity.ok().body(cartService.addToCartDTONoUser(dto));
 	}
 }
