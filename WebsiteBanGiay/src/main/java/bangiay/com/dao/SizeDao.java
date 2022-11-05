@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 @Repository
 public interface SizeDao extends JpaRepository<Size, Integer> {
-	@Query("select o from size o where o.product.id=?1")
+	@Query("select o from Size o where o.product.id=?1")
 	List<Size> findSizeByProduct_id(Integer product_id);
 }

@@ -2,9 +2,12 @@ package bangiay.com.DTO.request;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import lombok.Data;
 
 @Data
+@Service
 public class CartDTO {
 	private Integer id;
 	private Integer quantity;
