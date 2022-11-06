@@ -2,6 +2,7 @@ package bangiay.com.rest.controller;
 
 
 import bangiay.com.DTO.ProductDTO;
+import bangiay.com.entity.Product;
 import bangiay.com.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,5 +49,9 @@ public class ProductRestController {
 	@GetMapping("/find/{id}")
 	public ProductDTO finByID(@RequestBody @PathVariable("id") int id, ProductDTO productDTO) {
 		return productService.finById(id);
+	}
+	@GetMapping("/find-by-category-parent/{id}")
+	public List<Product> getAllProductByParentId(@PathVariable Integer id){
+		return productService.getAllProductByCategoryParent(id);
 	}
 }

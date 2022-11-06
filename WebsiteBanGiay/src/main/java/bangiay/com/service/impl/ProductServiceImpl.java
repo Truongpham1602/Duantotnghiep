@@ -76,4 +76,10 @@ public class ProductServiceImpl implements ProductService{
 	public void delete(Integer id) {
 		proDAO.deleteById(id);
 	}
+
+	@Override
+	public List<Product> getAllProductByCategoryParent(Integer id) {
+		// TODO Auto-generated method stub
+		return proDAO.getProductByCategoryParent(id);
+	}
 }
