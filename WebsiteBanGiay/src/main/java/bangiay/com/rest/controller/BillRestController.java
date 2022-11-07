@@ -3,8 +3,6 @@ package bangiay.com.rest.controller;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.BillDTO;
-import bangiay.com.controller.BillController;
 import bangiay.com.service.BillService;
 
 @CrossOrigin(origins = "*")
@@ -29,7 +26,7 @@ public class BillRestController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private static Logger logger = LoggerFactory.getLogger(BillController.class);
+//	private static Logger logger = LoggerFactory.getLogger(BillController.class);
 
 	@GetMapping("/getAll")
 	public ResponseEntity<List<BillDTO>> getAll() {
@@ -58,7 +55,7 @@ public class BillRestController {
 
 	@PostMapping(value = "/delete")
 	public ResponseEntity<String> delete(@RequestParam(name = "id") Integer id) {
-		logger.info("Deleted bill with id : " + id);
+//		logger.info("Deleted bill with id : " + id);
 		billService.deleteById(id);
 		return ResponseEntity.ok().body("Delete bill id " + id + " successfully!");
 	}

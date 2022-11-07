@@ -8,26 +8,26 @@ import useCallGetAPI from "../../../customHook/CallGetApi";
 const Cart = () => {
 
     const [lstproduct, setLstProduct] = useState([])
-    const { data: dataCart } = useCallGetAPI(``)
+    const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getByUser_Id/1`)
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [source, setSource] = useState()
 
     useEffect(() => {
-        axios
-            .get(
-                'http://localhost:8080/cart/getByUser_Id/1',
-                { responseType: 'arraybuffer' },
-            )
-            .then(response => {
-                const base64 = btoa(
-                    new Uint8Array(response.data).reduce(
-                        (data, byte) => data + String.fromCharCode(byte),
-                        '',
-                    ),
-                );
-                setSource("data:;base64," + base64);
-            });
+        // axios
+        //     .get(
+        //         'http://localhost:8080/cart/getByUser_Id/1',
+        //         { responseType: 'arraybuffer' },
+        //     )
+        //     .then(response => {
+        //         const base64 = btoa(
+        //             new Uint8Array(response.data).reduce(
+        //                 (data, byte) => data + String.fromCharCode(byte),
+        //                 '',
+        //             ),
+        //         );
+        //         setSource("data:;base64," + base64);
+        //     });
         let total = 0;
         const setTotal = () => {
             setLstCart(dataCart)
@@ -115,7 +115,7 @@ const Cart = () => {
                     </div>
 
                     <div className="checkout">
-                        <button type="button">Thanh Toán</button>
+                        <button type="button" onClick={() => window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=mobile&txt_billing_email=quanganhsaker@gmail.com&txt_billing_fullname=quang%20anh&txt_inv_addr1=ha%20noi&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`}>Thanh Toán</button>
                     </div>
                 </div>
             </div>

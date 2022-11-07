@@ -47,7 +47,7 @@ const NavPage = (args) => {
                             </DropdownToggle>
                             <DropdownMenu right>
                                 <DropdownItem><Link style={{ textDecoration: 'none', color: 'black' }} to='/admin'  >Option 1</Link></DropdownItem>
-                                <DropdownItem>Option 2</DropdownItem>
+                                <DropdownItem >Option 2</DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem>Reset</DropdownItem>
                             </DropdownMenu>

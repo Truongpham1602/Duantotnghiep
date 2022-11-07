@@ -3,8 +3,6 @@ package bangiay.com.rest.controller;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.CartDTO;
-import bangiay.com.controller.CartController;
 import bangiay.com.entity.Cart;
 import bangiay.com.service.CartService;
 
@@ -29,7 +26,7 @@ public class CartRestController {
 	private CartService cartService;
 	@Autowired
 	private ModelMapper modelMapper;
-	private static Logger logger = LoggerFactory.getLogger(CartController.class);
+//	private static Logger logger = LoggerFactory.getLogger(CartController.class);
 
 	@GetMapping("/getAll")
 	public ResponseEntity<List<CartDTO>> getAll() {
@@ -62,7 +59,7 @@ public class CartRestController {
 
 	@PostMapping(value = "/delete")
 	public ResponseEntity<String> delete(@RequestParam(name = "id") Integer id) {
-		logger.info("Deleted cart with id : " + id);
+//		logger.info("Deleted cart with id : " + id);
 		cartService.deleteById(id);
 		return ResponseEntity.ok().body("Delete cart id " + id + " successfully!");
 	}
