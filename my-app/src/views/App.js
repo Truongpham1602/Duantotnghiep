@@ -4,6 +4,7 @@ import Home from '../components/layout/home/Home';
 import Product from '../components/product/Product';
 import User from '../components/user/User';
 import Cart from '../components/layout/cart/CartPage';
+import Bill from '../components/bill/Bill';
 import {
   Routes,
   Route
@@ -23,6 +24,9 @@ function App() {
           <Route path="user" element={<> <User /></>} />
         </Route>
         <Route path="cart" element={<Cart />} >
+
+        </Route>
+        <Route path="checkout" element={<Bill />} >
 
         </Route>
       </Routes>
