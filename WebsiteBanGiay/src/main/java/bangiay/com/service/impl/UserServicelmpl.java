@@ -19,7 +19,7 @@ import bangiay.com.service.UserService;
 public class UserServicelmpl implements UserService {
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private RoleDao roleDao;
 
@@ -29,7 +29,7 @@ public class UserServicelmpl implements UserService {
 	@Override
 	public List<UserDTO> findAll() {
 		List<User> user = userDao.findAll();
-		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d,UserDTO.class)).collect(Collectors.toList());
+		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d, UserDTO.class)).collect(Collectors.toList());
 		return result;
 	}
 
@@ -68,8 +68,7 @@ public class UserServicelmpl implements UserService {
 
 	@Override
 	public User findByUsername(String username) {
-		return userDao.findByUsername(username);
+		return null;
 	}
-
 
 }
