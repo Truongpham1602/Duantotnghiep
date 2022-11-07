@@ -38,7 +38,7 @@ const NavPage = (args) => {
                         </NavItem>
                         <NavItem>
                             <NavLink>
-                                <Link style={{ textDecoration: 'none', color: 'black' }} to='/admin'  >Giày Nam</Link>
+                                <Link style={{ textDecoration: 'none', color: 'black' }}  >Giày Nam</Link>
                             </NavLink>
                         </NavItem>
                         <UncontrolledDropdown nav inNavbar>
