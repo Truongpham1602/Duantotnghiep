@@ -19,7 +19,7 @@ public class User {
 
     @ManyToOne
    	@JoinColumn(name="ROLER_ID")
-    private Role roler;
+    private Role role;
 
     @Column(name = "FullNAME")
     private String fullName;

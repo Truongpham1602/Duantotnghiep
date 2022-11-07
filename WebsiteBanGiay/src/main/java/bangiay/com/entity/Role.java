@@ -1,8 +1,11 @@
 package bangiay.com.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Data
 @Table(name = "role")
 public class Role {
     @Id
@@ -13,19 +16,5 @@ public class Role {
     @Column(name = "ROLE_NAME")
     private String roleName;
 
-    public Long getId() {
-        return this.id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRoleName() {
-        return this.roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
 }
