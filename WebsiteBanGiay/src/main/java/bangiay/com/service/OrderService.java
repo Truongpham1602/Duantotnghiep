@@ -16,7 +16,7 @@ public interface OrderService {
 
 	public void delete(int id);
 
-	List<OrdersDTO> createNoUser(Integer voucher_Id);
+	List<OrdersDTO> createNoUser(OrdersDTO ordersDTO, Integer voucher_Id);
 
 	List<OrdersDTO> updateConfirm(Integer user_IdOrTelephone);
 

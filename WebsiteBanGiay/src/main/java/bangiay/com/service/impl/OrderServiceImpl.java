@@ -8,8 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import bangiay.com.DTO.CartDTO;
 import bangiay.com.DTO.OrdersDTO;
-import bangiay.com.DTO.request.CartDTO;
 import bangiay.com.dao.CartDao;
 import bangiay.com.dao.OrderDao;
 import bangiay.com.dao.SizeDao;
@@ -18,6 +18,7 @@ import bangiay.com.entity.Cart;
 import bangiay.com.entity.Orders;
 import bangiay.com.entity.Size;
 import bangiay.com.entity.Voucher;
+import bangiay.com.service.CartService;
 import bangiay.com.service.OrderService;
 
 @Service
@@ -39,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 	private ModelMapper modelMapper;
 
 	@Autowired
-	private CartDTO cartDTO;
+	private CartService cartService;
 
 	@Override
 	public List<OrdersDTO> findAll() {
@@ -51,46 +52,41 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<OrdersDTO> createHasUser(Integer user_Id, Integer voucher_Id) {
-		List<Cart> lstCart = this.cartDao.getCartByUser_Id(user_Id);
-		Voucher voucher = this.voucherDao.findById(voucher_Id).get();
+		List<Cart> lstCart = this.cartDao.findByUser_Id(user_Id);
+		Voucher voucher = this.voucherDao.findById(voucher_Id).orElse(null);
 		List<OrdersDTO> lstOrderDTO = new ArrayList<OrdersDTO>();
 		for (int i = 0; i < lstCart.size(); i++) {
 			if (voucher != null) {
 				if (voucher.getType() == 1) {
-					if (voucher.getCategory().getId() == lstCart.get(i).getSIZE_ID().getProduct().getCategory()
-							.getId()) {
-						lstOrderDTO.add(new OrdersDTO(null, voucher_Id, "code", lstCart.get(i).getSIZE_ID().getId(),
+					if (voucher.getCategory().getId() == lstCart.get(i).getSize().getProduct().getCategory().getId()) {
+						lstOrderDTO.add(new OrdersDTO(null, voucher.getId(), "code", lstCart.get(i).getSize().getId(),
 								user_Id, lstCart.get(i).getQuantity(),
-								lstCart.get(i).getSIZE_ID().getProduct().getPrice()
-										- (lstCart.get(i).getSIZE_ID().getProduct().getPrice() * voucher.getValue()
-												/ 100),
+								lstCart.get(i).getSize().getProduct().getPrice()
+										- (lstCart.get(i).getSize().getProduct().getPrice() * voucher.getValue() / 100),
 								null, null, null, null, null, null, null, null, null, 1));
 					} else {
 
-						lstOrderDTO.add(new OrdersDTO(null, voucher_Id, "code", lstCart.get(i).getSIZE_ID().getId(),
-								user_Id, lstCart.get(i).getQuantity(),
-								lstCart.get(i).getSIZE_ID().getProduct().getPrice(), null, null, null, null, null, null,
-								null, null, null, 1));
+						lstOrderDTO.add(new OrdersDTO(null, voucher.getId(), "code", lstCart.get(i).getSize().getId(),
+								user_Id, lstCart.get(i).getQuantity(), lstCart.get(i).getSize().getProduct().getPrice(),
+								null, null, null, null, null, null, null, null, null, 1));
 					}
 				} else {
-					if (voucher.getCategory().getId() == lstCart.get(i).getSIZE_ID().getProduct().getCategory()
-							.getId()) {
-						lstOrderDTO.add(new OrdersDTO(null, voucher_Id, "code", lstCart.get(i).getSIZE_ID().getId(),
+					if (voucher.getCategory().getId() == lstCart.get(i).getSize().getProduct().getCategory().getId()) {
+						lstOrderDTO.add(new OrdersDTO(null, voucher.getId(), "code", lstCart.get(i).getSize().getId(),
 								user_Id, lstCart.get(i).getQuantity(),
-								lstCart.get(i).getSIZE_ID().getProduct().getPrice() - voucher.getValue(), null, null,
-								null, null, null, null, null, null, null, 1));
+								lstCart.get(i).getSize().getProduct().getPrice() - voucher.getValue(), null, null, null,
+								null, null, null, null, null, null, 1));
 					} else {
 
-						lstOrderDTO.add(new OrdersDTO(null, voucher_Id, "code", lstCart.get(i).getSIZE_ID().getId(),
-								user_Id, lstCart.get(i).getQuantity(),
-								lstCart.get(i).getSIZE_ID().getProduct().getPrice(), null, null, null, null, null, null,
-								null, null, null, 1));
+						lstOrderDTO.add(new OrdersDTO(null, voucher.getId(), "code", lstCart.get(i).getSize().getId(),
+								user_Id, lstCart.get(i).getQuantity(), lstCart.get(i).getSize().getProduct().getPrice(),
+								null, null, null, null, null, null, null, null, null, 1));
 					}
 				}
 
 			} else {
-				lstOrderDTO.add(new OrdersDTO(null, null, "code", lstCart.get(i).getSIZE_ID().getId(), user_Id,
-						lstCart.get(i).getQuantity(), lstCart.get(i).getSIZE_ID().getProduct().getPrice(), null, null,
+				lstOrderDTO.add(new OrdersDTO(null, null, "code", lstCart.get(i).getSize().getId(), user_Id,
+						lstCart.get(i).getQuantity(), lstCart.get(i).getSize().getProduct().getPrice(), null, null,
 						null, null, null, null, null, null, null, 1));
 			}
 		}
@@ -143,37 +139,49 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrdersDTO> createNoUser(Integer voucher_Id) {
-		List<CartDTO> lstCartDTO = this.cartDTO.getLstCartNoUser();
+	public List<OrdersDTO> createNoUser(OrdersDTO ordersDTO, Integer voucher_Id) {
+		List<CartDTO> lstCartDTO = this.cartService.getCartNoUser();
+		System.out.println(lstCartDTO);
 		List<OrdersDTO> lstOrderDTO = new ArrayList<OrdersDTO>();
-		Voucher voucher = this.voucherDao.findById(voucher_Id).get();
+		Voucher voucher = this.voucherDao.findById(voucher_Id).orElse(null);
 		for (int i = 0; i < lstCartDTO.size(); i++) {
+			Size size = this.sizeDao.findById(lstCartDTO.get(i).getSize_Id()).get();
 			if (voucher != null) {
-				Size size = this.sizeDao.findById(lstCartDTO.get(i).getSize_id()).get();
 				if (voucher.getType() == 1) {
 					if (voucher.getCategory().getId() == size.getProduct().getCategory().getId()) {
-						lstOrderDTO.add(new OrdersDTO(null, voucher_Id, "code", lstCartDTO.get(i).getSize_id(), null,
-								lstCartDTO.get(i).getQuantity(),
-								lstCartDTO.get(i).getPrice()
-										- (lstCartDTO.get(i).getPrice() * voucher.getValue() / 100),
-								null, null, null, null, null, null, null, null, null, 1));
+						lstOrderDTO.add(new OrdersDTO(null, voucher.getId(), "code", lstCartDTO.get(i).getSize_Id(),
+								null, lstCartDTO.get(i).getQuantity(),
+								size.getProduct().getPrice()
+										- (size.getProduct().getPrice() * voucher.getValue() / 100),
+								ordersDTO.getNameRecipient(), ordersDTO.getTelephone(), ordersDTO.getAddress(), null,
+								null, null, null, null, null, 1));
+					} else {
+
+						lstOrderDTO.add(new OrdersDTO(null, voucher.getId(), "code", lstCartDTO.get(i).getSize_Id(),
+								null, lstCartDTO.get(i).getQuantity(), size.getProduct().getPrice(),
+								ordersDTO.getNameRecipient(), ordersDTO.getTelephone(), ordersDTO.getAddress(), null,
+								null, null, null, null, null, 1));
 					}
-					lstOrderDTO.add(new OrdersDTO(null, voucher_Id, "code", lstCartDTO.get(i).getSize_id(), null,
-							lstCartDTO.get(i).getQuantity(), lstCartDTO.get(i).getPrice(), null, null, null, null, null,
-							null, null, null, null, 1));
+				} else {
+
+					if (voucher.getCategory().getId() == size.getProduct().getCategory().getId()) {
+						lstOrderDTO.add(new OrdersDTO(null, voucher.getId(), "code", lstCartDTO.get(i).getSize_Id(),
+								null, lstCartDTO.get(i).getQuantity(),
+								size.getProduct().getPrice() - voucher.getValue(), ordersDTO.getNameRecipient(),
+								ordersDTO.getTelephone(), ordersDTO.getAddress(), null, null, null, null, null, null,
+								1));
+					} else {
+
+						lstOrderDTO.add(new OrdersDTO(null, voucher.getId(), "code", lstCartDTO.get(i).getSize_Id(),
+								null, lstCartDTO.get(i).getQuantity(), size.getProduct().getPrice(),
+								ordersDTO.getNameRecipient(), ordersDTO.getTelephone(), ordersDTO.getAddress(), null,
+								null, null, null, null, null, 1));
+					}
 				}
-				if (voucher.getCategory().getId() == size.getProduct().getCategory().getId()) {
-					lstOrderDTO.add(new OrdersDTO(null, voucher_Id, "code", lstCartDTO.get(i).getSize_id(), null,
-							lstCartDTO.get(i).getQuantity(), lstCartDTO.get(i).getPrice() - voucher.getValue(), null,
-							null, null, null, null, null, null, null, null, 1));
-				}
-				lstOrderDTO.add(new OrdersDTO(null, voucher_Id, "code", lstCartDTO.get(i).getSize_id(), null,
-						lstCartDTO.get(i).getQuantity(), lstCartDTO.get(i).getPrice(), null, null, null, null, null,
-						null, null, null, null, 1));
 			} else {
-				lstOrderDTO.add(new OrdersDTO(null, null, "code", lstCartDTO.get(i).getSize_id(), null,
-						lstCartDTO.get(i).getQuantity(), lstCartDTO.get(i).getPrice(), null, null, null, null, null,
-						null, null, null, null, 1));
+				lstOrderDTO.add(new OrdersDTO(null, null, "code", lstCartDTO.get(i).getSize_Id(), null,
+						lstCartDTO.get(i).getQuantity(), size.getProduct().getPrice(), ordersDTO.getNameRecipient(),
+						ordersDTO.getTelephone(), ordersDTO.getAddress(), null, null, null, null, null, null, 1));
 			}
 		}
 		List<Orders> lstOrder = lstOrderDTO.stream().map(d -> modelMapper.map(d, Orders.class))

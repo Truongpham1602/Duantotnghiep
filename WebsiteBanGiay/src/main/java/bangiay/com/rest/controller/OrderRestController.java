@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,7 @@ public class OrderRestController {
 
 	@PostMapping("/createHasUser/{user_Id}")
 	public List<OrdersDTO> createHasUser(@PathVariable("user_Id") Integer user_Id,
-			@RequestParam("voucher_Id") Integer voucher_Id) {
+			@RequestParam(value = "voucher_Id", required = false, defaultValue = "0") Integer voucher_Id) {
 		return this.orderService.createHasUser(user_Id, voucher_Id);
 	}
 
@@ -60,8 +61,10 @@ public class OrderRestController {
 	}
 
 	@PostMapping("/createNoUser")
-	public List<OrdersDTO> createHasUser(@RequestParam("voucher_Id") Integer voucher_Id) {
-		return this.orderService.createNoUser(voucher_Id);
+	public List<OrdersDTO> createNoUser(
+			@RequestParam(value = "voucher_Id", required = false, defaultValue = "0") Integer voucher_Id,
+			@RequestBody OrdersDTO ordersDTO) {
+		return this.orderService.createNoUser(ordersDTO, voucher_Id);
 	}
 
 }

@@ -2,7 +2,7 @@ import React from "react";
 import {
     NavLink, Outlet
 } from "react-router-dom";
-import '../css/vendors/styles.scss'
+import '../../css/vendors/styles.scss'
 // import ProdcutView from "../product/ProductView";
 
 

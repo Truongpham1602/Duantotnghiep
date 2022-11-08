@@ -1,14 +1,16 @@
 package bangiay.com.dao;
 
-import bangiay.com.entity.Size;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import bangiay.com.entity.Size;
+
 @Repository
 public interface SizeDao extends JpaRepository<Size, Integer> {
-	@Query("select o from size o where o.product.id=?1")
-	List<Size> findSizeByProduct_id(Integer product_id);
+	@Query("SELECT s FROM Size s WHERE s.product.id =?1")
+	List<Size> findByPro_Id(Integer product_Id);
 }
