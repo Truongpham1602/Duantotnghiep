@@ -3,7 +3,7 @@ import NumericInput from 'react-numeric-input';
 import { Link } from "react-router-dom";
 import "./CartPage.css";
 import axios from 'axios';
-import useCallGetAPI from "../../../customHook/CallGetApi";
+import useCallGetAPI from "../../customHook/CallGetApi";
 
 const Cart = () => {
 
