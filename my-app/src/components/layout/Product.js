@@ -1,10 +1,10 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { Container, Row , Col } from "reactstrap";
-import Header from "../Test/header";
-import Footer from "../Test/Footer";
-import ProductTest from "../Test/ProductTest";
-import ProductShear from "../Test/Productshear";
+import Header from "../HOME/header";
+import Footer from "../HOME/Footer";
+import ProductTest from "../HOME/ProductTest";
+import ProductShear from "../HOME/Productshear";
 // import '../css/stylees1.css';
 // class Home extends React.Component {
 const Product1 = () => {

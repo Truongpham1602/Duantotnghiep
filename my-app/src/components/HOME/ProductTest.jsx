@@ -7,7 +7,7 @@ import product4 from '../image/product/product-9.jpg';
 import product5 from '../image/product/product-12.jpg';
 import product6 from '../image/product/product-4.jpg';
 
-import ProductShear from "../Test/Productshear";
+import ProductShear from "../HOME/Productshear";
 const ProductTest = () => {
     return (
         <div>

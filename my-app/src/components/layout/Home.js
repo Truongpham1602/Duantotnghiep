@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../Test/header";
-import Footer from "../Test/Footer";
+import Header from "../HOME/header";
+import Footer from "../HOME/Footer";
 
 const Home = () => {
 

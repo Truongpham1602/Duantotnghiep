@@ -4,10 +4,10 @@ import Home from '../components/layout/Home';
 import Product from '../components/product/Product';
 import Product1 from '../components/layout/Product';
 import HeaderPage from '../components/layout/HeaderPage'; 
-import ProductTest from '../components/Test/ProductTest';
-import ProductList from '../components/Test/ProductList';
+import ProductTest from '../components/HOME/ProductTest';
+import ProductList from '../components/HOME/ProductList';
 
-import ProductOne from '../components/Test/ProductOne';
+import ProductOne from '../components/HOME/ProductOne';
 import {
   Routes,
   Route
