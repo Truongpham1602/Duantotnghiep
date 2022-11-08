@@ -1,10 +1,10 @@
 import './App.scss';
 import Admin from '../components/layout/Admin';
-import Home from '../components/layout/home/Home';
+import Home from '../components/layout/Home';
 import Product from '../components/product/Product';
 
 import User from '../components/user/User';
-import Cart from '../components/layout/cart/CartPage';
+import Cart from '../components/layout/CartPage';
 import Bill from '../components/bill/Bill';
 
 import Product1 from '../components/layout/Product';

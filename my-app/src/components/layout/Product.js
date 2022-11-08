@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Container, Row , Col } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import Header from "../HOME/header";
 import Footer from "../HOME/Footer";
 import ProductTest from "../HOME/ProductTest";
@@ -19,16 +19,16 @@ const Product1 = () => {
             {/* <ProductTest /> */}
             <Container fluid>
                 <Row>
-                    <ProductShear/>
+                    <ProductShear />
                 </Row>
                 <Row>
-                    <Col className="bg-light" lg = "9">
+                    <Col className="bg-light" lg="12">
                         <Outlet />
                     </Col>
-                    <Col className="bg-light" lg = "3">
+                    <Col className="bg-light" lg="3">
                         <h1 class="heading"></h1>
                         <div>
-                            
+
                         </div>
                     </Col>
                 </Row>

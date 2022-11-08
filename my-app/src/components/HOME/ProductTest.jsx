@@ -16,7 +16,7 @@ const ProductTest = () => {
                 <div class="box-container">
                     <div class="box">
                         <div class="content">
-                            <img src={product1} alt="" width="300px" height="300px"/>
+                            <img src={product1} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -36,7 +36,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product2} alt="" width="300px" height="300px"/>
+                            <img src={product2} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -56,7 +56,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product3} alt="" width="300px" height="300px"/>
+                            <img src={product3} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -76,7 +76,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product4} alt="" width="300px" height="300px"/>
+                            <img src={product4} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -96,7 +96,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product5} alt="" width="300px" height="300px"/>
+                            <img src={product5} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -116,7 +116,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product6} alt="" width="300px" height="300px"/>
+                            <img src={product6} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
