@@ -1,9 +1,11 @@
 package bangiay.com.dao;
 
-import bangiay.com.entity.Bill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import bangiay.com.entity.Voucher;
+
 @Repository
-public interface BillDao extends JpaRepository<Bill, Integer> {
+public interface VoucherDao extends JpaRepository<Voucher, Integer> {
+
 }

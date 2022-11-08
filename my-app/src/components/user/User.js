@@ -53,7 +53,7 @@ const User = () => {
   }
 
 
-  const editProduct = async (id) => {
+  const editUser = async (id) => {
     try {
       const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`)
       setUser(res.data)
@@ -62,7 +62,7 @@ const User = () => {
     }
   }
 
-  const deleteProduct = async (id) => {
+  const deleteUser = async (id) => {
     // e.preventDefault();
     try {
       await axios.delete(`http://localhost:8080/admin/user/delete/${id}`)
@@ -75,6 +75,14 @@ const User = () => {
     }
   }
 
+
+  // const onBack = () => {
+  //   setPage(page - 1 > -1 ? page - 1 : page);
+  // };
+
+  // const onNext = () => {
+  //   setPage(page + 7 < dataUser.length / 7 ? page + 7 : page);
+  // };
   // handleClickButtom = (event) => {
   //   event.preventDefault();
   //   setState({
@@ -103,15 +111,21 @@ const User = () => {
         <Table bordered>
           <thead>
             <tr>
+              <th colSpan='10'><h3>User</h3></th>
+            </tr>
+            <tr>
               <th>STT</th>
-              <th>Name</th>
-              <th>Color</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th>CreateDate</th>
-              <th>UpdateDate</th>
+              <th>FullName</th>
+              <th>Email</th>
+              <th>Telephone</th>
+              <th>Address</th>
+              <th>Image</th>
+              {/* <th>Created</th> */}
+              <th>Creator</th>
+              {/* <th>Modified</th> */}
+              <th>Modifiter</th>
+              <th>Status</th>
+              <th>Role</th>
               <th colspan="1">Action</th>
               <th colspan="1">
                 <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Create</button>
@@ -126,22 +140,26 @@ const User = () => {
                     <th scope="row" id="">
                       {index + 1}
                     </th>
-                    <td id="category">{item.name}</td>
-                    <td id="category">{item.color}</td>
-                    <td id="price">{item.price}</td>
-                    <td id="quantity">{item.quantity}</td>
-                    <td id="category">{item.name_cate}</td>
-                    <td id="description">{item.description}</td>
-                    <td id="created">{item.created}</td>
-                    <td id="modified">{item.modified}</td>
+                    <td id="category">{item.fullName}</td>
+                    {/* <td id="category">{item.password}</td> */}
+                    <td id="price">{item.email}</td>
+                    <td id="quantity">{item.telephone}</td>
+                    <td id="category">{item.address}</td>
+                    <td id="description">{item.image}</td>
+                    {/* <td id="created">{item.created}</td> */}
+                    <td id="modified">{item.creator}</td>
+                    {/* <td id="created">{item.modified}</td> */}
+                    <td id="modified">{item.modifier}</td>
+                    <td id="modified">{item.status}</td>
+                    <td id="modified">{item.nameRole}</td>
                     {/* <td id="image">
                                                 <image src={`image/${item.id}`} width="150" height="170" />
                                             </td> */}
                     <td>
-                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editProduct(item.id); updateModal() }}>Update</button>
+                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editUser(item.id); updateModal() }}>Update</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => { deleteProduct(item.id) }} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => { deleteUser(item.id) }} >Delete</button>
                     </td>
                   </tr>
                 )
@@ -167,30 +185,30 @@ export default User;
 /* <div class="row">
     <ul class="pagination">
         <li class="page-item">
-          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/products/index?page=0" aria-label="Previous">
+          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/users/index?page=0" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/products/index?page=${ data.number<=0? 0 : data.number -1 }" aria-label="Previous">
+          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/users/index?page=${ data.number<=0? 0 : data.number -1 }" aria-label="Previous">
           Previous
           </a>
         </li>
     <c:forEach var="i" begin="0" end="${ data.totalPages - 1 }">
         <li class="page-item">
             <a class="page-link"
-                href="/su22b1_IT16306_sof3021/admin/products/index?page=${ i }">
+                href="/su22b1_IT16306_sof3021/admin/users/index?page=${ i }">
                 ${ i + 1 }
             </a>
         </li>
     </c:forEach>
      <li class="page-item">
-          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/products/index?page=${ data.number>=data.totalPages - 1? data.totalPages - 1 : data.number +1 }" aria-label="Previous">
+          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/users/index?page=${ data.number>=data.totalPages - 1? data.totalPages - 1 : data.number +1 }" aria-label="Previous">
           Next
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/products/index?page=${ data.totalPages - 1 }">
+          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/users/index?page=${ data.totalPages - 1 }">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
@@ -226,7 +244,7 @@ export default User;
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       <form class="row g-3 align-items-center" id="update-form" action="/su22b1_IT16306_sof3021/admin/products/update" 
+       <form class="row g-3 align-items-center" id="update-form" action="/su22b1_IT16306_sof3021/admin/users/update" 
        method="POST" enctype="multipart/form-data">
             <div class="col-md-12 form-group">
                 <label  class="form-label" for="name">Name</label> 
@@ -284,7 +302,7 @@ export default User;
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       <form id="delete-form" action="/admin/products/delete" method="GET" >
+       <form id="delete-form" action="/admin/users/delete" method="GET" >
                 Bạn muốn xóa?
            <div class="row"><button class="btn btn-outline-danger mt-2">Delete</button></div>
        </form>
@@ -303,7 +321,7 @@ export default User;
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       <form class="row g-3 align-items-center" id="create-form" action="/su22b1_IT16306_sof3021/admin/products/store" 
+       <form class="row g-3 align-items-center" id="create-form" action="/su22b1_IT16306_sof3021/admin/users/store" 
        method="POST" enctype="multipart/form-data">
             <div class="col-md-12 form-group">
             <label  class="form-label">Name</label> 
@@ -368,7 +386,7 @@ $(document).ready(function(){
              ]
            });
     var id=$(this).closest("tr").find("#id").text();
-    $("#update-form").attr("action", "/su22b1_IT16306_sof3021/admin/products/update/" + id);
+    $("#update-form").attr("action", "/su22b1_IT16306_sof3021/admin/users/update/" + id);
 	
     var name=$(this).closest("tr").find("#name").text();
     $("#ModalUpdate").find("#name").val(name);
@@ -397,7 +415,7 @@ $(document).ready(function(){
     $(".delete").click(function(){
         var id=$(this).closest("tr").find("#id").text();
         $("#ModalDelete").modal("show");
-        $("#delete-form").attr("action", "/su22b1_IT16306_sof3021/admin/products/delete/" + id);
+        $("#delete-form").attr("action", "/su22b1_IT16306_sof3021/admin/users/delete/" + id);
     })
     $(".create").click(function(){
         Validator({

@@ -1,22 +1,19 @@
 package bangiay.com.service;
 
-import bangiay.com.DTO.request.BillDTO;
-import bangiay.com.DTO.request.CartDTO;
-import bangiay.com.DTO.respon.ResponBillDTO;
-import bangiay.com.DTO.respon.ResponCartDTO;
-import bangiay.com.entity.Bill;
-import bangiay.com.entity.Cart;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
+import bangiay.com.DTO.BillDTO;
+
 public interface BillService {
-    BillDTO createBill(BillDTO billDTO);
-    List<ResponBillDTO> findAll();
 
-    BillDTO updateBill(BillDTO billDTO);
+	public BillDTO createBill(BillDTO billDTO, Integer user_Id);
 
-    void deleteById(Integer id);
+	public List<BillDTO> findAll();
 
-    Bill findByID(Integer id);
+	public BillDTO updateBill(BillDTO billDTO);
+
+	public void deleteById(Integer id);
+
+	public BillDTO findByID(Integer id);
+
 }

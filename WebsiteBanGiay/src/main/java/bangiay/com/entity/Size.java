@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Data
 @Table(name = "size")
 public class Size {
-    @Id
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 

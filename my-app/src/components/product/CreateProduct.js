@@ -49,7 +49,7 @@ const CreateProduct = (props) => {
 
     const createProduct = () => {
         try {
-            const z = async () => {
+            const createPro = async () => {
                 let res = await axios.post(Product_Rest_API_URL + '/post', {
                     categoryId: product.categoryId,
                     color: product.color,
@@ -67,7 +67,7 @@ const CreateProduct = (props) => {
                 updateData(data, `create`)
                 toggle()
             }
-            z()
+            createPro()
             // setState({
             //     lstProduct: [...lstProduct, res.data],
             // })
@@ -199,7 +199,7 @@ const CreateProduct = (props) => {
                                                 name="category"
                                                 placeholder=""
                                                 type="select"
-                                                onChange={(event) => handleOnchangeInput(event, 'category')}
+                                                onChange={(event) => handleOnchangeInput(event, 'categoryId')}
                                             >
                                                 <option value='1'>
                                                     1
