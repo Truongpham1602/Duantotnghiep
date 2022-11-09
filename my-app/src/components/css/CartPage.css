@@ -122,7 +122,7 @@ header .count {
     border-bottom: 1px solid #ddd;
 }
 
-.row {
+.row-cart {
     position: relative;
     overflow: auto;
     width: 100%;

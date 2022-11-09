@@ -11,9 +11,9 @@ const Home = () => {
 
     return (
         <>
-            <Header/>
+            <Header />
             <Outlet />
-            <Footer/>
+            <Footer />
         </>
     )
 }

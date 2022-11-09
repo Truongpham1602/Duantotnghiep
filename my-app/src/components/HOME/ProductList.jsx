@@ -25,13 +25,13 @@ const ProductList = () => {
             <div class="row">
                 <div class="image-container">
                     <div class="small-image">
-                        <img src={jordan1} alt="" class="featured-image-1"/>
-                        <img src={jordan2} alt="" class="featured-image-1"/>
-                        <img src={jordan3} alt="" class="featured-image-1"/>
-                        <img src={jordan4} alt="" class="featured-image-1"/>
+                        <img src={jordan1} alt="" class="featured-image-1" />
+                        <img src={jordan2} alt="" class="featured-image-1" />
+                        <img src={jordan3} alt="" class="featured-image-1" />
+                        <img src={jordan4} alt="" class="featured-image-1" />
                     </div>
                     <div class="big-image">
-                        <img src={jordan5} alt="" class="big-image-1"/>
+                        <img src={jordan5} alt="" class="big-image-1" />
                     </div>
                 </div>
                 <div class="content">
@@ -44,7 +44,7 @@ const ProductList = () => {
                         <i class="fa fa-star"></i>
                     </div>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
                     </p>
                     <div class="price">$90 <span>$120</span></div>
@@ -54,13 +54,13 @@ const ProductList = () => {
             <div class="row">
                 <div class="image-container">
                     <div class="small-image">
-                        <img src={adidas1} alt="" class="featured-image-2"/>
-                        <img src={adidas2} alt="" class="featured-image-2"/>
-                        <img src={adidas3} alt="" class="featured-image-2"/>
-                        <img src={adidas4} alt="" class="featured-image-2"/>
+                        <img src={adidas1} alt="" class="featured-image-2" />
+                        <img src={adidas2} alt="" class="featured-image-2" />
+                        <img src={adidas3} alt="" class="featured-image-2" />
+                        <img src={adidas4} alt="" class="featured-image-2" />
                     </div>
                     <div class="big-image">
-                        <img src={adidas5} alt="" class="big-image-2"/>
+                        <img src={adidas5} alt="" class="big-image-2" />
                     </div>
                 </div>
                 <div class="content">
@@ -73,7 +73,7 @@ const ProductList = () => {
                         <i class="fa fa-star"></i>
                     </div>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
                     </p>
                     <div class="price">$90 <span>$120</span></div>
@@ -83,13 +83,13 @@ const ProductList = () => {
             <div class="row">
                 <div class="image-container">
                     <div class="small-image">
-                        <img src={sn1991} alt="" class="featured-image-3"/>
-                        <img src={sn1992} alt="" class="featured-image-3"/>
-                        <img src={sn1993} alt="" class="featured-image-3"/>
-                        <img src={sn1994} alt="" class="featured-image-3"/>
+                        <img src={sn1991} alt="" class="featured-image-3" />
+                        <img src={sn1992} alt="" class="featured-image-3" />
+                        <img src={sn1993} alt="" class="featured-image-3" />
+                        <img src={sn1994} alt="" class="featured-image-3" />
                     </div>
                     <div class="big-image">
-                        <img src={sn1995} alt="" class="big-image-3"/>
+                        <img src={sn1995} alt="" class="big-image-3" />
                     </div>
                 </div>
                 <div class="content">
@@ -102,7 +102,7 @@ const ProductList = () => {
                         <i class="fa fa-star"></i>
                     </div>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
                     </p>
                     <div class="price">$90 <span>$120</span></div>

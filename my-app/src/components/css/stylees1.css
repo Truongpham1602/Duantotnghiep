@@ -15,13 +15,12 @@
 }
 
 html {
-  font-size: 62.5%;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 section {
-  padding: 3rem 1%;
+  padding: 1rem 1%;
 }
 
 .heading {
@@ -35,12 +34,10 @@ section {
 
 .heading h1 {
   color: #222;
-  font-size: 4rem;
 }
 
 .heading p {
   padding-top: 1rem;
-  font-size: 2rem;
   color: #666;
 }
 
@@ -60,7 +57,6 @@ section {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  font-size: 2.5rem;
   margin-bottom: 3rem;
   padding: 1.2rem 0;
   border-bottom: 0.1rem solid rgba(0, 0, 0, 0.1);
@@ -75,7 +71,6 @@ section {
 .title a {
   margin-left: auto;
   color: #666;
-  font-size: 1.5rem;
 }
 
 .title a:hover {
@@ -86,7 +81,6 @@ section {
   margin-top: 1rem;
   display: inline-block;
   padding: .8rem 3rem;
-  font-size: 1.7rem;
   cursor: pointer;
 
   text-decoration: none;
@@ -116,18 +110,16 @@ section {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding: 2rem 9%;
+  padding: 0.3rem 9%;
 }
 
 .header .logo {
-  font-size: 2.5rem;
   font-weight: bolder;
   color: #222;
   text-decoration: none;
 }
 
 .header .navbar a {
-  font-size: 1.7rem;
   color: #666;
   margin: 0 1rem;
   text-decoration: none;
@@ -138,7 +130,6 @@ section {
 }
 
 .header .icons div {
-  font-size: 2.5rem;
   margin-left: 1.7rem;
   cursor: pointer;
   color: #666;
@@ -152,7 +143,7 @@ section {
   position: absolute;
   top: -115%;
   right: 2rem;
-  width: 50rem;
+  width: 30rem;
   border-radius: .5rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -160,7 +151,7 @@ section {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  height: 5.5rem;
+  height: 3.5rem;
   -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   background: #fff;
@@ -174,13 +165,11 @@ section {
   height: 100%;
   width: 100%;
   padding: 0 1.2rem;
-  font-size: 1.6rem;
   color: #222;
   text-transform: none;
 }
 
 .header .search-form label {
-  font-size: 2.5rem;
   margin-right: 1.7rem;
   cursor: pointer;
   color: #666;
@@ -192,14 +181,14 @@ section {
 
 .header .shopping-cart {
   position: absolute;
-  top: 115%;
+  top: 110%;
   right: -105%;
   background: #fff;
   border-radius: .5rem;
   -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  width: 35rem;
-  padding: 2rem;
+  width: 25rem;
+  padding: 1rem;
 }
 
 .header .shopping-cart.active {
@@ -216,7 +205,7 @@ section {
   -ms-flex-align: center;
   align-items: center;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   position: relative;
 }
 
@@ -226,27 +215,24 @@ section {
   right: 2rem;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
-  font-size: 2rem;
   color: #666;
   cursor: pointer;
 }
 
 .header .shopping-cart .box .fa-times:hover {
-  color: #bac34e;
+  color: #659eff;
 }
 
 .header .shopping-cart .box img {
-  height: 10rem;
+  height: 7rem;
 }
 
-.header .shopping-cart .box .content h3 {
-  font-size: 1.7rem;
-  padding-bottom: .5rem;
+.header .shopping-cart .box .content h5 {
+  padding-bottom: .3rem;
   color: #222;
 }
 
 .header .shopping-cart .box .content span {
-  font-size: 1.5rem;
   color: #666;
 }
 
@@ -257,7 +243,6 @@ section {
 .header .shopping-cart .total {
   color: #666;
   text-align: center;
-  font-size: 2.2rem;
 }
 
 .header .shopping-cart .total span {
@@ -266,11 +251,10 @@ section {
 
 .header .shopping-cart .btn {
   text-align: center;
-  width: 70%;
+  width: 65%;
   text-decoration: none;
-  font-size: 15px;
-  padding: 1.8rem 5rem;
-  margin-bottom: 20px;
+  padding: 0.7rem 3rem;
+  margin-bottom: 5px;
   background: linear-gradient(to right, #c72092, #6c14d0);
   color: white;
 }
@@ -296,7 +280,6 @@ section {
 .header .login-form h3 {
   color: #222;
   text-transform: uppercase;
-  font-size: 2.2rem;
   text-align: center;
   margin-bottom: .7rem;
 }
@@ -305,7 +288,6 @@ section {
   margin: .7rem 0;
   border: 0.1rem solid rgba(0, 0, 0, 0.1);
   padding: 1rem 1.2rem;
-  font-size: 1.5rem;
   color: #222;
   text-transform: none;
   width: 100%;
@@ -323,7 +305,6 @@ section {
 }
 
 .header .login-form .remember label {
-  font-size: 1.5rem;
   color: #666;
   cursor: pointer;
 }
@@ -332,7 +313,6 @@ section {
   margin: 1rem 0;
   width: 100%;
   text-align: center;
-  font-size: 15px;
   padding: 1.8rem 5rem;
   margin-bottom: 20px;
   background: linear-gradient(to right, #c72092, #6c14d0);
@@ -346,7 +326,6 @@ section {
 .header .login-form p {
   color: #666;
   padding-top: .7rem;
-  font-size: 1.4rem;
 }
 
 .header .login-form p a {
@@ -430,11 +409,9 @@ section {
 
 .home .slides-container .slide .content span {
   color: #666;
-  font-size: 2.5rem;
 }
 
 .home .slides-container .slide .content h3 {
-  font-size: 6rem;
   color: #222;
   padding: .5rem 0;
 }
@@ -465,7 +442,6 @@ section {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   text-align: center;
   background: #fff;
-  font-size: 3rem;
   color: #222;
   cursor: pointer;
 }
@@ -520,11 +496,9 @@ section {
 
 .banner-container .banner .content span {
   color: #666;
-  font-size: 1.5rem;
 }
 
 .banner-container .banner .content h3 {
-  font-size: 2rem;
   padding-top: .5rem;
   color: #222;
 }
@@ -551,7 +525,6 @@ section {
 }
 
 .category .box-container .box h3 {
-  font-size: 2rem;
   margin: 1rem 0;
   color: #666;
 }
@@ -599,7 +572,6 @@ section {
 }
 
 .products .box-container .box .icons a {
-  font-size: 2rem;
   height: 5rem;
   width: 5rem;
   line-height: 5rem;
@@ -632,18 +604,15 @@ section {
 }
 
 .products .box-container .box .content h3 {
-  font-size: 2rem;
   color: #222;
 }
 
 .products .box-container .box .content .price {
-  font-size: 2rem;
   color: #222;
   padding: 1rem 0;
 }
 
 .products .box-container .box .content .stars i {
-  font-size: 1.7rem;
   color: #bac34e;
 }
 
@@ -677,18 +646,15 @@ section {
 
 .about .content span {
   color: #bac34e;
-  font-size: 2.5rem;
 }
 
 .about .content h3 {
   color: #222;
-  font-size: 3rem;
   padding-top: .5rem;
 }
 
 .about .content p {
   color: #666;
-  font-size: 1.4rem;
   line-height: 2;
   padding: 1rem 0;
 }
@@ -735,7 +701,6 @@ section {
 }
 
 .gallery .box-container .box .icons a {
-  font-size: 2.5rem;
   color: #fff;
   margin: 0 1.5rem;
 }
@@ -768,13 +733,11 @@ section {
 }
 
 .info-container .info .content h3 {
-  font-size: 2rem;
   color: #222;
   padding-bottom: .5rem;
 }
 
 .info-container .info .content span {
-  font-size: 1.5rem;
   color: #666;
 }
 
@@ -809,17 +772,14 @@ section {
 }
 
 .review .box .user h3 {
-  font-size: 2.2rem;
   color: #222;
 }
 
 .review .box .user span {
-  font-size: 1.4rem;
   color: #bac34e;
 }
 
 .review .box p {
-  font-size: 1.4rem;
   color: #666;
   line-height: 2;
 }
@@ -874,7 +834,6 @@ section {
 }
 
 .blogs .box-container .box .content .icons a {
-  font-size: 1.4rem;
   color: #666;
 }
 
@@ -888,12 +847,10 @@ section {
 }
 
 .blogs .box-container .box .content h3 {
-  font-size: 2.2rem;
   color: #222;
 }
 
 .blogs .box-container .box .content p {
-  font-size: 1.4rem;
   color: #666;
   line-height: 2;
   padding: 1rem 0;
@@ -917,7 +874,6 @@ section {
   height: 6rem;
   width: 6rem;
   line-height: 6rem;
-  font-size: 2.5rem;
   background: #bac34e;
   color: #fff;
   border-radius: 50%;
@@ -925,13 +881,11 @@ section {
 
 .contact .icons-container .icons h3 {
   color: #222;
-  font-size: 2rem;
   padding: 1rem 0;
 }
 
 .contact .icons-container .icons p {
   color: #666;
-  font-size: 1.5rem;
   line-height: 2;
 }
 
@@ -954,7 +908,6 @@ section {
 }
 
 .contact .row form h3 {
-  font-size: 2.5rem;
   padding-bottom: 1rem;
   color: #222;
 }
@@ -977,7 +930,6 @@ section {
 .contact .row form .inputBox .box,
 .contact .row form textarea {
   padding: 1rem 1.2rem;
-  font-size: 1.6rem;
   border: 0.1rem solid rgba(0, 0, 0, 0.1);
   color: #222;
   text-transform: none;
@@ -1010,19 +962,16 @@ section {
 }
 
 .footer .box-container .box h3 {
-  font-size: 2.2rem;
   color: #222;
   padding: 1rem 0;
 }
 
 .footer .box-container .box p {
-  font-size: 1.5rem;
   color: #666;
   padding-bottom: .5rem;
 }
 
 .footer .box-container .box a {
-  font-size: 1.4rem;
   color: #666;
   padding: 1rem 0;
   display: block;
@@ -1045,7 +994,6 @@ section {
 .footer .box-container .box form input[type="email"] {
   width: 100%;
   padding: 1rem 1.2rem;
-  font-size: 1.6rem;
   color: #222;
   margin: 1rem 0;
   text-transform: none;
@@ -1060,7 +1008,6 @@ section {
   margin-top: 1rem;
   display: inline-block;
   padding: .8rem 5rem;
-  font-size: 1.7rem;
   cursor: pointer;
 
   text-decoration: none;
@@ -1076,12 +1023,11 @@ section {
   text-align: center;
   background: #bac34e;
   color: #fff;
-  font-size: 2rem;
 }
 
 @media (max-width: 991px) {
   html {
-    font-size: 55%;
+    font-size: 50%;
   }
 
   .header {
@@ -1143,7 +1089,6 @@ section {
     margin: 1.5rem;
     padding: 1.5rem;
     background: #f3f3f3;
-    font-size: 2rem;
     display: block;
     border-radius: .5rem;
   }
@@ -1155,7 +1100,7 @@ section {
   }
 
   .home .slides-container .slide .content h3 {
-    font-size: 5rem;
+    font-size: 50%;
   }
 
   .contact .row form .inputBox input {
