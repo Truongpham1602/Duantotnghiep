@@ -14,9 +14,29 @@ const ProductTest = () => {
             <section class="product" id="product">
                 <h1 class="heading">latest <span>Products</span></h1>
                 <div class="box-container">
+                    {/* <div class="box">
+                        <div class="content">
+                            <img src={product1} alt="" width="300px" height="300px" />
+                            <h3>Nike Shoes</h3>
+                            <div class="price">$200 <span>$150</span></div>
+                            <div class="stars">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="icons">
+                            <a href="#" class="fa fa-heart"></a>
+                            <a href="#" class="fa fa-cart-plus"></a>
+                            <a href="#" class="fa fa-eye"></a>
+                        </div>
+                        <a href="#" class="btn">Add To Cart</a>
+                    </div> */}
                     <div class="box">
                         <div class="content">
-                            <img src={product1} alt="" width="300px" height="300px"/>
+                            <img src={product2} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -36,7 +56,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product2} alt="" width="300px" height="300px"/>
+                            <img src={product3} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -56,7 +76,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product3} alt="" width="300px" height="300px"/>
+                            <img src={product4} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -76,7 +96,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product4} alt="" width="300px" height="300px"/>
+                            <img src={product5} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">
@@ -96,27 +116,7 @@ const ProductTest = () => {
                     </div>
                     <div class="box">
                         <div class="content">
-                            <img src={product5} alt="" width="300px" height="300px"/>
-                            <h3>Nike Shoes</h3>
-                            <div class="price">$200 <span>$150</span></div>
-                            <div class="stars">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="icons">
-                            <a href="#" class="fa fa-heart"></a>
-                            <a href="#" class="fa fa-cart-plus"></a>
-                            <a href="#" class="fa fa-eye"></a>
-                        </div>
-                        <a href="#" class="btn">Add To Cart</a>
-                    </div>
-                    <div class="box">
-                        <div class="content">
-                            <img src={product6} alt="" width="300px" height="300px"/>
+                            <img src={product6} alt="" width="300px" height="300px" />
                             <h3>Nike Shoes</h3>
                             <div class="price">$200 <span>$150</span></div>
                             <div class="stars">

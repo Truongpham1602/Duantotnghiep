@@ -1,6 +1,6 @@
 import './App.scss';
 import Admin from '../components/layout/Admin';
-import Home from '../components/layout/Home'
+import Home from '../components/layout/Home';
 import Product from '../components/product/Product';
 
 import User from '../components/user/User';
