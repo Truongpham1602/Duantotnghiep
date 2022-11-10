@@ -15,20 +15,7 @@ const Cart = () => {
     const [source, setSource] = useState()
 
     useEffect(() => {
-        // axios
-        //     .get(
-        //         'http://localhost:8080/cart/getByUser_Id/1',
-        //         { responseType: 'arraybuffer' },
-        //     )
-        //     .then(response => {
-        //         const base64 = btoa(
-        //             new Uint8Array(response.data).reduce(
-        //                 (data, byte) => data + String.fromCharCode(byte),
-        //                 '',
-        //             ),
-        //         );
-        //         setSource("data:;base64," + base64);
-        //     });
+
         let total = 0;
         const setTotal = () => {
             setLstCart(dataCart)
@@ -64,7 +51,7 @@ const Cart = () => {
                                     <div className="cart-infor">
                                         <div className="thumbnail">
                                             <a href="#">
-                                                <img src={source} alt={lstcart.name} />
+                                                <img src={require(`../../assets/images/${lstcart.image}`)} alt={lstcart.name} />
                                             </a>
                                         </div>
                                         <div className="detail">

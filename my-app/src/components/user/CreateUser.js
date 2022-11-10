@@ -1,6 +1,12 @@
 import { React, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment'
+import {
+    ref,
+    uploadBytes,
+    getDownloadURL,
+} from "firebase/storage";
+import { storage } from "../../Firebase";
 
 import {
     Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
@@ -12,16 +18,8 @@ const User_Rest_API_URL = 'http://localhost:8080/admin/user';
 
 // class CreateUser extends Component {
 const CreateUser = (props) => {
-    // constructor(props) {
-    //     super(props);
-    //     state = {
-    //         user: {},
-    //         size: [37, 38, 39, 40, 41, 42, 43, 44, 45],
-    //     }
-    // }
-    // const user = props.user;
 
-    const { isCreateModal, toggleModal, updateData } = props;
+    const { isCreateModal, toggleModal, updateData, uploadFile, setImageUpload } = props;
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
     // const [updateData, setUpdateData] = useState(props);
     const [user, setUser] = useState({});
@@ -29,8 +27,12 @@ const CreateUser = (props) => {
 
 
     const handleOnchangeInput = (event, id) => {
-        let copyUser = { ...user };
-        copyUser[id] = event.target.value;
+        const copyUser = { ...user };
+        if (id === 'image') {
+            copyUser[id] = event.target.files[0].name;
+        } else {
+            copyUser[id] = event.target.value;
+        }
         setUser({
             ...copyUser
         })
@@ -217,60 +219,15 @@ const CreateUser = (props) => {
                                         name="image"
                                         placeholder=""
                                         type="file"
-                                        value={user.image}
-                                        onChange={(event) => handleOnchangeInput(event, 'image')}
+                                        // value={user.image}
+                                        onChange={(event) => { handleOnchangeInput(event, 'image'); setImageUpload(event.target.files[0]) }}
                                     />
                                 </FormGroup>
                             </Col>
                         </Row>
+
                         <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="creator">
-                                        Creator
-                                    </Label>
-                                    <Input
-                                        id="creator"
-                                        name="creator"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.creator}
-                                        onChange={(event) => handleOnchangeInput(event, 'creator')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="modifier">
-                                        Modifier
-                                    </Label>
-                                    <Input
-                                        id="modifier"
-                                        name="modifier"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.modifier}
-                                        onChange={(event) => handleOnchangeInput(event, 'modifier')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="status">
-                                        Status
-                                    </Label>
-                                    <Input
-                                        id="status"
-                                        name="status"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.status}
-                                        onChange={(event) => handleOnchangeInput(event, 'status')}
-                                    />
-                                </FormGroup>
-                            </Col>
+
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="roleId">
@@ -287,7 +244,7 @@ const CreateUser = (props) => {
                                             Nhân viên
                                         </option>
                                         <option value='1'>
-                                           Quản Lý
+                                            Quản Lý
                                         </option>
                                         <option value='3'>
                                             Khách hàng
@@ -299,7 +256,7 @@ const CreateUser = (props) => {
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={(e) => { createUser(e) ; handleOnchangeInput(e, 'role') }}>
+                    <Button color="primary" onClick={(e) => { createUser(e); uploadFile(e) }}>
                         Add New
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>

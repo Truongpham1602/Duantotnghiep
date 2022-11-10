@@ -1,7 +1,12 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment'
-
+import {
+    ref,
+    uploadBytes,
+    getDownloadURL,
+} from "firebase/storage";
+import { storage } from "../../Firebase";
 import {
     Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
     Row, Col, Form
@@ -11,7 +16,8 @@ import {
 // class UpdateUser extends Component {
 const UpdateUser = (props) => {
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
-    const { isUpdateModal, toggleModal, updateData } = props;
+
+    const { isUpdateModal, toggleModal, updateData, uploadFile, setImageUpload } = props;
     const [user, setUser] = useState(props.user);
 
     useEffect(() => {
@@ -20,7 +26,11 @@ const UpdateUser = (props) => {
 
     const handleOnchangeInput = (event, id) => {
         let copyUser = { ...user };
-        copyUser[id] = event.target.value;
+        if (id === 'image') {
+            copyUser[id] = event.target.files[0].name;
+        } else {
+            copyUser[id] = event.target.value;
+        }
         setUser({
             ...copyUser
         })
@@ -66,7 +76,7 @@ const UpdateUser = (props) => {
             >
                 <ModalHeader toggle={() => toggle()}>Update</ModalHeader>
                 <ModalBody>
-                <Form>
+                    <Form>
                         <Row>
                             <Col md={6}>
                                 <FormGroup>
@@ -157,8 +167,8 @@ const UpdateUser = (props) => {
                                         name="image"
                                         placeholder=""
                                         type="file"
-                                        value={user.image}
-                                        onChange={(event) => handleOnchangeInput(event, 'image')}
+                                        // value={user.image}
+                                        onChange={(event) => { handleOnchangeInput(event, 'image'); setImageUpload(event.target.files[0]) }}
                                     />
                                 </FormGroup>
                             </Col>
@@ -178,7 +188,7 @@ const UpdateUser = (props) => {
                                         onChange={(event) => handleOnchangeInput(event, 'creator')}
                                     />
                                 </FormGroup>
-                            </Col>   
+                            </Col>
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="modifier">
@@ -239,7 +249,7 @@ const UpdateUser = (props) => {
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={(e) => { updateUser(); handleOnchangeInput(e, 'category'); handleOnchangeInput(e, 'size') }}>
+                    <Button color="primary" onClick={(e) => { updateUser(); uploadFile(e) }}>
                         Save
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>

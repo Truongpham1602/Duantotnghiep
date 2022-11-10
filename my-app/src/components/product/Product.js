@@ -139,58 +139,6 @@ const Product = () => {
 
   return (
     <>
-      <div>
-        <UncontrolledAccordion
-          // defaultOpen={[
-          //   '1',
-          //   '2'
-          // ]}
-          stayOpen
-        >
-          <AccordionItem>
-            {cate.map(item => {
-              if (item.parenid === '') {
-
-                <AccordionItem>
-                  <AccordionHeader targetId={item.id}>{item.name}</AccordionHeader>
-                  <AccordionBody accordionId={item.id}>
-
-                  </AccordionBody>
-                </AccordionItem>
-              }
-            })
-
-            }
-            <AccordionHeader targetId="1">Accordion Item 1</AccordionHeader>
-            <AccordionBody accordionId="1">
-              {/* <Accordion open={open} toggle={toggle}> */}
-              <AccordionHeader targetId="4">Nam</AccordionHeader>
-              <AccordionBody accordionId="4">vcv</AccordionBody>
-              {/* </Accordion> */}
-            </AccordionBody>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionHeader targetId="2">Accordion Item 2</AccordionHeader>
-            <AccordionBody accordionId="2">
-              <strong>This is the second item&#39;s accordion body.</strong>
-              You can modify any of this with custom CSS or overriding our default
-              variables. It&#39;s also worth noting that just about any HTML can
-              go within the <code>.accordion-body</code>, though the transition
-              does limit overflow.
-            </AccordionBody>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionHeader targetId="3">Accordion Item 3</AccordionHeader>
-            <AccordionBody accordionId="3">
-              <strong>This is the third item&#39;s accordion body.</strong>
-              You can modify any of this with custom CSS or overriding our default
-              variables. It&#39;s also worth noting that just about any HTML can
-              go within the <code>.accordion-body</code>, though the transition
-              does limit overflow.
-            </AccordionBody>
-          </AccordionItem>
-        </UncontrolledAccordion>
-      </div>
       <CreateProduct
         isCreateModal={isCreateModal}
         toggleModal={createModal}
@@ -216,8 +164,6 @@ const Product = () => {
               <th>Quantity</th>
               <th>Category</th>
               <th>Description</th>
-              <th>CreateDate</th>
-              <th>UpdateDate</th>
               <th colspan="1">Action</th>
               <th colspan="1">
                 <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Create</button>
@@ -240,8 +186,6 @@ const Product = () => {
                     <td id="quantity">{item.quantity}</td>
                     <td id="category">{item.name_cate}</td>
                     <td id="description">{item.description}</td>
-                    <td id="created">{item.created}</td>
-                    <td id="modified">{item.modified}</td>
                     {/* <td id="image">
                                                 <image src={`image/${item.id}`} width="150" height="170" />
                                             </td> */}
