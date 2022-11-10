@@ -176,7 +176,7 @@ const Product = () => {
                 dataProduct.slice(7 * page, 7 * page + 7)
               ).map((item, index) => {
                 return (
-                  <tr key={item.id}>
+                  <tr key={item.id} onClick={() => { editProduct(item.id); updateModal() }}>
                     <th scope="row" id="">
                       {index + 1}
                     </th>

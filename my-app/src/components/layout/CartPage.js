@@ -51,7 +51,7 @@ const Cart = () => {
                                     <div className="cart-infor">
                                         <div className="thumbnail">
                                             <a href="#">
-                                                <img src={require(`../../assets/images/${lstcart.image}`)} alt={lstcart.name} />
+                                                <img alt={lstcart.name} />
                                             </a>
                                         </div>
                                         <div className="detail">
@@ -62,7 +62,14 @@ const Cart = () => {
                                             <div className="price">{lstcart.price}</div>
                                         </div>
                                     </div>
-
+                                    <div className="product-content-right-product-size">
+                                        <p className="SizeOne">Size:</p>
+                                        <div className="size">
+                                            {lstcart.size.map(size => {
+                                                return <span>{size.size}</span>
+                                            })}
+                                        </div>
+                                    </div>
                                     <div className="cart-quantity">
                                         <div className="quantity">
                                             <NumericInput min={0} max={lstcart.quantityTotal} value={lstcart.quantity} />

@@ -17,7 +17,7 @@ import {
 const UpdateUser = (props) => {
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
 
-    const { isUpdateModal, toggleModal, updateData, uploadFile, setImageUpload } = props;
+    const { isUpdateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload, urlImg } = props;
     const [user, setUser] = useState(props.user);
 
     useEffect(() => {
@@ -95,23 +95,6 @@ const UpdateUser = (props) => {
                             </Col>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="password">
-                                        Password
-                                    </Label>
-                                    <Input
-                                        id="password"
-                                        name="password"
-                                        placeholder=""
-                                        type="password"
-                                        value={user.password}
-                                        onChange={(event) => handleOnchangeInput(event, 'password')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <FormGroup>
                                     <Label for="email">
                                         Email
                                     </Label>
@@ -125,6 +108,8 @@ const UpdateUser = (props) => {
                                     />
                                 </FormGroup>
                             </Col>
+                        </Row>
+                        <Row>
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="telephone">
@@ -137,23 +122,6 @@ const UpdateUser = (props) => {
                                         type="text"
                                         value={user.telephone}
                                         onChange={(event) => handleOnchangeInput(event, 'telephone')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="address">
-                                        Address
-                                    </Label>
-                                    <Input
-                                        id="address"
-                                        name="address"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.address}
-                                        onChange={(event) => handleOnchangeInput(event, 'address')}
                                     />
                                 </FormGroup>
                             </Col>
@@ -170,80 +138,58 @@ const UpdateUser = (props) => {
                                         // value={user.image}
                                         onChange={(event) => { handleOnchangeInput(event, 'image'); setImageUpload(event.target.files[0]) }}
                                     />
+
                                 </FormGroup>
                             </Col>
                         </Row>
                         <Row>
                             <Col md={6}>
-                                <FormGroup>
-                                    <Label for="creator">
-                                        Creator
-                                    </Label>
-                                    <Input
-                                        id="creator"
-                                        name="creator"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.creator}
-                                        onChange={(event) => handleOnchangeInput(event, 'creator')}
-                                    />
-                                </FormGroup>
+                                <Row>
+                                    <Col md={12}>
+                                        <FormGroup>
+                                            <Label for="address">
+                                                Address
+                                            </Label>
+                                            <Input
+                                                id="address"
+                                                name="address"
+                                                placeholder=""
+                                                type="text"
+                                                value={user.address}
+                                                onChange={(event) => handleOnchangeInput(event, 'address')}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={12}>
+                                        <FormGroup>
+                                            <Label for="roleId">
+                                                Role
+                                            </Label>
+                                            <Input
+                                                id="roleId"
+                                                name="roleId"
+                                                placeholder=""
+                                                type="select"
+                                                onChange={(event) => handleOnchangeInput(event, 'roleId')}
+                                            >
+                                                <option value='2'>
+                                                    Nhân viên
+                                                </option>
+                                                <option value='3'>
+                                                    Khách hàng
+                                                </option>
+                                            </Input>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
                             </Col>
                             <Col md={6}>
-                                <FormGroup>
-                                    <Label for="modifier">
-                                        Modifier
-                                    </Label>
-                                    <Input
-                                        id="modifier"
-                                        name="modifier"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.modifier}
-                                        onChange={(event) => handleOnchangeInput(event, 'modifier')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="status">
-                                        Status
-                                    </Label>
-                                    <Input
-                                        id="status"
-                                        name="status"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.status}
-                                        onChange={(event) => handleOnchangeInput(event, 'status')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="roleId">
-                                        Category
-                                    </Label>
-                                    <Input
-                                        id="roleId"
-                                        name="roleId"
-                                        placeholder=""
-                                        type="select"
-                                        onChange={(event) => handleOnchangeInput(event, 'roleId')}
-                                    >
-                                        <option value='2'>
-                                            Nhân viên
-                                        </option>
-                                        <option value='1'>
-                                            Admin
-                                        </option>
-                                        <option value='3'>
-                                            Khách hàng
-                                        </option>
-                                    </Input>
-                                </FormGroup>
+                                {!imageUpload &&
+                                    <img width='100%' height='241rem' src={urlImg} />
+                                }
+                                {imageUpload &&
+                                    <img width='100%' height='241rem' src={URL.createObjectURL(imageUpload)} />
+                                }
                             </Col>
                         </Row>
                     </Form>

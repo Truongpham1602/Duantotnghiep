@@ -26,12 +26,12 @@ const User = () => {
   const [isUpdateModal, setisUpdateModal] = useState(false)
   const [imageUrls, setImageUrls] = useState([]);
   const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/user/index`);
-
+  const imagesListRef = ref(storage, "images/");
+  let [urlImg, setUrlImg] = useState();
 
 
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
-      const imagesListRef = ref(storage, "images/");
       setData(dataPro)
       listAll(imagesListRef).then((response) => {
         response.items.forEach((item) => {
@@ -94,6 +94,13 @@ const User = () => {
     try {
       const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`)
       setUser(res.data)
+      {
+        imageUrls.map((img) => {
+          if (img.nameImg === res.data.image) {
+            return setUrlImg(img.url)
+          }
+        })
+      }
     } catch (error) {
       console.log(error.message)
     }
@@ -139,6 +146,7 @@ const User = () => {
         updateData={updateData}
         uploadFile={uploadFile}
         setImageUpload={setImageUpload}
+        imageUpload={imageUpload}
       />
       <UpdateUser
         isUpdateModal={isUpdateModal}
@@ -146,6 +154,8 @@ const User = () => {
         updateData={updateData}
         uploadFile={uploadFile}
         setImageUpload={setImageUpload}
+        imageUpload={imageUpload}
+        urlImg={urlImg}
         user={user}
       />
       <div>
