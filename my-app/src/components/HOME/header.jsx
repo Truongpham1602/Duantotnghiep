@@ -87,12 +87,12 @@ const Header = () => {
             <a href="home.html" class="logo"><img src={logo} alt="" width="50px" height="50px" /> laTra shoes </a>
 
             <nav class="navbar">
-                <NavLink className="navbar-brand ps-3" to="/" activeClassName="active">Hom</NavLink>
-                <NavLink className="navbar-brand ps-3" to="/shop" activeClassName="active">Shop</NavLink>
+                <NavLink className="navbar-brand ps-3" to="/" end >Home</NavLink>
+                <NavLink className="navbar-brand ps-3" to="/shop" >Shop</NavLink>
                 <a href="about.html">about</a>
                 <a href="review.html">review</a>
                 <a href="blog.html">blog</a>
-                <a href="contact.html">contact</a>
+                <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Administrator</NavLink>
             </nav>
 
             <div class="icons">

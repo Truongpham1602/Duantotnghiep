@@ -159,8 +159,8 @@ const User = () => {
         user={user}
       />
       <div>
-        <Table bordered>
-          <thead>
+        <Table bordered >
+          <thead style={{ verticalAlign: 'middle' }}>
             <tr>
               <th colSpan='10'><h3>User</h3></th>
             </tr>
@@ -178,7 +178,7 @@ const User = () => {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{ verticalAlign: 'middle' }}>
             {!isLoading && dataUser && dataUser.length > 0 &&
               dataUser.map((item, index) => {
                 return (

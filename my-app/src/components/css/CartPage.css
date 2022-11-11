@@ -39,7 +39,6 @@ button {
 button::after {
     position: relative;
     right: 0;
-    content: " \276f";
     transition: all 0.15s linear;
 }
 

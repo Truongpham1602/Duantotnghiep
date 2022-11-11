@@ -152,7 +152,7 @@ const Product = () => {
       />
       <div>
         <Table bordered>
-          <thead>
+          <thead style={{ verticalAlign: 'middle' }}>
             <tr>
               <th colSpan='10'><h3>Product</h3></th>
             </tr>
@@ -170,7 +170,7 @@ const Product = () => {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{ verticalAlign: 'middle' }}>
             {!isLoading && dataProduct && dataProduct.length > 0 &&
               Object.values(
                 dataProduct.slice(7 * page, 7 * page + 7)
