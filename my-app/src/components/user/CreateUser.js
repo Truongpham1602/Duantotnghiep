@@ -1,6 +1,12 @@
 import { React, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment'
+import {
+    ref,
+    uploadBytes,
+    getDownloadURL,
+} from "firebase/storage";
+import { storage } from "../../Firebase";
 
 import {
     Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
@@ -12,16 +18,8 @@ const User_Rest_API_URL = 'http://localhost:8080/admin/user';
 
 // class CreateUser extends Component {
 const CreateUser = (props) => {
-    // constructor(props) {
-    //     super(props);
-    //     state = {
-    //         user: {},
-    //         size: [37, 38, 39, 40, 41, 42, 43, 44, 45],
-    //     }
-    // }
-    // const user = props.user;
 
-    const { isCreateModal, toggleModal, updateData } = props;
+    const { isCreateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload } = props;
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
     // const [updateData, setUpdateData] = useState(props);
     const [user, setUser] = useState({});
@@ -29,8 +27,12 @@ const CreateUser = (props) => {
 
 
     const handleOnchangeInput = (event, id) => {
-        let copyUser = { ...user };
-        copyUser[id] = event.target.value;
+        const copyUser = { ...user };
+        if (id === 'image') {
+            copyUser[id] = event.target.files[0].name;
+        } else {
+            copyUser[id] = event.target.value;
+        }
         setUser({
             ...copyUser
         })
@@ -115,6 +117,7 @@ const CreateUser = (props) => {
     const toggle = () => {
         toggleModal()
         setUser({})
+        setImageUpload('')
     }
 
 
@@ -131,7 +134,7 @@ const CreateUser = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="name">
-                                        FullName
+                                        Name
                                     </Label>
                                     <Input
                                         id="fullName"
@@ -177,129 +180,88 @@ const CreateUser = (props) => {
                             </Col>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="telephone">
-                                        Telephone
-                                    </Label>
-                                    <Input
-                                        id="telephone"
-                                        name="telephone"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.telephone}
-                                        onChange={(event) => handleOnchangeInput(event, 'telephone')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="address">
-                                        Address
-                                    </Label>
-                                    <Input
-                                        id="address"
-                                        name="address"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.address}
-                                        onChange={(event) => handleOnchangeInput(event, 'address')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                            <Col md={6}>
-                                <FormGroup>
                                     <Label for="image">
                                         Image
                                     </Label>
                                     <Input
                                         id="image"
                                         name="image"
-                                        placeholder=""
                                         type="file"
-                                        value={user.image}
-                                        onChange={(event) => handleOnchangeInput(event, 'image')}
+                                        // value={user.image}
+                                        onChange={(event) => { handleOnchangeInput(event, 'image'); setImageUpload(event.target.files[0]) }}
                                     />
                                 </FormGroup>
                             </Col>
                         </Row>
                         <Row>
                             <Col md={6}>
-                                <FormGroup>
-                                    <Label for="creator">
-                                        Creator
-                                    </Label>
-                                    <Input
-                                        id="creator"
-                                        name="creator"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.creator}
-                                        onChange={(event) => handleOnchangeInput(event, 'creator')}
-                                    />
-                                </FormGroup>
+                                <Row>
+                                    <Col md={12}>
+                                        <FormGroup>
+                                            <Label for="telephone">
+                                                Telephone
+                                            </Label>
+                                            <Input
+                                                id="telephone"
+                                                name="telephone"
+                                                placeholder=""
+                                                type="text"
+                                                value={user.telephone}
+                                                onChange={(event) => handleOnchangeInput(event, 'telephone')}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={12}>
+                                        <FormGroup>
+                                            <Label for="address">
+                                                Address
+                                            </Label>
+                                            <Input
+                                                id="address"
+                                                name="address"
+                                                placeholder=""
+                                                type="text"
+                                                value={user.address}
+                                                onChange={(event) => handleOnchangeInput(event, 'address')}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={12}>
+                                        <FormGroup>
+                                            <Label for="roleId">
+                                                Role
+                                            </Label>
+                                            <Input
+                                                id="roleId"
+                                                name="roleId"
+                                                placeholder=""
+                                                type="select"
+                                                onChange={(event) => handleOnchangeInput(event, 'roleId')}
+                                            >
+                                                <option value='2'>
+                                                    Nhân viên
+                                                </option>
+                                                <option value='1'>
+                                                    Quản Lý
+                                                </option>
+                                                <option value='3'>
+                                                    Khách hàng
+                                                </option>
+                                            </Input>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
                             </Col>
                             <Col md={6}>
-                                <FormGroup>
-                                    <Label for="modifier">
-                                        Modifier
-                                    </Label>
-                                    <Input
-                                        id="modifier"
-                                        name="modifier"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.modifier}
-                                        onChange={(event) => handleOnchangeInput(event, 'modifier')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="status">
-                                        Status
-                                    </Label>
-                                    <Input
-                                        id="status"
-                                        name="status"
-                                        placeholder=""
-                                        type="text"
-                                        value={user.status}
-                                        onChange={(event) => handleOnchangeInput(event, 'status')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="roleId">
-                                        Role
-                                    </Label>
-                                    <Input
-                                        id="roleId"
-                                        name="roleId"
-                                        placeholder=""
-                                        type="select"
-                                        onChange={(event) => handleOnchangeInput(event, 'roleId')}
-                                    >
-                                        <option value='2'>
-                                            Nhân viên
-                                        </option>
-                                        <option value='1'>
-                                           Quản Lý
-                                        </option>
-                                        <option value='3'>
-                                            Khách hàng
-                                        </option>
-                                    </Input>
-                                </FormGroup>
+                                {imageUpload &&
+                                    <img width='100%' height='241rem' src={URL.createObjectURL(imageUpload)} />
+                                }
                             </Col>
                         </Row>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={(e) => { createUser(e) ; handleOnchangeInput(e, 'role') }}>
+                    <Button color="primary" onClick={(e) => { createUser(e); uploadFile(e) }}>
                         Add New
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>

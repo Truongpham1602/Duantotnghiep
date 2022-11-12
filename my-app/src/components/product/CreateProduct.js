@@ -22,7 +22,7 @@ const CreateProduct = (props) => {
     // const product = props.product;
 
     const { isCreateModal, toggleModal, updateData } = props;
-    const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
+    const size = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     // const [updateData, setUpdateData] = useState(props);
     const [product, setProduct] = useState({});
 

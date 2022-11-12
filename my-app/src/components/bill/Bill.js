@@ -31,7 +31,7 @@ const Bill = () => {
 
   return (
     <>
-      <Row style={{ overflow: 'unset' }}>
+      <Row className='row-cart' style={{ overflow: 'unset', padding: '1%' }}>
         <Col md={5} style={{ padding: '1%', marginTop: '2%' }}>
           <div><h3>Thông tin người nhận</h3></div>
           <Form style={{ padding: '0% 0% 0% 5%' }}>
