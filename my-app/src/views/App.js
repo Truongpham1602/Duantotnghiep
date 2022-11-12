@@ -28,12 +28,11 @@ function App() {
 
           {/* <Route path="cart" element={<> <Cart /></>} /> */}
 
-          <Route path="" element={<> <HeaderPage /><ProductTest /><ProductList /></>} />
-          <Route path="shop" element={<> <Product1 /></>}>
-            <Route path="" element={<> <ProductTest /></>} />
-          </Route>
-          <Route path="ProductOne" element={<> <ProductOne /></>}></Route>
-
+          <Route path="" element={<> <HeaderPage /><ProductList /></>} />
+            <Route path="shop" element={<> <Product1 /></>}>
+              <Route path="" element={<> <ProductTest /></>} />
+            </Route>
+            <Route path="ProductOne" element={<> <ProductOne /></>}></Route>
         </Route>
         <Route path="admin" element={<> <Admin /></>} >
           <Route path="" element={<> <Product /><User /></>} />

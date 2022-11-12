@@ -1,6 +1,7 @@
 import React from "react";
 import {Breadcrumb, BreadcrumbItem, Input} from 'reactstrap';
-import '../css/styles.css';
+// import '../css/styles.css';
+import '../css/productOne.css';
 import img1 from '../image/cart/cart-1.jpg';
 import img2 from '../image/product/details/thumb-1.jpg';
 import img3 from '../image/product/details/thumb-2.jpg';

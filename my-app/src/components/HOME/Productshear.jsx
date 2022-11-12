@@ -1,33 +1,12 @@
 import React from "react";
-import '../css/styles.css';
+// import '../css/styles.css';
 
 const ProductShear = () => {
     return (
         <div>
             <section className="timKiem" id="timKiem">
                 <div className="row">
-                    <div className="col-sm-12 col-md-3 col-lg-3 col-xl-3 dvtoolbar dvtool input-search">
-                        <div className="form-group">
-                            <label className="label-search">Chọn Size Giày</label>
-                            {/* <select className="form-control col-lg-12 js-example-tags d-none select2-hidden-accessible" name="listsize" placeholder="Chọn size" tabindex="-1" style="">
-                                <option value="" data-select2-id="3">Chọn Size Giày</option>
-                                
-                                <option value="3532">41.5</option>
-                                    
-                            </select> */}
-                                {/* <span className="select2 select2-container select2-container--default" dir="ltr" style="width: auto;">
-                                    <span className="selection">
-                                        <span className="select2-selection select2-selection--single" role="combobox" tabindex="0" aria-labelledby="select2-listsize-hi-container">
-                                            <span className="select2-selection__rendered" id="select2-listsize-hi-container" role="textbox" aria-readonly="true" title="Chọn Size Giày">Chọn Size Giày</span>
-                                            <span className="select2-selection__arrow" role="presentation">
-                                                <b role="presentation"></b>
-                                            </span>
-                                        </span>
-                                    </span>
-                                    <span className="dropdown-wrapper" aria-hidden="true"></span>
-                                </span> */}
-                        </div>
-                    </div>
+                    
                 </div>
             </section>
             <h1 className="timKiem">

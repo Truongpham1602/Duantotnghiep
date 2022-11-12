@@ -1,5 +1,5 @@
 import React from "react";
-// import '../css/styles.css';
+import '../css/productTest.css';
 import product1 from '../image/product/product-5.jpg';
 import product2 from '../image/product/product-2.jpg';
 import product3 from '../image/product/product-6.jpg';
@@ -11,8 +11,8 @@ import ProductShear from "../HOME/Productshear";
 const ProductTest = () => {
     return (
         <div>
-            <section class="product" id="product">
-                <h1 class="heading">latest <span>Products</span></h1>
+            {/* <h1 class="heading">latest <span>Products</span></h1> */}
+            <section class="productTest" id="productTest">
                 <div class="box-container">
                     {/* <div class="box">
                         <div class="content">
