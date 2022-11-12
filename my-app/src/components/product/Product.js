@@ -94,48 +94,7 @@ const Product = () => {
     setPage(page + 7 < dataProduct.length / 7 ? page + 7 : page);
   };
 
-  const [cate, setCate] = useState([
-    {
-      id: 1,
-      name: 'cateparen1',
-      parenid: ''
-    },
-    {
-      id: 2,
-      name: 'cateparen2',
-      parenid: ''
-    },
-    {
-      id: 3,
-      name: 'cateparen3',
-      parenid: ''
-    },
-    {
-      id: 4,
-      name: 'childrent1',
-      parenid: 1
-    },
-    {
-      id: 5,
-      name: 'childrent3',
-      parenid: 3
-    },
-    {
-      id: 6,
-      name: 'cateparen6',
-      parenid: ''
-    },
-    {
-      id: 7,
-      name: 'childrent2',
-      parenid: 2
-    },
-    {
-      id: 8,
-      name: 'childrent4',
-      parenid: 4
-    }
-  ]);
+
 
   return (
     <>

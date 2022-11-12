@@ -9,7 +9,7 @@ import useCallGetAPI from "../../customHook/CallGetApi";
 const Cart = () => {
 
     const [lstproduct, setLstProduct] = useState([])
-    const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getByUser_Id/1`)
+    const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [source, setSource] = useState()
