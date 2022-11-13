@@ -68,7 +68,8 @@ public class UserServicelmpl implements UserService {
 
 	@Override
 	public User findByUsername(String username) {
-		return userDao.findByUsername(username);
+		return  null;
+//		return userDao.findByUsername(username);
 	}
 
 

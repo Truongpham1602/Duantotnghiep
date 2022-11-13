@@ -37,9 +37,11 @@ public class AuthController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
-    @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) throws IOException {
+        System.out.println("vào rồi");
         try {
+
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         } catch (Exception e) {
             LOGGER.error(e.getMessage());

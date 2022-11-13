@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Configurable
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
     @Bean
     public JwtFilter jwtAuthenticationFilter() {
         return new JwtFilter();
@@ -57,13 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeHttpRequests()
 //        public endpoint
-                .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/api-docs/**").permitAll()
-                .antMatchers("/swagger/**").permitAll()
-                .antMatchers("/v3/api-docs/**").permitAll()
+
                 .antMatchers(SSWConstant.PREFIX_API_URL + "login").permitAll()
                 .anyRequest().authenticated();
-        
+
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
