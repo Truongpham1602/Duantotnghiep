@@ -1,29 +1,24 @@
 package bangiay.com.service;
+import bangiay.com.dao.UserDao;
 
-import bangiay.com.DTO.authentication.Account;
 import bangiay.com.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthService implements UserDetailsService {
-
+public class AccountService implements UserDetailsService {
     @Autowired
-    private UserService userService;
-
+    private UserDao userDao;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
+        User user = userDao.findByFullName(username);
+        if (user != null){
+            return org.springframework.security.core.userdetails.User.withUsername(username).password(user.getPassword()).roles(user.getRole().getRoleName()).build();
         }
-
-        Account account = new Account();
-        account.setUsername(user.getFullName());
-        account.setPassword(user.getPassword());
-        return account;
+        throw new UsernameNotFoundException("User not found with the name " + username);
     }
 }
