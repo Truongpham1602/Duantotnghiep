@@ -6,9 +6,17 @@ import product3 from '../image/product/product-6.jpg';
 import product4 from '../image/product/product-9.jpg';
 import product5 from '../image/product/product-12.jpg';
 import product6 from '../image/product/product-4.jpg';
+import axios from 'axios';
 
 import ProductShear from "../HOME/Productshear";
 const ProductTest = () => {
+
+    const addToCart = async (size_Id) => {
+        let res = await axios.post(`http://localhost:8080/cart/addToCart`, {
+            size_Id: size_Id,
+            quantity: 1
+        })
+    }
     return (
         <div>
             {/* <h1 class="heading">latest <span>Products</span></h1> */}
@@ -52,7 +60,7 @@ const ProductTest = () => {
                             <a href="#" class="fa fa-cart-plus"></a>
                             <a href="#" class="fa fa-eye"></a>
                         </div>
-                        <a href="#" class="btn">Add To Cart</a>
+                        <a onClick={() => addToCart(1)} class="btn">Add To Cart</a>
                     </div>
                     <div class="box">
                         <div class="content">
@@ -72,7 +80,7 @@ const ProductTest = () => {
                             <a href="#" class="fa fa-cart-plus"></a>
                             <a href="#" class="fa fa-eye"></a>
                         </div>
-                        <a href="#" class="btn">Add To Cart</a>
+                        <a onClick={() => addToCart(2)} class="btn">Add To Cart</a>
                     </div>
                     <div class="box">
                         <div class="content">

@@ -128,7 +128,7 @@ const UpdateProduct = (props) => {
                             </Col>
                         </Row>
                         <Row>
-                            <Col md={6}>
+                            <Col md={12}>
                                 <Row>
                                     <Col md={10}>
                                         <FormGroup>
@@ -148,43 +148,6 @@ const UpdateProduct = (props) => {
                                                 <option value='2'>
                                                     2
                                                 </option>
-                                            </Input>
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={1}>
-                                        <Label for="category">
-                                            Thêm
-                                        </Label>
-                                        <Button color="secondary">
-                                            +
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col md={6}>
-                                <Row>
-                                    <Col md={10}>
-                                        <FormGroup>
-                                            <Label for="size">
-                                                size
-                                            </Label>
-                                            <Input
-                                                id="size"
-                                                name="size"
-                                                placeholder=""
-                                                type="select"
-                                                onChange={(event) => handleOnchangeInput(event, 'size')}
-                                            >
-                                                {
-                                                    size.map((item, index) => {
-                                                        return (
-                                                            <option value={item}>
-                                                                {item}
-                                                            </option>
-                                                        )
-                                                    })
-                                                }
-
                                             </Input>
                                         </FormGroup>
                                     </Col>

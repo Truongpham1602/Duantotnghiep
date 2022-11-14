@@ -26,7 +26,6 @@ const Product = () => {
       copydata.unshift(res);
       console.log(copydata);
       setData(copydata);
-      console.log(dataProduct);
     }
     else if (type === 'update') {
       let copydata = dataProduct;
@@ -34,7 +33,6 @@ const Product = () => {
       copydata.fill(res, getIndex, getIndex + 1);
       console.log(copydata);
       setData(copydata)
-      console.log(dataProduct);
     }
   }
 
@@ -91,54 +89,14 @@ const Product = () => {
   };
 
   const onNext = () => {
-    setPage(page + 7 < dataProduct.length / 7 ? page + 7 : page);
+    setPage(page + 1 < dataProduct.length / 7 ? page + 1 : page);
   };
 
-  const [cate, setCate] = useState([
-    {
-      id: 1,
-      name: 'cateparen1',
-      parenid: ''
-    },
-    {
-      id: 2,
-      name: 'cateparen2',
-      parenid: ''
-    },
-    {
-      id: 3,
-      name: 'cateparen3',
-      parenid: ''
-    },
-    {
-      id: 4,
-      name: 'childrent1',
-      parenid: 1
-    },
-    {
-      id: 5,
-      name: 'childrent3',
-      parenid: 3
-    },
-    {
-      id: 6,
-      name: 'cateparen6',
-      parenid: ''
-    },
-    {
-      id: 7,
-      name: 'childrent2',
-      parenid: 2
-    },
-    {
-      id: 8,
-      name: 'childrent4',
-      parenid: 4
-    }
-  ]);
+
 
   return (
     <>
+
       <CreateProduct
         isCreateModal={isCreateModal}
         toggleModal={createModal}
@@ -155,6 +113,7 @@ const Product = () => {
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
               <th colSpan='10'><h3>Product</h3></th>
+
             </tr>
             <tr>
               <th>STT</th>
@@ -176,7 +135,7 @@ const Product = () => {
                 dataProduct.slice(7 * page, 7 * page + 7)
               ).map((item, index) => {
                 return (
-                  <tr key={item.id} onClick={() => { editProduct(item.id); updateModal() }}>
+                  <tr key={item.id}>
                     <th scope="row" id="">
                       {index + 1}
                     </th>

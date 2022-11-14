@@ -10,7 +10,7 @@ import bangiay.com.DTO.SizeDTO;
 public interface SizeService {
 	public List<SizeDTO> findAll();
 
-	public SizeDTO save(SizeDTO sizeDTO);
+	public List<SizeDTO> save(List<SizeDTO> sizeDTO);
 
 	public SizeDTO findById(Integer id);
 
