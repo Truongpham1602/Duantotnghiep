@@ -10,22 +10,27 @@ import lombok.Data;
 public class Category {
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "PAREN_ID")
+    @Column(name = "PAREN_ID",nullable = true)
+    
     private Integer parenId;
 
     @Column(name = "NAMECATE")
+    @Lob
     private String namecate;
 
     @Column(name = "CREATED")
-    private java.sql.Timestamp created;
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date created;
 
     @Column(name = "CREATOR")
     private String creator;
 
     @Column(name = "MODIFIED")
-    private java.sql.Timestamp modified;
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date modified;
 
     @Column(name = "MODIFIER")
     private String modifier;
