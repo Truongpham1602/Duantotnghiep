@@ -6,6 +6,8 @@ import {
     Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label,
     Row, Col, Form
 } from 'reactstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Product_Rest_API_URL = 'http://localhost:8080/admin/product';
@@ -18,7 +20,11 @@ const CreateProduct = (props) => {
     const [lstsizeSelect, setLstSizeSelect] = useState([]);
     const [product, setProduct] = useState({});
     const [lstSize, setLstSize] = useState([]);
-    let [sizeSelect, setSizeSelect] = useState();
+    let [sizeSelect, setSizeSelect] = useState(0);
+    const [nestedModal, setNestedModal] = useState(false);
+    const [closeAll, setCloseAll] = useState(false);
+
+
     const handleOnchangeinput = (event, id) => {
         let copyProduct = { ...product };
         copyProduct[id] = event.target.value;
@@ -27,8 +33,38 @@ const CreateProduct = (props) => {
         })
     }
 
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast)
+    };
+    const notifyWarning = (text) => {
+        toast.warning(text, styleToast);
+    };
+    const notifyError = (text) => {
+        toast.error(text, styleToast);
+    };
+
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    }
+
     const createProduct = (data) => {
         try {
+            if (product.name.trim().length <= 0 || product.color.trim().length <= 0
+                || product.price.trim().length <= 0 || product.quantity.trim().length <= 0
+            ) {
+                notifyWarning("Cần nhập thông tin")
+                return
+            } else if (sizeSelect <= 0) {
+                notifyWarning("Chưa chọn size")
+                return
+            }
             const nums = [
                 data.size1,
                 data.size2,
@@ -44,8 +80,7 @@ const CreateProduct = (props) => {
             const newNums = nums.slice(0, sizeSelect);
             const hasDuplicate = newNums.some(x => newNums.indexOf(x) !== newNums.lastIndexOf(x));
             if (hasDuplicate) {
-                // toast.warning("Nhập trùng size. Vui lòng nhập lại!");
-                alert('Nhập trùng size')
+                notifyWarning("Size bị trùng, vui lòng chọn lại!");
             } else {
                 const createPro = async () => {
                     let res = await axios.post(Product_Rest_API_URL + '/post', {
@@ -124,18 +159,30 @@ const CreateProduct = (props) => {
                     updateData(datares, `create`)
                     setSizeSelect()
                     toggle()
+                    notifySuccess("Thêm thành công")
                 }
                 createPro()
             }
         } catch (error) {
+            notifyWarning("Cần nhập thông tin")
             console.log(error)
         }
 
     }
 
+    const toggleNested = () => {
+        setNestedModal(!nestedModal);
+        setCloseAll(false);
+    };
+    const toggleAll = () => {
+        setNestedModal(!nestedModal);
+        setCloseAll(false);
+    };
+
     const toggle = () => {
         toggleModal()
         setProduct({})
+        setLstSizeSelect([])
     }
 
     const {
@@ -158,233 +205,269 @@ const CreateProduct = (props) => {
     }
 
     return (
-        <Modal isOpen={isCreateModal} toggle={() => toggle()}
-            size='lg'
-            centered
-        >
-            <Form onSubmit={handleSubmit(createProduct)} innerRef={ref}>
-                <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
-                <ModalBody>
-                    <Row>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label for="name">
-                                    Name
-                                </Label>
-                                <div>
-                                    <input style={{ width: '100%', borderRadius: '5px' }}
-                                        id="name"
-                                        name="name"
-                                        placeholder=""
-                                        type="text"
-                                        value={product.name}
-                                        onChange={(event) => handleOnchangeinput(event, 'name')}
-                                    />
-                                </div>
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label for="color">
-                                    Color
-                                </Label>
-                                <div>
-                                    <input style={{ width: '100%', borderRadius: '5px' }}
-                                        id="color"
-                                        name="color"
-                                        placeholder=""
-                                        type="text"
-                                        value={product.color}
-                                        onChange={(event) => handleOnchangeinput(event, 'color')}
-                                    />
-                                </div>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label for="price">
-                                    Price
-                                </Label>
-                                <div>
-                                    <input style={{ width: '100%', borderRadius: '5px' }}
-                                        id="price"
-                                        name="price"
-                                        placeholder=""
-                                        type="text"
-                                        value={product.price}
-                                        onChange={(event) => handleOnchangeinput(event, 'price')}
-                                    />
-                                </div>
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label for="quantity">
-                                    Quantity
-                                </Label>
-                                <div>
-                                    <input style={{ width: '100%', borderRadius: '5px' }}
-                                        id="quantity"
-                                        name="quantity"
-                                        placeholder=""
-                                        type="text"
-                                        value={product.quantity}
-                                        onChange={(event) => handleOnchangeinput(event, 'quantity')}
-                                    />
-                                </div>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={6}>
-                            <Row>
-                                <Col md={10}>
-                                    <FormGroup>
-                                        <Label for="category">
-                                            Category
-                                        </Label>
-                                        <div>
-                                            <select style={{ width: '100%', borderRadius: '5px' }}
-                                                id="category"
-                                                name="category"
-                                                placeholder=""
-                                                type="select"
-                                                onChange={(event) => handleOnchangeinput(event, 'categoryId')}
-                                            >
-                                                <option value='1'>
-                                                    1
-                                                </option>
-                                                <option value='2'>
-                                                    2
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </FormGroup>
-                                </Col>
-                                <Col md={2}>
-                                    <Label for="category">
-                                        Thêm
-                                    </Label>
-                                    <button style={{ width: '100%', borderRadius: '15px' }}>
-                                        +
-                                    </button>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col md={6}>
-                            <Row>
-                                <Col md={12}>
-                                    <FormGroup>
-                                        <Label for="size">
-                                            Số lượng size
-                                        </Label>
-                                        <div>
-                                            <select style={{ width: '100%', borderRadius: '5px' }}
-                                                id="size"
-                                                name="size"
-                                                placeholder=""
-                                                type="select"
-                                                onChange={(e) => { checkSize(e) }}
-                                            >
-                                                <option value=''>
-                                                    Chọn size
-                                                </option>
-                                                {
-                                                    sizeCheck.map((item, index) => {
-                                                        return (
-                                                            <option value={item}>
-                                                                {item}
-                                                            </option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={12}>
-                            <FormGroup>
-                                <Label for="description">
-                                    Description
-                                </Label>
-                                <div>
-                                    <textarea style={{ width: '100%', borderRadius: '5px', height: '100px' }}
-                                        id="description"
-                                        name="description"
-                                        onChange={(event) => handleOnchangeinput(event, 'description')}
-                                    />
-                                </div>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    {lstsizeSelect.length >= 1 &&
+        <>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+            <Modal isOpen={isCreateModal} toggle={() => toggle()}
+                size='lg'
+                centered
+            >
+                <Form onSubmit={handleSubmit(createProduct)} innerRef={ref}>
+                    <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
+                    <ModalBody>
                         <Row>
-                            {lstsizeSelect.map((item) => {
-                                return (
-                                    <Col md={6}>
-                                        <Row>
-                                            <Col md={4}>
-                                                <FormGroup>
-                                                    <Label for="description">
-                                                        Size
-                                                    </Label>
-                                                    <div>
-                                                        <select style={{ width: '100%', borderRadius: '5px' }}
-                                                            id="size"
-                                                            name="size"
-                                                            placeholder=""
-                                                            type="select"
-                                                            {...register(`size${item}`)}
-                                                        >
-                                                            {
-                                                                size.map((size) => {
-                                                                    return (
-                                                                        <option value={size}>
-                                                                            {size}
-                                                                        </option>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col md={8}>
-                                                <FormGroup>
-                                                    <Label for="description">
-                                                        Quantity
-                                                    </Label>
-                                                    <div>
-                                                        <input style={{ width: '100%', borderRadius: '5px' }}
-                                                            {...register(`quantity${item}`)} />
-                                                    </div>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                )
-                            }
-                            )
-                            }
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label for="name">
+                                        Name
+                                    </Label>
+                                    <div>
+                                        <input style={{ width: '100%', borderRadius: '5px' }}
+                                            id="name"
+                                            name="name"
+                                            placeholder=""
+                                            type="text"
+                                            value={product.name}
+                                            onChange={(event) => handleOnchangeinput(event, 'name')}
+                                        />
+                                    </div>
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label for="color">
+                                        Color
+                                    </Label>
+                                    <div>
+                                        <input style={{ width: '100%', borderRadius: '5px' }}
+                                            id="color"
+                                            name="color"
+                                            placeholder=""
+                                            type="text"
+                                            value={product.color}
+                                            onChange={(event) => handleOnchangeinput(event, 'color')}
+                                        />
+                                    </div>
+                                </FormGroup>
+                            </Col>
                         </Row>
-                    }
-                </ModalBody >
-                <ModalFooter>
-                    <Button color="primary" type='submit'>
-                        Add New
-                    </Button>
-                    <Button color="secondary" onClick={() => toggle()}>
-                        Cancel
-                    </Button>
-                </ModalFooter>
-            </Form >
-        </Modal >
+                        <Row>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label for="price">
+                                        Price
+                                    </Label>
+                                    <div>
+                                        <input style={{ width: '100%', borderRadius: '5px' }}
+                                            id="price"
+                                            name="price"
+                                            placeholder=""
+                                            type="text"
+                                            value={product.price}
+                                            onChange={(event) => handleOnchangeinput(event, 'price')}
+                                        />
+                                    </div>
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label for="quantity">
+                                        Quantity
+                                    </Label>
+                                    <div>
+                                        <input style={{ width: '100%', borderRadius: '5px' }}
+                                            id="quantity"
+                                            name="quantity"
+                                            placeholder=""
+                                            type="text"
+                                            value={product.quantity}
+                                            onChange={(event) => handleOnchangeinput(event, 'quantity')}
+                                        />
+                                    </div>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={6}>
+                                <Row>
+                                    <Col md={10}>
+                                        <FormGroup>
+                                            <Label for="category">
+                                                Category
+                                            </Label>
+                                            <div>
+                                                <select style={{ width: '100%', borderRadius: '5px' }}
+                                                    id="category"
+                                                    name="category"
+                                                    placeholder=""
+                                                    type="select"
+                                                    onChange={(event) => handleOnchangeinput(event, 'categoryId')}
+                                                >
+                                                    <option value='1'>
+                                                        1
+                                                    </option>
+                                                    <option value='2'>
+                                                        2
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={2}>
+                                        <Label for="category">
+                                            Thêm
+                                        </Label>
+                                        <button type='button' style={{ width: '100%', borderRadius: '15px' }} onClick={toggleNested}>
+                                            +
+                                        </button>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col md={6}>
+                                <Row>
+                                    <Col md={12}>
+                                        <FormGroup>
+                                            <Label for="size">
+                                                Số lượng size
+                                            </Label>
+                                            <div>
+                                                <select style={{ width: '100%', borderRadius: '5px' }}
+                                                    id="size"
+                                                    name="size"
+                                                    placeholder=""
+                                                    type="select"
+                                                    onChange={(e) => { checkSize(e) }}
+                                                >
+                                                    <option value=''>
+                                                        Chọn size
+                                                    </option>
+                                                    {
+                                                        sizeCheck.map((item, index) => {
+                                                            return (
+                                                                <option value={item}>
+                                                                    {item}
+                                                                </option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={12}>
+                                <FormGroup>
+                                    <Label for="description">
+                                        Description
+                                    </Label>
+                                    <div>
+                                        <textarea style={{ width: '100%', borderRadius: '5px', height: '100px' }}
+                                            id="description"
+                                            name="description"
+                                            onChange={(event) => handleOnchangeinput(event, 'description')}
+                                        />
+                                    </div>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        {lstsizeSelect.length >= 1 &&
+                            <Row>
+                                {lstsizeSelect.map((item) => {
+                                    return (
+                                        <Col md={6}>
+                                            <Row>
+                                                <Col md={4}>
+                                                    <FormGroup>
+                                                        <Label for="description">
+                                                            Size
+                                                        </Label>
+                                                        <div>
+                                                            <select style={{ width: '100%', borderRadius: '5px' }}
+                                                                id="size"
+                                                                name="size"
+                                                                placeholder=""
+                                                                type="select"
+                                                                {...register(`size${item}`)}
+                                                            >
+                                                                {
+                                                                    size.map((size) => {
+                                                                        return (
+                                                                            <option value={size}>
+                                                                                {size}
+                                                                            </option>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </FormGroup>
+                                                </Col>
+                                                <Col md={8}>
+                                                    <FormGroup>
+                                                        <Label for="description">
+                                                            Quantity
+                                                        </Label>
+                                                        <div>
+                                                            <input style={{ width: '100%', borderRadius: '5px' }}
+                                                                {...register(`quantity${item}`)} />
+                                                        </div>
+                                                    </FormGroup>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    )
+                                }
+                                )
+                                }
+                            </Row>
+                        }
+                    </ModalBody >
+                    <ModalFooter>
+                        <Button color="primary" type='submit'>
+                            Add New
+                        </Button>
+                        <Button color="secondary" onClick={() => toggle()}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </Form >
+                <Modal
+                    isOpen={nestedModal}
+                    toggle={toggleNested}
+                    onClosed={closeAll ? toggle : undefined}
+                    // size='lg'
+                    centered
+                >
+                    <ModalHeader>Thêm category</ModalHeader>
+                    <ModalBody>
+
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={toggleNested}>
+                            Add
+                        </Button>{' '}
+                        <Button color="secondary" onClick={toggleAll}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </Modal>
+            </Modal >
+
+        </>
+
     );
 
 }
