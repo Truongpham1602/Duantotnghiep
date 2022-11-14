@@ -59,7 +59,7 @@ public class AuthConfig {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
+        http.formLogin().loginPage("/login.html");
 
 
         return http.build();
