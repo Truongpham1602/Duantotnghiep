@@ -1,10 +1,11 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment'
+import useCallGetAPI from '../../customHook/CallGetApi';
 import { useForm } from "react-hook-form";
 import {
     Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label,
-    Row, Col, Form
+    Row, Col, Form, Input
 } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,7 +24,9 @@ const CreateProduct = (props) => {
     let [sizeSelect, setSizeSelect] = useState(0);
     const [nestedModal, setNestedModal] = useState(false);
     const [closeAll, setCloseAll] = useState(false);
-
+    const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`);
+    const [lstCate, setLstCate] = useState([]);
+    const [cate, setCate] = useState()
 
     const handleOnchangeinput = (event, id) => {
         let copyProduct = { ...product };
@@ -32,6 +35,10 @@ const CreateProduct = (props) => {
             ...copyProduct
         })
     }
+
+    useEffect(() => {
+        setLstCate(cates)
+    }, [cates])
 
     const notifySuccess = (text) => {
         toast.success(text, styleToast)
@@ -173,10 +180,12 @@ const CreateProduct = (props) => {
     const toggleNested = () => {
         setNestedModal(!nestedModal);
         setCloseAll(false);
+        setCate()
     };
     const toggleAll = () => {
         setNestedModal(!nestedModal);
         setCloseAll(false);
+        setCate()
     };
 
     const toggle = () => {
@@ -194,7 +203,7 @@ const CreateProduct = (props) => {
 
 
 
-    const checkSize = async (e) => {
+    const checkSize = (e) => {
         let Select = e.target.value
         setSizeSelect(Select)
         setLstSizeSelect([])
@@ -204,20 +213,26 @@ const CreateProduct = (props) => {
 
     }
 
+    const createCate = async () => {
+        try {
+            let res = await axios.post('http://localhost:8080/api/category/create', { namecate: cate })
+            let data = (res && res.data) ? res.data : {}
+            let copydata = lstCate
+            if (res.data) {
+                copydata.unshift(data);
+                console.log(copydata);
+                setLstCate(copydata);
+                notifySuccess('Thêm mới cate thành công')
+            }
+        } catch (error) {
+            notifyError('Thêm mới thất bại!')
+            console.log(error);
+        }
+    }
+
     return (
         <>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
+            <ToastContainer />
             <Modal isOpen={isCreateModal} toggle={() => toggle()}
                 size='lg'
                 centered
@@ -313,12 +328,13 @@ const CreateProduct = (props) => {
                                                     type="select"
                                                     onChange={(event) => handleOnchangeinput(event, 'categoryId')}
                                                 >
-                                                    <option value='1'>
-                                                        1
-                                                    </option>
-                                                    <option value='2'>
-                                                        2
-                                                    </option>
+                                                    {lstCate.map((item, index) => {
+                                                        return (
+                                                            <option key={index} value={item.id}>
+                                                                {item.namecate}
+                                                            </option>
+                                                        )
+                                                    })}
                                                 </select>
                                             </div>
                                         </FormGroup>
@@ -453,13 +469,17 @@ const CreateProduct = (props) => {
                 >
                     <ModalHeader>Thêm category</ModalHeader>
                     <ModalBody>
-
+                        <Input id="namecate"
+                            placeholder="Name Category"
+                            name="namecate"
+                            onChange={(event) => setCate(event.target.value)}
+                        />
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={toggleNested}>
+                        <Button type='button' color="primary" onClick={() => { toggleNested(); createCate() }}>
                             Add
                         </Button>{' '}
-                        <Button color="secondary" onClick={toggleAll}>
+                        <Button color="secondary" onClick={toggleNested}>
                             Cancel
                         </Button>
                     </ModalFooter>

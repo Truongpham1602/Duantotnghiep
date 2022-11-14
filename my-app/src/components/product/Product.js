@@ -24,14 +24,12 @@ const Product = () => {
     if (type === 'create') {
       let copydata = dataProduct;
       copydata.unshift(res);
-      console.log(copydata);
       setData(copydata);
     }
     else if (type === 'update') {
       let copydata = dataProduct;
       let getIndex = copydata.findIndex((p) => { return p.id === res.id });
       copydata.fill(res, getIndex, getIndex + 1);
-      console.log(copydata);
       setData(copydata)
     }
   }
