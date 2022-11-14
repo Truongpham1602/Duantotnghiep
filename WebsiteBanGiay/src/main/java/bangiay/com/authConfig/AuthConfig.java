@@ -52,7 +52,8 @@ public class AuthConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception{
         http.csrf().disable().cors();
 
-        http.authorizeHttpRequests().antMatchers("/auth/**").permitAll()
+        http.authorizeHttpRequests().antMatchers("/auth/**","/admin/user/**")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(jwtEntrypoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
