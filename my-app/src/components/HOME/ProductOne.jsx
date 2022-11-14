@@ -1,5 +1,5 @@
 import React from "react";
-import {Breadcrumb, BreadcrumbItem, Input} from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Input } from 'reactstrap';
 // import '../css/styles.css';
 import '../css/productOne.css';
 import img1 from '../image/cart/cart-1.jpg';
@@ -18,7 +18,7 @@ const ProductOne = () => {
                         <BreadcrumbItem><a href="#">Home</a></BreadcrumbItem>
                         <BreadcrumbItem><a href="#">Library</a></BreadcrumbItem>
                         <BreadcrumbItem active>Data</BreadcrumbItem>
-                    </Breadcrumb> 
+                    </Breadcrumb>
                 </div>
                 <div className="product-content row">
                     <div className="product-content-left row">
@@ -40,7 +40,7 @@ const ProductOne = () => {
                             <p>1.500.000<sup>đ</sup></p>
                         </div>
                         <div className="product-content-right-product-color">
-                            <p className="color"><span className="colorOne">Màu Sắc: </span>Xanh cổ vịt nhạt <span style={{ color:'red'}}>*</span></p>
+                            <p className="color"><span className="colorOne">Màu Sắc: </span>Xanh cổ vịt nhạt <span style={{ color: 'red' }}>*</span></p>
                             <div className="product-content-right-product-color-img">
                                 <img src="" alt="" />
                             </div>
@@ -59,7 +59,7 @@ const ProductOne = () => {
                             <p className="quantityOne">Số Lượng:</p>
                             {/* <input type="number" min={0}  value='1'/> */}
                             <Input bsSize="lg" type="number" min={0} className="soluong" />
-                            <p style={{ color:'red'}}>Vui lòng chọn size *</p>
+                            <p style={{ color: 'red' }}>Vui lòng chọn size *</p>
                         </div>
                         <div className="product-content-right-product-button">
                             <button class="fas fa-cart-arrow-down"><p>Thêm vào giỏ hàng</p></button>
