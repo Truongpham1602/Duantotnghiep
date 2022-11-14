@@ -26,7 +26,6 @@ const Product = () => {
       copydata.unshift(res);
       console.log(copydata);
       setData(copydata);
-      console.log(dataProduct);
     }
     else if (type === 'update') {
       let copydata = dataProduct;
@@ -34,7 +33,6 @@ const Product = () => {
       copydata.fill(res, getIndex, getIndex + 1);
       console.log(copydata);
       setData(copydata)
-      console.log(dataProduct);
     }
   }
 
@@ -91,13 +89,14 @@ const Product = () => {
   };
 
   const onNext = () => {
-    setPage(page + 7 < dataProduct.length / 7 ? page + 7 : page);
+    setPage(page + 1 < dataProduct.length / 7 ? page + 1 : page);
   };
 
 
 
   return (
     <>
+
       <CreateProduct
         isCreateModal={isCreateModal}
         toggleModal={createModal}
@@ -114,6 +113,7 @@ const Product = () => {
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
               <th colSpan='10'><h3>Product</h3></th>
+
             </tr>
             <tr>
               <th>STT</th>
@@ -135,7 +135,7 @@ const Product = () => {
                 dataProduct.slice(7 * page, 7 * page + 7)
               ).map((item, index) => {
                 return (
-                  <tr key={item.id} onClick={() => { editProduct(item.id); updateModal() }}>
+                  <tr key={item.id}>
                     <th scope="row" id="">
                       {index + 1}
                     </th>

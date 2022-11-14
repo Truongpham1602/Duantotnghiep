@@ -107,9 +107,9 @@ public class CartServiceImpl implements CartService {
 	private List<CartDTO> lstCart = new ArrayList<CartDTO>();
 
 	@Override
-	public List<CartDTO> addToCartDTONoUser(CartDTO cartDTO) {
+	public CartDTO addToCartDTONoUser(CartDTO cartDTO) {
 		lstCart.add(cartDTO);
-		return lstCart;
+		return cartDTO;
 	}
 
 	@Override

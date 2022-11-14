@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.SizeDTO;
+import bangiay.com.dao.ProductDao;
 import bangiay.com.dao.SizeDao;
+import bangiay.com.entity.Product;
 import bangiay.com.entity.Size;
 import bangiay.com.service.SizeService;
 
@@ -16,6 +18,9 @@ import bangiay.com.service.SizeService;
 public class SizeServiceImpl implements SizeService {
 	@Autowired
 	private SizeDao sizeDAO;
+
+	@Autowired
+	private ProductDao proDao;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -34,9 +39,11 @@ public class SizeServiceImpl implements SizeService {
 	}
 
 	@Override
-	public SizeDTO save(SizeDTO SizeDTO) {
-		Size Size = modelMapper.map(SizeDTO, Size.class);
-		this.sizeDAO.save(Size);
+	public List<SizeDTO> save(List<SizeDTO> SizeDTO) {
+		List<Size> Size = SizeDTO.stream().map(s -> modelMapper.map(s, Size.class)).collect(Collectors.toList());
+		Product pro = this.proDao.findById(SizeDTO.get(0).getProductId()).get();
+		System.out.println(SizeDTO);
+		this.sizeDAO.saveAll(Size);
 		return SizeDTO;
 	}
 

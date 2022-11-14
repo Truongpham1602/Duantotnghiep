@@ -68,7 +68,7 @@ public class CartRestController {
 	}
 
 	@PostMapping(value = "/addToCart")
-	public ResponseEntity<List<CartDTO>> addToCart(@RequestBody CartDTO dto) {
+	public ResponseEntity<CartDTO> addToCart(@RequestBody CartDTO dto) {
 		return ResponseEntity.ok().body(cartService.addToCartDTONoUser(dto));
 	}
 }
