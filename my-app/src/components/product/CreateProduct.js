@@ -10,7 +10,6 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const Product_Rest_API_URL = 'http://localhost:8080/admin/product';
 
 const CreateProduct = (props) => {
