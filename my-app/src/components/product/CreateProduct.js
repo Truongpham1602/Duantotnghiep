@@ -220,9 +220,9 @@ const CreateProduct = (props) => {
             let copydata = lstCate
             if (res.data) {
                 copydata.unshift(data);
-                console.log(copydata);
                 setLstCate(copydata);
                 notifySuccess('Thêm mới cate thành công')
+                toggleNested()
             }
         } catch (error) {
             notifyError('Thêm mới thất bại!')
@@ -476,7 +476,7 @@ const CreateProduct = (props) => {
                         />
                     </ModalBody>
                     <ModalFooter>
-                        <Button type='button' color="primary" onClick={() => { toggleNested(); createCate() }}>
+                        <Button type='button' color="primary" onClick={() => { createCate() }}>
                             Add
                         </Button>{' '}
                         <Button color="secondary" onClick={toggleNested}>
