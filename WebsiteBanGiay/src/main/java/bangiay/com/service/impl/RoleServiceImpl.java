@@ -42,4 +42,9 @@ public class RoleServiceImpl implements RoleService{
 				return r;
 		return null;
 	}
+
+	@Override
+	public List<Role> createList(List<Role> role) {
+		return roleDAO.saveAll(role);
+	}
 }

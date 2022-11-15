@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 public class UserDTO {
     private Integer id;
-    private Integer rolerId;
+    private Integer roleId;
     private String fullName;
     private String password;
     private String email;
@@ -33,11 +33,11 @@ public class UserDTO {
     }
 
     public Integer getRolerId() {
-        return this.rolerId;
+        return this.roleId;
     }
 
     public void setRolerId(Integer rolerId) {
-        this.rolerId = rolerId;
+        this.roleId = rolerId;
     }
 
     public String getFullName() {

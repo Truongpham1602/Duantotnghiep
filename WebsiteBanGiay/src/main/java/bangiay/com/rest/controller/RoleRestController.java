@@ -18,13 +18,18 @@ import bangiay.com.entity.Role;
 import bangiay.com.service.impl.*;
 
 @RestController
-@RequestMapping("/role/")
+@RequestMapping("/role")
 public class RoleRestController {
 	@Autowired
 	RoleServiceImpl roleService;
 	@PostMapping("/create")
 	public Role create(@RequestBody Role role) {
 		return roleService.create(role);
+	}
+	@PostMapping("/createAll")
+	public List<Role> createList(@RequestBody List<Role> role) {
+
+		return roleService.createList(role);
 	}
 	@GetMapping("/get/{id}")
 	public Role get(@PathVariable Integer id) throws Exception{

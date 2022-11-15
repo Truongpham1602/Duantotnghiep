@@ -11,4 +11,6 @@ void delete(Integer id);
 Role findById(Integer id)throws Exception;
 List<Role> findAll();
 Role findByName(String name);
+
+List<Role> createList(List<Role> role);
 }

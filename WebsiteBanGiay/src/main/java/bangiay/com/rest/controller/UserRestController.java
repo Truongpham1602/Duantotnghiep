@@ -18,7 +18,7 @@ import bangiay.com.service.UserService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("admin/user")
+@RequestMapping("/admin/user")
 public class UserRestController {
 	@Autowired
 	UserService userService;

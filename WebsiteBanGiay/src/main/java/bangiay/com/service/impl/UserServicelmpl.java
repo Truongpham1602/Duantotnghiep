@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.UserDTO;
@@ -19,6 +20,8 @@ import bangiay.com.service.UserService;
 public class UserServicelmpl implements UserService {
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private RoleDao roleDao;
@@ -39,6 +42,7 @@ public class UserServicelmpl implements UserService {
 //		user.setRoler(this.roleDao.findById(1).get());
 //		user.setCreated(user.getCreated());
 //		user.setModified(Timestamp.from(Instant.now()));
+		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
 		return userDTO;
@@ -69,6 +73,7 @@ public class UserServicelmpl implements UserService {
 	@Override
 	public User findByUsername(String username) {
 		return null;
+//		return userDao.findByUsername(username);
 	}
 
 }
