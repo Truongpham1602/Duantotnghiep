@@ -1,5 +1,6 @@
 import React from "react";
-import {Breadcrumb, BreadcrumbItem, Input} from 'reactstrap';
+import {Breadcrumb, BreadcrumbItem, Input ,FormGroup, Label,} from 'reactstrap';
+import NumericInput from 'react-numeric-input';
 // import '../css/styles.css';
 import '../css/productOne.css';
 import img1 from '../image/cart/cart-1.jpg';
@@ -9,6 +10,23 @@ import img4 from '../image/product/details/thumb-3.jpg';
 import img5 from '../image/product/details/thumb-4.jpg';
 
 const ProductOne = () => {
+    
+    // const bigImgClick = () => {
+    //     document.querySelector(".product-content-left-big-img").style.display = "none"
+    // }
+
+    const binhluanClick = () => {
+        document.querySelector(".product-buttom-right-content-chiTiet").style.display = "none"
+            document.querySelector(".product-buttom-right-content-binhLuan").style.display = "block"
+    }
+    const chitietClick = () => {
+        document.querySelector(".product-buttom-right-content-chiTiet").style.display = "block"
+            document.querySelector(".product-buttom-right-content-binhLuan").style.display = "none"
+        }
+    const button1Click = () => {
+        document.querySelector(".product-buttom-right-content-big").classList.toggle("activeB")
+        }
+    
     return (
         <section className="productOne">
             <div className="container">
@@ -21,7 +39,7 @@ const ProductOne = () => {
                     </Breadcrumb> 
                 </div>
                 <div className="product-content row">
-                    <div className="product-content-left row">
+                    <div className="product-content-left row col-lg-7">
                         <div className="product-content-left-big-img">
                             <img src={img1} alt="" />
                         </div>
@@ -32,43 +50,167 @@ const ProductOne = () => {
                             <img src={img5} alt="" />
                         </div>
                     </div>
-                    <div className="product-content-right">
+                    <div className="product-content-right col-lg-5">
                         <div className="product-content-right-product-name">
-                            <h1>áo thun cổ trong ph15225 hhaha</h1>
+                            <h1>áo thun cổ trong ph15225</h1>
                         </div>
                         <div className="product-content-right-product-price">
                             <p>1.500.000<sup>đ</sup></p>
                         </div>
                         <div className="product-content-right-product-color">
                             <p className="color"><span className="colorOne">Màu Sắc: </span>Xanh cổ vịt nhạt <span style={{ color:'red'}}>*</span></p>
-                            <div className="product-content-right-product-color-img">
+                            {/* <div className="product-content-right-product-color-img">
                                 <img src="" alt="" />
-                            </div>
+                            </div> */}
                         </div>
-                        <div className="product-content-right-product-size">
-                            <p className="SizeOne">Size:</p>
-                            <div className="size">
+                        <div className="product-content-right-product-size row">
+                            <div className="col-lg-1">
+                                <p className="SizeOne">Size:</p>
+                            </div>
+                            <div className="col-lg-11 size">
                                 <span>36</span>
                                 <span>37</span>
                                 <span>38</span>
                                 <span>39</span>
                                 <span>40</span>
+                                <span>41</span>
+                                <span>42</span>
                             </div>
                         </div>
-                        <div className="quantity">
-                            <p className="quantityOne">Số Lượng:</p>
-                            {/* <input type="number" min={0}  value='1'/> */}
-                            <Input bsSize="lg" type="number" min={0} className="soluong" />
-                            <p style={{ color:'red'}}>Vui lòng chọn size *</p>
+                        <div className="product-content-right-product-quantity">
+                            <div className="colorSize">
+                                <p style={{ color:'red'}}>Vui lòng chọn size *</p>
+                            </div>
+                                <p className="quantityLeft">Số Lượng: <NumericInput min={0}/></p>
                         </div>
                         <div className="product-content-right-product-button">
-                            <button class="fas fa-cart-arrow-down"><p>Thêm vào giỏ hàng</p></button>
+                            <button class="fas fa-cart-arrow-down btnGioHang"> Thêm vào giỏ hàng</button>
                         </div>
-                        {/* <div className="product-content-right-bottom">
-                            <div className="product-content-right-bottom-top">
-
+                    </div>
+                </div>
+                <div className="product-buttom-right">
+                    <div className="product-buttom-right-top button1" onClick={() => button1Click()}>
+                        &#8744;
+                    </div>
+                    <div className="product-buttom-right-content-big">
+                        <div className="product-buttom-right-content-title row">
+                            <div className="product-buttom-right-content-title-item chitiet col-lg-2" onClick={() => chitietClick()}>
+                                    <p>Thông tin sản phẩm</p>
                             </div>
-                        </div> */}
+                            <div className="product-buttom-right-content-title-item-bl binhluan col-lg-2" onClick={() => binhluanClick()}>
+                                    <p>Bình luận</p>
+                            </div>
+                        </div>
+                        <div className="product-buttom-right-content">
+                            <div className="product-buttom-right-content-chiTiet">
+                                <ul className="info-policy">
+                                    <li>
+                                        <div className="iconL">
+                                            <img data-src="https://cdn.tgdd.vn/ValueIcons/14/Bao-quan-nhiet-do-thuong.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/Bao-quan-nhiet-do-thuong.png"></img>
+                                        </div>
+                                        <p>Bảo quản nơi khô ráo, thoáng mát, tránh các loại nấm mốc</p>
+                                    </li>
+                                    <li>
+                                        <div className="iconL">
+                                        <img data-src="https://cdn.tgdd.vn/ValueIcons/14/Tranh-mat-troi.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/Tranh-mat-troi.png"></img>
+                                        </div>
+                                        <p>Tránh phơi trực tiếp dưới ánh nắng mặt trời</p>
+                                    </li>
+                                    <li>
+                                        <div className="iconL">
+                                        <img data-src="https://cdn.tgdd.vn/ValueIcons/14/Dung-khan-mem.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/Dung-khan-mem.png"></img>
+                                        </div>
+                                        <p>Vệ sinh bằng khăn ẩm, mềm</p>
+                                    </li>
+                                    <li>
+                                        <div className="iconL">
+                                        <img data-src="https://cdn.tgdd.vn/ValueIcons/14/chat-tay-rua-nhe.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/chat-tay-rua-nhe.png"></img>
+                                        </div>
+                                        <p>Sử dụng chất tẩy rửa nhẹ</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="product-buttom-right-content-binhLuan" style={{display: 'none'}}>
+                                <div className="product-buttom-right-content-binhLuan-textarea">
+                                    <FormGroup>
+                                        <Input
+                                            id="description"
+                                            name="description"
+                                            type="textarea"
+                                            size='lg'
+                                        />
+                                    </FormGroup>
+                                </div>
+                                <div className="d-flex justify-content-between">
+                                    <div className="d-flex w-25">
+                                        <span className="mt-2">Evaluate: </span>
+                                        &nbsp;
+                                        &nbsp;
+                                        <input className="form-control w-25" type="number" min="1" max="5" />
+                                        &nbsp;
+                                        &nbsp;
+                                        <span className="mt-2">Star</span>
+                                    </div>
+                                    <div>
+                                    <a className="btn btn-dark btn-sm btn-block px-0 text-white" 
+                                        style={{width: '12rem', }}>Send</a>
+                                    </div>
+
+                                </div>
+                                <br/>
+                                <ul className="nav nav-tabs border-0">
+                                    <li className="nav-item">
+                                        <a
+                                            className="nav-link fix_comment"
+                                            >
+                                            Description</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link fix_comment"
+                                            >
+                                            Reviews</a>
+                                    </li>
+                                </ul>
+                                {/* <div className="tab-content mb-5">
+                                    {
+                                        review === 'description' ? (
+                                            <div className="tab-pane fade show active">
+                                                <div className="p-4 p-lg-5 bg-white">
+                                                    <h6 className="text-uppercase">Product description </h6>
+                                                    <p className="text-muted text-small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                                </div>
+                                            </div>
+                                        ) : (<div className="tab-pane fade show active">
+                                            <div className="p-4 p-lg-5 bg-white">
+                                                <div className="row">
+                                                    <div className="col-lg-8">
+                                                        {
+                                                            list_comment && list_comment.map(value => (
+                                                                <div className="media mb-3" key={value._id}>
+                                                                    <img className="rounded-circle" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="" width="50" />
+                                                                    <div className="media-body ml-3">
+                                                                        <h6 className="mb-0 text-uppercase">{value.fullname}</h6>
+                                                                        <p className="small text-muted mb-0 text-uppercase">dd/mm/yyyy</p>
+                                                                        <ul className="list-inline mb-1 text-xs">
+                                                                            <li className="list-inline-item m-0"><i className={value.star1}></i></li>            
+                                                                            <li className="list-inline-item m-0"><i className={value.star2}></i></li>            
+                                                                            <li className="list-inline-item m-0"><i className={value.star3}></i></li>            
+                                                                            <li className="list-inline-item m-0"><i className={value.star4}></i></li>            
+                                                                            <li className="list-inline-item m-0"><i className={value.star5}></i></li>                    
+                                                                        </ul>
+                                                                        <p className="text-small mb-0 text-muted">{value.content}</p>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>)
+                                    }
+                                </div> */}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

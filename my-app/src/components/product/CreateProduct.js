@@ -1,12 +1,10 @@
 import { React, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment'
-
 import {
     Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
     Row, Col, Form
 } from 'reactstrap';
-
 
 const Product_Rest_API_URL = 'http://localhost:8080/admin/product';
 

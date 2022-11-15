@@ -91,7 +91,7 @@ const Product = () => {
   };
 
   const onNext = () => {
-    setPage(page + 7 < dataProduct.length / 7 ? page + 7 : page);
+    setPage(page + 1 < dataProduct.length / 7 ? page + 1 : page);
   };
 
   const [cate, setCate] = useState([
