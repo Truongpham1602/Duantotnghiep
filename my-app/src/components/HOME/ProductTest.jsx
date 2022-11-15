@@ -16,6 +16,7 @@ const ProductTest = () => {
             size_Id: size_Id,
             quantity: 1
         })
+
     }
     return (
         <div>
