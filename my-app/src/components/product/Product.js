@@ -3,6 +3,7 @@ import axios from 'axios';
 import CreateProduct from './CreateProduct';
 import UpdateProduct from './UpdateProduct';
 import useCallGetAPI from '../../customHook/CallGetApi';
+import ProductDetails from './ProductDetails';
 // import Tables from '../../customHook/Table';
 import {
   UncontrolledAccordion,
@@ -19,6 +20,7 @@ const Product = () => {
   const [page, setPage] = useState(0);
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
+  const [isDetailsModal, setisdetailsModal] = useState(false)
 
   const updateData = (res, type) => {
     if (type === 'create') {
@@ -50,6 +52,10 @@ const Product = () => {
 
   const updateModal = () => {
     setisUpdateModal(!isUpdateModal)
+  }
+
+  const detailsModal = () => {
+    setisdetailsModal(!isDetailsModal)
   }
 
 
@@ -95,6 +101,11 @@ const Product = () => {
   return (
     <>
 
+      <ProductDetails
+        isDetailsModal={isDetailsModal}
+        toggleModal={detailsModal}
+      />
+
       <CreateProduct
         isCreateModal={isCreateModal}
         toggleModal={createModal}
@@ -137,7 +148,7 @@ const Product = () => {
                     <th scope="row" id="">
                       {index + 1}
                     </th>
-                    <td id="category">{item.name}</td>
+                    <td id="category" onClick={() => detailsModal()}>{item.name}</td>
                     <td id="category">{item.color}</td>
                     {/* <td id="price">{item.price}</td> */}
                     <td id="quantity">{item.quantity}</td>

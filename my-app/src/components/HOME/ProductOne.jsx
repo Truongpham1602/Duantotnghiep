@@ -149,63 +149,36 @@ const ProductOne = () => {
                                         <span className="mt-2">Star</span>
                                     </div>
                                     <div>
-                                    <a className="btn btn-dark btn-sm btn-block px-0 text-white" 
+                                    <a className="btn btn-info btn-sm btn-block px-0 text-white" 
                                         style={{width: '12rem', }}>Send</a>
                                     </div>
-
                                 </div>
                                 <br/>
-                                <ul className="nav nav-tabs border-0">
-                                    <li className="nav-item">
-                                        <a
-                                            className="nav-link fix_comment"
-                                            >
-                                            Description</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link fix_comment"
-                                            >
-                                            Reviews</a>
-                                    </li>
-                                </ul>
-                                {/* <div className="tab-content mb-5">
-                                    {
-                                        review === 'description' ? (
-                                            <div className="tab-pane fade show active">
-                                                <div className="p-4 p-lg-5 bg-white">
-                                                    <h6 className="text-uppercase">Product description </h6>
-                                                    <p className="text-muted text-small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                                </div>
-                                            </div>
-                                        ) : (<div className="tab-pane fade show active">
+                                <div className="tab-content mb-5">
+                                    <div className="tab-pane fade show active">
                                             <div className="p-4 p-lg-5 bg-white">
                                                 <div className="row">
                                                     <div className="col-lg-8">
-                                                        {
-                                                            list_comment && list_comment.map(value => (
-                                                                <div className="media mb-3" key={value._id}>
-                                                                    <img className="rounded-circle" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="" width="50" />
-                                                                    <div className="media-body ml-3">
-                                                                        <h6 className="mb-0 text-uppercase">{value.fullname}</h6>
-                                                                        <p className="small text-muted mb-0 text-uppercase">dd/mm/yyyy</p>
-                                                                        <ul className="list-inline mb-1 text-xs">
-                                                                            <li className="list-inline-item m-0"><i className={value.star1}></i></li>            
-                                                                            <li className="list-inline-item m-0"><i className={value.star2}></i></li>            
-                                                                            <li className="list-inline-item m-0"><i className={value.star3}></i></li>            
-                                                                            <li className="list-inline-item m-0"><i className={value.star4}></i></li>            
-                                                                            <li className="list-inline-item m-0"><i className={value.star5}></i></li>                    
-                                                                        </ul>
-                                                                        <p className="text-small mb-0 text-muted">{value.content}</p>
-                                                                    </div>
-                                                                </div>
-                                                            ))
-                                                        }
+                                                        <div className="media mb-3">
+                                                            <img className="rounded-circle" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="" width="50" />
+                                                            <div className="media-body ml-3">
+                                                                <h6 className="mb-0 text-uppercase">FullName</h6>
+                                                                <p className="small text-muted mb-0 text-uppercase">dd/mm/yyyy</p>
+                                                                <ul className="list-inline mb-1 text-xs">
+                                                                    <li className="list-inline-item m-0"><i className="star1"></i></li>            
+                                                                    <li className="list-inline-item m-0"><i className="star2"></i></li>            
+                                                                    <li className="list-inline-item m-0"><i className="star3"></i></li>            
+                                                                    <li className="list-inline-item m-0"><i className="star4"></i></li>            
+                                                                    <li className="list-inline-item m-0"><i className="star5"></i></li>                    
+                                                                </ul>
+                                                                <p className="text-small mb-0 text-muted">content</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>)
-                                    }
-                                </div> */}
+                                        </div>
+                                </div>
                             </div>
                         </div>
                     </div>
