@@ -246,7 +246,7 @@ const CreateProduct = (props) => {
                                         Name
                                     </Label>
                                     <div>
-                                        <input style={{ width: '100%', borderRadius: '5px' }}
+                                        <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
                                             id="name"
                                             name="name"
                                             placeholder=""
@@ -263,7 +263,7 @@ const CreateProduct = (props) => {
                                         Color
                                     </Label>
                                     <div>
-                                        <input style={{ width: '100%', borderRadius: '5px' }}
+                                        <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
                                             id="color"
                                             name="color"
                                             placeholder=""
@@ -282,7 +282,7 @@ const CreateProduct = (props) => {
                                         Price
                                     </Label>
                                     <div>
-                                        <input style={{ width: '100%', borderRadius: '5px' }}
+                                        <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
                                             id="price"
                                             name="price"
                                             placeholder=""
@@ -299,7 +299,7 @@ const CreateProduct = (props) => {
                                         Quantity
                                     </Label>
                                     <div>
-                                        <input style={{ width: '100%', borderRadius: '5px' }}
+                                        <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
                                             id="quantity"
                                             name="quantity"
                                             placeholder=""
@@ -320,7 +320,7 @@ const CreateProduct = (props) => {
                                                 Category
                                             </Label>
                                             <div>
-                                                <select style={{ width: '100%', borderRadius: '5px' }}
+                                                <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
                                                     id="category"
                                                     name="category"
                                                     placeholder=""
@@ -342,7 +342,7 @@ const CreateProduct = (props) => {
                                         <Label for="category">
                                             Thêm
                                         </Label>
-                                        <button type='button' style={{ width: '100%', borderRadius: '15px' }} onClick={toggleNested}>
+                                        <button type='button' style={{ border: '1px solid', width: '100%', borderRadius: '15px' }} onClick={toggleNested}>
                                             +
                                         </button>
                                     </Col>
@@ -356,7 +356,7 @@ const CreateProduct = (props) => {
                                                 Số lượng size
                                             </Label>
                                             <div>
-                                                <select style={{ width: '100%', borderRadius: '5px' }}
+                                                <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
                                                     id="size"
                                                     name="size"
                                                     placeholder=""
@@ -389,7 +389,7 @@ const CreateProduct = (props) => {
                                         Description
                                     </Label>
                                     <div>
-                                        <textarea style={{ width: '100%', borderRadius: '5px', height: '100px' }}
+                                        <textarea style={{ border: '1px solid', width: '100%', borderRadius: '5px', height: '100px' }}
                                             id="description"
                                             name="description"
                                             onChange={(event) => handleOnchangeinput(event, 'description')}
@@ -410,7 +410,7 @@ const CreateProduct = (props) => {
                                                             Size
                                                         </Label>
                                                         <div>
-                                                            <select style={{ width: '100%', borderRadius: '5px' }}
+                                                            <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
                                                                 id="size"
                                                                 name="size"
                                                                 placeholder=""
@@ -436,7 +436,7 @@ const CreateProduct = (props) => {
                                                             Quantity
                                                         </Label>
                                                         <div>
-                                                            <input style={{ width: '100%', borderRadius: '5px' }}
+                                                            <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
                                                                 {...register(`quantity${item}`)} />
                                                         </div>
                                                     </FormGroup>
