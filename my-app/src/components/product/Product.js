@@ -126,6 +126,7 @@ const Product = () => {
       let imageFile = e.target.files[i];
       setImageFiles((prev) => [...prev, imageFile])
     }
+    console.log(e.target.files.map(item => item))
   };
 
   const handleUpdateImages = () => {
