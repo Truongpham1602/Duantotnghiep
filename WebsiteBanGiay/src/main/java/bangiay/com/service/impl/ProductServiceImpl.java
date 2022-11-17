@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.dao.CategoryDao;
+import bangiay.com.dao.MediaDao;
 import bangiay.com.dao.ProductDao;
+import bangiay.com.entity.Media;
 import bangiay.com.entity.Product;
 import bangiay.com.service.ProductService;
 
@@ -21,6 +23,8 @@ public class ProductServiceImpl implements ProductService {
 	private ProductDao proDAO;
 	@Autowired
 	private CategoryDao cateDao;
+	@Autowired
+	private MediaDao mediaDao;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -30,6 +34,10 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d, ProductDTO.class))
 				.collect(Collectors.toList());
 		for (int i = 0; i < pro.size(); i++) {
+			List<Media> media = mediaDao.findMediaByProduct_Id(pro.get(i).getId());
+			if (media.size() > 0) {
+				result.get(i).setImage(media.get(0).getUrl());
+			}
 			result.get(i).setName_cate(pro.get(i).getCategory().getNamecate());
 		}
 		return result;

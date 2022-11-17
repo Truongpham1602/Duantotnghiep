@@ -37,9 +37,10 @@ const Product = () => {
   const imagesListRef = ref(storage, "images/");
 
 
-  const updateData = (res, type) => {
+  const updateData = (res, resImg, type) => {
     if (type === 'create') {
       let copydata = dataProduct;
+      res['image'] = resImg;
       copydata.unshift(res);
       setData(copydata);
     }
@@ -55,6 +56,14 @@ const Product = () => {
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
+      listAll(imagesListRef).then((response) => {
+        response.items.forEach((item) => {
+          let nameImg = item.name;
+          getDownloadURL(item).then((url) => {
+            setImageUrls((prev) => [...prev, { nameImg, url }]);
+          });
+        });
+      });
     }
     // setData(dataPro)
     // console.log(isLoading);
@@ -124,14 +133,13 @@ const Product = () => {
   const handleImages = (e) => {
     setImageFiles([])
     //Get files
-    if (e.target.files.length >= 5) {
-      return toast.warning('Chỉ được chọn dưới 5 ảnh', styleToast)
+    if (e.target.files.length > 5) {
+      return toast.warning('Không chọn quá 5 ảnh', styleToast)
     }
     for (let i = 0; i < e.target.files.length; i++) {
       let imageFile = e.target.files[i];
       setImageFiles((prev) => [...prev, imageFile])
     }
-    console.log(e.target.files.map(item => item))
   };
 
   const handleUpdateImages = () => {
@@ -146,12 +154,24 @@ const Product = () => {
     const imageRef = ref(storage, `images/${imageFile.name}`);
 
     //Upload file
-    uploadBytes(imageRef, imageFile).then((snapshot) => {
-      let nameImg = imageFile.name
-      getDownloadURL(snapshot.ref).then((url) => {
-        setImageUrls((prev) => [...prev, { nameImg, url }]);
+    // uploadBytes(imageRef, imageFile).then((snapshot) => {
+    //   let nameImg = imageFile.name
+    //   getDownloadURL(snapshot.ref).then((url) => {
+
+    //     setImageUrls((prev) => [...prev, { nameImg, url }]);
+    //   });
+    // });
+    const imagesListRef = ref(storage, "images/");
+    setImageUrls([])
+    listAll(imagesListRef).then((response) => {
+      response.items.forEach((item) => {
+        let nameImg = item.name;
+        getDownloadURL(item).then((url) => {
+          setImageUrls((prev) => [...prev, { nameImg, url }]);
+        });
       });
     });
+
     // var task = storageRef.put(imageFile);
     //Update progress bar
     // task.on('state_changed',
@@ -184,6 +204,7 @@ const Product = () => {
         handleImages={handleImages}
         handleUpdateImages={handleUpdateImages}
         imageFiles={imageFiles}
+        setImageFiles={setImageFiles}
       />
       <UpdateProduct
         isUpdateModal={isUpdateModal}
@@ -228,6 +249,20 @@ const Product = () => {
                     <td id="quantity">{item.quantity}</td>
                     <td id="category">{item.name_cate}</td>
                     <td id="description">{item.description}</td>
+                    <td id="image" >
+                      {imageUrls.map((img) => {
+                        return (
+                          <>
+                            {img.nameImg === item.image &&
+                              <img width="70" height="65" src={img.url} />
+                            }
+                            {img.nameImg !== item.image &&
+                              <image src='' />
+                            }
+                          </>
+                        )
+                      })}
+                    </td>
                     {/* <td id="image">
                                                 <image src={`image/${item.id}`} width="150" height="170" />
                                             </td> */}
