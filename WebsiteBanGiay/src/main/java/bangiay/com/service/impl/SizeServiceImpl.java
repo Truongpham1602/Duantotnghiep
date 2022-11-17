@@ -42,7 +42,6 @@ public class SizeServiceImpl implements SizeService {
 	public List<SizeDTO> save(List<SizeDTO> SizeDTO) {
 		List<Size> Size = SizeDTO.stream().map(s -> modelMapper.map(s, Size.class)).collect(Collectors.toList());
 		Product pro = this.proDao.findById(SizeDTO.get(0).getProductId()).get();
-		System.out.println(SizeDTO);
 		this.sizeDAO.saveAll(Size);
 		return SizeDTO;
 	}

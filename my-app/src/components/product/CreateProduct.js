@@ -14,7 +14,7 @@ const Product_Rest_API_URL = 'http://localhost:8080/admin/product';
 
 const CreateProduct = (props) => {
 
-    const { isCreateModal, toggleModal, updateData, handleImages, handleUpdateImages, imageFiles } = props;
+    const { isCreateModal, toggleModal, updateData, handleImages, handleUpdateImages, imageFiles, setImageFiles } = props;
     const sizeCheck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     const size = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
     const [lstsizeSelect, setLstSizeSelect] = useState([]);
@@ -94,6 +94,7 @@ const CreateProduct = (props) => {
             const hasDuplicate = newNums.some(x => newNums.indexOf(x) !== newNums.lastIndexOf(x));
             if (hasDuplicate) {
                 notifyWarning("Size bị trùng, vui lòng chọn lại!");
+                return
             } else {
                 const createPro = async () => {
                     let res = await axios.post(Product_Rest_API_URL + '/post', {
@@ -110,6 +111,33 @@ const CreateProduct = (props) => {
                     if (datares.modified > 0) {
                         datares.modified = moment(datares.modified).format('DD/MM/YYYY HH:mm:ss');
                     }
+                    let image = [
+                        {
+                            productId: res.data.id,
+                            url: imageFiles[0]?.name,
+                            type: 'image'
+                        },
+                        {
+                            productId: res.data.id,
+                            url: imageFiles[1]?.name,
+                            type: 'image'
+                        },
+                        {
+                            productId: res.data.id,
+                            url: imageFiles[2]?.name,
+                            type: 'image'
+                        },
+                        {
+                            productId: res.data.id,
+                            url: imageFiles[3]?.name,
+                            type: 'image'
+                        },
+                        {
+                            productId: res.data.id,
+                            url: imageFiles[4]?.name,
+                            type: 'image'
+                        }
+                    ].slice(0, imageFiles.length)
                     let datasize = [
                         {
                             productId: res.data.id,
@@ -166,9 +194,9 @@ const CreateProduct = (props) => {
                             quantity: data.quantity11
                         }
                     ].slice(0, sizeSelect)
-                    console.log(datasize);
+                    let resImg = await axios.post(`http://localhost:8080/api/media/create`, image)
                     await axios.post(`http://localhost:8080/api/size/post`, datasize)
-                    updateData(datares, `create`)
+                    updateData(datares, resImg.data[0].url, `create`)
                     setSizeSelect()
                     toggle()
                     notifySuccess("Thêm thành công")
@@ -197,6 +225,7 @@ const CreateProduct = (props) => {
         toggleModal()
         setProduct({})
         setLstSizeSelect([])
+        setImageFiles([])
     }
 
     const {
@@ -471,7 +500,6 @@ const CreateProduct = (props) => {
                                         </div>
                                     </Col>
                                     <Col md={12} style={{ marginTop: '1%' }}>
-                                        {console.log(imageFiles.length)}
                                         {imageFiles.length > 0 && imageFiles && imageFiles.map((item, index) => {
                                             return (
                                                 <>
@@ -519,6 +547,33 @@ const CreateProduct = (props) => {
                                                                     width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
                                                             }
                                                             {index === 3 && <img src={URL.createObjectURL(item)}
+                                                                width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid' }} />}
+
+                                                        </>
+                                                    }
+                                                    {
+                                                        imageFiles.length === 5 &&
+                                                        <>
+                                                            {index === 0 &&
+                                                                <div style={{ padding: '0 20% 0 20%' }}>
+                                                                    <img src={URL.createObjectURL(item)}
+                                                                        width='100%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
+                                                                </div>
+                                                            }
+                                                            {index === 1 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px', marginRight: '5px' }} />
+                                                            }
+                                                            {index === 2 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
+                                                            }
+
+                                                            {index === 3 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
+                                                            }
+                                                            {index === 4 && <img src={URL.createObjectURL(item)}
                                                                 width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid' }} />}
 
                                                         </>
