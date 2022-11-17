@@ -28,6 +28,7 @@ const User = () => {
   const [imageUrls, setImageUrls] = useState([]);
   let [urlImg, setUrlImg] = useState();
   const imagesListRef = ref(storage, "images/");
+  const [page, setPage] = useState(0);
 
 
   useEffect(() => {
@@ -128,7 +129,13 @@ const User = () => {
   // };
 
 
+  const onBack = () => {
+    setPage(page - 1 > -1 ? page - 1 : page);
+  };
 
+  const onNext = () => {
+    setPage(page + 1 < dataUser.length / 7 ? page + 1 : page);
+  };
 
 
 
@@ -174,7 +181,9 @@ const User = () => {
           </thead>
           <tbody style={{ verticalAlign: 'middle' }}>
             {!isLoading && dataUser && dataUser.length > 0 &&
-              dataUser.map((item, index) => {
+              Object.values(
+                dataUser.slice(7 * page, 7 * page + 7)
+              ).map((item, index) => {
                 return (
                   <tr key={item.id}>
                     <th scope="row" id="">
@@ -223,6 +232,19 @@ const User = () => {
               </tr>
             }
           </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan='10'>
+                <button className="hoverable" onClick={onBack}>
+                  Back
+                </button>
+                <label style={{ margin: '0 10px' }}>{page + 1}</label>
+                <button className="hoverable" onClick={onNext}>
+                  Next
+                </button>
+              </td>
+            </tr>
+          </tfoot>
         </Table>
       </div>
     </>
