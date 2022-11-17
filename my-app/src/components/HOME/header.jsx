@@ -116,10 +116,12 @@ const Header = () => {
             <div class="icons">
                 <div id="menu-btn" onClick={() => { menubtn() }} class="fas fa-bars"></div>
                 <div id="search-btn" onClick={() => { searchbtn() }} class="fas fa-search"></div>
-                <NavLink className="navbar-brand" to="/ProductOne" activeClassName="active" style={{ marginRight: '0rem', fontSize: '1rem' }}>
+                <NavLink className="navbar-brand" to="/productOne" activeClassName="active" style={{ marginRight: '0rem', fontSize: '1rem' }}>
                     <div id="cart-btn" onMouseOver={() => { cartHover() }} onMouseLeave={() => { cartOutHover() }} class="fas fa-shopping-cart"></div>
                 </NavLink>
-                <div id="login-btn" class="fas fa-user"></div>
+                <NavLink className="navbar-brand" to="/login" style={{ marginRight: '0rem', fontSize: '1rem' }}>
+                    <div id="login-btn" class="fas fa-user"></div>
+                </NavLink>
             </div>
 
             {searchForm &&
