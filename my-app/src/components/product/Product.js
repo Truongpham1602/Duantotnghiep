@@ -4,7 +4,17 @@ import CreateProduct from './CreateProduct';
 import UpdateProduct from './UpdateProduct';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import ProductDetails from './ProductDetails';
-// import Tables from '../../customHook/Table';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  list,
+  getMetadata,
+} from "firebase/storage";
+import { storage } from "../../Firebase";
 import {
   UncontrolledAccordion,
   AccordionBody,
@@ -21,6 +31,11 @@ const Product = () => {
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
   const [isDetailsModal, setisdetailsModal] = useState(false)
+  const [imageUrls, setImageUrls] = useState([]);
+  let [urlImgs, setUrlImgs] = useState();
+  const [imageFiles, setImageFiles] = useState([])
+  const imagesListRef = ref(storage, "images/");
+
 
   const updateData = (res, type) => {
     if (type === 'create') {
@@ -40,7 +55,6 @@ const Product = () => {
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
-      console.log(dataPro);
     }
     // setData(dataPro)
     // console.log(isLoading);
@@ -58,6 +72,16 @@ const Product = () => {
     setisdetailsModal(!isDetailsModal)
   }
 
+  const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  }
 
   const editProduct = async (id) => {
     try {
@@ -96,7 +120,55 @@ const Product = () => {
     setPage(page + 1 < dataProduct.length / 7 ? page + 1 : page);
   };
 
+  //Listen for file selection 
+  const handleImages = (e) => {
+    setImageFiles([])
+    //Get files
+    if (e.target.files.length >= 5) {
+      return toast.warning('Chỉ được chọn dưới 5 ảnh', styleToast)
+    }
+    for (let i = 0; i < e.target.files.length; i++) {
+      let imageFile = e.target.files[i];
+      setImageFiles((prev) => [...prev, imageFile])
+    }
+    console.log(e.target.files.map(item => item))
+  };
 
+  const handleUpdateImages = () => {
+    imageFiles.map(imageFile => {
+      uploadImageAsPromise(imageFile)
+    })
+  }
+
+  //Handle waiting to upload each file using promise
+  const uploadImageAsPromise = (imageFile) => {
+    // return new Promise(function () {
+    const imageRef = ref(storage, `images/${imageFile.name}`);
+
+    //Upload file
+    uploadBytes(imageRef, imageFile).then((snapshot) => {
+      let nameImg = imageFile.name
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageUrls((prev) => [...prev, { nameImg, url }]);
+      });
+    });
+    // var task = storageRef.put(imageFile);
+    //Update progress bar
+    // task.on('state_changed',
+    //     progress = (snapshot) => {
+    //         var percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+    //         uploader.value = percentage;
+    //     },
+    //     error = (err) => {
+    //       console.log(err);
+    //     },
+    //     complete = () =>{
+    //         var downloadURL = task.snapshot.downloadURL;
+
+    //     }
+    // );
+    // });
+  }
 
   return (
     <>
@@ -105,11 +177,13 @@ const Product = () => {
         isDetailsModal={isDetailsModal}
         toggleModal={detailsModal}
       />
-
       <CreateProduct
         isCreateModal={isCreateModal}
         toggleModal={createModal}
         updateData={updateData}
+        handleImages={handleImages}
+        handleUpdateImages={handleUpdateImages}
+        imageFiles={imageFiles}
       />
       <UpdateProduct
         isUpdateModal={isUpdateModal}
@@ -195,266 +269,4 @@ const Product = () => {
 }
 
 export default Product;
-
-
-/* <div class="row">
-    <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/products/index?page=0" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/products/index?page=${ data.number<=0? 0 : data.number -1 }" aria-label="Previous">
-          Previous
-          </a>
-        </li>
-    <c:forEach var="i" begin="0" end="${ data.totalPages - 1 }">
-        <li class="page-item">
-            <a class="page-link"
-                href="/su22b1_IT16306_sof3021/admin/products/index?page=${ i }">
-                ${ i + 1 }
-            </a>
-        </li>
-    </c:forEach>
-     <li class="page-item">
-          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/products/index?page=${ data.number>=data.totalPages - 1? data.totalPages - 1 : data.number +1 }" aria-label="Previous">
-          Next
-          </a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="/su22b1_IT16306_sof3021/admin/products/index?page=${ data.totalPages - 1 }">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-    </ul>
-</div>
-    <div class="modal fade" id="ModalCreateCategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-danger fw-bold" id="exampleModalLabel">Delete_Modal</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       <form class="row g-3 align-items-center" id="update-form-category" action="/su22b1_IT16306_sof3021/admin/categories/store_p" method="POST" >
-            <div class="col-md-12">
-            <label  class="form-label">Name</label> 
-                 <input class="form-control" type="text" name="name" id="name">
-            </div>
-        <div class="col-md-12"><button class="btn form-control btn-outline-success mt-2" id="create_cg">Save</button></div>
-       </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="ModalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-danger fw-bold" id="exampleModalLabel">Update_Modal</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       <form class="row g-3 align-items-center" id="update-form" action="/su22b1_IT16306_sof3021/admin/products/update" 
-       method="POST" enctype="multipart/form-data">
-            <div class="col-md-12 form-group">
-                <label  class="form-label" for="name">Name</label> 
-                 <input class="form-control" type="text" name="name" id="name">
-                 <span class="form-message" style="color: #f33a58"></span>
-            </div>
-            <div class="col-md-12 form-group">
-             <label  class="form-label">Price</label> 
-                 <input class="form-control" type="text" name="price" id="price">
-                 <span class="form-message" style="color: #f33a58"></span>
-                </div>
-                 <div class="col-md-12 form-group">
-            <label class="form-label">CreatedDate</label>
-             <input class="form-control" type="date" name="createdDate" id="createdDate">
-             <span class="form-message" style="color: #f33a58"></span>
-             </div>
-             <div class="col-md-12 form-group">
-                 <label  class="form-label">Available</label> 
-                 <select name = "available" id = "available" class="form-select" >
-                    <option value="1">Còn hàng</option>
-                    <option value="0">Chưa có hàng</option>
-                 </select>
-                 </div>
-                 <div class="col-md-7 form-group">
-                 <label  class="form-label">Category</label> 
-                 <select name = "category" id = "categoryud" class="form-select" >
-                      <c:forEach items="${ category }" var="c">
-                    <option value="${ c.id }">${ c.name }</option>
-                      </c:forEach>
-                 </select>
-                 </div>
-                 <div class="col-2">
-                 <label class="form-label">Thêm</label>
-                 <a class="btn btn-danger form-control" data-bs-dismiss="modal" id="update_category">+</a>
-                 </div>
-                 <div class="col-md-12 form-group">
-                 <label  class="form-label">Photo</label> 
-                 <input class="form-control" type="file" name="img" id="img">
-                 </div>
-        <div class="col-md-12"><button class="btn form-control btn-outline-success mt-2">Update</button></div>
-       </form>
-      
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="ModalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-danger fw-bold" id="exampleModalLabel">Delete_Modal</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       <form id="delete-form" action="/admin/products/delete" method="GET" >
-                Bạn muốn xóa?
-           <div class="row"><button class="btn btn-outline-danger mt-2">Delete</button></div>
-       </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="ModalCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-danger fw-bold" id="exampleModalLabel">Create_Modal</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       <form class="row g-3 align-items-center" id="create-form" action="/su22b1_IT16306_sof3021/admin/products/store" 
-       method="POST" enctype="multipart/form-data">
-            <div class="col-md-12 form-group">
-            <label  class="form-label">Name</label> 
-                 <input class="form-control" type="text" name="name" id="name">
-                <span class="form-message" style="color: #f33a58"></span>
-            </div>
-            <div class="col-md-12 form-group">
-             <label  class="form-label">Price</label> 
-                 <input class="form-control" type="text" name="price" id="price">
-                <span class="form-message" style="color: #f33a58"></span>
-                </div>
-                 <div class="col-md-12 form-group">
-            <label class="form-label">CreatedDate</label>
-             <input class="form-control" type="date" name="createdDate" id="createdDate">
-            <span class="form-message" style="color: #f33a58"></span>
-             </div>
-             <div class="col-md-12 form-group">
-                 <label  class="form-label">Available</label> 
-                     <select name = "available" id = "available" class="form-select" >
-                        <option value="1">Còn hàng</option>
-                        <option value="0">Chưa có hàng</option>
-                     </select>
-                 </div>
-                 <div class="col-md-7 form-group">
-                 <label  class="form-label">Category</label> 
-                 <select name = "category" id = "category" class="form-select" >
-                      <c:forEach items="${ category }" var="c">
-                          <option value="${ c.id }">${ c.name }</option>
-                      </c:forEach>
-                 </select>
-                 </div>
-                 <div class="col-2 form-group">
-                 <label class="form-label">Thêm</label>
-                 <a class="btn btn-danger form-control" data-bs-dismiss="modal" id="create_category">+</a>
-                 </div>
-                 <div class="col-md-12 form-group">
-                 <label  class="form-label">Photo</label> 
-                 <input class="form-control" type="file" name="img" id="img">
-                 </div>
-        <div class="col-md-12"><button class="btn form-control btn-outline-success mt-2">Save</button></div>
-       </form>
-      
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){
-    $(".update").click(function(){
-        Validator({
-             form: '#update-form',
-             formGroupSelector: '.form-group',
-             errorSelector: '.form-message',
-             rules: [
-               Validator.isRequired('#name', 'Vui lòng nhập tên Product'),
-               Validator.isRequired('#price', 'Vui lòng nhập Price'),
-               Validator.isPrice('#price', 'Price không đúng định dạng'),
-               Validator.isRequired('#createdDate', 'Vui lòng chọn Date')
-             ]
-           });
-    var id=$(this).closest("tr").find("#id").text();
-    $("#update-form").attr("action", "/su22b1_IT16306_sof3021/admin/products/update/" + id);
-	
-    var name=$(this).closest("tr").find("#name").text();
-    $("#ModalUpdate").find("#name").val(name);
-	
-    var price=$(this).closest("tr").find("#price").text();
-    $("#ModalUpdate").find("#price").val(price);
-	
-    var createdDate=$(this).closest("tr").find("#createdDate").text();
-    $("#ModalUpdate").find("#createdDate").val(createdDate);
-
-    var available=$(this).closest("tr").find("#available").text();
-    $("#ModalUpdate").find("#available").val(available);
-	
-    var op = document.getElementById("categoryud");
-    var category=$(this).closest("tr").find("#category").text();
-    for (var i = 0; i < op.options.length; i++) {
-        if (op.options[i].text == category) {
-            op.options[i].selected = true;
-        }
-    }
-	
-	
-    $("#ModalUpdate").modal("show");
-    })
-	
-    $(".delete").click(function(){
-        var id=$(this).closest("tr").find("#id").text();
-        $("#ModalDelete").modal("show");
-        $("#delete-form").attr("action", "/su22b1_IT16306_sof3021/admin/products/delete/" + id);
-    })
-    $(".create").click(function(){
-        Validator({
-             form: '#create-form',
-             formGroupSelector: '.form-group',
-             errorSelector: '.form-message',
-             rules: [
-               Validator.isRequired('#name', 'Vui lòng nhập tên Product'),
-               Validator.isRequired('#price', 'Vui lòng nhập Price'),
-               Validator.isPrice('#price', 'Price không đúng định dạng'),
-               Validator.isRequired('#createdDate', 'Vui lòng chọn Date'),
-             ]
-           });
-        var id=$(this).closest("tr").find("#id").text();
-        $("#ModalCreate").modal("show");
-    })
-    document.getElementById("create_category").onclick = function(){
-        $("#ModalCreateCategory").modal("show");
-    }
-    document.getElementById("update_category").onclick = function(){
-        $("#ModalCreateCategory").modal("show");
-    }
-})
-</script> */
-
-
 

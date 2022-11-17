@@ -14,7 +14,7 @@ const Product_Rest_API_URL = 'http://localhost:8080/admin/product';
 
 const CreateProduct = (props) => {
 
-    const { isCreateModal, toggleModal, updateData } = props;
+    const { isCreateModal, toggleModal, updateData, handleImages, handleUpdateImages, imageFiles } = props;
     const sizeCheck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     const size = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
     const [lstsizeSelect, setLstSizeSelect] = useState([]);
@@ -62,13 +62,20 @@ const CreateProduct = (props) => {
 
     const createProduct = (data) => {
         try {
+            handleUpdateImages()
             if (product.name.trim().length <= 0 || product.color.trim().length <= 0
                 || product.price.trim().length <= 0 || product.quantity.trim().length <= 0
             ) {
-                notifyWarning("Cần nhập thông tin")
+                notifyWarning("Cần nhập thông tin!")
+                return
+            } else if (imageFiles.length <= 0) {
+                notifyWarning("Chưa chọn ảnh!")
+                return
+            } else if (imageFiles.length >= 5) {
+                notifyWarning("Chỉ được chọn dưới 5 ảnh!")
                 return
             } else if (sizeSelect <= 0) {
-                notifyWarning("Chưa chọn size")
+                notifyWarning("Chưa chọn size!")
                 return
             }
             const nums = [
@@ -103,7 +110,6 @@ const CreateProduct = (props) => {
                     if (datares.modified > 0) {
                         datares.modified = moment(datares.modified).format('DD/MM/YYYY HH:mm:ss');
                     }
-
                     let datasize = [
                         {
                             productId: res.data.id,
@@ -209,7 +215,6 @@ const CreateProduct = (props) => {
         for (let i = 1; i <= Select; i++) {
             setLstSizeSelect((prev) => [...prev, i])
         }
-
     }
 
     const createCate = async () => {
@@ -233,222 +238,303 @@ const CreateProduct = (props) => {
         <>
             <ToastContainer />
             <Modal isOpen={isCreateModal} toggle={() => toggle()}
-                size='lg'
+                size='xl'
                 centered
             >
                 <Form onSubmit={handleSubmit(createProduct)} innerRef={ref}>
                     <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
                     <ModalBody>
                         <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="name">
-                                        Name
-                                    </Label>
-                                    <div>
-                                        <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                            id="name"
-                                            name="name"
-                                            placeholder=""
-                                            type="text"
-                                            value={product.name}
-                                            onChange={(event) => handleOnchangeinput(event, 'name')}
-                                        />
-                                    </div>
-                                </FormGroup>
-                            </Col>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="color">
-                                        Color
-                                    </Label>
-                                    <div>
-                                        <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                            id="color"
-                                            name="color"
-                                            placeholder=""
-                                            type="text"
-                                            value={product.color}
-                                            onChange={(event) => handleOnchangeinput(event, 'color')}
-                                        />
-                                    </div>
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="price">
-                                        Price
-                                    </Label>
-                                    <div>
-                                        <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                            id="price"
-                                            name="price"
-                                            placeholder=""
-                                            type="text"
-                                            value={product.price}
-                                            onChange={(event) => handleOnchangeinput(event, 'price')}
-                                        />
-                                    </div>
-                                </FormGroup>
-                            </Col>
-                            <Col md={6}>
-                                <FormGroup>
-                                    <Label for="quantity">
-                                        Quantity
-                                    </Label>
-                                    <div>
-                                        <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                            id="quantity"
-                                            name="quantity"
-                                            placeholder=""
-                                            type="text"
-                                            value={product.quantity}
-                                            onChange={(event) => handleOnchangeinput(event, 'quantity')}
-                                        />
-                                    </div>
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
+                            <Col md={7}>
                                 <Row>
-                                    <Col md={10}>
+                                    <Col md={6}>
                                         <FormGroup>
-                                            <Label for="category">
-                                                Category
+                                            <Label for="name">
+                                                Name
                                             </Label>
                                             <div>
-                                                <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                    id="category"
-                                                    name="category"
+                                                <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
+                                                    id="name"
+                                                    name="name"
                                                     placeholder=""
-                                                    type="select"
-                                                    onChange={(event) => handleOnchangeinput(event, 'categoryId')}
-                                                >
-                                                    {lstCate.map((item, index) => {
-                                                        return (
-                                                            <option key={index} value={item.id}>
-                                                                {item.namecate}
-                                                            </option>
-                                                        )
-                                                    })}
-                                                </select>
+                                                    type="text"
+                                                    value={product.name}
+                                                    onChange={(event) => handleOnchangeinput(event, 'name')}
+                                                />
                                             </div>
                                         </FormGroup>
                                     </Col>
-                                    <Col md={2}>
-                                        <Label for="category">
-                                            Thêm
-                                        </Label>
-                                        <button type='button' style={{ border: '1px solid', width: '100%', borderRadius: '15px' }} onClick={toggleNested}>
-                                            +
-                                        </button>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label for="color">
+                                                Color
+                                            </Label>
+                                            <div>
+                                                <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
+                                                    id="color"
+                                                    name="color"
+                                                    placeholder=""
+                                                    type="text"
+                                                    value={product.color}
+                                                    onChange={(event) => handleOnchangeinput(event, 'color')}
+                                                />
+                                            </div>
+                                        </FormGroup>
                                     </Col>
                                 </Row>
-                            </Col>
-                            <Col md={6}>
                                 <Row>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label for="price">
+                                                Price
+                                            </Label>
+                                            <div>
+                                                <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
+                                                    id="price"
+                                                    name="price"
+                                                    placeholder=""
+                                                    type="text"
+                                                    value={product.price}
+                                                    onChange={(event) => handleOnchangeinput(event, 'price')}
+                                                />
+                                            </div>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label for="quantity">
+                                                Quantity
+                                            </Label>
+                                            <div>
+                                                <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
+                                                    id="quantity"
+                                                    name="quantity"
+                                                    placeholder=""
+                                                    type="text"
+                                                    value={product.quantity}
+                                                    onChange={(event) => handleOnchangeinput(event, 'quantity')}
+                                                />
+                                            </div>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col md={6}>
+                                        <Row>
+                                            <Col md={10}>
+                                                <FormGroup>
+                                                    <Label for="category">
+                                                        Category
+                                                    </Label>
+                                                    <div>
+                                                        <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
+                                                            id="category"
+                                                            name="category"
+                                                            placeholder=""
+                                                            type="select"
+                                                            onChange={(event) => handleOnchangeinput(event, 'categoryId')}
+                                                        >
+                                                            {lstCate.map((item, index) => {
+                                                                return (
+                                                                    <option key={index} value={item.id}>
+                                                                        {item.namecate}
+                                                                    </option>
+                                                                )
+                                                            })}
+                                                        </select>
+                                                    </div>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={2} style={{ padding: '0px 12px 0px 0px', marginLeft: '0%' }}>
+                                                <Label for="category">
+                                                    add
+                                                </Label>
+                                                <button type='button' style={{ border: '1px solid', width: '100%', borderRadius: '15px' }} onClick={toggleNested}>
+                                                    +
+                                                </button>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Row>
+                                            <Col md={12}>
+                                                <FormGroup>
+                                                    <Label for="size">
+                                                        Số lượng size
+                                                    </Label>
+                                                    <div>
+                                                        <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
+                                                            id="size"
+                                                            name="size"
+                                                            placeholder=""
+                                                            type="select"
+                                                            onChange={(e) => { checkSize(e) }}
+                                                        >
+                                                            <option value=''>
+                                                                Chọn size
+                                                            </option>
+                                                            {
+                                                                sizeCheck.map((item, index) => {
+                                                                    return (
+                                                                        <option value={item}>
+                                                                            {item}
+                                                                        </option>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                    </Col>
                                     <Col md={12}>
                                         <FormGroup>
-                                            <Label for="size">
-                                                Số lượng size
+                                            <Label for="description">
+                                                Description
                                             </Label>
                                             <div>
-                                                <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                    id="size"
-                                                    name="size"
-                                                    placeholder=""
-                                                    type="select"
-                                                    onChange={(e) => { checkSize(e) }}
-                                                >
-                                                    <option value=''>
-                                                        Chọn size
-                                                    </option>
-                                                    {
-                                                        sizeCheck.map((item, index) => {
-                                                            return (
-                                                                <option value={item}>
-                                                                    {item}
-                                                                </option>
-                                                            )
-                                                        })
-                                                    }
-                                                </select>
+                                                <textarea style={{ border: '1px solid', width: '100%', borderRadius: '5px', height: '100px' }}
+                                                    id="description"
+                                                    name="description"
+                                                    onChange={(event) => handleOnchangeinput(event, 'description')}
+                                                />
                                             </div>
                                         </FormGroup>
                                     </Col>
                                 </Row>
+
+                                {lstsizeSelect.length >= 1 &&
+                                    <Row>
+                                        {lstsizeSelect.map((item) => {
+                                            return (
+                                                <Col md={6}>
+                                                    <Row>
+                                                        <Col md={4}>
+                                                            <FormGroup>
+                                                                <Label for="description">
+                                                                    Size
+                                                                </Label>
+                                                                <div>
+                                                                    <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
+                                                                        id="size"
+                                                                        name="size"
+                                                                        placeholder=""
+                                                                        type="select"
+                                                                        {...register(`size${item}`)}
+                                                                    >
+                                                                        {
+                                                                            size.map((size) => {
+                                                                                return (
+                                                                                    <option value={size}>
+                                                                                        {size}
+                                                                                    </option>
+                                                                                )
+                                                                            })
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </FormGroup>
+                                                        </Col>
+                                                        <Col md={8}>
+                                                            <FormGroup>
+                                                                <Label for="description">
+                                                                    Quantity
+                                                                </Label>
+                                                                <div>
+                                                                    <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
+                                                                        {...register(`quantity${item}`)} />
+                                                                </div>
+                                                            </FormGroup>
+                                                        </Col>
+
+                                                    </Row>
+
+                                                </Col>
+
+                                            )
+                                        }
+                                        )
+                                        }
+                                    </Row>
+                                }
+                            </Col>
+                            <Col md={5}>
+                                <Row>
+                                    <Col md={12}>
+                                        <Label>
+                                            Image
+                                        </Label>
+                                        <div>
+                                            <input type='file' multiple onChange={(e) => handleImages(e)}
+                                                style={{ border: '1px solid', width: '100%', borderRadius: '5px' }} />
+                                        </div>
+                                    </Col>
+                                    <Col md={12} style={{ marginTop: '1%' }}>
+                                        {console.log(imageFiles.length)}
+                                        {imageFiles.length > 0 && imageFiles && imageFiles.map((item, index) => {
+                                            return (
+                                                <>
+                                                    {
+                                                        imageFiles.length === 1 &&
+                                                        <img src={URL.createObjectURL(item)}
+                                                            width='100%' height='285rem' style={{ borderRadius: '15px', border: '1px solid' }} />
+                                                    }
+                                                    {
+                                                        imageFiles.length === 2 &&
+                                                        <div style={{ padding: '0 20% 0 20%' }}>
+                                                            <img src={URL.createObjectURL(item)}
+                                                                width='100%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
+                                                        </div>
+                                                    }
+                                                    {
+                                                        imageFiles.length === 3 &&
+                                                        <>
+                                                            {index === 0 &&
+                                                                <div style={{ padding: '0 20% 0 20%' }}>
+                                                                    <img src={URL.createObjectURL(item)}
+                                                                        width='100%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
+                                                                </div>
+                                                            }
+                                                            {index > 0 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='48.883%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
+                                                            }
+                                                        </>
+                                                    }
+                                                    {
+                                                        imageFiles.length === 4 &&
+                                                        <>
+                                                            {index === 0 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px', marginRight: '5px' }} />
+                                                            }
+                                                            {index === 1 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
+                                                            }
+
+                                                            {index === 2 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
+                                                            }
+                                                            {index === 3 && <img src={URL.createObjectURL(item)}
+                                                                width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid' }} />}
+
+                                                        </>
+                                                    }
+                                                </>
+                                            )
+                                        })}
+                                        {imageFiles.length <= 0 &&
+                                            <img
+                                                width='100%' height='285rem' style={{ borderRadius: '15px', border: '1px solid' }} />
+                                        }
+
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col md={12}>
-                                <FormGroup>
-                                    <Label for="description">
-                                        Description
-                                    </Label>
-                                    <div>
-                                        <textarea style={{ border: '1px solid', width: '100%', borderRadius: '5px', height: '100px' }}
-                                            id="description"
-                                            name="description"
-                                            onChange={(event) => handleOnchangeinput(event, 'description')}
-                                        />
-                                    </div>
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        {lstsizeSelect.length >= 1 &&
-                            <Row>
-                                {lstsizeSelect.map((item) => {
-                                    return (
-                                        <Col md={6}>
-                                            <Row>
-                                                <Col md={4}>
-                                                    <FormGroup>
-                                                        <Label for="description">
-                                                            Size
-                                                        </Label>
-                                                        <div>
-                                                            <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                                id="size"
-                                                                name="size"
-                                                                placeholder=""
-                                                                type="select"
-                                                                {...register(`size${item}`)}
-                                                            >
-                                                                {
-                                                                    size.map((size) => {
-                                                                        return (
-                                                                            <option value={size}>
-                                                                                {size}
-                                                                            </option>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </select>
-                                                        </div>
-                                                    </FormGroup>
-                                                </Col>
-                                                <Col md={8}>
-                                                    <FormGroup>
-                                                        <Label for="description">
-                                                            Quantity
-                                                        </Label>
-                                                        <div>
-                                                            <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                                {...register(`quantity${item}`)} />
-                                                        </div>
-                                                    </FormGroup>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    )
-                                }
-                                )
-                                }
-                            </Row>
-                        }
                     </ModalBody >
                     <ModalFooter>
                         <Button color="primary" type='submit'>
