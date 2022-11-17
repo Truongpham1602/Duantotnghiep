@@ -38,20 +38,11 @@ const CreateUser = (props) => {
         })
     }
 
-    // const editUser = async (id) => {
-    //     try {
-    //         const res = await axios.get(User_Rest_API_URL + `/find/${id}`)
-    //         setState({
-    //             user: res.data
-    //         })
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
+
 
     const createUser = () => {
         try {
-            const z = async () => {
+            const create = async () => {
                 let res = await axios.post(User_Rest_API_URL + '/post', {
                     roleId: user.roleId,
                     fullName: user.fullName,
@@ -74,45 +65,13 @@ const CreateUser = (props) => {
                 updateData(data, `create`)
                 toggle()
             }
-            z()
-            // setState({
-            //     lstUser: [...lstUser, res.data],
-            // })
-            // props.updateData();
+            create()
+
         } catch (error) {
             console.log(error)
         }
     }
 
-    // const updateUser = async (e, id) => {
-    //     try {
-    //         e.preventDefault();
-    //         if (document.getElementById('name').value.trim().length <= 0 || document.getElementById('color').value.trim().length <= 0
-    //             || document.getElementById('price').value.trim().length <= 0 || document.getElementById('quantity').value.trim().length <= 0
-    //             || document.getElementById('categoryid').value.trim().length <= 0 || document.getElementById('description').value.trim().length <= 0
-    //         ) {
-    //             alert("Cần nhập thông tin");
-    //             return;
-    //         }
-    //         const res = await axios.put(User_Rest_API_URL + `/put/${id}`, {
-    //             categoryId: user.categoryId,
-    //             color: user.color,
-    //             name: user.name,
-    //             description: user.description,
-    //             code: user.code,
-    //             price: user.price,
-    //             quantity: user.quantity,
-    //             created: user.created
-    //         })
-    //         setState({
-    //             lstUser: [...lstUser, res.data]
-    //         })
-    //         componentDidMount();
-    //         clear();
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
 
     const toggle = () => {
         toggleModal()

@@ -14,7 +14,7 @@ const Product_Rest_API_URL = 'http://localhost:8080/admin/product';
 
 const CreateProduct = (props) => {
 
-    const { isCreateModal, toggleModal, updateData } = props;
+    const { isCreateModal, toggleModal, updateData, handleImages, handleUpdateImages, imageFiles } = props;
     const sizeCheck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     const size = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
     const [lstsizeSelect, setLstSizeSelect] = useState([]);
@@ -62,13 +62,20 @@ const CreateProduct = (props) => {
 
     const createProduct = (data) => {
         try {
+            handleUpdateImages()
             if (product.name.trim().length <= 0 || product.color.trim().length <= 0
                 || product.price.trim().length <= 0 || product.quantity.trim().length <= 0
             ) {
-                notifyWarning("Cần nhập thông tin")
+                notifyWarning("Cần nhập thông tin!")
+                return
+            } else if (imageFiles.length <= 0) {
+                notifyWarning("Chưa chọn ảnh!")
+                return
+            } else if (imageFiles.length >= 5) {
+                notifyWarning("Chỉ được chọn dưới 5 ảnh!")
                 return
             } else if (sizeSelect <= 0) {
-                notifyWarning("Chưa chọn size")
+                notifyWarning("Chưa chọn size!")
                 return
             }
             const nums = [
@@ -103,7 +110,6 @@ const CreateProduct = (props) => {
                     if (datares.modified > 0) {
                         datares.modified = moment(datares.modified).format('DD/MM/YYYY HH:mm:ss');
                     }
-
                     let datasize = [
                         {
                             productId: res.data.id,
@@ -209,7 +215,6 @@ const CreateProduct = (props) => {
         for (let i = 1; i <= Select; i++) {
             setLstSizeSelect((prev) => [...prev, i])
         }
-
     }
 
     const createCate = async () => {
@@ -461,11 +466,71 @@ const CreateProduct = (props) => {
                                             Image
                                         </Label>
                                         <div>
-                                            <input type='file' style={{ border: '1px solid', width: '100%', borderRadius: '5px' }} />
+                                            <input type='file' multiple onChange={(e) => handleImages(e)}
+                                                style={{ border: '1px solid', width: '100%', borderRadius: '5px' }} />
                                         </div>
                                     </Col>
                                     <Col md={12} style={{ marginTop: '1%' }}>
-                                        <img width='100%' height='285rem' style={{ borderRadius: '15px', border: '1px solid' }} />
+                                        {console.log(imageFiles.length)}
+                                        {imageFiles.length > 0 && imageFiles && imageFiles.map((item, index) => {
+                                            return (
+                                                <>
+                                                    {
+                                                        imageFiles.length === 1 &&
+                                                        <img src={URL.createObjectURL(item)}
+                                                            width='100%' height='285rem' style={{ borderRadius: '15px', border: '1px solid' }} />
+                                                    }
+                                                    {
+                                                        imageFiles.length === 2 &&
+                                                        <div style={{ padding: '0 20% 0 20%' }}>
+                                                            <img src={URL.createObjectURL(item)}
+                                                                width='100%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
+                                                        </div>
+                                                    }
+                                                    {
+                                                        imageFiles.length === 3 &&
+                                                        <>
+                                                            {index === 0 &&
+                                                                <div style={{ padding: '0 20% 0 20%' }}>
+                                                                    <img src={URL.createObjectURL(item)}
+                                                                        width='100%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
+                                                                </div>
+                                                            }
+                                                            {index > 0 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='48.883%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
+                                                            }
+                                                        </>
+                                                    }
+                                                    {
+                                                        imageFiles.length === 4 &&
+                                                        <>
+                                                            {index === 0 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px', marginRight: '5px' }} />
+                                                            }
+                                                            {index === 1 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
+                                                            }
+
+                                                            {index === 2 &&
+                                                                <img src={URL.createObjectURL(item)}
+                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
+                                                            }
+                                                            {index === 3 && <img src={URL.createObjectURL(item)}
+                                                                width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid' }} />}
+
+                                                        </>
+                                                    }
+                                                </>
+                                            )
+                                        })}
+                                        {imageFiles.length <= 0 &&
+                                            <img
+                                                width='100%' height='285rem' style={{ borderRadius: '15px', border: '1px solid' }} />
+                                        }
+
                                     </Col>
                                 </Row>
                             </Col>

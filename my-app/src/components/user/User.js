@@ -19,15 +19,15 @@ import { storage } from "../../Firebase";
 // class User extends React.Component {
 const User = () => {
 
+  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/user/index`);
   const [user, setUser] = useState({});
   const [dataUser, setData] = useState([]);
-  const [imageUpload, setImageUpload] = useState(null);
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
+  const [imageUpload, setImageUpload] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
-  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/user/index`);
-  const imagesListRef = ref(storage, "images/");
   let [urlImg, setUrlImg] = useState();
+  const imagesListRef = ref(storage, "images/");
 
 
   useEffect(() => {
@@ -49,7 +49,6 @@ const User = () => {
     if (imageUpload == null) return;
     let check = true;
     imageUrls.map(item => {
-      console.log(item.nameImg);
       if (imageUpload.name === item.nameImg)
         return check = false
     })
@@ -127,12 +126,7 @@ const User = () => {
   // const onNext = () => {
   //   setPage(page + 7 < dataUser.length / 7 ? page + 7 : page);
   // };
-  // handleClickButtom = (event) => {
-  //   event.preventDefault();
-  //   setState({
-  //     show: !state.show
-  //   })
-  // }
+
 
 
 
