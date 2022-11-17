@@ -6,6 +6,8 @@ import Product from '../components/product/Product';
 import User from '../components/user/User';
 import Cart from '../components/layout/CartPage';
 import Bill from '../components/bill/Bill';
+import Login from '../components/login/Login';
+import Register from '../components/register/Register';
 
 import Product1 from '../components/layout/Product';
 import HeaderPage from '../components/layout/HeaderPage';
@@ -29,10 +31,11 @@ function App() {
           {/* <Route path="cart" element={<> <Cart /></>} /> */}
 
           <Route path="" element={<> <HeaderPage /><ProductList /></>} />
-            <Route path="shop" element={<> <Product1 /></>}>
-              <Route path="" element={<> <ProductTest /></>} />
-            </Route>
-            <Route path="ProductOne" element={<> <ProductOne /></>}></Route>
+          <Route path="shop" element={<> <Product1 /></>}>
+            <Route path="" element={<> <ProductTest /></>} />
+          </Route>
+          <Route path="ProductOne" element={<> <ProductOne /></>}></Route>
+
         </Route>
         <Route path="admin" element={<> <Admin /></>} >
           <Route path="" element={<> <Product /><User /></>} />
@@ -45,6 +48,8 @@ function App() {
         <Route path="checkout" element={<Bill />} >
 
         </Route>
+        <Route path="login" element={<Login />} ></Route>
+        <Route path="register" element={<Register />} ></Route>
       </Routes>
       {/* </header> */}
     </div>
