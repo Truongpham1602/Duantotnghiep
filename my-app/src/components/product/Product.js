@@ -192,7 +192,6 @@ const Product = () => {
 
   return (
     <>
-
       <ProductDetails
         isDetailsModal={isDetailsModal}
         toggleModal={detailsModal}
@@ -217,7 +216,6 @@ const Product = () => {
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
               <th colSpan='10'><h3>Product</h3></th>
-
             </tr>
             <tr>
               <th>STT</th>

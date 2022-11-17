@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import NumericInput from 'react-numeric-input';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "../css/CartPage.css";
 // import "../css/stylees1.css";
 import axios from 'axios';
@@ -110,7 +110,7 @@ const Cart = () => {
                     </div>
 
                     <div className="checkout">
-                        <button type="button" onClick={() => window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=mobile&txt_billing_email=quanganhsaker@gmail.com&txt_billing_fullname=quang%20anh&txt_inv_addr1=ha%20noi&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`}>Thanh Toán</button>
+                        <NavLink to='/checkout'><button type="button" >Thanh Toán</button></NavLink>
                     </div>
                 </div>
             </div>

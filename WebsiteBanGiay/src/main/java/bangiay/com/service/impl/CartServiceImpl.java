@@ -108,6 +108,14 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public CartDTO addToCartDTONoUser(CartDTO cartDTO) {
+		SizeDTO size = this.sizeService.findById(cartDTO.getSize_Id());
+		ProductDTO pro = this.proService.finById(size.getProductId());
+		cartDTO.setName_Product(pro.getName());
+		cartDTO.setPrice(pro.getPrice());
+		cartDTO.setQuantityTotal(pro.getQuantity());
+		List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(pro.getId());
+		byte[] data = SerializationUtils.serialize(lstSizeDTO);
+		cartDTO.setSize(SerializationUtils.deserialize(data));
 		lstCart.add(cartDTO);
 		return cartDTO;
 	}

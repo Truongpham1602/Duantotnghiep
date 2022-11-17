@@ -24,6 +24,16 @@ const Login = () => {
     setUser({ ...copyUser })
   }
 
+  const handleButton = async (e) => {
+    try {
+      let red = await axios.post("http://localhost:8080/auth/login", user)
+      localStorage.setItem("longtest", JSON.stringify(red.data));
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="login">
 
