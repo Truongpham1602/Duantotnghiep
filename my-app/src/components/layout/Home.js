@@ -4,11 +4,6 @@ import Header from "../HOME/header";
 import Footer from "../HOME/Footer";
 
 const Home = () => {
-
-
-
-
-
     return (
         <>
             <Header />
