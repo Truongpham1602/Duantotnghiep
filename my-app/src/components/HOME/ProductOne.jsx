@@ -65,13 +65,17 @@ const ProductOne = () => {
                                 <p className="SizeOne">Size:</p>
                             </div>
                             <div className="col-lg-11 size">
-                                <span>36</span>
-                                <span>37</span>
-                                <span>38</span>
-                                <span>39</span>
-                                <span>40</span>
-                                <span>41</span>
-                                <span>42</span>
+                                <span className="btn">36</span>
+                                <span className="btn">37</span>
+                                <span className="btn">38</span>
+                                <span className="btn">39</span>
+                                <span className="btn">40</span>
+                                <span className="btn">41</span>
+                                <span className="btn">42</span>
+                                <span className="btn">43</span>
+                                <span className="btn">44</span>
+                                <span className="btn">45</span>
+                                <span className="btn">46</span>
                             </div>
                         </div>
                         <div className="product-content-right-product-quantity">
