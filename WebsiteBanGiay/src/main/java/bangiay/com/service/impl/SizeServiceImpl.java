@@ -33,7 +33,7 @@ public class SizeServiceImpl implements SizeService {
 
 	@Override
 	public SizeDTO findById(Integer id) {
-		Size Size = sizeDAO.findById(id).get();
+		Size Size = sizeDAO.findById(id).orElseGet(null);
 		SizeDTO Sizedto = modelMapper.map(Size, SizeDTO.class);
 		return Sizedto;
 	}

@@ -12,12 +12,11 @@ const Bill = () => {
 
   const { data: dataProduct } = useCallGetAPI(`http://localhost:8080/cart/getByUser_Id/1`)
   const [Products, setProducts] = useState('null')
-  const handleOnchangeInput = (event, id) => {
-    let copydata = { ...Modal };
-    copydata.name = event.target.value;
-    setProducts({
-      ...copydata
-    })
+  const [user, setUser] = useState({})
+  const handleOnchangeInput = (e, id) => {
+    let copy = { ...user }
+    copy[id] = e.target.value
+    setUser(copy)
   }
   useEffect(() => {
     const getdata = () => {
@@ -28,6 +27,10 @@ const Bill = () => {
     }, 3000);
   })
 
+  const createOrder = async () => {
+    let res = await axios.post(`http://localhost:8080/order/createNoUser?voucher_Id=`, user)
+
+  }
 
   return (
     <>
@@ -54,14 +57,14 @@ const Bill = () => {
               <Col md={6}>
                 <FormGroup>
                   <Label for="color">
-                    Full Name
+                    Name
                   </Label>
                   <Input
-                    id="name"
-                    name="name"
+                    id="nameRecipient"
+                    name="nameRecipient"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, 'name')}
+                    onChange={(event) => handleOnchangeInput(event, 'nameRecipient')}
                   />
                 </FormGroup>
               </Col>
@@ -70,14 +73,14 @@ const Bill = () => {
               <Col md={6}>
                 <FormGroup>
                   <Label for="number Number phone">
-                    Number phone
+                    Phone Number
                   </Label>
                   <Input
-                    id="price"
-                    name="price"
+                    id="telephone"
+                    name="telephone"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, 'price')}
+                    onChange={(event) => handleOnchangeInput(event, 'telephone')}
                   />
                 </FormGroup>
               </Col>
@@ -135,7 +138,8 @@ const Bill = () => {
             </div>
 
             <div className="checkout">
-              <button type="button" onClick={() => window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=100&bankcode=NCB&language=vi&txt_billing_mobile=mobile&txt_billing_email=quanganhsaker@gmail.com&txt_billing_fullname=quang%20anh&txt_inv_addr1=ha%20noi&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`}>Thanh Toán</button>
+              {/* <button type="button" onClick={() => window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=100&bankcode=NCB&language=vi&txt_billing_mobile=mobile&txt_billing_email=quanganhsaker@gmail.com&txt_billing_fullname=quang%20anh&txt_inv_addr1=ha%20noi&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`}>Thanh Toán</button> */}
+              <button type="button" onClick={() => createOrder()}>Đặt hàng</button>
             </div>
           </div>
         </Col>

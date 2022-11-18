@@ -2,7 +2,15 @@ import { React, useState, useEffect } from 'react';
 import NumericInput from 'react-numeric-input';
 import { Link, NavLink } from "react-router-dom";
 import "../css/CartPage.css";
-// import "../css/stylees1.css";
+import {
+    ref,
+    uploadBytes,
+    getDownloadURL,
+    listAll,
+    list,
+    getMetadata,
+} from "firebase/storage";
+import { storage } from "../../Firebase";
 import axios from 'axios';
 import useCallGetAPI from "../../customHook/CallGetApi";
 
@@ -13,9 +21,11 @@ const Cart = () => {
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [source, setSource] = useState()
+    const [number, setNumber] = useState({})
+    const imagesListRef = ref(storage, "images/");
+    const [imageUrls, setImageUrls] = useState([]);
 
     useEffect(() => {
-
         let total = 0;
         const setTotal = () => {
             setLstCart(dataCart)
@@ -24,8 +34,23 @@ const Cart = () => {
             })
             setTotalPrice(total)
         }
+        setImageUrls([])
+        listAll(imagesListRef).then((response) => {
+            response.items.forEach((item) => {
+                let nameImg = item.name;
+                getDownloadURL(item).then((url) => {
+                    setImageUrls((prev) => [...prev, { nameImg, url }]);
+                });
+            });
+        });
         dataCart && setTotal()
     }, [dataCart])
+
+    const handleOnchangeInput = (e, id) => {
+        let copyNumber = number
+        copyNumber[id] = e
+        setNumber(copyNumber)
+    }
 
     return (
         <div className="container-fluid">
@@ -43,58 +68,73 @@ const Cart = () => {
             </div>
             <div className="row">
                 {/* Cart-left */}
-                <section className="cart-left col-8">
-                    <ul className="cart-list">
-                        {lstcart.map((lstcart, index) => {
-                            return (
-                                <li className="cart-item d-flex align-items-center" key={index}>
-                                    <div className="cart-infor">
-                                        <div className="thumbnail">
-                                            <a href="#">
-                                                <img alt={lstcart.name} />
-                                            </a>
-                                        </div>
-                                        <div className="detail">
-                                            <div className="name">
-                                                <a href="#">{lstcart.name_Product}</a>
-                                            </div>
-                                            <div className="description">{lstcart.description}</div>
-                                            <div className="price">{lstcart.price}</div>
-                                        </div>
-                                    </div>
-                                    <div className="product-content-right-product-size">
-                                        <p className="SizeOne">Size:</p>
-                                        <div className="size">
-                                            {lstcart.size.map(size => {
-                                                return <span>{size.size}</span>
-                                            })}
-                                        </div>
-                                    </div>
-                                    <div className="cart-quantity">
-                                        <div className="quantity">
-                                            <NumericInput min={0} max={lstcart.quantityTotal} value={lstcart.quantity} />
-                                        </div>
+                <section className="cart-left col-9">
+                    {lstcart.map((lstcart, index) => {
+                        return (
+                            <>
+                                <div className="product-content row" style={{ marginBottom: '3%', borderBottom: '1px solid' }}>
+                                    <div className="product-content-left row col-lg-4">
+                                        {imageUrls.map((img, index1) => {
+                                            return (
+                                                lstcart.media.map((item, index2) => {
+                                                    return (
+                                                        <>
+                                                            {index2 === 0 && img.nameImg === item.url &&
+                                                                <div className="product-content-left-big-img">
+                                                                    <img src={img.url} />
+                                                                </div>
+                                                            }
+                                                            {index2 > 0 &&
 
-                                        <div className="remove">
-                                            <svg
-                                                version="1.1"
-                                                className="close"
-                                                x="0px"
-                                                y="0px"
-                                                viewBox="0 0 60 60"
-                                                enableBackground="new 0 0 60 60"
-                                            >
-                                                <polygon points="38.936,23.561 36.814,21.439 30.562,27.691 24.311,21.439 22.189,23.561 28.441,29.812 22.189,36.064 24.311,38.186 30.562,31.934 36.814,38.186 38.936,36.064 32.684,29.812" />
-                                            </svg>
+                                                                img.nameImg === item.url &&
+                                                                <div className="product-content-left-small-img">
+                                                                    <img src={img.url} />
+                                                                </div>
+                                                            }
+                                                        </>
+                                                    )
+                                                })
+                                            )
+                                        })}
+                                    </div>
+                                    <div className="product-content-right col-lg-7" style={{ textAlign: 'left' }}>
+                                        <div className='row'>
+                                            <div className="col-lg-3">
+                                                <h5>{lstcart.name_Product}</h5>
+                                            </div>
+                                            <div className="col-lg-3">
+                                                <p className="color">{lstcart.color_Product}</p>
+                                            </div>
+                                            <div className="col-lg-3">
+                                                <p>{lstcart.price}<sup>đ</sup></p>
+                                            </div>
+                                            <div className="col-lg-3">
+                                                <p className="color">{lstcart.price}<sup>đ</sup></p>
+                                            </div>
+                                            <div className="col-lg-8">
+                                                <div className="row">
+                                                    <div className="col-lg-1">
+                                                        <p className="SizeOne">Size:</p>
+                                                    </div>
+                                                    <div className="col-lg-10">
+                                                        {lstcart.size.map(item => {
+                                                            return <button style={{ backgroundColor: 'cyan', margin: '2px' }} className="btn">{item.size}</button>
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-3">
+                                                <NumericInput min={0} />
+                                            </div>
                                         </div>
                                     </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
+                                </div>
+                            </>
+                        );
+                    })}
                 </section>
                 {/* Cart-right */}
-                <div className="cart-right col-4 bg-light">
+                <div className="cart-right col-3 bg-light">
                     <div className="summary">
                         <ul>
                             <li>

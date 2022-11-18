@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
 import bangiay.com.DTO.CartDTO;
+import bangiay.com.DTO.MediaDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.DTO.SizeDTO;
 import bangiay.com.dao.CartDao;
@@ -19,6 +20,7 @@ import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.Cart;
 import bangiay.com.service.CartService;
+import bangiay.com.service.MediaService;
 import bangiay.com.service.ProductService;
 import bangiay.com.service.SizeService;
 
@@ -36,6 +38,9 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private ProductService proService;
+
+	@Autowired
+	private MediaService mediaService;
 
 	@Autowired
 	UserDao userDao;
@@ -110,6 +115,7 @@ public class CartServiceImpl implements CartService {
 	public CartDTO addToCartDTONoUser(CartDTO cartDTO) {
 		SizeDTO size = this.sizeService.findById(cartDTO.getSize_Id());
 		ProductDTO pro = this.proService.finById(size.getProductId());
+		cartDTO.setColor_Product(pro.getColor());
 		cartDTO.setName_Product(pro.getName());
 		cartDTO.setPrice(pro.getPrice());
 		cartDTO.setQuantityTotal(pro.getQuantity());
@@ -128,9 +134,12 @@ public class CartServiceImpl implements CartService {
 			lstCart.get(i).setName_Product(pro.getName());
 			lstCart.get(i).setPrice(pro.getPrice());
 			lstCart.get(i).setQuantityTotal(pro.getQuantity());
+			List<MediaDTO> media = this.mediaService.findAllByPro_Id(pro.getId());
+			byte[] datamedia = SerializationUtils.serialize(media);
 			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(pro.getId());
-			byte[] data = SerializationUtils.serialize(lstSizeDTO);
-			lstCart.get(i).setSize(SerializationUtils.deserialize(data));
+			byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
+			lstCart.get(i).setMedia(SerializationUtils.deserialize(datamedia));
+			lstCart.get(i).setSize(SerializationUtils.deserialize(datalstSizeDTO));
 		}
 		return lstCart;
 	}

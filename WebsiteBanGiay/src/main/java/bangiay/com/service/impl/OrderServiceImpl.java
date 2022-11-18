@@ -141,7 +141,6 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<OrdersDTO> createNoUser(OrdersDTO ordersDTO, Integer voucher_Id) {
 		List<CartDTO> lstCartDTO = this.cartService.getCartNoUser();
-		System.out.println(lstCartDTO);
 		List<OrdersDTO> lstOrderDTO = new ArrayList<OrdersDTO>();
 		Voucher voucher = this.voucherDao.findById(voucher_Id).orElse(null);
 		for (int i = 0; i < lstCartDTO.size(); i++) {

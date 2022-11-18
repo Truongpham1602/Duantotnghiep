@@ -12,5 +12,7 @@ public interface MediaService {
 
 	MediaDTO update(MediaDTO mediaDTO);
 
+	List<MediaDTO> findAllByPro_Id(Integer product_Id);
+
 	void delete(Integer id);
 }

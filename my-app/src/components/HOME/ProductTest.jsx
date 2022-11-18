@@ -54,7 +54,7 @@ const ProductTest = () => {
                             <a href="#" class="fa fa-cart-plus"></a>
                             <a href="#" class="fa fa-eye"></a>
                         </div>
-                        <a onClick={() => addToCart(1)} class="btn">Add To Cart</a>
+                        <a onClick={() => addToCart(50)} class="btn">Add To Cart</a>
                     </div>
                     <div class="box">
                         <div class="content">
@@ -74,7 +74,7 @@ const ProductTest = () => {
                             <a href="#" class="fa fa-cart-plus"></a>
                             <a href="#" class="fa fa-eye"></a>
                         </div>
-                        <a onClick={() => addToCart(2)} class="btn">Add To Cart</a>
+                        <a onClick={() => addToCart(52)} class="btn">Add To Cart</a>
                     </div>
                     <div class="box">
                         <div class="content">
@@ -94,7 +94,7 @@ const ProductTest = () => {
                             <a href="#" class="fa fa-cart-plus"></a>
                             <a href="#" class="fa fa-eye"></a>
                         </div>
-                        <a href="#" class="btn">Add To Cart</a>
+                        <a onClick={() => addToCart(55)} class="btn">Add To Cart</a>
                     </div>
                     <div class="box">
                         <div class="content">
