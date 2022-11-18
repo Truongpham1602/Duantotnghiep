@@ -1,5 +1,5 @@
 import React from "react";
-import {Breadcrumb, BreadcrumbItem, Input ,FormGroup, Label,} from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Input, FormGroup, Label, } from 'reactstrap';
 import NumericInput from 'react-numeric-input';
 // import '../css/styles.css';
 import '../css/productOne.css';
@@ -10,23 +10,23 @@ import img4 from '../image/product/details/thumb-3.jpg';
 import img5 from '../image/product/details/thumb-4.jpg';
 
 const ProductOne = () => {
-    
+
     // const bigImgClick = () => {
     //     document.querySelector(".product-content-left-big-img").style.display = "none"
     // }
 
     const binhluanClick = () => {
         document.querySelector(".product-buttom-right-content-chiTiet").style.display = "none"
-            document.querySelector(".product-buttom-right-content-binhLuan").style.display = "block"
+        document.querySelector(".product-buttom-right-content-binhLuan").style.display = "block"
     }
     const chitietClick = () => {
         document.querySelector(".product-buttom-right-content-chiTiet").style.display = "block"
-            document.querySelector(".product-buttom-right-content-binhLuan").style.display = "none"
-        }
+        document.querySelector(".product-buttom-right-content-binhLuan").style.display = "none"
+    }
     const button1Click = () => {
         document.querySelector(".product-buttom-right-content-big").classList.toggle("activeB")
-        }
-    
+    }
+
     return (
         <section className="productOne">
             <div className="container">
@@ -58,7 +58,7 @@ const ProductOne = () => {
                             <p>1.500.000<sup>đ</sup></p>
                         </div>
                         <div className="product-content-right-product-color">
-                            <p className="color"><span className="colorOne">Màu Sắc: </span>Xanh cổ vịt nhạt <span style={{ color:'red'}}>*</span></p>
+                            <p className="color"><span className="colorOne">Màu Sắc: </span>Xanh cổ vịt nhạt <span style={{ color: 'red' }}>*</span></p>
                         </div>
                         <div className="product-content-right-product-size row">
                             <div className="col-lg-1">
@@ -80,9 +80,9 @@ const ProductOne = () => {
                         </div>
                         <div className="product-content-right-product-quantity">
                             <div className="colorSize">
-                                <p style={{ color:'red'}}>Vui lòng chọn size *</p>
+                                <p style={{ color: 'red' }}>Vui lòng chọn size *</p>
                             </div>
-                                <p className="quantityLeft">Số Lượng: <NumericInput min={0}/></p>
+                            <p className="quantityLeft">Số Lượng: <NumericInput min={0} /></p>
                         </div>
                         <div className="product-content-right-product-button">
                             <button class="fas fa-cart-arrow-down btnGioHang"> Thêm vào giỏ hàng</button>
@@ -95,12 +95,20 @@ const ProductOne = () => {
                     </div>
                     <div className="product-buttom-right-content-big">
                         <div className="product-buttom-right-content-title row">
-                            <div className="product-buttom-right-content-title-item chitiet col-lg-2" onClick={() => chitietClick()}>
-                                    <p>Thông tin sản phẩm</p>
+                            {/* <div className="product-buttom-right-content-title-item chitiet col-lg-2" onClick={() => chitietClick()}>
+                                <p>Thông tin sản phẩm</p>
                             </div>
                             <div className="product-buttom-right-content-title-item-bl binhluan col-lg-2" onClick={() => binhluanClick()}>
-                                    <p>Bình luận</p>
-                            </div>
+                                <p>Bình luận</p>
+                            </div> */}
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#" onClick={() => chitietClick()}>Thông tin sản phẩm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" onClick={() => binhluanClick()}>Bình luận</a>
+                                </li>
+                            </ul>
                         </div>
                         <div className="product-buttom-right-content">
                             <div className="product-buttom-right-content-chiTiet">
@@ -113,25 +121,25 @@ const ProductOne = () => {
                                     </li>
                                     <li>
                                         <div className="iconL">
-                                        <img data-src="https://cdn.tgdd.vn/ValueIcons/14/Tranh-mat-troi.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/Tranh-mat-troi.png"></img>
+                                            <img data-src="https://cdn.tgdd.vn/ValueIcons/14/Tranh-mat-troi.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/Tranh-mat-troi.png"></img>
                                         </div>
                                         <p>Tránh phơi trực tiếp dưới ánh nắng mặt trời</p>
                                     </li>
                                     <li>
                                         <div className="iconL">
-                                        <img data-src="https://cdn.tgdd.vn/ValueIcons/14/Dung-khan-mem.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/Dung-khan-mem.png"></img>
+                                            <img data-src="https://cdn.tgdd.vn/ValueIcons/14/Dung-khan-mem.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/Dung-khan-mem.png"></img>
                                         </div>
                                         <p>Vệ sinh bằng khăn ẩm, mềm</p>
                                     </li>
                                     <li>
                                         <div className="iconL">
-                                        <img data-src="https://cdn.tgdd.vn/ValueIcons/14/chat-tay-rua-nhe.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/chat-tay-rua-nhe.png"></img>
+                                            <img data-src="https://cdn.tgdd.vn/ValueIcons/14/chat-tay-rua-nhe.png" class=" ls-is-cached lazyloaded" src="https://cdn.tgdd.vn/ValueIcons/14/chat-tay-rua-nhe.png"></img>
                                         </div>
                                         <p>Sử dụng chất tẩy rửa nhẹ</p>
                                     </li>
                                 </ul>
                             </div>
-                            <div className="product-buttom-right-content-binhLuan" style={{display: 'none'}}>
+                            <div className="product-buttom-right-content-binhLuan" style={{ display: 'none' }}>
                                 <div className="product-buttom-right-content-binhLuan-textarea">
                                     <FormGroup>
                                         <Input
@@ -153,35 +161,35 @@ const ProductOne = () => {
                                         <span className="mt-2">Star</span>
                                     </div>
                                     <div>
-                                    <a className="btn btn-info btn-sm btn-block px-0 text-white" 
-                                        style={{width: '12rem', }}>Send</a>
+                                        <a className="btn btn-info btn-sm btn-block px-0 text-white"
+                                            style={{ width: '12rem', }}>Send</a>
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <div className="tab-content mb-5">
                                     <div className="tab-pane fade show active">
-                                            <div className="p-4 p-lg-5 bg-white">
-                                                <div className="row">
-                                                    <div className="col-lg-8">
-                                                        <div className="media mb-3">
-                                                            <img className="rounded-circle" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="" width="50" />
-                                                            <div className="media-body ml-3">
-                                                                <h6 className="mb-0 text-uppercase">FullName</h6>
-                                                                <p className="small text-muted mb-0 text-uppercase">dd/mm/yyyy</p>
-                                                                <ul className="list-inline mb-1 text-xs">
-                                                                    <li className="list-inline-item m-0"><i className="star1"></i></li>            
-                                                                    <li className="list-inline-item m-0"><i className="star2"></i></li>            
-                                                                    <li className="list-inline-item m-0"><i className="star3"></i></li>            
-                                                                    <li className="list-inline-item m-0"><i className="star4"></i></li>            
-                                                                    <li className="list-inline-item m-0"><i className="star5"></i></li>                    
-                                                                </ul>
-                                                                <p className="text-small mb-0 text-muted">content</p>
-                                                            </div>
+                                        <div className="p-4 p-lg-5 bg-white">
+                                            <div className="row">
+                                                <div className="col-lg-8">
+                                                    <div className="media mb-3">
+                                                        <img className="rounded-circle" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="" width="50" />
+                                                        <div className="media-body ml-3">
+                                                            <h6 className="mb-0 text-uppercase">FullName</h6>
+                                                            <p className="small text-muted mb-0 text-uppercase">dd/mm/yyyy</p>
+                                                            <ul className="list-inline mb-1 text-xs">
+                                                                <li className="list-inline-item m-0"><i className="star1"></i></li>
+                                                                <li className="list-inline-item m-0"><i className="star2"></i></li>
+                                                                <li className="list-inline-item m-0"><i className="star3"></i></li>
+                                                                <li className="list-inline-item m-0"><i className="star4"></i></li>
+                                                                <li className="list-inline-item m-0"><i className="star5"></i></li>
+                                                            </ul>
+                                                            <p className="text-small mb-0 text-muted">content</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

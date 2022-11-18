@@ -2,6 +2,7 @@ import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateUser from './CreateUser';
 import UpdateUser from './UpdateUser';
+import UserDetails from './UserDetails';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import {
   Table
@@ -24,6 +25,7 @@ const User = () => {
   const [dataUser, setData] = useState([]);
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
+  const [isUserDetailModal, setisUserDetailsModal] = useState(false)
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
   let [urlImg, setUrlImg] = useState();
@@ -89,6 +91,10 @@ const User = () => {
     setisUpdateModal(!isUpdateModal)
   }
 
+  const userDetailsModal = () => {
+    setisUserDetailsModal(!isUserDetailModal)
+  }
+
 
   const editUser = async (id) => {
     try {
@@ -141,6 +147,10 @@ const User = () => {
 
   return (
     <>
+      <UserDetails
+        isUserDetailModal={isUserDetailModal}
+        toggleModal={userDetailsModal}
+      />
       <CreateUser
         isCreateModal={isCreateModal}
         toggleModal={createModal}
@@ -189,7 +199,7 @@ const User = () => {
                     <th scope="row" id="">
                       {index + 1}
                     </th>
-                    <td id="category">{item.fullName}</td>
+                    <td id="category" onClick={() => userDetailsModal()}>{item.fullName}</td>
                     {/* <td id="category">{item.password}</td> */}
                     <td id="price">{item.email}</td>
                     <td id="quantity">{item.telephone}</td>
