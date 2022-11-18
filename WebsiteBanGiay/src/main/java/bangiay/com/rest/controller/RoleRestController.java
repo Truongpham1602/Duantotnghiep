@@ -22,29 +22,29 @@ import bangiay.com.service.impl.*;
 public class RoleRestController {
 	@Autowired
 	RoleServiceImpl roleService;
-	@PostMapping("/create")
-	public Role create(@RequestBody Role role) {
-		return roleService.create(role);
-	}
-	@PostMapping("/createAll")
-	public List<Role> createList(@RequestBody List<Role> role) {
-
-		return roleService.createList(role);
-	}
-	@GetMapping("/get/{id}")
-	public Role get(@PathVariable Integer id) throws Exception{
-		return roleService.findById(id);
-	}
-	@GetMapping("/get")
-	public List<Role> getAll(){
-		return roleService.findAll();
-	}
-	@PutMapping("/update/{id}")
-	public Role update(@RequestBody Role role,@PathVariable Integer id) {
-		return roleService.update(role, id);
-	}
-	@DeleteMapping("/delete/{id}")
-	public void deleteById(@PathVariable Integer id) {
-		roleService.delete(id);
-	}
+//	@PostMapping("/create")
+//	public Role create(@RequestBody Role role) {
+//		return roleService.create(role);
+//	}
+//	@PostMapping("/createAll")
+//	public List<Role> createList(@RequestBody List<Role> role) {
+//
+//		return roleService.createList(role);
+//	}
+//	@GetMapping("/get/{id}")
+//	public Role get(@PathVariable Integer id) throws Exception{
+//		return roleService.findById(id);
+//	}
+//	@GetMapping("/get")
+//	public List<Role> getAll(){
+//		return roleService.findAll();
+//	}
+//	@PutMapping("/update/{id}")
+//	public Role update(@RequestBody Role role,@PathVariable Integer id) {
+//		return roleService.update(role, id);
+//	}
+//	@DeleteMapping("/delete/{id}")
+//	public void deleteById(@PathVariable Integer id) {
+//		roleService.delete(id);
+//	}
 }

@@ -32,12 +32,12 @@ public class UserDTO {
         this.id = id;
     }
 
-    public Integer getRolerId() {
+    public Integer getRoleId() {
         return this.roleId;
     }
 
-    public void setRolerId(Integer rolerId) {
-        this.roleId = rolerId;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getFullName() {
