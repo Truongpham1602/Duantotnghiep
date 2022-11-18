@@ -2,6 +2,7 @@ import './App.scss';
 import Admin from '../components/layout/Admin';
 import Home from '../components/layout/Home';
 import Product from '../components/product/Product';
+import Voucher from '../components/voucher/voucher';
 
 import User from '../components/user/User';
 import Cart from '../components/layout/CartPage';
@@ -41,6 +42,7 @@ function App() {
           <Route path="" element={<> <Product /><User /></>} />
           <Route path="product" element={<> <Product /></>} />
           <Route path="user" element={<> <User /></>} />
+          <Route path="voucher" element={<> <Voucher /></>} />
         </Route>
         <Route path="cart" element={<Cart />} >
 
