@@ -4,9 +4,10 @@ import { Outlet } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
 import ProductShear from "../HOME/Productshear";
 import '../css/productTest.css';
+import { useOutletContext } from "react-router-dom";
 // class Home extends React.Component {
 const Product1 = () => {
-
+    const [addToCart] = useOutletContext()
 
 
 
@@ -22,19 +23,19 @@ const Product1 = () => {
                 <h1 class="headingTest">latest <span>Products</span></h1>
                 <Row>
                     <Col className="bg-light" lg="10">
-                        <Outlet />
+                        <Outlet context={[addToCart]} />
                     </Col>
                     <Col className="bg-light product-right" lg="2">
                         <div className="col-12 mini-card product-categori">
                             <h4 className="text-danger fw-bolder product-right-text-top">Loại sản phẩm</h4>
                             <ul className="list-group-product">
-                                <li><CgSlack className="icon-product"/><a href="#">Giày Nam</a></li>
-                                <li><CgSlack className="icon-product"/><a href="#">Giày Nữ</a></li>
-                                <li><CgSlack className="icon-product"/><a href="#">Giày Trẻ Em</a></li>
-                                <li><CgSlack className="icon-product"/><a href="#">Giày Đá Bóng</a></li>
-                                <li><CgSlack className="icon-product"/><a href="#">Giày Thời Trang</a></li>
-                                <li><CgSlack className="icon-product"/><a href="#">Giày Bóng Rổ</a></li>
-                                <li><CgSlack className="icon-product"/><a href="#">Giày Chạy Bộ</a></li>
+                                <li><CgSlack className="icon-product" /><a href="#">Giày Nam</a></li>
+                                <li><CgSlack className="icon-product" /><a href="#">Giày Nữ</a></li>
+                                <li><CgSlack className="icon-product" /><a href="#">Giày Trẻ Em</a></li>
+                                <li><CgSlack className="icon-product" /><a href="#">Giày Đá Bóng</a></li>
+                                <li><CgSlack className="icon-product" /><a href="#">Giày Thời Trang</a></li>
+                                <li><CgSlack className="icon-product" /><a href="#">Giày Bóng Rổ</a></li>
+                                <li><CgSlack className="icon-product" /><a href="#">Giày Chạy Bộ</a></li>
                             </ul>
                         </div>
 

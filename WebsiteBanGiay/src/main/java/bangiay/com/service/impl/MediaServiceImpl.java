@@ -48,4 +48,12 @@ public class MediaServiceImpl implements MediaService {
 		this.mediaDao.deleteById(id);
 	}
 
+	@Override
+	public List<MediaDTO> findAllByPro_Id(Integer product_Id) {
+		List<Media> lst = this.mediaDao.findMediaByProduct_Id(product_Id);
+		List<MediaDTO> lstMediaDTO = lst.stream().map(d -> modelMapper.map(d, MediaDTO.class))
+				.collect(Collectors.toList());
+		return lstMediaDTO;
+	}
+
 }

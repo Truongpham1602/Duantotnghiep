@@ -2,13 +2,15 @@ import { React, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import useCallGetAPI from "../../customHook/CallGetApi";
 import '../css/stylees1.css';
+import Badge from '@mui/material/Badge';
 // import Scrip from "./scripts";
 import logo from '../image/logo.png';
 import cart1 from '../image/cart/cart-1.jpg'
 import cart2 from '../image/cart/cart-2.jpg'
 import cart3 from '../image/cart/cart-3.jpg'
-const Header = () => {
-    const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
+const Header = (props) => {
+    // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
+    const { dataCart } = props
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [slides, setslides] = useState()
@@ -21,7 +23,6 @@ const Header = () => {
         let total = 0;
         const setTotal = () => {
             setLstCart(dataCart)
-            console.log(dataCart);
             dataCart.map(item => {
                 total += item.price
             })
@@ -37,7 +38,6 @@ const Header = () => {
         setcart(false)
         setnavbar(false)
     }
-
 
     const cartHover = () => {
         setsearchForm(false)
@@ -116,10 +116,14 @@ const Header = () => {
             <div class="icons">
                 <div id="menu-btn" onClick={() => { menubtn() }} class="fas fa-bars"></div>
                 <div id="search-btn" onClick={() => { searchbtn() }} class="fas fa-search"></div>
-                <NavLink className="navbar-brand" to="/ProductOne" activeClassName="active" style={{ marginRight: '0rem', fontSize: '1rem' }}>
-                    <div id="cart-btn" onMouseOver={() => { cartHover() }} onMouseLeave={() => { cartOutHover() }} class="fas fa-shopping-cart"></div>
+                <NavLink className="navbar-brand" to="/cart" activeClassName="active" style={{ marginRight: '0rem', fontSize: '1rem' }}>
+                    <Badge badgeContent={dataCart.length} color="primary">
+                        <div id="cart-btn" onMouseOver={() => { cartHover() }} onMouseLeave={() => { cartOutHover() }} class="fas fa-shopping-cart"></div>
+                    </Badge>
                 </NavLink>
-                <div id="login-btn" class="fas fa-user"></div>
+                <NavLink className="navbar-brand" to="/login" style={{ marginRight: '0rem', fontSize: '1rem' }}>
+                    <div id="login-btn" class="fas fa-user"></div>
+                </NavLink>
             </div>
 
             {searchForm &&

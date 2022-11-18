@@ -6,6 +6,7 @@ import useCallGetAPI from '../../customHook/CallGetApi';
 import ProductDetails from './ProductDetails';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 import {
   ref,
   uploadBytes,
@@ -34,7 +35,6 @@ const Product = () => {
   const [imageUrls, setImageUrls] = useState([]);
   let [urlImgs, setUrlImgs] = useState();
   const [imageFiles, setImageFiles] = useState([])
-  const imagesListRef = ref(storage, "images/");
 
 
   const updateData = (res, resImg, type) => {
@@ -56,6 +56,7 @@ const Product = () => {
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
+      const imagesListRef = ref(storage, "images/");
       listAll(imagesListRef).then((response) => {
         response.items.forEach((item) => {
           let nameImg = item.name;
@@ -128,10 +129,32 @@ const Product = () => {
   const onNext = () => {
     setPage(page + 1 < dataProduct.length / 7 ? page + 1 : page);
   };
-
+  const navigate = useNavigate()
   //Listen for file selection 
   const handleImages = (e) => {
     setImageFiles([])
+    const acc = [
+      {
+        a: 1,
+        b: 1
+      },
+      {
+        a: 2,
+        b: 2
+      },
+      {
+        a: 1,
+        b: 1
+      },
+      {
+        a: 3,
+        b: 3
+      },
+      {
+        a: 2,
+        b: 2
+      }]
+
     //Get files
     if (e.target.files.length > 5) {
       return toast.warning('Không chọn quá 5 ảnh', styleToast)
@@ -141,36 +164,33 @@ const Product = () => {
       setImageFiles((prev) => [...prev, imageFile])
     }
   };
-
   const handleUpdateImages = () => {
-    imageFiles.map(imageFile => {
-      uploadImageAsPromise(imageFile)
+    imageFiles.map(item => {
+      uploadImageAsPromise(item)
     })
   }
 
   //Handle waiting to upload each file using promise
   const uploadImageAsPromise = (imageFile) => {
     // return new Promise(function () {
+
     const imageRef = ref(storage, `images/${imageFile.name}`);
-
     //Upload file
-    // uploadBytes(imageRef, imageFile).then((snapshot) => {
-    //   let nameImg = imageFile.name
-    //   getDownloadURL(snapshot.ref).then((url) => {
 
-    //     setImageUrls((prev) => [...prev, { nameImg, url }]);
-    //   });
-    // });
-    const imagesListRef = ref(storage, "images/");
-    setImageUrls([])
-    listAll(imagesListRef).then((response) => {
-      response.items.forEach((item) => {
-        let nameImg = item.name;
-        getDownloadURL(item).then((url) => {
-          setImageUrls((prev) => [...prev, { nameImg, url }]);
-        });
+    uploadBytes(imageRef, imageFile).then((snapshot) => {
+      let nameImg = imageFile.name
+      let a = imageUrls
+      getDownloadURL(snapshot.ref).then((url) => {
+        let copy = [...imageUrls, { nameImg, url }]
+        const key = 'nameImg'
+        const arrayUniqueByKey = [...new Map(copy.map(item =>
+          [item[key], item])).values()];
+        setImageUrls(arrayUniqueByKey)
       });
     });
+
+
+
 
     // var task = storageRef.put(imageFile);
     //Update progress bar
@@ -192,7 +212,6 @@ const Product = () => {
 
   return (
     <>
-
       <ProductDetails
         isDetailsModal={isDetailsModal}
         toggleModal={detailsModal}
@@ -217,7 +236,6 @@ const Product = () => {
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
               <th colSpan='10'><h3>Product</h3></th>
-
             </tr>
             <tr>
               <th>STT</th>

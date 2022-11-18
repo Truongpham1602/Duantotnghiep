@@ -71,8 +71,8 @@ const CreateProduct = (props) => {
             } else if (imageFiles.length <= 0) {
                 notifyWarning("Chưa chọn ảnh!")
                 return
-            } else if (imageFiles.length >= 5) {
-                notifyWarning("Chỉ được chọn dưới 5 ảnh!")
+            } else if (imageFiles.length > 5) {
+                notifyWarning("Không chọn quá 5 ảnh!")
                 return
             } else if (sizeSelect <= 0) {
                 notifyWarning("Chưa chọn size!")
