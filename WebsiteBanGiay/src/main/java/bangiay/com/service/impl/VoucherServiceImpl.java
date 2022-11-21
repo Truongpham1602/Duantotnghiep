@@ -27,7 +27,7 @@ public class VoucherServiceImpl implements VoucherService {
 		voucher1.setEffectFrom(voucher.getEffectFrom());
 		voucher1.setEffectUntil(voucher.getEffectUntil());
 		voucher1.setName(voucher.getName());
-
+		voucher1.setStatus(voucher.getStatus());
 		return voucherDAO.save(voucher1);
 	}
 
