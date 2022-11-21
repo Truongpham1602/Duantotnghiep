@@ -2,7 +2,10 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
+import bangiay.com.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,5 +56,13 @@ public class ProductRestController {
 	@GetMapping("/find-by-category-parent/{id}")
 	public List<ProductDTO> getAllProductByParentId(@PathVariable Integer id) {
 		return productService.getAllProductByCategoryParent(id);
+	}
+	@PostMapping("/search")
+	public String viewHomePage(Model model, @Param("keyword") String keyword) {
+		List<Product> listProducts = productService.listAll(keyword);
+		model.addAttribute("listProducts", listProducts);
+		model.addAttribute("keyword", keyword);
+
+		return listProducts.toString();
 	}
 }

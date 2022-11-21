@@ -3,6 +3,7 @@ package bangiay.com.service;
 import java.util.List;
 
 import bangiay.com.DTO.ProductDTO;
+import bangiay.com.entity.Product;
 
 public interface ProductService {
 	public List<ProductDTO> findAll();
@@ -16,4 +17,6 @@ public interface ProductService {
 	public void delete(Integer id);
 
 	List<ProductDTO> getAllProductByCategoryParent(Integer id);
+
+	public List<Product> listAll(String keyword);
 }

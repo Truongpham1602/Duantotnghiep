@@ -87,4 +87,18 @@ public class ProductServiceImpl implements ProductService {
 		return proDAO.getProductByCategoryParent(id).stream().map(pro -> modelMapper.map(pro, ProductDTO.class))
 				.collect(Collectors.toList());
 	}
+
+	@Override
+	public List<Product> listAll(String keyword) {
+		System.out.println("vào hàm rồi");
+		System.out.println("keyword"+ keyword);
+
+		if (keyword != null) {
+			System.out.println("vào if rồi");
+
+			return proDAO.search(keyword);
+		}
+		System.out.println("ra if rồi");
+		return proDAO.findAll();
+	}
 }
