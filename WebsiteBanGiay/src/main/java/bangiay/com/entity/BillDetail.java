@@ -1,4 +1,4 @@
-package bangiay.com.entity;
+	package bangiay.com.entity;
 
 import javax.persistence.*;
 
@@ -9,6 +9,7 @@ import lombok.Data;
 @Table(name = "bill_detail")
 public class BillDetail {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
@@ -19,10 +20,11 @@ public class BillDetail {
     @ManyToOne
 	@JoinColumn(name="SIZE_ID")
     private Size size;
-
-    @ManyToOne
-	@JoinColumn(name="VOUCHER_ID")
+    
+    @ManyToOne()
+    @JoinColumn(name="VOUCHER_ID")
     private Voucher voucher;
+    
 
     @Column(name = "QUANTITY")
     private Integer quantity;

@@ -2,8 +2,6 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,36 +13,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.entity.Role;
-import bangiay.com.service.impl.*;
+import bangiay.com.service.impl.RoleServiceImpl;
 
 @RestController
 @RequestMapping("/role")
 public class RoleRestController {
 	@Autowired
 	RoleServiceImpl roleService;
-//	@PostMapping("/create")
-//	public Role create(@RequestBody Role role) {
-//		return roleService.create(role);
-//	}
-//	@PostMapping("/createAll")
-//	public List<Role> createList(@RequestBody List<Role> role) {
-//
-//		return roleService.createList(role);
-//	}
-//	@GetMapping("/get/{id}")
-//	public Role get(@PathVariable Integer id) throws Exception{
-//		return roleService.findById(id);
-//	}
-//	@GetMapping("/get")
-//	public List<Role> getAll(){
-//		return roleService.findAll();
-//	}
-//	@PutMapping("/update/{id}")
-//	public Role update(@RequestBody Role role,@PathVariable Integer id) {
-//		return roleService.update(role, id);
-//	}
-//	@DeleteMapping("/delete/{id}")
-//	public void deleteById(@PathVariable Integer id) {
-//		roleService.delete(id);
-//	}
+
+
+	@PostMapping("/create")
+	public Role create(@RequestBody Role role) {
+		return roleService.create(role);
+	}
+
+	@PostMapping("/createAll")
+	public List<Role> createAll(@RequestBody List<Role> role) {
+		return roleService.createAll(role);
+	}
+
+	@GetMapping("/get/{id}")
+	public Role get(@PathVariable Integer id) throws Exception {
+		return roleService.findById(id);
+	}
+
+	@GetMapping("/get")
+	public List<Role> getAll() {
+		return roleService.findAll();
+	}
+
+	@PutMapping("/update/{id}")
+	public Role update(@RequestBody Role role, @PathVariable Integer id) {
+		return roleService.update(role, id);
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public void deleteById(@PathVariable Integer id) {
+		roleService.delete(id);
+	}
+
 }

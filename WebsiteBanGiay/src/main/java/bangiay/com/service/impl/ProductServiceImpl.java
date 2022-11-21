@@ -1,46 +1,50 @@
 package bangiay.com.service.impl;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import bangiay.com.DTO.ProductDTO;
 import bangiay.com.dao.CategoryDao;
+import bangiay.com.dao.MediaDao;
 import bangiay.com.dao.ProductDao;
+import bangiay.com.entity.Media;
+import bangiay.com.entity.Product;
 import bangiay.com.service.ProductService;
 
-
-import bangiay.com.DTO.ProductDTO;
-import bangiay.com.entity.Product;
-
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductDao proDAO;
 	@Autowired
 	private CategoryDao cateDao;
-	
+	@Autowired
+	private MediaDao mediaDao;
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	public List<ProductDTO> findAll(){
+
+	public List<ProductDTO> findAll() {
 		List<Product> pro = proDAO.findAll();
-		List<ProductDTO> result = pro.stream().map(
-			d -> modelMapper.map(d,ProductDTO.class)).collect(Collectors.toList()
-		);
-		for (int i=0; i<pro.size();i++) {
+		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d, ProductDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < pro.size(); i++) {
+			List<Media> media = mediaDao.findMediaByProduct_Id(pro.get(i).getId());
+			if (media.size() > 0) {
+				result.get(i).setImage(media.get(0).getUrl());
+			}
 			result.get(i).setName_cate(pro.get(i).getCategory().getNamecate());
 		}
 		return result;
 	}
-	
+
 	@Override
-	public ProductDTO finById(int id) {
+	public ProductDTO finById(Integer id) {
 		Product product = proDAO.findById(id).get();
 		ProductDTO productdto = modelMapper.map(product, ProductDTO.class);
 		return productdto;
@@ -57,7 +61,7 @@ public class ProductServiceImpl implements ProductService{
 		productDTO.setCreated(new Timestamp(product.getCreated().getTime()));
 		return productDTO;
 	}
-	
+
 	@Override
 	public ProductDTO update(ProductDTO productDTO) {
 		Product product = modelMapper.map(productDTO, Product.class);
@@ -73,13 +77,13 @@ public class ProductServiceImpl implements ProductService{
 		return productDTO;
 	}
 
-
 	@Override
-	public void delete(int id) {
+	public void delete(Integer id) {
 		proDAO.deleteById(id);
 	}
 
 	@Override
+
 	public List<Product> listAll(String keyword) {
 		System.out.println("vào hàm rồi");
 		System.out.println("keyword"+ keyword);
@@ -91,5 +95,10 @@ public class ProductServiceImpl implements ProductService{
 		}
 		System.out.println("ra if rồi");
 		return proDAO.findAll();
+
+	public List<ProductDTO> getAllProductByCategoryParent(Integer id) {
+		return proDAO.getProductByCategoryParent(id).stream().map(pro -> modelMapper.map(pro, ProductDTO.class))
+				.collect(Collectors.toList());
+
 	}
 }

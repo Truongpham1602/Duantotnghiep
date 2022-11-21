@@ -1,16 +1,28 @@
 package bangiay.com.service;
 
-import bangiay.com.DTO.request.CartDTO;
-import bangiay.com.DTO.respon.ResponCartDTO;
-import bangiay.com.entity.Cart;
-
 import java.util.List;
 
+import bangiay.com.DTO.CartDTO;
+import bangiay.com.entity.Cart;
+
 public interface CartService {
-    CartDTO createCart(CartDTO cartDTO);
-    List<ResponCartDTO> findAll();
-    //Page<User> findAll(Pageable pageable);
-    CartDTO updateCart(CartDTO cartDTO);
-    void deleteById(Integer id);
-    CartDTO findByID(Integer id);
+
+	CartDTO createCart(CartDTO cartDTO);
+
+	List<CartDTO> findAll();
+
+	// Page<User> findAll(Pageable pageable);
+	CartDTO updateCart(CartDTO cartDTO);
+
+	void deleteById(Integer id);
+
+	Cart findByID(Integer id);
+
+	CartDTO addToCartDTONoUser(CartDTO cartDTO);
+
+	List<CartDTO> getCartNoUser();
+
+	List<CartDTO> findByUser_Id(Integer user_Id);
+//    List<CartDTO> getCartNoUser();
+
 }

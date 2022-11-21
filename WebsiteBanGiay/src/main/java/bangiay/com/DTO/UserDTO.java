@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
     private Integer id;
     private Integer roleId;
+
+    private String nameRole;
+
     private String fullName;
     private String password;
     private String email;
@@ -40,6 +43,14 @@ public class UserDTO {
         this.roleId = roleId;
     }
 
+    public String getNameRole() {
+        return this.nameRole;
+    }
+
+    public void setNameRole(String nameRole) {
+        this.nameRole = nameRole;
+    }
+    
     public String getFullName() {
         return this.fullName;
     }
@@ -127,4 +138,6 @@ public class UserDTO {
     public void setStatus(Integer status) {
         this.status = status;
     }
+    
+    
 }

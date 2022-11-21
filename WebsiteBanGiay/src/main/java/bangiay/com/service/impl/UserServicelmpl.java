@@ -32,19 +32,25 @@ public class UserServicelmpl implements UserService {
 	@Override
 	public List<UserDTO> findAll() {
 		List<User> user = userDao.findAll();
-		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d, UserDTO.class)).collect(Collectors.toList());
+
+		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d,UserDTO.class)).collect(Collectors.toList());
+		for (int i = 0; i < user.size(); i++) {
+			result.get(i).setNameRole(user.get(i).getRoler().getRoleName());
+		}
+
 		return result;
 	}
 
 	@Override
 	public UserDTO create(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
-//		user.setRoler(this.roleDao.findById(1).get());
-//		user.setCreated(user.getCreated());
-//		user.setModified(Timestamp.from(Instant.now()));
-		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+		user.setRoler(this.roleDao.findById(1).get());
+		user.setCreated(Timestamp.from(Instant.now()));
+
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
+		userDTO.setNameRole(user.getRoler().getRoleName());
 		return userDTO;
 	}
 
@@ -55,6 +61,8 @@ public class UserServicelmpl implements UserService {
 		user.setCreated(user.getCreated());
 		user.setModified(Timestamp.from(Instant.now()));
 		this.userDao.save(user);
+		userDTO.setId(user.getId());
+		userDTO.setNameRole(user.getRoler().getRoleName());
 		return userDTO;
 	}
 

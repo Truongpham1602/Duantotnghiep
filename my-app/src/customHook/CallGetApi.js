@@ -41,7 +41,7 @@ const useCallGetAPI = (url) => {
         }
         setTimeout(() => {
             getData();
-        }, 3000)
+        }, 1000)
         return () => {
             // ourRequest.cancel('cancel')
         }

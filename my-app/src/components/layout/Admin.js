@@ -13,8 +13,8 @@ const Admin = () => {
         <>
             <div className="sb-nav-fixed">
                 <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-                    <NavLink className="navbar-brand ps-3" href="/PH15225_PhamVanTruong_Assignment/pagecon/home">LuTra Store</NavLink>
-                    <NavLink className="navbar-brand ps-3" to="/" activeClassName="active" exact={true}>Home</NavLink>
+                    <NavLink className="navbar-brand ps-3" to="/">LuTra Store</NavLink>
+                    {/* <NavLink className="navbar-brand ps-3" to="/" activeClassName="active" >Home</NavLink> */}
 
                     <button className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i className="fas fa-bars"></i></button>
 
@@ -31,7 +31,7 @@ const Admin = () => {
                                 <i className="fas fa-user fa-fw"></i>Dropdown
                             </NavLink>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><NavLink className="dropdown-item" to="/product" activeClassName="active" exact={true}>Action</NavLink></li>
+                                <li><NavLink className="dropdown-item" to="/product" activeClassName="active" >Action</NavLink></li>
                                 <li><NavLink className="dropdown-item" href="#">Another action</NavLink></li>
                                 <li><hr className="dropdown-divider" /></li>
                                 <li><NavLink className="dropdown-item" href="#">Something else here kkk</NavLink></li>
@@ -49,24 +49,30 @@ const Admin = () => {
                                         <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                         Dashboard
                                     </NavLink>
-                                    <NavLink className="nav-link" to="bill" activeClassName="active">
-                                        <div className="sb-nav-link-icon"><i className='fas fa-store-alt-slash'></i></div>
-                                        Bill
+
+                                    <NavLink className="nav-link collapsed" to='/admin/user' data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                        <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
+                                        User
+                                        <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
+
                                     </NavLink>
                                     <NavLink className="nav-link" to="product" activeClassName="active">
                                         <div className="sb-nav-link-icon"><i className='fas fa-store-alt-slash'></i></div>
                                         Product
                                     </NavLink>
-                                    <NavLink className="nav-link" href="#">
+                                    <NavLink className="nav-link collapsed" to='/admin/category'>
                                         <div className="sb-nav-link-icon"><i className='fas fa-address-card'></i></div>
                                         Categories
                                     </NavLink>
-                                    <div className="sb-sidenav-menu-heading">Interface</div>
-                                    <NavLink className="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                        <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                                        Layouts
-                                        <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
+                                    <NavLink className="nav-link collapsed" to='/admin/order'>
+                                        <div className="sb-nav-link-icon"><i className='fas fa-first-order'></i></div>
+                                        Order Status
                                     </NavLink>
+                                    <NavLink className="nav-link collapsed" to='/admin/voucher'>
+                                        <div className="sb-nav-link-icon"><i className='fas fa-address-card'></i></div>
+                                        Voucher
+                                    </NavLink>
+                                    <div className="sb-sidenav-menu-heading">Interface</div>
                                     <div className="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                         <nav className="sb-sidenav-menu-nested nav">
                                             <NavLink className="nav-link" href="#">Static Navigation</NavLink>

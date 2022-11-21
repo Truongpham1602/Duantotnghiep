@@ -9,7 +9,8 @@ import java.util.List;
 @Data
 @Table(name = "size")
 public class Size {
-    @Id
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
 
