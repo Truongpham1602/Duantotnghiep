@@ -114,6 +114,16 @@ const Bill = () => {
                   />
                 </FormGroup>
                 <div>Phương thức thanh toán</div>
+                <Input
+                  type='select'
+                >
+                  <option>
+                    NCB
+                  </option>
+                  <option>
+                    ACC
+                  </option>
+                </Input>
               </Col>
             </Row>
           </Form>

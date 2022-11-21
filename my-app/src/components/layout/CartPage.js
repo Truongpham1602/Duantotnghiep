@@ -74,28 +74,29 @@ const Cart = () => {
                             <>
                                 <div className="product-content row" style={{ marginBottom: '3%', borderBottom: '1px solid' }}>
                                     <div className="product-content-left row col-lg-4">
-                                        {imageUrls.map((img, index1) => {
-                                            return (
-                                                lstcart.media.map((item, index2) => {
-                                                    return (
-                                                        <>
-                                                            {index2 === 0 && img.nameImg === item.url &&
-                                                                <div className="product-content-left-big-img">
-                                                                    <img src={img.url} />
-                                                                </div>
-                                                            }
-                                                            {index2 > 0 &&
-
-                                                                img.nameImg === item.url &&
-                                                                <div className="product-content-left-small-img">
-                                                                    <img src={img.url} />
-                                                                </div>
-                                                            }
-                                                        </>
-                                                    )
-                                                })
-                                            )
-                                        })}
+                                        <div>
+                                            {imageUrls.map((img, index1) => {
+                                                return (
+                                                    lstcart.media.map((item, index2) => {
+                                                        return (
+                                                            <>
+                                                                {index2 === 0 && img.nameImg === item.url &&
+                                                                    <div>
+                                                                        <img src={img.url} /><h3>xzc</h3>
+                                                                    </div>
+                                                                }
+                                                                {index2 > 0 &&
+                                                                    img.nameImg === item.url &&
+                                                                    <div>
+                                                                        <img src={img.url} /><h3>xzxcxzc</h3>
+                                                                    </div>
+                                                                }
+                                                            </>
+                                                        )
+                                                    })
+                                                )
+                                            })}
+                                        </div>
                                     </div>
                                     <div className="product-content-right col-lg-7" style={{ textAlign: 'left' }}>
                                         <div className='row'>
