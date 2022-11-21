@@ -95,12 +95,12 @@ const ProductOne = () => {
                     </div>
                     <div className="product-buttom-right-content-big">
                         <div className="product-buttom-right-content-title row">
-                            <div className="product-buttom-right-content-title-item chitiet col-lg-2" onClick={() => chitietClick()}>
+                            {/* <div className="product-buttom-right-content-title-item chitiet col-lg-2" onClick={() => chitietClick()}>
                                 <p>Thông tin sản phẩm</p>
                             </div>
                             <div className="product-buttom-right-content-title-item-bl binhluan col-lg-2" onClick={() => binhluanClick()}>
                                 <p>Bình luận</p>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="product-buttom-right-content">
                             <div className="product-buttom-right-content-chiTiet">
