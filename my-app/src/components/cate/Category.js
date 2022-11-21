@@ -20,7 +20,7 @@ import { storage } from "../../Firebase";
 // class Category extends React.Component {
 const Category = () => {
 
-  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/category/index`);
+  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/category/get`);
   const [category, setCategory] = useState({});
   const [dataCategory, setData] = useState([]);
   const [isCreateModal, setIsCreateModal] = useState(false)
@@ -98,7 +98,7 @@ const Category = () => {
 
   const editCategory = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:8080/admin/category/find/${id}`)
+      const res = await axios.get(`http://localhost:8080/api/category/get/${id}`)
       setCategory(res.data)
       {
         imageUrls.map((img) => {
@@ -115,7 +115,7 @@ const Category = () => {
   const deleteCategory = async (id) => {
     // e.preventDefault();
     try {
-      await axios.delete(`http://localhost:8080/admin/category/delete/${id}`)
+      await axios.delete(`http://localhost:8080/api/category/delete/${id}`)
       let copyList = dataCategory;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)

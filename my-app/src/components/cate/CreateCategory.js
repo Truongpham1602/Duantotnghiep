@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 
 
-const Category_Rest_API_URL = 'http://localhost:8080/admin/category';
+const Category_Rest_API_URL = 'http://localhost:8080/api/category';
 
 // class CreateCategory extends Component {
 const CreateCategory = (props) => {
@@ -38,7 +38,7 @@ const CreateCategory = (props) => {
     const createCategory = () => {
         try {
             const create = async () => {
-                let res = await axios.post(Category_Rest_API_URL + '/post', {
+                let res = await axios.post(Category_Rest_API_URL + '/create', {
 
                     namecate: category.namecate,
                     created: category.created,

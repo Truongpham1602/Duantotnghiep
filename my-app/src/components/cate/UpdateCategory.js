@@ -39,7 +39,7 @@ const UpdateCategory = (props) => {
 
     const updateCategory = async () => {
         try {
-            const res = await axios.put(`http://localhost:8080/admin/category/put/${category.id}`, {
+            const res = await axios.put(`http://localhost:8080/api/category/update/${category.id}`, {
                 namecate: category.namecate,
                 created: category.created,
                 creator: category.creator,
