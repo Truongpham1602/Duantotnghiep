@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import axios from "axios";
-import { Await } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import { Input } from "reactstrap";
 import {
   MDBBtn,
@@ -23,11 +23,16 @@ const Login = () => {
     copyUser[id] = e.target.value
     setUser({ ...copyUser })
   }
+  const navigate = useNavigate()
 
   const handleButton = async (e) => {
     try {
-      let red = await axios.post("http://localhost:8080/auth/login", user)
-      localStorage.setItem("longtest", JSON.stringify(red.data));
+      let res = await axios.post("http://localhost:8080/auth/login", user)
+      const user = res.data && res ? res.data : []
+      if (user) {
+        localStorage.setItem("longtest", JSON.stringify(res.data));
+        navigate('/')
+      }
 
     } catch (error) {
       console.log(error);
