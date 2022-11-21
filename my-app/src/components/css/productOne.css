@@ -136,19 +136,11 @@
     cursor: pointer;
     /* margin-right: 6px; */
 }
-.product-buttom-right-content-title-item p{
-    margin: 0px;
-    padding: 0px;
+.product-buttom-right-content-title .nav-tabs .nav-link:hover{
+    border: none;
+    border-bottom:2px solid #0062cc;
 }
-.product-buttom-right-content-title-item-bl{
-    padding: 6px;
-    cursor: pointer;
-    text-align: left;
-}
-.product-buttom-right-content-title-item-bl p{
-    margin: 0px;
-    padding: 0px;
-}
+/* end */
 .info-policy {
     padding: 30px 12px 0;
 }

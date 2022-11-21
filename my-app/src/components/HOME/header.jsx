@@ -92,7 +92,7 @@ const Header = (props) => {
         <header class="header">
 
             {/* <a href="home.html" class="logo"> <i class="fas fa-shopping-basket"></i> laTra shoes </a> */}
-            <a href="home.html" class="logo"><img src={logo} alt="" width="50px" height="50px" /> luTra shoes </a>
+            <NavLink to="/" class="logo"><img src={logo} alt="" width="50px" height="50px" /> laTra shoes </NavLink>
 
             <nav class="navbar">
                 <NavLink className="navbar-brand ps-3" to="/" end >Home</NavLink>

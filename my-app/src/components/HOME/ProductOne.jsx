@@ -101,6 +101,14 @@ const ProductOne = () => {
                             <div className="product-buttom-right-content-title-item-bl binhluan col-lg-2" onClick={() => binhluanClick()}>
                                 <p>Bình luận</p>
                             </div> */}
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#" onClick={() => chitietClick()}>Thông tin sản phẩm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" onClick={() => binhluanClick()}>Bình luận</a>
+                                </li>
+                            </ul>
                         </div>
                         <div className="product-buttom-right-content">
                             <div className="product-buttom-right-content-chiTiet">

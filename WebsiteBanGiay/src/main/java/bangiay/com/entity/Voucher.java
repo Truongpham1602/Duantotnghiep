@@ -57,6 +57,9 @@ public class Voucher {
 
     @Column(name = "TYPE")
     private Integer type;
+    
+    @Column(name = "STATUS")
+    private Integer status;
 
 	public Integer getId() {
 		return id;
@@ -162,5 +165,12 @@ public class Voucher {
 		this.type = type;
 	}
     
+	public Integer getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
     
 }
