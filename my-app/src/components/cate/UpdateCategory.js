@@ -74,7 +74,7 @@ const UpdateCategory = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="name">
-                                        FullName
+                                        Name cate
                                     </Label>
                                     <Input
                                         id="fullName"

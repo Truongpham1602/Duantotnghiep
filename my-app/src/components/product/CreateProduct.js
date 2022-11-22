@@ -248,7 +248,7 @@ const CreateProduct = (props) => {
 
     const createCate = async () => {
         try {
-            let res = await axios.post('http://localhost:8080/admin/category/post', { namecate: cate })
+            let res = await axios.post('http://localhost:8080/api/category/create', { namecate: cate })
             let data = (res && res.data) ? res.data : {}
             let copydata = lstCate
             if (res.data) {

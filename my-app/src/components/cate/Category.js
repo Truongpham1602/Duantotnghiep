@@ -5,6 +5,10 @@ import UpdateCategory from './UpdateCategory';
 import CategoryDetails from './CategoryDetails';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import {
+  Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
+  Row, Col, Form
+} from 'reactstrap';
+import {
   Table
 } from 'reactstrap';
 import {
@@ -23,49 +27,18 @@ const Category = () => {
   const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/category/get`);
   const [category, setCategory] = useState({});
   const [dataCategory, setData] = useState([]);
+  const [nestedModal, setNestedModal] = useState(false);
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
-  const [isCategoryDetailModal, setisCategoryDetailsModal] = useState(false)
-  const [imageUpload, setImageUpload] = useState(null);
-  const [imageUrls, setImageUrls] = useState([]);
-  let [urlImg, setUrlImg] = useState();
-  const imagesListRef = ref(storage, "images/");
   const [page, setPage] = useState(0);
+  const [cateId, setCateId] = useState()
 
 
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
-      listAll(imagesListRef).then((response) => {
-        response.items.forEach((item) => {
-          let nameImg = item.name;
-          getDownloadURL(item).then((url) => {
-            setImageUrls((prev) => [...prev, { nameImg, url }]);
-          });
-        });
-      });
     }
   }, [dataPro])
-
-
-  const uploadFile = () => {
-    if (imageUpload == null) return;
-    let check = true;
-    imageUrls.map(item => {
-      if (imageUpload.name === item.nameImg)
-        return check = false
-    })
-    if (check === true) {
-      const imageRef = ref(storage, `images/${imageUpload.name}`);
-      uploadBytes(imageRef, imageUpload).then((snapshot) => {
-        let nameImg = imageUpload.name
-        getDownloadURL(snapshot.ref).then((url) => {
-          setImageUrls((prev) => [...prev, { nameImg, url }]);
-        });
-      });
-    }
-
-  };
 
 
   const updateData = (res, type) => {
@@ -91,22 +64,20 @@ const Category = () => {
     setisUpdateModal(!isUpdateModal)
   }
 
-//   const categoryDetailsModal = () => {
-//     setisCategoryDetailsModal(!isCategoryDetailModal)
-//   }
+  //   const categoryDetailsModal = () => {
+  //     setisCategoryDetailsModal(!isCategoryDetailModal)
+  //   }
 
+  const toggleNested = (id) => {
+    setNestedModal(!nestedModal);
+    console.log(id);
+    id && setCateId(id)
+  };
 
   const editCategory = async (id) => {
     try {
       const res = await axios.get(`http://localhost:8080/api/category/get/${id}`)
       setCategory(res.data)
-      {
-        imageUrls.map((img) => {
-          if (img.nameImg === res.data.image) {
-            return setUrlImg(img.url)
-          }
-        })
-      }
     } catch (error) {
       console.log(error.message)
     }
@@ -119,6 +90,7 @@ const Category = () => {
       let copyList = dataCategory;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
+      toggleNested()
       // updateData(res.data)
     } catch (error) {
       console.log(error.message)
@@ -155,18 +127,11 @@ const Category = () => {
         isCreateModal={isCreateModal}
         toggleModal={createModal}
         updateData={updateData}
-        uploadFile={uploadFile}
-        setImageUpload={setImageUpload}
-        imageUpload={imageUpload}
       />
       <UpdateCategory
         isUpdateModal={isUpdateModal}
         toggleModal={updateModal}
         updateData={updateData}
-        uploadFile={uploadFile}
-        setImageUpload={setImageUpload}
-        imageUpload={imageUpload}
-        urlImg={urlImg}
         category={category}
       />
       <div>
@@ -195,41 +160,35 @@ const Category = () => {
                       {index + 1}
                     </th>
                     <td id="category">{item.namecate}</td>
-                    {/* <td id="category">{item.password}</td> */}
-                    {/* <td id="price">{item.email}</td>
-                    <td id="quantity">{item.telephone}</td>
-                    <td id="category">{item.address}</td> */}
-                    {/* <td id="created">{item.created}</td> */}
-                    {/* <td id="created">{item.modified}</td> */}
-                    {/* <td id="modified">{item.nameRole}</td>
-                    <td id="image" >
-                      {imageUrls.map((img) => { */}
-                        {/* return (
-                          <>
-                            {img.nameImg === item.image &&
-                              <img width="70" height="65" src={img.url} />
-                            }
-                            {img.nameImg !== item.image &&
-                              <image src='' />
-                            } */}
-                          {/* </>
-                        )
-                      })}
-                    </td> */}
-                    {/* 
-                      <img src={imageUrls} width="150" height="170" />
-                    </td> */}
                     <td>
                       <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editCategory(item.id); updateModal() }}>Update</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => { deleteCategory(item.id) }} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
+                                
                     </td>
                   </tr>
                 )
               })
             }
-
+            <Modal
+                  isOpen={nestedModal}
+                  toggle={toggleNested}
+                  // size='lg'
+                >
+                  <ModalHeader>Delete</ModalHeader>
+                  <ModalBody>
+                    Bạn có chắc chắn xóa không?
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button type='button' color="primary" onClick={() => { deleteCategory(cateId) }}>
+                      Delete
+                    </Button>{' '}
+                    <Button color="secondary" onClick={() =>toggleNested()}>
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </Modal>
             {isLoading &&
               <tr>
                 <h3>Loading...</h3>
@@ -253,6 +212,7 @@ const Category = () => {
       </div>
     </>
   )
+
 
 }
 

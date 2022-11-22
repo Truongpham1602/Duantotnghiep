@@ -82,7 +82,7 @@ const CreateCategory = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="name">
-                                        Name
+                                        Name Cate
                                     </Label>
                                     <Input
                                         id="fullName"
