@@ -5,6 +5,10 @@ import UpdateUser from './UpdateUser';
 import UserDetails from './UserDetails';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import {
+  Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
+  Row, Col, Form
+} from 'reactstrap';
+import {
   Table
 } from 'reactstrap';
 import {
@@ -25,12 +29,14 @@ const User = () => {
   const [dataUser, setData] = useState([]);
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
+  const [nestedModal, setNestedModal] = useState(false);
   const [isUserDetailModal, setisUserDetailsModal] = useState(false)
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
   let [urlImg, setUrlImg] = useState();
   const imagesListRef = ref(storage, "images/");
   const [page, setPage] = useState(0);
+  const [userId, setUserId] = useState()
 
 
   useEffect(() => {
@@ -95,6 +101,11 @@ const User = () => {
     setisUserDetailsModal(!isUserDetailModal)
   }
 
+  const toggleNested = (id) => {
+    setNestedModal(!nestedModal);
+    id && setUserId(id)
+  };
+
 
   const editUser = async (id) => {
     try {
@@ -119,6 +130,7 @@ const User = () => {
       let copyList = dataUser;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
+      toggleNested()
       // updateData(res.data)
     } catch (error) {
       console.log(error.message)
@@ -228,12 +240,31 @@ const User = () => {
                       <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editUser(item.id); updateModal() }}>Update</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => { deleteUser(item.id) }} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
                     </td>
                   </tr>
                 )
               })
             }
+
+                <Modal
+                  isOpen={nestedModal}
+                  toggle={toggleNested}
+                  // size='lg'
+                >
+                  <ModalHeader>Delete</ModalHeader>
+                  <ModalBody>
+                    Bạn có chắc chắn xóa không?
+                  </ModalBody>
+                  <ModalFooter>
+                  <Button type='button' color="primary" onClick={() => { deleteUser(userId) }}>
+                      Delete
+                    </Button>{' '}
+                    <Button color="secondary" onClick={() =>toggleNested()}>
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </Modal>
 
             {isLoading &&
               <tr>
