@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import bangiay.com.DTO.VoucherDTO;
 import bangiay.com.entity.Voucher;
 import bangiay.com.service.impl.VoucherServiceImpl;
 
@@ -24,7 +25,7 @@ public class VoucherRestController {
 	VoucherServiceImpl voucherServiceImpl;
 	
 	@GetMapping("/get")
-	public List<Voucher> findAll(){
+	public List<VoucherDTO> findAll(){
 		return voucherServiceImpl.findAll();
 	}
 	

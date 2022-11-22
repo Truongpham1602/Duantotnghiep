@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import '../voucher/voucher.css';
+import axios from 'axios';
+import useCallGetAPI from '../../customHook/CallGetApi';
 
 const UpdateVoucher = (props) => {
-    const { isupdatevoucherModal, toggleModal } = props;
 
+    const { isupdatevoucherModal, toggleModal } = props;
+    const [voucher, setVoucher] = useState(props.voucher);
+
+    useEffect(() => {
+        setVoucher(props.value)
+    }, [props.voucher])
+    const updateVoucher = async () => {
+        try {
+            const res = await axios.put(`http://localhost:8080/api/voucher/update/${voucher.id}`, {
+                name: voucher.name,
+
+            })
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
     const toggle = () => {
         toggleModal()
     }

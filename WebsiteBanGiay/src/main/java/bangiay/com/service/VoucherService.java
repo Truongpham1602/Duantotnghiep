@@ -2,6 +2,7 @@ package bangiay.com.service;
 
 import java.util.List;
 
+import bangiay.com.DTO.VoucherDTO;
 import bangiay.com.entity.Voucher;
 
 public interface VoucherService {
@@ -11,7 +12,7 @@ public interface VoucherService {
 	
 	void deleteById(Integer id);
 	
-	List<Voucher> findAll ();
+	List<VoucherDTO> findAll ();
 	
 	Voucher findById (Integer id);
 	

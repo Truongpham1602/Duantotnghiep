@@ -1,10 +1,15 @@
 package bangiay.com.service.impl;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import bangiay.com.DTO.VoucherDTO;
+import bangiay.com.dao.CategoryDao;
 import bangiay.com.dao.VoucherDao;
 import bangiay.com.entity.Voucher;
 import bangiay.com.service.VoucherService;
@@ -12,7 +17,13 @@ import bangiay.com.service.VoucherService;
 @Service
 public class VoucherServiceImpl implements VoucherService {
 	@Autowired
-	VoucherDao voucherDAO;
+	private VoucherDao voucherDAO;
+	
+	@Autowired
+	private CategoryDao cateDao;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public Voucher create(Voucher voucher) {
@@ -37,10 +48,15 @@ public class VoucherServiceImpl implements VoucherService {
 
 	}
 
-	@Override
-	public List<Voucher> findAll() {
+	
+	public List<VoucherDTO> findAll() {
 		// TODO Auto-generated method stub
-		return voucherDAO.findAll();
+		List<Voucher> vou = voucherDAO.findAll();
+		List<VoucherDTO> result = vou.stream().map(d -> modelMapper.map(d, VoucherDTO.class)).collect(Collectors.toList());
+		for (int i = 0; i < vou.size(); i ++) {
+			result.get(i).setName_cate(vou.get(i).getCategory().getNamecate());
+		}
+		return result;
 	}
 
 	@Override
