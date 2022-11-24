@@ -15,7 +15,7 @@ public interface ProductService {
 	public ProductDTO update(ProductDTO productDTO);
 
 
-	public List<Product> listAll(String keyword);
+
 
 
 
@@ -24,5 +24,8 @@ public interface ProductService {
 	public void delete(Integer id);
 
 	List<ProductDTO> getAllProductByCategoryParent(Integer id);
+
+
+	public List<Product> listAll(String keyword);
 
 }

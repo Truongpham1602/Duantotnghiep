@@ -18,10 +18,11 @@ public class CartDTO implements Serializable {
 	private String name_Product;
 	private String color_Product;
 	private Integer size_Id;
-	private Timestamp created;
-	private Timestamp modified;
-	private String creator;
-	private String modifier;
+
+	private String sizeName;
+	private Timestamp creator;
+	private Timestamp modifier;
+
 	private Integer status;
 	private Double price;
 	private Object size;

@@ -7,6 +7,7 @@ import bangiay.com.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.repository.query.Param;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -70,4 +71,5 @@ public class ProductRestController {
 
 		return ResponseEntity.ok(listProducts);
 	}
+
 }

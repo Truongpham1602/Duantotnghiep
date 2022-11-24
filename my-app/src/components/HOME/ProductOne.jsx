@@ -3,14 +3,10 @@ import { Breadcrumb, BreadcrumbItem, Input, FormGroup, Label, } from 'reactstrap
 import NumericInput from 'react-numeric-input';
 // import '../css/styles.css';
 import '../css/productOne.css';
-import img1 from '../image/cart/cart-1.jpg';
-import img2 from '../image/product/details/thumb-1.jpg';
-import img3 from '../image/product/details/thumb-2.jpg';
-import img4 from '../image/product/details/thumb-3.jpg';
-import img5 from '../image/product/details/thumb-4.jpg';
+import { useOutletContext } from "react-router-dom";
 
 const ProductOne = () => {
-
+    const [product] = useOutletContext()
     // const bigImgClick = () => {
     //     document.querySelector(".product-content-left-big-img").style.display = "none"
     // }
@@ -41,13 +37,10 @@ const ProductOne = () => {
                 <div className="product-content row">
                     <div className="product-content-left row col-lg-7">
                         <div className="product-content-left-big-img">
-                            <img src={img1} alt="" />
+                            <img alt="" />
                         </div>
                         <div className="product-content-left-small-img">
-                            <img src={img2} alt="" />
-                            <img src={img3} alt="" />
-                            <img src={img4} alt="" />
-                            <img src={img5} alt="" />
+
                         </div>
                     </div>
                     <div className="product-content-right col-lg-5">

@@ -56,15 +56,10 @@ function App() {
               }
             />
           </Route>
-          <Route
-            path="ProductOne"
-            element={
-              <>
-                {" "}
-                <ProductOne />
-              </>
-            }
-          ></Route>
+
+          <Route path="productOne" element={<> <ProductOne /></>}></Route>
+
+
         </Route>
         <Route
           path="admin"

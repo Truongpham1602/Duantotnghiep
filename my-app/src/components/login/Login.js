@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import axios from "axios";
-import { Await } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import { Input } from "reactstrap";
 import {
   MDBBtn,
@@ -18,16 +18,25 @@ const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
 
   const handleOnchangeInput = (e, id) => {
-    let copyUser = { ...user };
-    copyUser[id] = e.target.value;
-    setUser({ ...copyUser });
-  };
 
-  const handleButton = async (e) => {
+    let copyUser = { ...user }
+    copyUser[id] = e.target.value
+    setUser({ ...copyUser })
+  }
+  const navigate = useNavigate()
+
+
+  const handleButton = async () => {
     try {
-      let red = await axios.post("http://localhost:8080/auth/login", user);
-      alert("vào rồi");
-      localStorage.setItem("longtest", JSON.stringify(red.data));
+
+      const res = await axios.post("http://localhost:8080/auth/login", user)
+      localStorage.setItem("token", JSON.stringify(res.data));
+      // console.log(localStorage.getItem(res.data));
+      // console.log(localStorage.getItem('token'));
+      // console.log(await axios.post("http://localhost:8080/auth/getLoginUser", localStorage.getItem('token')));
+      navigate('/')
+
+
     } catch (error) {
       console.log(error);
     }
@@ -45,30 +54,18 @@ const Login = () => {
               <MDBCardBody className="p-5 w-500 d-flex flex-column">
                 <h2 className="fw-bold mb-2 text-center">Sign in</h2>
 
-                <MDBInput
-                  wrapperClass="mb-4 w-100"
-                  placeholder="Email"
-                  id="email"
-                  onChange={(e) => handleOnchangeInput(e, "username")}
-                  value={user.username}
-                  type="text"
-                  size="lg"
-                />
-                <MDBInput
-                  wrapperClass="mb-4 w-100"
-                  placeholder="Password"
-                  id="password"
-                  onChange={(e) => handleOnchangeInput(e, "pass")}
-                  value={user.pass}
-                  type="password"
-                  size="lg"
-                />
+
+                <MDBInput wrapperClass='mb-4 w-100' placeholder="Email" id='email' onChange={(e) => handleOnchangeInput(e, 'username')} value={user.email} type='email' size="lg" />
+                <MDBInput wrapperClass='mb-4 w-100' placeholder="Password" id='password' onChange={(e) => handleOnchangeInput(e, 'pass')} value={user.password} type='password' size="lg" />
+
                 <hr className="my-2" />
                 <NavLink className="navbar-brand ps-2" to="/register">
                   register
                 </NavLink>
                 <hr className="my-2" />
-                <Button onClick={() => handleButton()} color="primary">
+
+                <Button color="primary" onClick={() => handleButton()}>
+
                   Sign in
                 </Button>
               </MDBCardBody>
