@@ -11,17 +11,18 @@ const Home = () => {
     const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
     const [cart, setCart] = useState([])
     const [product, setProduct] = useState({})
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (dataCart && dataCart.length > 0) {
             setCart(dataCart)
         }
     }, [dataCart])
-    const navigate = useNavigate()
+
     const nextProductDetail = async (id) => {
         const res = await axios.get(`http://localhost:8080/admin/product/find/${id}`)
         setProduct(res.data)
-        navigate('/')
+        navigate('/productOne')
     }
     const addToCart = async (size_Id) => {
         let res = await axios.post(`http://localhost:8080/cart/addToCart`, {
@@ -52,7 +53,7 @@ const Home = () => {
             <Header
                 dataCart={cart}
             />
-            <Outlet context={[addToCart, product]} />
+            <Outlet context={[nextProductDetail, addToCart, product]} />
             <Footer />
         </>
     )

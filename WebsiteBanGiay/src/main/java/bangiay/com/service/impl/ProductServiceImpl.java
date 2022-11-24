@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return result;
 	}
-
+	
 	@Override
 	public ProductDTO finById(Integer id) {
 		Product product = proDAO.findById(id).get();

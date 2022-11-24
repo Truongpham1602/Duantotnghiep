@@ -12,9 +12,10 @@ import {
 import { storage } from "../../Firebase";
 import useCallGetAPI from '../../customHook/CallGetApi';
 import ProductShear from "../HOME/Productshear";
+
 const ProductTest = () => {
     const [dataProduct, setData] = useState([]);
-    const [addToCart] = useOutletContext()
+    const [nextProductDetail] = useOutletContext()
     const [imageUrls, setImageUrls] = useState([]);
     const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/product/index`);
     useEffect(() => {
@@ -33,10 +34,7 @@ const ProductTest = () => {
         // setData(dataPro)
         // console.log(isLoading);
     }, [dataPro])
-    const navigate = useNavigate()
-    const nextProductDetail = () => {
-        navigate('/productone')
-    }
+
     return (
         <div>
             {/* <h1 class="heading">latest <span>Products</span></h1> */}
@@ -71,7 +69,7 @@ const ProductTest = () => {
                                         <a href="#" class="fa fa-cart-plus"></a>
                                         <a href="#" class="fa fa-eye"></a>
                                     </div>
-                                    <a class="btn" onClick={() => addToCart(104)}>Add To Cart</a>
+                                    <a class="btn" onClick={() => nextProductDetail(item.id)}>Add To Cart</a>
                                 </div>
                             )
                         })
