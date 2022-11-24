@@ -1,6 +1,6 @@
 package bangiay.com.dao;
 
-import bangiay.com.DTO.ProductDTO;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +23,7 @@ public interface ProductDao extends JpaRepository<Product, Integer>{
 			+ ")SELECT * FROM PRODUCT P  WHERE P.CATEGORY_ID IN (\r\n"
 			+ "SELECT ID FROM GET_ALL_PRODUCT_BY_PARENT_ID \r\n"
 			+ ")",nativeQuery = true)
-	java.util.List<Product> getProductByCategoryParent(Integer id);
+	List<Product> getProductByCategoryParent(Integer id);
 	/*
 	 * *	Tìm kiếm sản phẩm theo category cha 
 	 * * 	Chú Thích :
@@ -31,5 +31,8 @@ public interface ProductDao extends JpaRepository<Product, Integer>{
 	 * 			Union ALL : Gộp kết quả truy vấn của 2 câu lệnh, điều kiện : ( 2 câu truy vấn p trả về cùng số hàng, mỗi hàng phải cùng kiểu dữ liệu )
 	 * 			Truy vấn phân cấp để lấy category cha và con
 	 */
-
+	@Query("SELECT p FROM Product p WHERE concat(p.category, ' ', p.color, ' ', p.name, ' ', p.description,"
+			+ " ' ' ,p.code, ' ', p.price, ' ', p.quantity, ' ', p.created, ' ', p.creator,"
+			+ " ' ', p.modified, ' ', p.modifier, ' ', p.status) LIKE %?1%")
+	public List<Product> search(String keyword);
 }

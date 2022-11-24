@@ -86,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
 
 	public List<Product> listAll(String keyword) {
 		System.out.println("vào hàm rồi");
-		System.out.println("keyword"+ keyword);
+		System.out.println("keyword" + keyword);
 
 		if (keyword != null) {
 			System.out.println("vào if rồi");
@@ -96,7 +96,9 @@ public class ProductServiceImpl implements ProductService {
 		System.out.println("ra if rồi");
 		return proDAO.findAll();
 
-	public List<ProductDTO> getAllProductByCategoryParent(Integer id) {
+
+	}
+	public List<ProductDTO> getAllProductByCategoryParent (Integer id){
 		return proDAO.getProductByCategoryParent(id).stream().map(pro -> modelMapper.map(pro, ProductDTO.class))
 				.collect(Collectors.toList());
 

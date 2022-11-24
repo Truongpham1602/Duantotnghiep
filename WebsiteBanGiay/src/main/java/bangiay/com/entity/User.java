@@ -55,9 +55,9 @@ public class User {
     private Integer status;
 
 
-    @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
-    private List<Bill> billList;
-    @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
-    private List<Cart> cartList;
+//    @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
+//    private List<Bill> billList;
+//    @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
+//    private List<Cart> cartList;
 
 }

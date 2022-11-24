@@ -3,6 +3,7 @@ package bangiay.com.service;
 import java.util.List;
 
 import bangiay.com.DTO.OrdersDTO;
+import bangiay.com.entity.Orders;
 
 public interface OrderService {
 
@@ -21,4 +22,9 @@ public interface OrderService {
 	List<OrdersDTO> updateConfirm(Integer user_IdOrTelephone);
 
 	List<OrdersDTO> updateDelivered(Integer user_IdOrTelephone);
+
+	//List<OrdersDTO> getOrderStatus(Integer status);
+
+	Orders updateOrderWithStatus(Integer id,Integer status);
+
 }

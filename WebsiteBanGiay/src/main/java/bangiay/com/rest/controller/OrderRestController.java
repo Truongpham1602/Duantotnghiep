@@ -2,7 +2,10 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
+import bangiay.com.doMain.constant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +22,7 @@ import bangiay.com.service.OrderService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("order")
+@RequestMapping("/order")
 public class OrderRestController {
 
 	@Autowired
@@ -65,6 +68,11 @@ public class OrderRestController {
 			@RequestParam(value = "voucher_Id", required = false, defaultValue = "0") Integer voucher_Id,
 			@RequestBody OrdersDTO ordersDTO) {
 		return this.orderService.createNoUser(ordersDTO, voucher_Id);
+	}
+	@PostMapping ("updateStatus")
+	public ResponseEntity<?> updateOrderWithStatus(@RequestParam("id")Integer id,
+												   @RequestParam("status") Integer status){
+		return new ResponseEntity<>(orderService.updateOrderWithStatus(id, status), HttpStatus.OK);
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.DatatypeConverter;
 import java.util.*;
 
 @Service
@@ -42,13 +43,16 @@ public class JwtUtil {
         if (roles.contains(new SimpleGrantedAuthority(STAFF))){
             claims.put("isNhanVien", true);
         }
-
-
-
-        return Jwts.builder().setClaims(claims).setSubject(userDetails.getUsername())
+        claims.put("user",userDetails);
+        String token = Jwts.builder().setClaims(claims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
+        Claims claims1 = Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary(secret))
+                .parseClaimsJws(token).getBody();
+
+        return token;
 
     }
 
@@ -56,8 +60,9 @@ public class JwtUtil {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
-        }catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException exception){
-            throw new BadCredentialsException("INVALID_CREDENTIALS",exception);
+//  }
+//        catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException exception){
+//            throw new BadCredentialsException("INVALID_CREDENTIALS",exception);
         }catch (ExpiredJwtException e){
             throw e;
         }

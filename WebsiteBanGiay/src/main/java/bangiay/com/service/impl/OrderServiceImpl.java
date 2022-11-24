@@ -1,9 +1,15 @@
 package bangiay.com.service.impl;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.doMain.constant;
+import bangiay.com.doMain.exception.AppException;
+import bangiay.com.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +20,6 @@ import bangiay.com.dao.CartDao;
 import bangiay.com.dao.OrderDao;
 import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.VoucherDao;
-import bangiay.com.entity.Cart;
-import bangiay.com.entity.Orders;
-import bangiay.com.entity.Size;
-import bangiay.com.entity.Voucher;
 import bangiay.com.service.CartService;
 import bangiay.com.service.OrderService;
 
@@ -119,6 +121,46 @@ public class OrderServiceImpl implements OrderService {
 		this.orderDao.saveAll(lstOrder);
 		return lstOrderDTO;
 	}
+
+
+
+	@Override
+	public Orders updateOrderWithStatus(Integer id,Integer status) {
+		Orders orders = orderDao.getById(id);
+		if (orders == null) {
+			throw new AppException(constant.ORDER_STATUS_MSG_ERROR_NOT_EXIST);
+		}
+		if (orders.getStatus().equals(constant.ORDER_STATUS_CANCEL) || orders.getStatus().equals(constant.ORDER_STATUS_SUCCESS)) {
+			throw new AppException(constant.ORDER_STATUS_MSG_ERROR_NOT_EXIST);
+		}
+		if (orders.getStatus().equals(orders.getId())) {
+			throw new AppException(constant.ORDER_MSG_ERROR_ALREADY_STATUS);
+		}
+//		if (orders.getStatus() > id) {
+//			throw new AppException(constant.ORDER_STATUS_MSG_ERROR_NOT_EXIST);
+//		}
+//		if (status == constant.ORDER_STATUS_SUCCESS) {
+//			orders.setStatus(3);
+//		}
+		orders.setStatus(status);
+		orders.setModified(Timestamp.from(Instant.now()));
+		return orderDao.save(orders);
+
+	}
+//	@Override
+//	public List<OrdersDTO> getOrderStatus(Integer status) {
+//		List<Orders> orders= this.orderDao.getOrderStatus(status);
+//		Orders orders1 = modelMapper.map(orders, Orders.class);
+//		if (status == 0){
+//			System.out.println("Chưa thanh toán");
+//			orders1.setStatus(orders1.getStatus());
+//		} else if (status ==1) {
+//			System.out.println("Đã thanh toán");
+//		}else {
+//			System.out.println("đã giao");
+//		}
+//		return orders1;
+//	}
 
 	@Override
 	public OrdersDTO finById(int id) {

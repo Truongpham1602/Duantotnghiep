@@ -3,9 +3,8 @@ package bangiay.com.service;
 import java.util.List;
 
 import bangiay.com.DTO.ProductDTO;
-import bangiay.com.dao.ProductDao;
 import bangiay.com.entity.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 public interface ProductService {
 

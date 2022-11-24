@@ -52,14 +52,14 @@ public class AuthConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception{
         http.csrf().disable().cors();
 
-        http.authorizeHttpRequests().antMatchers("/auth/**","/admin/user/**")
+        http.authorizeHttpRequests().antMatchers("/**")
                 .permitAll()
-                .anyRequest().authenticated()
+                //.anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(jwtEntrypoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.formLogin().loginPage("/login.html");
+        //http.formLogin().loginPage("/login.html");
 
 
         return http.build();

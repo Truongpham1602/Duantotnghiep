@@ -10,11 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.*;
 
 
 @Entity
 @Data
+@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "cart")
 public class Cart {
 	@Id
