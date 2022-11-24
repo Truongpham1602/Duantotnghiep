@@ -8,14 +8,19 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.SerializationUtils;
 
+import bangiay.com.DTO.MediaDTO;
 import bangiay.com.DTO.ProductDTO;
+import bangiay.com.DTO.SizeDTO;
 import bangiay.com.dao.CategoryDao;
 import bangiay.com.dao.MediaDao;
 import bangiay.com.dao.ProductDao;
 import bangiay.com.entity.Media;
 import bangiay.com.entity.Product;
+import bangiay.com.service.MediaService;
 import bangiay.com.service.ProductService;
+import bangiay.com.service.SizeService;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -25,7 +30,10 @@ public class ProductServiceImpl implements ProductService {
 	private CategoryDao cateDao;
 	@Autowired
 	private MediaDao mediaDao;
-
+	@Autowired
+	private SizeService sizeService;
+	@Autowired
+	private MediaService mediaService;
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -42,11 +50,17 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return result;
 	}
-
+	
 	@Override
 	public ProductDTO finById(Integer id) {
 		Product product = proDAO.findById(id).get();
 		ProductDTO productdto = modelMapper.map(product, ProductDTO.class);
+		List<MediaDTO> media = this.mediaService.findAllByPro_Id(product.getId());
+		byte[] datamedia = SerializationUtils.serialize(media);
+		List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(product.getId());
+		byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
+		productdto.setMedias(SerializationUtils.deserialize(datamedia));
+		productdto.setSizes(SerializationUtils.deserialize(datalstSizeDTO));
 		return productdto;
 	}
 
