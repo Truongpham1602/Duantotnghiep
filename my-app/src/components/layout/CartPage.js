@@ -22,7 +22,6 @@ const Cart = () => {
     const [lstcart, setLstCart] = useState([])
     const [source, setSource] = useState()
     const [number, setNumber] = useState({})
-    const imagesListRef = ref(storage, "images/");
     const [imageUrls, setImageUrls] = useState([]);
 
     useEffect(() => {
@@ -34,6 +33,7 @@ const Cart = () => {
             })
             setTotalPrice(total)
         }
+        const imagesListRef = ref(storage, "images/");
         setImageUrls([])
         listAll(imagesListRef).then((response) => {
             response.items.forEach((item) => {
@@ -74,28 +74,18 @@ const Cart = () => {
                             <>
                                 <div className="product-content row" style={{ marginBottom: '3%', borderBottom: '1px solid' }}>
                                     <div className="product-content-left row col-lg-4">
-                                        {imageUrls.map((img, index1) => {
-                                            return (
-                                                lstcart.media.map((item, index2) => {
-                                                    return (
-                                                        <>
-                                                            {index2 === 0 && img.nameImg === item.url &&
-                                                                <div className="product-content-left-big-img">
-                                                                    <img src={img.url} />
-                                                                </div>
-                                                            }
-                                                            {index2 > 0 &&
-
-                                                                img.nameImg === item.url &&
-                                                                <div className="product-content-left-small-img">
-                                                                    <img src={img.url} />
-                                                                </div>
-                                                            }
-                                                        </>
-                                                    )
-                                                })
-                                            )
-                                        })}
+                                        <div className="product-content-left-big-img">
+                                            {imageUrls.map((img, index1) => {
+                                                return (
+                                                    lstcart.media.map((item, index2) => {
+                                                        return (
+                                                            img.nameImg === item.url && index2 === 0 &&
+                                                            <img src={img.url} width='170px' height='150px' style={{ paddingBottom: '5px' }} />
+                                                        )
+                                                    })
+                                                )
+                                            })}
+                                        </div>
                                     </div>
                                     <div className="product-content-right col-lg-7" style={{ textAlign: 'left' }}>
                                         <div className='row'>
@@ -139,9 +129,6 @@ const Cart = () => {
                         <ul>
                             <li>
                                 Tổng Cộng: <span>{totalPrice}</span>
-                            </li>
-                            <li>
-                                Giảm: <span>$5.00</span>
                             </li>
                             <li className="total">
                                 Tổng: <span>{lstcart.length}</span> Sản Phẩm

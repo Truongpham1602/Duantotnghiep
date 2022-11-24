@@ -1,16 +1,15 @@
 import React from "react";
 import { CgSlack } from "react-icons/cg";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
 import ProductShear from "../HOME/Productshear";
 import '../css/productTest.css';
-import { useOutletContext } from "react-router-dom";
+import Voucher from "../voucher/voucher";
+import { create } from "@mui/material/styles/createTransitions";
 // class Home extends React.Component {
 const Product1 = () => {
     const [addToCart] = useOutletContext()
-
-
-
+    const navigate = useNavigate()
 
     return (
         <>
@@ -40,7 +39,6 @@ const Product1 = () => {
                         </div>
 
                         <div className="col mt-3 mini-card">
-                            <h4 className="text-danger fw-bolder">Giá</h4>
                             <ul className="list-group">
                                 {/* {prices.map((item, index) => (
                                 <div className="sidebar__item" key={index}>

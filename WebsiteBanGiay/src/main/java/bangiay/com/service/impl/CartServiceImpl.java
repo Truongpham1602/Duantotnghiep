@@ -133,6 +133,7 @@ public class CartServiceImpl implements CartService {
 			ProductDTO pro = this.proService.finById(size.getProductId());
 			lstCart.get(i).setName_Product(pro.getName());
 			lstCart.get(i).setPrice(pro.getPrice());
+			lstCart.get(i).setSizeName(size.getSize());
 			lstCart.get(i).setQuantityTotal(pro.getQuantity());
 			List<MediaDTO> media = this.mediaService.findAllByPro_Id(pro.getId());
 			byte[] datamedia = SerializationUtils.serialize(media);
