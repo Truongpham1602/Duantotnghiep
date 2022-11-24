@@ -133,28 +133,6 @@ const Product = () => {
   //Listen for file selection 
   const handleImages = (e) => {
     setImageFiles([])
-    const acc = [
-      {
-        a: 1,
-        b: 1
-      },
-      {
-        a: 2,
-        b: 2
-      },
-      {
-        a: 1,
-        b: 1
-      },
-      {
-        a: 3,
-        b: 3
-      },
-      {
-        a: 2,
-        b: 2
-      }]
-
     //Get files
     if (e.target.files.length > 5) {
       return toast.warning('Không chọn quá 5 ảnh', styleToast)
