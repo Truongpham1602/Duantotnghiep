@@ -125,6 +125,8 @@ const Voucher = () => {
                         <tbody style={{ verticalAlign: 'middle' }}>
                             {
                                 !isLoading && dataVoucher && dataVoucher.length > 0 && dataVoucher.map((item, index) => {
+                                    let effectFrom = moment(item.effectFrom).format('DD/MM/YYYY');
+                                    let effectUntil = moment(item.effectUntil).format('DD/MM/YYYY');
                                     // if (item.status != 0)
                                     return (
                                         <tr key={item.id}>
@@ -133,8 +135,8 @@ const Voucher = () => {
                                             <td id="value">{item.value}</td>
                                             <td id="quantity">{item.quantity}</td>
                                             <td id="category">{item.namecate}</td>
-                                            <td id="effectFrom">{item.effectFrom}</td>
-                                            <td id="effectUntil">{item.effectUntil}</td>
+                                            <td id="effectFrom">{effectFrom}</td>
+                                            <td id="effectUntil">{effectUntil}</td>
                                             <td id="description"><textarea>{item.description}</textarea></td>
                                             <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
                                             <td>
