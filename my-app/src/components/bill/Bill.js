@@ -250,7 +250,10 @@ const Bill = () => {
             <ModalBody>
               <Row>
                 {lstVoucher.map((item, index) => {
-                  if (item.status != 0) {
+                  if (item.status != 0 && Number(item.status) > 0
+                    && new Date(new Date(item["effectFrom"]).toDateString()) <= new Date(new Date().toDateString())
+                    && new Date(new Date(item["effectUntil"]).toDateString()) >= new Date(new Date().toDateString())
+                  ) {
                     return (<Col md={12} style={{ borderBottom: '1px solid', marginBottom: '5px' }}>
                       <Row>
                         <Col md={6}>
