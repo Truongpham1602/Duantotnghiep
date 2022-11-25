@@ -21,7 +21,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public Role update(Role role, Integer id) {
-		Role r = roleDAO.findById(id).orElseThrow();
+		Role r = roleDAO.findById(id).get();
 		r.setRoleName(role.getRoleName());
 		return roleDAO.save(r);
 	}

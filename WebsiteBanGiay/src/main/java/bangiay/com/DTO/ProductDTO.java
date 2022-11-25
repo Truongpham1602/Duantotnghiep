@@ -21,4 +21,6 @@ public class ProductDTO {
 	private String modifier;
 	private Integer status;
 	private String image;
+	private Object sizes;
+	private Object medias;
 }

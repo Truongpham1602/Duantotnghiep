@@ -1,16 +1,81 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import { Breadcrumb, BreadcrumbItem, Input, FormGroup, Label, } from 'reactstrap';
 import NumericInput from 'react-numeric-input';
+import { useOutletContext, useNavigate } from "react-router-dom";
 // import '../css/styles.css';
 import '../css/productOne.css';
-import img1 from '../image/cart/cart-1.jpg';
-import img2 from '../image/product/details/thumb-1.jpg';
-import img3 from '../image/product/details/thumb-2.jpg';
-import img4 from '../image/product/details/thumb-3.jpg';
-import img5 from '../image/product/details/thumb-4.jpg';
+import {
+    ref,
+    uploadBytes,
+    getDownloadURL,
+    listAll,
+    list,
+    getMetadata,
+} from "firebase/storage";
+import { storage } from "../../Firebase";
+import { padding } from "@mui/system";
 
 const ProductOne = () => {
-
+    const [nextProductDetail, addToCart, product] = useOutletContext()
+    const imagesListRef = ref(storage, "images/");
+    const [imageUrls, setImageUrls] = useState([]);
+    const sizes = [
+        {
+            id: 36,
+            title: 36
+        },
+        {
+            id: 37,
+            title: 37
+        },
+        {
+            id: 38,
+            title: 38
+        },
+        {
+            id: 39,
+            title: 39
+        },
+        {
+            id: 40,
+            title: 40
+        },
+        {
+            id: 41,
+            title: 41
+        },
+        {
+            id: 42,
+            title: 42
+        },
+        {
+            id: 43,
+            title: 43
+        },
+        {
+            id: 44,
+            title: 44
+        },
+        {
+            id: 45,
+            title: 45
+        },
+        {
+            id: 46,
+            title: 46
+        },
+    ]
+    useEffect(() => {
+        setImageUrls([])
+        listAll(imagesListRef).then((response) => {
+            response.items.forEach((item) => {
+                let nameImg = item.name;
+                getDownloadURL(item).then((url) => {
+                    setImageUrls((prev) => [...prev, { nameImg, url }]);
+                });
+            });
+        });
+    }, [])
     // const bigImgClick = () => {
     //     document.querySelector(".product-content-left-big-img").style.display = "none"
     // }
@@ -40,52 +105,80 @@ const ProductOne = () => {
                 </div>
                 <div className="product-content row">
                     <div className="product-content-left row col-lg-7">
-                        <div className="product-content-left-big-img">
-                            <img src={img1} alt="" />
+                        <div className="product-content-left-big-img" style={{ padding: '0px 2% 0px 0px' }}>
+                            {imageUrls.map((img, index1) => {
+                                return (
+                                    product.medias.map((item, index2) => {
+                                        return (
+                                            <>
+                                                {index2 === 0 && img.nameImg === item.url &&
+                                                    <img src={img.url} style={{ height: '460px', width: '97%' }} />
+                                                }
+                                            </>
+                                        )
+                                    })
+                                )
+                            })}
                         </div>
                         <div className="product-content-left-small-img">
-                            <img src={img2} alt="" />
-                            <img src={img3} alt="" />
-                            <img src={img4} alt="" />
-                            <img src={img5} alt="" />
+                            {imageUrls.map((img, index1) => {
+                                return (
+                                    product.medias.map((item, index2) => {
+                                        return (
+                                            <>
+                                                {index2 > 0 &&
+                                                    img.nameImg === item.url &&
+                                                    <img src={img.url} style={{ height: '115px', width: '115px', padding: '3px 0px 3px 0px' }} />
+                                                }
+                                            </>
+                                        )
+                                    })
+                                )
+                            })}
                         </div>
                     </div>
                     <div className="product-content-right col-lg-5">
                         <div className="product-content-right-product-name">
-                            <h1>áo thun cổ trong ph15225</h1>
+                            <h1>{product.name}</h1>
                         </div>
                         <div className="product-content-right-product-price">
-                            <p>1.500.000<sup>đ</sup></p>
+                            <p>{product.price} VND<sup></sup></p>
                         </div>
-                        <div className="product-content-right-product-color">
+                        {/* <div className="product-content-right-product-color">
                             <p className="color"><span className="colorOne">Màu Sắc: </span>Xanh cổ vịt nhạt <span style={{ color: 'red' }}>*</span></p>
-                        </div>
+                        </div> */}
                         <div className="product-content-right-product-size row">
                             <div className="col-lg-1">
                                 <p className="SizeOne">Size:</p>
                             </div>
                             <div className="col-lg-11 size">
-                                <span className="btn">36</span>
-                                <span className="btn">37</span>
-                                <span className="btn">38</span>
-                                <span className="btn">39</span>
-                                <span className="btn">40</span>
-                                <span className="btn">41</span>
-                                <span className="btn">42</span>
-                                <span className="btn">43</span>
-                                <span className="btn">44</span>
-                                <span className="btn">45</span>
-                                <span className="btn">46</span>
+                                {sizes.map((item, index1) => {
+                                    return (
+                                        product.sizes.map((size, index2) => {
+                                            return (
+                                                <>
+                                                    {item.id == size.size && size.quantity > 0 &&
+                                                        <button className="btn select">{item.title}</button>
+                                                    }
+                                                    {item.id == size.size && size.quantity <= 0 &&
+                                                        <button className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
+                                                    }
+                                                    {item.id != size.size &&
+                                                        <button className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
+                                                    }
+
+                                                </>
+                                            )
+                                        })
+                                    )
+                                })}
                             </div>
                         </div>
                         <div className="product-content-right-product-quantity">
-                            <div className="colorSize">
-                                <p style={{ color: 'red' }}>Vui lòng chọn size *</p>
-                            </div>
                             <p className="quantityLeft">Số Lượng: <NumericInput min={0} /></p>
                         </div>
                         <div className="product-content-right-product-button">
-                            <button class="fas fa-cart-arrow-down btnGioHang"> Thêm vào giỏ hàng</button>
+                            <button class="fas fa-cart-arrow-down btnGioHang" onClick={() => addToCart()}> Thêm vào giỏ hàng</button>
                         </div>
                     </div>
                 </div>
@@ -196,7 +289,7 @@ const ProductOne = () => {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }
 export default ProductOne;

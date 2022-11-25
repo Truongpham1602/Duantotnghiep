@@ -5,6 +5,7 @@ import Product from '../components/product/Product';
 import Voucher from '../components/voucher/voucher';
 
 import User from '../components/user/User';
+import Category from '../components/cate/Category';
 import Cart from '../components/layout/CartPage';
 import Bill from '../components/bill/Bill';
 import Login from '../components/login/Login';
@@ -35,7 +36,7 @@ function App() {
           <Route path="shop" element={<> <Product1 /></>}>
             <Route path="" element={<> <ProductTest /></>} />
           </Route>
-          <Route path="ProductOne" element={<> <ProductOne /></>}></Route>
+          <Route path="productOne" element={<> <ProductOne /></>}></Route>
 
         </Route>
         <Route path="admin" element={<> <Admin /></>} >
@@ -43,6 +44,7 @@ function App() {
           <Route path="product" element={<> <Product /></>} />
           <Route path="user" element={<> <User /></>} />
           <Route path="voucher" element={<> <Voucher /></>} />
+          <Route path="category" element={<> <Category /></>} />
         </Route>
         <Route path="cart" element={<Cart />} >
 
