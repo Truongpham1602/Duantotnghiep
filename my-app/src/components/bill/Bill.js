@@ -16,6 +16,7 @@ import {
 } from 'reactstrap';
 import Badge from '@mui/material/Badge';
 import { width } from '@mui/system';
+import { CgFormatJustify } from 'react-icons/cg';
 
 // class Bill extends React.Component {
 const Bill = () => {
@@ -65,9 +66,7 @@ const Bill = () => {
       })
       setTotalPrice(total)
     }
-    if (dataVoucher && dataVoucher.length > 0) {
-      setLstVoucher(dataVoucher)
-    }
+    dataCart && setTotal()
     setImageUrls([])
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
@@ -77,8 +76,9 @@ const Bill = () => {
         });
       });
     });
-    dataCart && setTotal()
-  }, [dataCart])
+
+    setLstVoucher(dataVoucher)
+  }, [dataCart, dataVoucher])
 
   const createOrder = async () => {
     let res = await axios.post(`http://localhost:8080/order/createNoUser?voucher_Id=`, user)
@@ -96,7 +96,11 @@ const Bill = () => {
       if (radio.item(i).checked) {
         setVoucherSelect(radio.item(i).value)
         toggle()
+        return
+      } else {
+        setVoucherSelect(0)
       }
+      toggle()
     }
   }
 
@@ -224,23 +228,20 @@ const Bill = () => {
               </>
             );
           })}
-          <div>
+          <div style={{ display: 'flex', width: '70%', marginLeft: '5%', float: 'left', justifyContent: 'space-between' }}>
             {lstVoucher.map((item, index) => {
-              console.log(item.id);
-              console.log(voucherSelect);
               if (item.id == voucherSelect) {
                 return (
                   <>
-                    <div style={{ display: 'inline-block', width: '55%', marginLeft: '5%', float: 'left' }}>
-                      <span style={{ float: 'left' }}>{item.name}</span>
-                      <span style={{ float: 'right' }}>{item.namecate}</span>
-                    </div>
+                    <div >{item.name}</div>
+                    <div>{item.type === 1 ? item.value + '%' : item.value + 'K'}</div>
+                    <div >{item.namecate}</div>
                   </>
                 )
               }
             })}
-            <button style={{ float: 'right', display: 'inline-block', marginRight: '10px' }} type="button" onClick={() => toggle()}>Chọn Voucher</button>
           </div>
+          <button style={{ float: 'right', display: 'inline-block', marginRight: '10px' }} type="button" onClick={() => toggle()}>Chọn Voucher</button>
           <Modal isOpen={isModalVoucher} toggle={() => toggle()}
             size='lg'
             centered
@@ -265,7 +266,7 @@ const Bill = () => {
 
                         </Col>
                         <Col md={5}>
-                          {item.efffectUnti}
+                          {item.effectUntil}
                         </Col>
                         <Col md={1}>
                           <input type='radio' className='voucher' value={item.id} />
