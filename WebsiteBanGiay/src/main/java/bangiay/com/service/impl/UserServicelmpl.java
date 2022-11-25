@@ -39,8 +39,9 @@ public class UserServicelmpl implements UserService {
 	@Override
 	public UserDTO create(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
-		user.setRoler(this.roleDao.findById(1).get());
+		user.setRoler(this.roleDao.findById(3).get());
 		user.setCreated(Timestamp.from(Instant.now()));
+		user.setStatus(1);
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
 		userDTO.setNameRole(user.getRoler().getRoleName());
@@ -53,6 +54,7 @@ public class UserServicelmpl implements UserService {
 		user.setRoler(this.roleDao.findById(1).get());
 		user.setCreated(user.getCreated());
 		user.setModified(Timestamp.from(Instant.now()));
+		user.setStatus(1);
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
 		userDTO.setNameRole(user.getRoler().getRoleName());

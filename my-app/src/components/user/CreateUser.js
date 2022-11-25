@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import axios from 'axios';
-import moment from 'moment'
+import { ToastContainer, toast } from 'react-toastify';
+import moment from 'moment';
 import {
     ref,
     uploadBytes,
@@ -16,6 +17,27 @@ import {
 
 const User_Rest_API_URL = 'http://localhost:8080/admin/user';
 
+const notifyWarning = (text) => {
+    toast.warning(text, styleToast);
+};
+const notifySuccess = (text) => {
+    toast.success(text, styleToast)
+};
+const notifyError = (text) => {
+    toast.error(text, styleToast);
+};
+
+const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+}
+
 // class CreateUser extends Component {
 const CreateUser = (props) => {
 
@@ -23,6 +45,16 @@ const CreateUser = (props) => {
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
     // const [updateData, setUpdateData] = useState(props);
     const [user, setUser] = useState({});
+
+
+    const arrRole = [
+        {
+            id: 2, title: 'Nhân viên'
+        },
+        {
+            id: 3, title: 'Khách hàng'
+        }
+    ]
 
 
 
@@ -38,10 +70,25 @@ const CreateUser = (props) => {
         })
     }
 
+    const handleSubmit = (e) =>{
+        e.prevenDefaut();  
+    }
+
 
 
     const createUser = () => {
         try {
+
+
+            if (user.fullName.trim().length <= 0 || user.password.trim().length <= 0
+            || user.email.trim().length <= 0 || user.telephone.trim().length <= 0
+               || user.address.trim().length <= 0 || user.telephone.trim().image <= 0
+            ) {
+                notifyWarning("Cần nhập thông tin!")
+                return
+            } 
+
+
             const create = async () => {
                 let res = await axios.post(User_Rest_API_URL + '/post', {
                     roleId: user.roleId,
@@ -66,8 +113,9 @@ const CreateUser = (props) => {
                 toggle()
             }
             create()
-
+            notifySuccess('Thêm mới user thành công')
         } catch (error) {
+            notifyWarning("Cần nhập thông tin")
             console.log(error)
         }
     }
@@ -82,13 +130,14 @@ const CreateUser = (props) => {
 
     return (
         <div>
+            <ToastContainer />
             <Modal isOpen={isCreateModal} toggle={() => toggle()}
                 size='lg'
                 centered
             >
                 <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
                 <ModalBody>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Row>
                             <Col md={6}>
                                 <FormGroup>
@@ -197,16 +246,14 @@ const CreateUser = (props) => {
                                                 type="select"
                                                 onChange={(event) => handleOnchangeInput(event, 'roleId')}
                                             >
-                                                <option value='2'>
-                                                    Nhân viên
-                                                </option>
-                                                <option value='1'>
-                                                    Quản Lý
-                                                </option>
-                                                <option value='3'>
-                                                    Khách hàng
-                                                </option>
-                                            </Input>
+                                                    {arrRole.map(item => {
+                                                        if (user.roleId === item.id) {
+                                                            return <option selected value={item.id}>{item.title}</option>
+                                                        }
+                                                        return <option value={item.id}>{item.title}</option>
+                                                    })}
+
+                                            </Input>    
                                         </FormGroup>
                                     </Col>
                                 </Row>

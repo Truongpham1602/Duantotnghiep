@@ -7,7 +7,7 @@ import {
     Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
     Row, Col, Form
 } from 'reactstrap';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 const Category_Rest_API_URL = 'http://localhost:8080/api/category';
 
@@ -33,10 +33,38 @@ const CreateCategory = (props) => {
         })
     }
 
+    const notifyWarning = (text) => {
+        toast.warning(text, styleToast);
+    };
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast)
+    };
+    const notifyError = (text) => {
+        toast.error(text, styleToast);
+    };
+
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    }
+
+
 
 
     const createCategory = () => {
         try {
+
+            if (category.namecate.trim().length <= 0 ) {
+                notifyWarning("Cần nhập thông tin!")
+                return
+            } 
+
             const create = async () => {
                 let res = await axios.post(Category_Rest_API_URL + '/create', {
 
@@ -55,8 +83,10 @@ const CreateCategory = (props) => {
                 toggle()
             }
             create()
+            notifySuccess('Thêm mới cate thành công')
 
         } catch (error) {
+            notifyWarning("Cần nhập thông tin")
             console.log(error)
         }
     }
@@ -71,6 +101,7 @@ const CreateCategory = (props) => {
 
     return (
         <div>
+            <ToastContainer />
             <Modal isOpen={isCreateModal} toggle={() => toggle()}
                 size='lg'
                 centered

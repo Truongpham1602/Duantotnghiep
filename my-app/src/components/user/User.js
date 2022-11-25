@@ -194,6 +194,7 @@ const User = () => {
               <th>Telephone</th>
               <th>Address</th>
               <th>Role</th>
+              <th>Trạng thái</th>
               <th>Image</th>
               <th colspan="1">Action</th>
               <th colspan="1">
@@ -219,6 +220,7 @@ const User = () => {
                     {/* <td id="created">{item.created}</td> */}
                     {/* <td id="created">{item.modified}</td> */}
                     <td id="modified">{item.nameRole}</td>
+                    <td id="status">{item.status ? "Hoạt động" : "Không hoạt động"}</td>
                     <td id="image" >
                       {imageUrls.map((img) => {
                         return (

@@ -45,11 +45,6 @@ const Register = (props) => {
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
-    if (id === 'image') {
-      copyUser[id] = event.target.files[0].name;
-    } else {
-      copyUser[id] = event.target.value;
-    }
     setUser({
       ...copyUser
     })
@@ -83,6 +78,7 @@ const Register = (props) => {
       }
       create()
       notifySuccess("Đăng ký thành công")
+      
     } catch (error) {
       console.log(error)
     }
