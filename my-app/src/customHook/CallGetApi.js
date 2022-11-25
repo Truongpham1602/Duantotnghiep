@@ -20,6 +20,12 @@ const useCallGetAPI = (url) => {
                         if (item.modified > 0) {
                             item.modified = moment(item.modified).format('DD/MM/YYYY HH:mm:ss');
                         }
+                        if (item.effectFrom > 0) {
+                            item.effectFrom = moment(item.effectFrom).format('DD/MM/YYYY HH:mm:ss');
+                        }
+                        if (item.effectUntil > 0) {
+                            item.effectUntil = moment(item.effectUntil).format('DD/MM/YYYY HH:mm:ss');
+                        }
                         return item;
                     })
                     data = data.reverse()
