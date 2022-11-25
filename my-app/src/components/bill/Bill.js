@@ -15,6 +15,7 @@ import {
   Row, Col, Form
 } from 'reactstrap';
 import Badge from '@mui/material/Badge';
+import { width } from '@mui/system';
 
 // class Bill extends React.Component {
 const Bill = () => {
@@ -29,6 +30,11 @@ const Bill = () => {
   const [imageUrls, setImageUrls] = useState([]);
   const [Products, setProducts] = useState('null')
   const [user, setUser] = useState({})
+  const [isModalVoucher, setIsModalVoucher] = useState(false)
+  const { data: dataVoucher, isLoading } = useCallGetAPI(`http://localhost:8080/api/voucher/get`);
+  const [lstVoucher, setLstVoucher] = useState([]);
+  const [voucherSelect, setVoucherSelect] = useState()
+
   const vnpay = [
     {
       title: 'Ngân hàng',
@@ -59,6 +65,9 @@ const Bill = () => {
       })
       setTotalPrice(total)
     }
+    if (dataVoucher && dataVoucher.length > 0) {
+      setLstVoucher(dataVoucher)
+    }
     setImageUrls([])
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
@@ -74,6 +83,21 @@ const Bill = () => {
   const createOrder = async () => {
     let res = await axios.post(`http://localhost:8080/order/createNoUser?voucher_Id=`, user)
 
+  }
+
+  const toggle = () => {
+    setIsModalVoucher(!isModalVoucher)
+  }
+
+  const addVoucher = () => {
+    let radio = document.getElementsByClassName('voucher')
+    console.log(radio.length);
+    for (let i = 0; i < radio.length; i++) {
+      if (radio.item(i).checked) {
+        setVoucherSelect(radio.item(i).value)
+        toggle()
+      }
+    }
   }
 
   return (
@@ -200,7 +224,68 @@ const Bill = () => {
               </>
             );
           })}
-          <div>Voucher</div>
+          <div>
+            {lstVoucher.map((item, index) => {
+              console.log(item.id);
+              console.log(voucherSelect);
+              if (item.id == voucherSelect) {
+                return (
+                  <>
+                    <div style={{ display: 'inline-block', width: '55%', marginLeft: '5%', float: 'left' }}>
+                      <span style={{ float: 'left' }}>{item.name}</span>
+                      <span style={{ float: 'right' }}>{item.namecate}</span>
+                    </div>
+                  </>
+                )
+              }
+            })}
+            <button style={{ float: 'right', display: 'inline-block', marginRight: '10px' }} type="button" onClick={() => toggle()}>Chọn Voucher</button>
+          </div>
+          <Modal isOpen={isModalVoucher} toggle={() => toggle()}
+            size='lg'
+            centered
+          >
+            <ModalHeader toggle={() => toggle()}>Voucher</ModalHeader>
+            <ModalBody>
+              <Row>
+                {lstVoucher.map((item, index) => {
+                  if (item.status != 0) {
+                    return (<Col md={12} style={{ borderBottom: '1px solid', marginBottom: '5px' }}>
+                      <Row>
+                        <Col md={6}>
+                          <span>
+                            {item.name}
+                          </span>
+                          <span style={{ marginLeft: 'auto', marginRight: '0px', float: 'right' }}>
+                            Còn {item.quantity} voucher
+                          </span>
+                          <p>
+                            {item.namecate}
+                          </p>
+
+                        </Col>
+                        <Col md={5}>
+                          {item.efffectUnti}
+                        </Col>
+                        <Col md={1}>
+                          <input type='radio' className='voucher' value={item.id} />
+                        </Col>
+                      </Row>
+                    </Col>
+                    )
+                  }
+                })}
+              </Row>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={() => { addVoucher() }}>
+                Ok
+              </Button>
+              <Button color="secondary" onClick={() => toggle()}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
           <div className="cart-right col-4 bg-light">
             <div className="summary">
               <ul>
