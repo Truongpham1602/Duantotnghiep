@@ -7,3 +7,7 @@
 .voucher-layout-main .table .delete-voucher:hover{
     background: linear-gradient(to right, #14e4b7, #a638f0);
 }
+.checkError{
+    margin-top: 5px;
+    color: red;
+}

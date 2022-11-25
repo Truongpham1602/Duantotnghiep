@@ -3,13 +3,63 @@ import { NavLink } from 'react-router-dom';
 import '../voucher/voucher.css';
 import UpdateVoucher from './UpdateVoucher';
 import NewVoucher from './NewVoucher';
+import axios from 'axios';
+import useCallGetAPI from '../../customHook/CallGetApi';
+import moment from 'moment';
 
 const Voucher = () => {
 
+    const [voucher, setVoucher] = useState({});
     const [isNewVoucherModal, setIsNewVoucherModal] = useState(false)
     const [isupdatevoucherModal, setIsupdatevoucherModal] = useState(false)
     const [dataVoucher, setData] = useState([]);
     const [page, setPage] = useState(0);
+    const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/voucher/get`);
+    useEffect(() => {
+        if (dataPro && dataPro.length > 0) {
+            setData(dataPro)
+        }
+    }, [dataPro])
+
+
+    const updateData = (res, type) => {
+        if (type === 'create') {
+            let copydata = dataVoucher;
+            copydata.unshift(res);
+            setData(copydata);
+        }
+        else if (type === 'update') {
+            let copydata = dataVoucher;
+            let getIndex = copydata.findIndex((p) => { return p.id === res.id });
+            copydata.fill(res, getIndex, getIndex + 1);
+            setData(copydata)
+        }
+    }
+
+    const editVoucher = async (id) => {
+        try {
+            const res = await axios.get(`http://localhost:8080/api/voucher/get/${id}`)
+            setVoucher(res.data)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const deleteVoucher = async (id) => {
+        // e.preventDefault();
+        try {
+            const res = await axios.put(`http://localhost:8080/api/voucher/setStatusFalse/${id}`)
+            let copyList = dataVoucher;
+            let getIndex = copyList.findIndex((p) => { return p.id === id });
+            copyList.fill(res.data, getIndex, getIndex + 1);
+            setData(copyList)
+            console.log(res.data);
+            console.log(copyList);
+            // updateData(res.data)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
     const updatevoucherModal = () => {
         setIsupdatevoucherModal(!isupdatevoucherModal)
@@ -31,11 +81,15 @@ const Voucher = () => {
             <UpdateVoucher
                 isupdatevoucherModal={isupdatevoucherModal}
                 toggleModal={updatevoucherModal}
+                updateData={updateData}
+                voucher={voucher}
             />
 
             <NewVoucher
                 isNewVoucherModal={isNewVoucherModal}
                 toggleModal={newVoucherModal}
+                updateData={updateData}
+                voucher={voucher}
             />
 
             <div className='voucher-layout-main'>
@@ -47,47 +101,94 @@ const Voucher = () => {
                         </NavLink>
                     </div>
                     <table className="table table-bordered">
-                        <thead>
+                        <thead style={{ verticalAlign: 'middle' }}>
                             <tr>
                                 <th scope="col">#</th>
                                 {/* name */}
                                 <th scope="col">Name</th>
+
                                 {/* value */}
                                 <th scope="col">Giảm giá(%)</th>
                                 {/* quantity */}
                                 <th scope="col">Lượt sử dụng</th>
+                                {/*  */}
+                                <th scope="col">Category</th>
                                 {/* effect from */}
                                 <th scope="col">Ngày bắt đầu</th>
                                 {/* effect until */}
                                 <th scope="col">Ngày hết hạn</th>
+                                <th scope="col">Description</th>
                                 {/* status */}
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col" colspan="2">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>abcd123</td>
-                                <td>20</td>
-                                <td>3</td>
-                                <td>20/10/2022</td>
-                                <td>20/11/2022</td>
-                                <td>Hoạt Động</td>
-                                <td>
-                                    <NavLink className="btn btn-primary update update-voucher"
-                                        type='buttom' id="update" style={{ borderRadius: 50 }}
-                                        onClick={() => updatevoucherModal()}>
-                                        cập nhập
-                                    </NavLink>
-                                </td>
-                                <td>
-                                    <NavLink className="btn btn-danger delete delete-voucher"
-                                        id="delete" style={{ borderRadius: 50 }}>
-                                        Delete
-                                    </NavLink>
-                                </td>
-                            </tr>
+                        <tbody style={{ verticalAlign: 'middle' }}>
+                            {
+                                !isLoading && dataVoucher && dataVoucher.length > 0 && dataVoucher.map((item, index) => {
+                                    // if (item.status != 0)
+                                    return (
+                                        <tr key={item.id}>
+                                            <th scope="row" id="">{index + 1}</th>
+                                            <td id="name">{item.name}</td>
+                                            <td id="value">{item.value}</td>
+                                            <td id="quantity">{item.quantity}</td>
+                                            <td id="category">{item.namecate}</td>
+                                            <td id="effectFrom">{item.effectFrom}</td>
+                                            <td id="effectUntil">{item.effectUntil}</td>
+                                            <td id="description"><textarea>{item.description}</textarea></td>
+                                            <td id="status">{Number(item.status) ? "Hoạt động" : "Không hoạt động"}</td>
+                                            <td>
+                                                <NavLink className="btn btn-primary update update-voucher"
+                                                    type='buttom' id="update" style={{ borderRadius: 50 }}
+                                                    onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                    cập nhập
+                                                </NavLink>
+                                            </td>
+                                            <td>
+                                                <NavLink className="btn btn-danger delete delete-voucher"
+                                                    id="delete" style={{ borderRadius: 50 }}
+                                                    onClick={() => { deleteVoucher(item.id) }}>
+                                                    Delete
+                                                </NavLink>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                            {/* {
+                                !isLoading && dataVoucher && dataVoucher.length > 7 && Object.length(
+                                    dataVoucher.slice(7 * page, 7 * page + 7)
+                                ).map((item, index) => {
+                                    return (
+                                        <tr key={item.id}>
+                                            <th scope="row" id="">{index + 1}</th>
+                                            <td id="name">{item.name}</td>
+                                            <td id="description">{item.description}</td>
+                                            <td id="value">{item.value}</td>
+                                            <td id="quantity">{item.quantity}</td>
+                                            <td id="category">{item.name_cate}</td>
+                                            <td id="effectFrom">{item.effectFrom}</td>
+                                            <td id="effectUntil">{item.effectUntil}</td>
+                                            <td id="status">{item.status ? "Hoạt động" : "Không hoạt động"}</td>
+                                            <td>
+                                                <NavLink className="btn btn-primary update update-voucher"
+                                                    type='buttom' id="update" style={{ borderRadius: 50 }}
+                                                    onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                    cập nhập
+                                                </NavLink>
+                                            </td>
+                                            <td>
+                                                <NavLink className="btn btn-danger delete delete-voucher"
+                                                    id="delete" style={{ borderRadius: 50 }}>
+                                                    Delete
+                                                </NavLink>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            } */}
+
                         </tbody>
                         <tfoot>
                             <tr>
