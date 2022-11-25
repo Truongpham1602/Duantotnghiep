@@ -4,6 +4,7 @@ public class VoucherDTO {
     private Integer id;
     private String name;
     private Integer categoryId;
+    private String name_cate;
     private String description;
     private Integer quantity;
     private java.sql.Timestamp effectFrom;
@@ -39,13 +40,21 @@ public class VoucherDTO {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
-
-    public String getDescription() {
-        return this.description;
+    
+    public String getNamecate() {
+    	return this.name_cate;
+    }
+    
+    public void setName_cate(String namecate) {
+    	this.name_cate = namecate;
     }
 
+    public String getDescription() {
+    	return this.description;
+    }
+    
     public void setDescription(String description) {
-        this.description = description;
+    	this.description = description;
     }
 
     public Integer getQuantity() {

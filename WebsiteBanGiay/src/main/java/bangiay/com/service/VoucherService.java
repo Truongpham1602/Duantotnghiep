@@ -2,17 +2,19 @@ package bangiay.com.service;
 
 import java.util.List;
 
+import bangiay.com.DTO.VoucherDTO;
 import bangiay.com.entity.Voucher;
 
 public interface VoucherService {
-	Voucher create (Voucher voucher) ;
+	public VoucherDTO create (VoucherDTO voucherDTO) ;
 	
-	Voucher update (Voucher voucher, Integer id) throws Exception;
+	public VoucherDTO update (VoucherDTO voucherDTO);
 	
 	void deleteById(Integer id);
+	 public VoucherDTO setStatusFalse(Integer id);
 	
-	List<Voucher> findAll ();
+	List<VoucherDTO> findAll ();
 	
-	Voucher findById (Integer id);
+	VoucherDTO findById (Integer id);
 	
 }
