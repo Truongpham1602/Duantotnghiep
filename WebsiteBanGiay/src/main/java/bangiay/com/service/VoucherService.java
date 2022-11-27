@@ -3,6 +3,7 @@ package bangiay.com.service;
 import java.util.List;
 
 import bangiay.com.DTO.VoucherDTO;
+import bangiay.com.entity.Voucher;
 
 public interface VoucherService {
 	public VoucherDTO create (VoucherDTO voucherDTO) ;
