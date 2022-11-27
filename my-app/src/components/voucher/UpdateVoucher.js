@@ -244,19 +244,11 @@ const UpdateVoucher = (props) => {
                                         // {...register("isActive", { required: false })}
                                         >
                                             {lstcate.map((item, index) => {
-                                                if (item.id === voucher.categoryId) {
-                                                    return (
-                                                        <option key={index} value={item.id} selected>
-                                                            {item.namecate}
-                                                        </option>
-                                                    )
-                                                }
                                                 return (
-                                                    <option key={index} value={item.id} >
+                                                    <option key={index} value={item.id}>
                                                         {item.namecate}
                                                     </option>
                                                 )
-
                                             })}
                                         </select>
                                     </div>

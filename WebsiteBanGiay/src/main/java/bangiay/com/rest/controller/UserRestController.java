@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.UserDTO;
+import bangiay.com.DTO.VoucherDTO;
 import bangiay.com.service.UserService;
 
 @CrossOrigin(origins = "*")
@@ -47,6 +48,11 @@ public class UserRestController {
 	@GetMapping("/find/{id}")
 	public UserDTO finByID(@RequestBody @PathVariable("id") int id, UserDTO userDTO) {
 		return userService.finById(id);
+	}
+	
+	@PutMapping("/setStatusUser/{id}")
+	public UserDTO setStatusUser(@PathVariable Integer id) {
+		return userService.setStatusUser(id);
 	}
 
 }

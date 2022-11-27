@@ -45,17 +45,16 @@ const Voucher = () => {
         }
     }
 
-    const deleteVoucher = async (id) => {
-        // e.preventDefault();
+    const deleteVoucher = (id) => {
         try {
-            const res = await axios.put(`http://localhost:8080/api/voucher/setStatusFalse/${id}`)
-            let copyList = dataVoucher;
-            let getIndex = copyList.findIndex((p) => { return p.id === id });
-            copyList.fill(res.data, getIndex, getIndex + 1);
-            setData(copyList)
-            console.log(res.data);
-            console.log(copyList);
-            // updateData(res.data)
+            const updateStatusFalse = async () => {
+                const res = await axios.put(`http://localhost:8080/api/voucher/setStatusFalse/${id}`)
+                let copyList = [...dataVoucher]
+                let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
+                copyList.fill(res.data, getIndex, getIndex + 1);
+                setData(copyList)
+            }
+            updateStatusFalse()
         } catch (error) {
             console.log(error.message)
         }
@@ -137,20 +136,20 @@ const Voucher = () => {
                                             <td id="effectFrom">{item.effectFrom}</td>
                                             <td id="effectUntil">{item.effectUntil}</td>
                                             <td id="description"><textarea>{item.description}</textarea></td>
-                                            <td id="status">{Number(item.status) ? "Hoạt động" : "Không hoạt động"}</td>
+                                            <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
                                             <td>
-                                                <NavLink className="btn btn-primary update update-voucher"
+                                                <button className="btn btn-primary update update-voucher"
                                                     type='buttom' id="update" style={{ borderRadius: 50 }}
                                                     onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
                                                     cập nhập
-                                                </NavLink>
+                                                </button>
                                             </td>
                                             <td>
-                                                <NavLink className="btn btn-danger delete delete-voucher"
+                                                <button className="btn btn-danger delete delete-voucher"
                                                     id="delete" style={{ borderRadius: 50 }}
                                                     onClick={() => { deleteVoucher(item.id) }}>
                                                     Delete
-                                                </NavLink>
+                                                </button>
                                             </td>
                                         </tr>
                                     )

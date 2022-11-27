@@ -220,7 +220,7 @@ const User = () => {
                     {/* <td id="created">{item.created}</td> */}
                     {/* <td id="created">{item.modified}</td> */}
                     <td id="modified">{item.nameRole}</td>
-                    <td id="status">{item.status ? "Hoạt động" : "Không hoạt động"}</td>
+                    <td id="status">{Number(item.status) ? "Hoạt động" : "Không hoạt động"}</td>
                     <td id="image" >
                       {imageUrls.map((img) => {
                         return (

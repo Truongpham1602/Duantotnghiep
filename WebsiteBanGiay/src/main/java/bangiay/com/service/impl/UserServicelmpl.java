@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.UserDTO;
+import bangiay.com.DTO.VoucherDTO;
 import bangiay.com.dao.RoleDao;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.User;
+import bangiay.com.entity.Voucher;
 import bangiay.com.service.UserService;
 
 @Service
@@ -41,7 +43,6 @@ public class UserServicelmpl implements UserService {
 		User user = modelMapper.map(userDTO, User.class);
 		user.setRoler(this.roleDao.findById(3).get());
 		user.setCreated(Timestamp.from(Instant.now()));
-		user.setStatus(1);
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
 		userDTO.setNameRole(user.getRoler().getRoleName());
@@ -51,10 +52,9 @@ public class UserServicelmpl implements UserService {
 	@Override
 	public UserDTO update(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
-		user.setRoler(this.roleDao.findById(1).get());
+		user.setRoler(this.roleDao.findById(3).get());
 		user.setCreated(user.getCreated());
 		user.setModified(Timestamp.from(Instant.now()));
-		user.setStatus(1);
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
 		userDTO.setNameRole(user.getRoler().getRoleName());
@@ -71,6 +71,16 @@ public class UserServicelmpl implements UserService {
 	@Override
 	public void delete(int id) {
 		userDao.deleteById(id);
+	}
+
+	@Override
+	public UserDTO setStatusUser(Integer id) {
+		User user = this.userDao.findById(id).orElseGet(null);
+		user.setStatus(0);
+		this.userDao.save(user);
+		UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+		userDTO.setStatus(0);
+		return userDTO;
 	}
 
 	

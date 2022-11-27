@@ -1,16 +1,40 @@
-import { React } from "react";
+import { React ,useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import axios from 'axios';
+import moment from 'moment'
 import '../css/detailsUser.css';
 const UserDetails = (props) => {
     const timelineClick = () => {
         document.querySelector(".about-content").style.display = "none"
         document.querySelector(".timeline").style.display = "block"
     }
+
+    const [user, setUser] = useState(props.user);
+
+    useEffect(() => {
+        setUser(props.user)
+    }, [props.user])
+
+    
+
     const aboutClick = () => {
         document.querySelector(".about-content").style.display = "block"
         document.querySelector(".timeline").style.display = "none"
     }
-    const { isUserDetailModal, toggleModal } = props;
+    const { isUserDetailModal, toggleModal ,updateData} = props;
+
+
+    const updateUser = async () => {
+        try {
+            const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`, user)
+            let data = (res && res.data) ? res.data : [];
+            data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
+            data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
+            updateData(data, 'update')
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
     return (
         <div>
             <Modal isOpen={isUserDetailModal} toggle={toggleModal} size='xl' centered>
@@ -32,7 +56,7 @@ const UserDetails = (props) => {
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="profile-head">
-                                                <h3 >
+                                                <h3  >
                                                     Phạm văn Trường
                                                 </h3>
                                                 <p class="proile-rating">id:123</p>

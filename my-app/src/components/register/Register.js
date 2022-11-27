@@ -77,7 +77,6 @@ const Register = (props) => {
         updateData(data, `create`)
       }
       create()
-      notifySuccess("Đăng ký thành công")
       
     } catch (error) {
       console.log(error)
@@ -102,10 +101,7 @@ const Register = (props) => {
                   value={user.fullName}
                   onChange={(event) => handleOnchangeInput(event, 'fullName')}
                 />
-                <MDBInput wrapperClass='mb-4 w-100' placeholder="Email" id='formControlLg' type='email' size="lg"
-                  value={user.email}
-                  onChange={(event) => handleOnchangeInput(event, 'email')}
-                />
+                
                 <MDBInput wrapperClass='mb-4 w-100' placeholder="Password" id='formControlLg' type='password' size="lg"
                   value={user.password}
                   onChange={(event) => handleOnchangeInput(event, 'password')}
