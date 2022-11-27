@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment'
 import {
     ref,
@@ -35,6 +36,26 @@ const UpdateCategory = (props) => {
             ...copyCategory
         })
     }
+    const notifyWarning = (text) => {
+        toast.warning(text, styleToast);
+    };
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast)
+    };
+    const notifyError = (text) => {
+        toast.error(text, styleToast);
+    };
+
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    }
 
 
     const updateCategory = async () => {
@@ -51,10 +72,13 @@ const UpdateCategory = (props) => {
             data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
             toggle()
             updateData(data, 'update')
+            notifySuccess('Cập nhật cate thành công')
         } catch (error) {
             console.log(error.message)
         }
     }
+
+    
 
     const toggle = () => {
         toggleModal()
@@ -63,6 +87,7 @@ const UpdateCategory = (props) => {
 
     return (
         <div>
+             <ToastContainer />
             <Modal isOpen={isUpdateModal} toggle={() => toggle()}
                 size='lg'
                 centered
