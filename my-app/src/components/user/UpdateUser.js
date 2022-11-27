@@ -37,22 +37,28 @@ const UpdateUser = (props) => {
     }
 
 
+    const arrRole = [
+        {
+            id: 3, title: 'Khách hàng'
+        },
+        {
+            id: 2, title: 'Nhân viên'
+        }
+    ]
+
+    const status = [{
+        id: 1,
+        title: "Hoạt động",
+    }, {
+        id: 0,
+        title: "Không hoạt động",
+    },
+    ];
+
+
     const updateUser = async () => {
         try {
-            const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`, {
-                roleId: user.roleId,
-                fullName: user.fullName,
-                password: user.password,
-                email: user.email,
-                telephone: user.telephone,
-                address: user.address,
-                image: user.image,
-                created: user.created,
-                creator: user.creator,
-                modified: user.modified,
-                modifier: user.modifier,
-                status: user.status
-            })
+            const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`, user)
             let data = (res && res.data) ? res.data : [];
             data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
             data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
@@ -163,7 +169,7 @@ const UpdateUser = (props) => {
                                     <Col md={12}>
                                         <FormGroup>
                                             <Label for="roleId">
-                                                Role
+                                                Vai trò
                                             </Label>
                                             <Input
                                                 id="roleId"
@@ -172,13 +178,35 @@ const UpdateUser = (props) => {
                                                 type="select"
                                                 onChange={(event) => handleOnchangeInput(event, 'roleId')}
                                             >
-                                                <option value='2'>
-                                                    Nhân viên
-                                                </option>
-                                                <option value='3'>
-                                                    Khách hàng
-                                                </option>
+                                               {arrRole.map(item => {
+                                                        if (user.roleId === item.id) {
+                                                            return <option selected value={item.id}>{item.title}</option>
+                                                        }
+                                                        return <option value={item.id}>{item.title}</option>
+                                                    })}
                                             </Input>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={12}>
+                                        <FormGroup>
+                                            <Label for="Status">
+                                            Trạng thái 
+                                            </Label>
+                                            <select
+                                            className="form-control"
+                                            id="status"
+                                            name="status"
+                                            placeholder=""
+                                            value={user.status}
+                                            onChange={(event) => handleOnchangeInput(event, 'status')}
+                                        >
+                                            {status.map(item => {
+                                                if (user.status === item.id) {
+                                                    return <option selected value={item.id}>{item.title}</option>
+                                                }
+                                                return <option value={item.id}>{item.title}</option>
+                                            })}
+                                        </select>
                                         </FormGroup>
                                     </Col>
                                 </Row>
