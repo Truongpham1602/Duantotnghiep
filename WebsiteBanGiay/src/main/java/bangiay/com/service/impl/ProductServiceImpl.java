@@ -119,17 +119,5 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
-	@Override
-	public List<Product> listAll(String keyword) {
-		System.out.println("vào hàm rồi");
-		System.out.println("keyword" + keyword);
 
-		if (keyword != null) {
-			System.out.println("vào if rồi");
-
-			return proDAO.search(keyword);
-		}
-		System.out.println("ra if rồi");
-		return proDAO.findAll();
-	}
 }

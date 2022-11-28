@@ -18,6 +18,7 @@ import ProductList from "../components/HOME/ProductList";
 import ProductOne from "../components/HOME/ProductOne";
 
 import { Routes, Route } from "react-router-dom";
+import Order from "../components/order/order";
 
 function App() {
   return (
@@ -57,9 +58,15 @@ function App() {
             />
           </Route>
 
-          <Route path="productOne" element={<> <ProductOne /></>}></Route>
-
-
+          <Route
+            path="productOne"
+            element={
+              <>
+                {" "}
+                <ProductOne />
+              </>
+            }
+          ></Route>
         </Route>
         <Route
           path="admin"
@@ -104,6 +111,15 @@ function App() {
               <>
                 {" "}
                 <Voucher />
+              </>
+            }
+          />
+          <Route
+            path="order"
+            element={
+              <>
+                {" "}
+                <Order />
               </>
             }
           />

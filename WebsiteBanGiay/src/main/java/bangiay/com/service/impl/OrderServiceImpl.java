@@ -127,22 +127,26 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Orders updateOrderWithStatus(Integer id,Integer status) {
 		Orders orders = orderDao.getById(id);
-		if (orders == null) {
-			throw new AppException(constant.ORDER_STATUS_MSG_ERROR_NOT_EXIST);
-		}
-		if (orders.getStatus().equals(constant.ORDER_STATUS_CANCEL) || orders.getStatus().equals(constant.ORDER_STATUS_SUCCESS)) {
-			throw new AppException(constant.ORDER_STATUS_MSG_ERROR_NOT_EXIST);
-		}
-		if (orders.getStatus().equals(orders.getId())) {
-			throw new AppException(constant.ORDER_MSG_ERROR_ALREADY_STATUS);
-		}
+//		if (orders == null) {
+//
+//			throw new AppException(constant.ORDER_STATUS_MSG_ERROR_NOT_EXIST);
+//		}
+//		if (orders.getStatus().equals(constant.ORDER_STATUS_CANCEL) || orders.getStatus().equals(constant.ORDER_STATUS_SUCCESS)) {
+//
+//			throw new AppException(constant.ORDER_STATUS_MSG_ERROR_NOT_EXIST);
+//		}
+//		if (orders.getStatus().equals(status)) {
+//			throw new AppException(constant.ORDER_MSG_ERROR_ALREADY_STATUS);
+//		}
 //		if (orders.getStatus() > id) {
 //			throw new AppException(constant.ORDER_STATUS_MSG_ERROR_NOT_EXIST);
 //		}
 //		if (status == constant.ORDER_STATUS_SUCCESS) {
 //			orders.setStatus(3);
 //		}
+
 		orders.setStatus(status);
+		System.out.println(status);
 		orders.setModified(Timestamp.from(Instant.now()));
 		return orderDao.save(orders);
 
