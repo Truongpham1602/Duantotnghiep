@@ -157,7 +157,6 @@ const Product = () => {
 
     uploadBytes(imageRef, imageFile).then((snapshot) => {
       let nameImg = imageFile.name
-      let a = imageUrls
       getDownloadURL(snapshot.ref).then((url) => {
         let copy = [...imageUrls, { nameImg, url }]
         const key = 'nameImg'
