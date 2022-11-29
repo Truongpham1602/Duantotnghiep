@@ -6,6 +6,7 @@ import NewVoucher from './NewVoucher';
 import axios from 'axios';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import moment from 'moment';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Voucher = () => {
 
@@ -53,11 +54,31 @@ const Voucher = () => {
                 let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
                 copyList.fill(res.data, getIndex, getIndex + 1);
                 setData(copyList)
+                console.log(copyList);
+                notifySuccess("Thay đổi trạng thái thành công !!")
+                // notifyWarning("Thay đổi trạng thái thành công !!")
             }
             updateStatusFalse()
         } catch (error) {
             console.log(error.message)
         }
+    }
+
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast)
+    };
+    const notifyWarning = (text) => {
+        toast.warning(text, styleToast);
+    };
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
     }
 
     const updatevoucherModal = () => {
@@ -128,67 +149,76 @@ const Voucher = () => {
                                     let effectFrom = moment(item.effectFrom).format('DD/MM/YYYY');
                                     let effectUntil = moment(item.effectUntil).format('DD/MM/YYYY');
                                     // if (item.status != 0)
-                                    return (
-                                        <tr key={item.id}>
-                                            <th scope="row" id="">{index + 1}</th>
-                                            <td id="name">{item.name}</td>
-                                            <td id="value">{item.value}</td>
-                                            <td id="quantity">{item.quantity}</td>
-                                            <td id="category">{item.namecate}</td>
-                                            <td id="effectFrom">{effectFrom}</td>
-                                            <td id="effectUntil">{effectUntil}</td>
-                                            <td id="description"><textarea>{item.description}</textarea></td>
-                                            <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
-                                            <td>
-                                                <button className="btn btn-primary update update-voucher"
-                                                    type='buttom' id="update" style={{ borderRadius: 50 }}
-                                                    onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                    cập nhập
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button className="btn btn-danger delete delete-voucher"
-                                                    id="delete" style={{ borderRadius: 50 }}
-                                                    onClick={() => { deleteVoucher(item.id) }}>
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
+                                    if (item.status == 1) {
+                                        return (
+                                            item.status == 1 &&
+                                            <tr key={item.id}>
+                                                <th scope="row" id="">{index + 1}</th>
+                                                <td id="name">{item.name}</td>
+                                                <td id="value">{item.value}</td>
+                                                <td id="quantity">{item.quantity}</td>
+                                                <td id="category">{item.namecate}</td>
+                                                <td id="effectFrom">{effectFrom}</td>
+                                                <td id="effectUntil">{effectUntil}</td>
+                                                <td id="description"><textarea>{item.description}</textarea></td>
+                                                <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
+                                                <td>
+                                                    <button className="btn btn-primary update update-voucher"
+                                                        type='buttom' id="update" style={{ borderRadius: 50 }}
+                                                        onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                        cập nhập
+                                                    </button>
+                                                </td>
+                                                <td>
+
+                                                    <button className="btn btn-danger delete delete-voucher"
+                                                        id="delete" style={{ borderRadius: 50 }}
+                                                        onClick={() => { deleteVoucher(item.id) }}>
+                                                        Delete
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+                                        )
+                                    } else {
+                                        return (
+
+                                            item.status == 0 &&
+                                            <tr key={item.id} style={{ color: '#c7c7c7' }}>
+                                                <th scope="row" id="">{index + 1}</th>
+                                                <td id="name">{item.name}</td>
+                                                <td id="value">{item.value}</td>
+                                                <td id="quantity">{item.quantity}</td>
+                                                <td id="category">{item.namecate}</td>
+                                                <td id="effectFrom">{effectFrom}</td>
+                                                <td id="effectUntil">{effectUntil}</td>
+                                                <td id="description"><textarea>{item.description}</textarea></td>
+                                                <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
+                                                <td>
+                                                    <button className="btn btn-primary update update-voucher"
+                                                        type='buttom' id="update" style={{ borderRadius: 50 }}
+                                                        onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                        cập nhập
+                                                    </button>
+                                                </td>
+                                                <td>
+
+                                                    <button className="btn btn-danger delete delete-voucher"
+                                                        id="delete" style={{ borderRadius: 50 }}
+                                                        onClick={() => { deleteVoucher(item.id) }}>
+                                                        Delete
+                                                    </button>
+
+                                                </td>
+
+                                            </tr>
+
+
+                                        )
+                                    }
+
                                 })
                             }
-                            {/* {
-                                !isLoading && dataVoucher && dataVoucher.length > 7 && Object.length(
-                                    dataVoucher.slice(7 * page, 7 * page + 7)
-                                ).map((item, index) => {
-                                    return (
-                                        <tr key={item.id}>
-                                            <th scope="row" id="">{index + 1}</th>
-                                            <td id="name">{item.name}</td>
-                                            <td id="description">{item.description}</td>
-                                            <td id="value">{item.value}</td>
-                                            <td id="quantity">{item.quantity}</td>
-                                            <td id="category">{item.name_cate}</td>
-                                            <td id="effectFrom">{item.effectFrom}</td>
-                                            <td id="effectUntil">{item.effectUntil}</td>
-                                            <td id="status">{item.status ? "Hoạt động" : "Không hoạt động"}</td>
-                                            <td>
-                                                <NavLink className="btn btn-primary update update-voucher"
-                                                    type='buttom' id="update" style={{ borderRadius: 50 }}
-                                                    onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                    cập nhập
-                                                </NavLink>
-                                            </td>
-                                            <td>
-                                                <NavLink className="btn btn-danger delete delete-voucher"
-                                                    id="delete" style={{ borderRadius: 50 }}>
-                                                    Delete
-                                                </NavLink>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            } */}
 
                         </tbody>
                         <tfoot>
