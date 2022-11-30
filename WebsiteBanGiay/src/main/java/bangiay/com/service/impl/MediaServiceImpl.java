@@ -56,4 +56,11 @@ public class MediaServiceImpl implements MediaService {
 		return lstMediaDTO;
 	}
 
+	@Override
+	public MediaDTO findById(Integer id) {
+		Media media = mediaDao.findById(id).orElseGet(null);
+		MediaDTO mediadto = modelMapper.map(media, MediaDTO.class);
+		return mediadto;
+	}
+
 }

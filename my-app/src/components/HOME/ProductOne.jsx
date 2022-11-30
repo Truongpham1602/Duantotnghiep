@@ -19,6 +19,7 @@ const ProductOne = () => {
     const [nextProductDetail, addToCart, product] = useOutletContext()
     const imagesListRef = ref(storage, "images/");
     const [imageUrls, setImageUrls] = useState([]);
+    const [size_Id, setSize_Id] = useState()
     const sizes = [
         {
             id: 36,
@@ -92,6 +93,15 @@ const ProductOne = () => {
         document.querySelector(".product-buttom-right-content-big").classList.toggle("activeB")
     }
 
+    const setActive = (e) => {
+        let btnSize = document.getElementsByClassName('btn')
+        for (let i = 0; i < btnSize.length; i++) {
+            btnSize.item(i).classList.remove('acitve-Size');
+        }
+        e.target.classList.add('acitve-Size');
+        setSize_Id(e.target.value);
+    }
+
     return (
         <section className="productOne">
             <div className="container">
@@ -158,15 +168,14 @@ const ProductOne = () => {
                                             return (
                                                 <>
                                                     {item.id == size.size && size.quantity > 0 &&
-                                                        <button className="btn select">{item.title}</button>
+                                                        <button onClick={(e) => setActive(e)} value={size.id} className="btn">{item.title}</button>
                                                     }
                                                     {item.id == size.size && size.quantity <= 0 &&
-                                                        <button className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
+                                                        <button onClick={(e) => setActive(e)} className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
                                                     }
                                                     {item.id != size.size &&
-                                                        <button className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
+                                                        <button onClick={(e) => setActive(e)} className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
                                                     }
-
                                                 </>
                                             )
                                         })
@@ -178,7 +187,7 @@ const ProductOne = () => {
                             <p className="quantityLeft">Số Lượng: <NumericInput min={0} /></p>
                         </div>
                         <div className="product-content-right-product-button">
-                            <button class="fas fa-cart-arrow-down btnGioHang" onClick={() => addToCart()}> Thêm vào giỏ hàng</button>
+                            <button class="fas fa-cart-arrow-down btnGioHang" onClick={() => addToCart(size_Id)}> Thêm vào giỏ hàng</button>
                         </div>
                     </div>
                 </div>

@@ -46,7 +46,7 @@ const Product = () => {
     }
     else if (type === 'update') {
       let copydata = dataProduct;
-      let getIndex = copydata.findIndex((p) => { return p.id === res.id });
+      let getIndex = copydata.findIndex((p) => { return p.id == res.id });
       copydata.fill(res, getIndex, getIndex + 1);
       setData(copydata)
     }
@@ -129,7 +129,7 @@ const Product = () => {
   const onNext = () => {
     setPage(page + 1 < dataProduct.length / 7 ? page + 1 : page);
   };
-  const navigate = useNavigate()
+
   //Listen for file selection 
   const handleImages = (e) => {
     setImageFiles([])
@@ -157,7 +157,6 @@ const Product = () => {
 
     uploadBytes(imageRef, imageFile).then((snapshot) => {
       let nameImg = imageFile.name
-      let a = imageUrls
       getDownloadURL(snapshot.ref).then((url) => {
         let copy = [...imageUrls, { nameImg, url }]
         const key = 'nameImg'
@@ -193,6 +192,12 @@ const Product = () => {
       <ProductDetails
         isDetailsModal={isDetailsModal}
         toggleModal={detailsModal}
+        updateData={updateData}
+        handleImages={handleImages}
+        handleUpdateImages={handleUpdateImages}
+        imageUrls={imageUrls}
+        setImageUrls={setImageUrls}
+        product={product}
       />
       <CreateProduct
         isCreateModal={isCreateModal}
@@ -239,7 +244,7 @@ const Product = () => {
                     <th scope="row" id="">
                       {index + 1}
                     </th>
-                    <td id="category" onClick={() => detailsModal()}>{item.name}</td>
+                    <td id="category" onClick={() => { editProduct(item.id); detailsModal() }}>{item.name}</td>
                     <td id="category">{item.color}</td>
                     {/* <td id="price">{item.price}</td> */}
                     <td id="quantity">{item.quantity}</td>

@@ -28,18 +28,29 @@ public class SizeRestController {
 		return SizeService.findAll();
 	}
 
+	@GetMapping("/find/{id}")
+	public SizeDTO findAll(@PathVariable("id") Integer id) {
+		return SizeService.findById(id);
+	}
+
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") Integer id) {
 		SizeService.delete(id);
 	}
 
+	@PostMapping("/postList")
+	public List<SizeDTO> postList(@RequestBody List<SizeDTO> SizeDTO) {
+		return SizeService.saveList(SizeDTO);
+	}
+
 	@PostMapping("/post")
-	public List<SizeDTO> post(@RequestBody List<SizeDTO> SizeDTO) {
+	public SizeDTO post(@RequestBody SizeDTO SizeDTO) {
 		return SizeService.save(SizeDTO);
 	}
 
-	@PutMapping("/put")
-	public List<SizeDTO> put(@RequestBody List<SizeDTO> SizeDTO) {
+	@PutMapping("/put/{id}")
+	public SizeDTO put(@RequestBody SizeDTO SizeDTO, @PathVariable("id") Integer id) {
+		SizeDTO.setId(id);
 		return SizeService.save(SizeDTO);
 	}
 }

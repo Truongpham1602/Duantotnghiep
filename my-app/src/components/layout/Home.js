@@ -29,9 +29,9 @@ const Home = () => {
             size_Id: size_Id,
             quantity: 1
         })
-        let copydata = cart
-        copydata.unshift(res.data);
-        setCart(copydata)
+        // let copydata = cart
+        // copydata.unshift(res.data);
+        setCart(res.data)
         navigate(window.location.pathname)
         toast.success('Add to cart success', styleToast)
     }
