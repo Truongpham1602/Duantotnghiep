@@ -3,109 +3,113 @@ import products from "./product";
 import { Link } from "react-router-dom";
 import "./Cart.css";
 import useCallGetAPI from "../../../customHook/CallGetApi";
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCol,
-  MDBContainer,
-  MDBIcon,
-  MDBRow,
-  MDBTypography,
-} from "mdb-react-ui-kit";
+
 
 const Cart = () => {
   const { data: media } = useCallGetAPI("http://localhost:8080/media/getAll");
   let ab = URL.createObjectURL("anhthe.jpg");
   return (
     <>
-      <section className="vh-100" style={{ backgroundColor: "#8c9eff" }}>
-        <MDBContainer className="py-5 h-100">
-          <MDBRow className="justify-content-center align-items-center h-100">
-            <MDBCol size="12">
-              <MDBCard
-                className="card-stepper text-black"
-                style={{ borderRadius: "16px" }}
-              >
-                <MDBCardBody className="p-5">
-                  <div className="d-flex justify-content-between align-items-center mb-5">
-                    <div>
-                      <MDBTypography tag="h5" className="mb-0">
-                        INVOICE{" "}
-                        <span className="text-primary font-weight-bold">
-                          #Y34XDHR
-                        </span>
-                      </MDBTypography>
-                    </div>
-                    <div className="text-end">
-                      <p className="mb-0">
-                        Expected Arrival <span>01/12/19</span>
-                      </p>
-                      <p className="mb-0">
-                        USPS{" "}
-                        <span className="font-weight-bold">
-                          234094567242423422898
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                  <ul
-                    id="progressbar-2"
-                    className="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2"
-                  >
-                    <li className="step0 active text-center" id="step1"></li>
-                    <li className="step0 active text-center" id="step2"></li>
-                    <li className="step0 active text-center" id="step3"></li>
-                    <li className="step0 text-muted text-end" id="step4"></li>
-                  </ul>
+      
+      {
+        // media && console.log(media)
+        // media.map((item) => {
 
-                  <div className="d-flex justify-content-between">
-                    <div className="d-lg-flex align-items-center">
-                      <MDBIcon
-                        fas
-                        icon="clipboard-list me-lg-4 mb-3 mb-lg-0"
-                        size="3x"
-                      />
-                      <div>
-                        <p className="fw-bold mb-1">Order</p>
-                        <p className="fw-bold mb-0">Processed</p>
+        <image src={ab} />
+        //   console.log(item.url);
+        // })}
+      }
+      <div className="container-fluid">
+        <h4 className="py-4">Shopping Cart</h4>
+        <div className="d-flex justify-content-between align-items-center">
+          <ul className="breadcrumb">
+            <Link className="breadcrumb-item" to={"/"}>
+              Trang Chủ
+            </Link>
+            <Link className="breadcrumb-item" to={"cart"}>
+              Giỏ Hàng
+            </Link>
+          </ul>
+          <p className="count">Có {products.length} Sản Phẩm Trong Giỏ Hàng</p>
+        </div>
+        <div className="row">
+          {/* Cart-left */}
+          <section className="cart-left col-8">
+            <ul className="cart-list">
+              {products.map((product, index) => {
+                return (
+                  <li
+                    className="cart-item d-flex align-items-center"
+                    key={index}
+                  >
+                    <div className="cart-infor">
+                      <div className="thumbnail">
+                        <a href="#">
+                          <img src={product.image} alt={product.name} />
+                        </a>
+                      </div>
+                      <div className="detail">
+                        <div className="name">
+                          <a href="#">{product.name}</a>
+                        </div>
+                        <div className="description">{product.description}</div>
+                        <div className="price">{product.price}</div>
                       </div>
                     </div>
-                    <div className="d-lg-flex align-items-center">
-                      <MDBIcon
-                        fas
-                        icon="box-open me-lg-4 mb-3 mb-lg-0"
-                        size="3x"
-                      />
-                      <div>
-                        <p className="fw-bold mb-1">Order</p>
-                        <p className="fw-bold mb-0">Shipped</p>
+
+                    <div className="cart-quantity">
+                      <div className="quantity">
+                        <input
+                          type="text"
+                          className="quantity"
+                          step="1"
+                          value={product.quantity}
+                        />
+                      </div>
+
+                      <div className="remove">
+                        <svg
+                          version="1.1"
+                          className="close"
+                          x="0px"
+                          y="0px"
+                          viewBox="0 0 60 60"
+                          enableBackground="new 0 0 60 60"
+                        >
+                          <polygon points="38.936,23.561 36.814,21.439 30.562,27.691 24.311,21.439 22.189,23.561 28.441,29.812 22.189,36.064 24.311,38.186 30.562,31.934 36.814,38.186 38.936,36.064 32.684,29.812" />
+                        </svg>
                       </div>
                     </div>
-                    <div className="d-lg-flex align-items-center">
-                      <MDBIcon
-                        fas
-                        icon="shipping-fast me-lg-4 mb-3 mb-lg-0"
-                        size="3x"
-                      />
-                      <div>
-                        <p className="fw-bold mb-1">Order</p>
-                        <p className="fw-bold mb-0">En Route</p>
-                      </div>
-                    </div>
-                    <div className="d-lg-flex align-items-center">
-                      <MDBIcon fas icon="home me-lg-4 mb-3 mb-lg-0" size="3x" />
-                      <div>
-                        <p className="fw-bold mb-1">Order</p>
-                        <p className="fw-bold mb-0">Arrived</p>
-                      </div>
-                    </div>
-                  </div>
-                </MDBCardBody>
-              </MDBCard>
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
-      </section>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+          {/* Cart-right */}
+          <div className="cart-right col-4 bg-light">
+            <div className="summary">
+              <ul>
+                <li>
+                  Tổng Phụ: <span>$21.97</span>
+                </li>
+                <li>
+                  Miễn Giảm: <span>$5.00</span>
+                </li>
+                <li>
+                  Tổng Cộng: <span>$26.97</span>
+                </li>
+                <li className="total">
+                  Tổng: <span>{products.length}</span> Sản Phẩm
+                </li>
+              </ul>
+            </div>
+
+            <div className="checkout">
+              <button type="button">Thanh Toán</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

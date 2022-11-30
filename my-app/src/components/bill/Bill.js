@@ -111,7 +111,7 @@ const Bill = () => {
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
                       <MDBTypography tag="h5">
-                        INVOICE{" "}
+                        Mã Đơn Hàng{" "}
                         <span className="text-primary font-weight-bold">
                           #Y34XDHR
                         </span>
@@ -119,10 +119,10 @@ const Bill = () => {
                     </div>
                     <div className="text-end">
                       <p>
-                        Expected Arrival <span>01/12/19</span>
+                        Nhận hàng dự kiến:<span>01/12/2022</span>
                       </p>
                       <p>
-                        USPS{" "}
+                        Mã Vận Đơn:{" "}
                         <span className="font-weight-bold">
                           234094567242423422898
                         </span>
@@ -187,8 +187,11 @@ const Bill = () => {
           </MDBRow>
         </MDBContainer>
       </section>
-      <Row className="row-cart" style={{ overflow: "unset", padding: "1%" }}>
-        <Col md={5} style={{ padding: "1%", marginTop: "2%" }}>
+      <Row
+        className="row-cart"
+        style={{ overflow: "unset", padding: "1%", background: "gray" }}
+      >
+        <Col md={7} style={{ padding: "1%", marginTop: "2%" }}>
           <div>
             <h3>Thông tin người nhận</h3>
           </div>
@@ -278,7 +281,7 @@ const Bill = () => {
           </Form>
         </Col>
         <Col
-          md={7}
+          md={5}
           style={{
             boxShadow: "0 6px 20px 0 rgba(0, 0, 0, 0.19)",
             borderRadius: "15px",
@@ -320,14 +323,14 @@ const Bill = () => {
             );
           })}
           <div>Voucher</div>
-          <div className="cart-right col-4 bg-light">
+          <div className="cart-right col-6 bg-light ">
             <div className="summary">
               <ul>
                 <li>
                   Tổng Cộng: <span>{totalPrice}</span>
                 </li>
                 <li>
-                  Giảm: <span>{}</span>
+                  Giảm giá: <span>{}</span>
                 </li>
                 <li className="total">
                   Tổng: <span>{lstcart.length}</span> Sản Phẩm
