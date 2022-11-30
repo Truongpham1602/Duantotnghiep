@@ -39,10 +39,19 @@ public class SizeServiceImpl implements SizeService {
 	}
 
 	@Override
-	public List<SizeDTO> save(List<SizeDTO> SizeDTO) {
+	public List<SizeDTO> saveList(List<SizeDTO> SizeDTO) {
 		List<Size> Size = SizeDTO.stream().map(s -> modelMapper.map(s, Size.class)).collect(Collectors.toList());
 		Product pro = this.proDao.findById(SizeDTO.get(0).getProductId()).get();
 		this.sizeDAO.saveAll(Size);
+		return SizeDTO;
+	}
+
+	@Override
+	public SizeDTO save(SizeDTO SizeDTO) {
+		Size Size = modelMapper.map(SizeDTO, Size.class);
+		Product pro = this.proDao.findById(SizeDTO.getProductId()).get();
+		this.sizeDAO.save(Size);
+		SizeDTO.setId(Size.getId());
 		return SizeDTO;
 	}
 

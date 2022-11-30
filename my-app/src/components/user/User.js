@@ -111,13 +111,13 @@ const User = () => {
     try {
       const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`)
       setUser(res.data)
-      {
-        imageUrls.map((img) => {
-          if (img.nameImg === res.data.image) {
-            return setUrlImg(img.url)
-          }
-        })
-      }
+
+      imageUrls.map((img) => {
+        if (img.nameImg === res.data.image) {
+          return setUrlImg(img.url)
+        }
+      })
+
     } catch (error) {
       console.log(error.message)
     }
@@ -247,24 +247,24 @@ const User = () => {
               })
             }
 
-                <Modal
-                  isOpen={nestedModal}
-                  toggle={toggleNested}
-                  // size='lg'
-                >
-                  <ModalHeader>Delete</ModalHeader>
-                  <ModalBody>
-                    Bạn có chắc chắn xóa không?
-                  </ModalBody>
-                  <ModalFooter>
-                  <Button type='button' color="primary" onClick={() => { deleteUser(userId) }}>
-                      Delete
-                    </Button>{' '}
-                    <Button color="secondary" onClick={() =>toggleNested()}>
-                      Cancel
-                    </Button>
-                  </ModalFooter>
-                </Modal>
+            <Modal
+              isOpen={nestedModal}
+              toggle={toggleNested}
+            // size='lg'
+            >
+              <ModalHeader>Delete</ModalHeader>
+              <ModalBody>
+                Bạn có chắc chắn xóa không?
+              </ModalBody>
+              <ModalFooter>
+                <Button type='button' color="primary" onClick={() => { deleteUser(userId) }}>
+                  Delete
+                </Button>{' '}
+                <Button color="secondary" onClick={() => toggleNested()}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
 
             {isLoading &&
               <tr>

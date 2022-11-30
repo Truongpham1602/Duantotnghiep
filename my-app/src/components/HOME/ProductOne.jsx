@@ -176,7 +176,6 @@ const ProductOne = () => {
                                                     {item.id != size.size &&
                                                         <button onClick={(e) => setActive(e)} className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
                                                     }
-
                                                 </>
                                             )
                                         })

@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return result;
 	}
-	
+
 	@Override
 	public ProductDTO finById(Integer id) {
 		Product product = proDAO.findById(id).get();
@@ -60,6 +60,7 @@ public class ProductServiceImpl implements ProductService {
 		byte[] datamedia = SerializationUtils.serialize(media);
 		List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(product.getId());
 		byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
+		productdto.setName_cate(product.getCategory().getNamecate());
 		productdto.setMedias(SerializationUtils.deserialize(datamedia));
 		productdto.setSizes(SerializationUtils.deserialize(datalstSizeDTO));
 		return productdto;

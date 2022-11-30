@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,9 +28,13 @@ public class MediaRestController {
 		return mediaServiceImpl.findAll();
 	}
 
+	@GetMapping("/findById/{id}")
+	public MediaDTO findById(@PathVariable Integer id) {
+		return mediaServiceImpl.findById(id);
+	}
+
 	@PostMapping("/create")
 	public List<MediaDTO> create(@RequestBody List<MediaDTO> mediaDTO) {
-		System.out.println(mediaDTO);
 		return mediaServiceImpl.createAll(mediaDTO);
 	}
 
@@ -39,7 +44,7 @@ public class MediaRestController {
 	}
 
 	@DeleteMapping("/update")
-	public void update(Integer id) {
+	public void update(@PathVariable Integer id) {
 		mediaServiceImpl.delete(id);
 	}
 }
