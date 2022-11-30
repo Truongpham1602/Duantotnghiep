@@ -15,29 +15,20 @@ const Home = () => {
   );
   const [cart, setCart] = useState([]);
   const [product, setProduct] = useState({});
+  const navigate = useNavigate();
 
-  const styleToast = {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-  };
   useEffect(() => {
     if (dataCart && dataCart.length > 0) {
       setCart(dataCart);
     }
   }, [dataCart]);
-  const navigate = useNavigate();
+
   const nextProductDetail = async (id) => {
     const res = await axios.get(
       `http://localhost:8080/admin/product/find/${id}`
     );
     setProduct(res.data);
-    navigate("/");
+    navigate("/productOne");
   };
   const addToCart = async (size_Id) => {
     let res = await axios.post(`http://localhost:8080/cart/addToCart`, {

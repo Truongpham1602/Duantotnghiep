@@ -432,7 +432,6 @@ const CreateProduct = (props) => {
                                         </FormGroup>
                                     </Col>
                                 </Row>
-
                                 {lstsizeSelect.length >= 1 &&
                                     <Row>
                                         {lstsizeSelect.map((item) => {
@@ -618,7 +617,7 @@ const CreateProduct = (props) => {
                     <ModalFooter>
                         <Button type='button' color="primary" onClick={() => { createCate() }}>
                             Add
-                        </Button>{' '}
+                        </Button>
                         <Button color="secondary" onClick={toggleNested}>
                             Cancel
                         </Button>

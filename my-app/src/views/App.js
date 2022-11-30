@@ -5,6 +5,7 @@ import Product from "../components/product/Product";
 import Voucher from "../components/voucher/voucher";
 
 import User from "../components/user/User";
+import Category from "../components/cate/Category";
 import Cart from "../components/layout/CartPage";
 import Bill from "../components/bill/Bill";
 import Login from "../components/login/Login";
@@ -68,6 +69,7 @@ function App() {
             }
           ></Route>
         </Route>
+
         <Route
           path="admin"
           element={

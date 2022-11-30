@@ -3,13 +3,83 @@ import { NavLink } from 'react-router-dom';
 import '../voucher/voucher.css';
 import UpdateVoucher from './UpdateVoucher';
 import NewVoucher from './NewVoucher';
+import axios from 'axios';
+import useCallGetAPI from '../../customHook/CallGetApi';
+import moment from 'moment';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Voucher = () => {
 
+    const [voucher, setVoucher] = useState({});
     const [isNewVoucherModal, setIsNewVoucherModal] = useState(false)
     const [isupdatevoucherModal, setIsupdatevoucherModal] = useState(false)
     const [dataVoucher, setData] = useState([]);
     const [page, setPage] = useState(0);
+    const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/voucher/get`);
+    useEffect(() => {
+        if (dataPro && dataPro.length > 0) {
+            setData(dataPro)
+        }
+    }, [dataPro])
+
+
+    const updateData = (res, type) => {
+        if (type === 'create') {
+            let copydata = dataVoucher;
+            copydata.unshift(res);
+            setData(copydata);
+        }
+        else if (type === 'update') {
+            let copydata = dataVoucher;
+            let getIndex = copydata.findIndex((p) => { return p.id === res.id });
+            copydata.fill(res, getIndex, getIndex + 1);
+            setData(copydata)
+        }
+    }
+
+    const editVoucher = async (id) => {
+        try {
+            const res = await axios.get(`http://localhost:8080/api/voucher/get/${id}`)
+            setVoucher(res.data)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const deleteVoucher = (id) => {
+        try {
+            const updateStatusFalse = async () => {
+                const res = await axios.put(`http://localhost:8080/api/voucher/setStatusFalse/${id}`)
+                let copyList = [...dataVoucher]
+                let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
+                copyList.fill(res.data, getIndex, getIndex + 1);
+                setData(copyList)
+                console.log(copyList);
+                notifySuccess("Thay đổi trạng thái thành công !!")
+                // notifyWarning("Thay đổi trạng thái thành công !!")
+            }
+            updateStatusFalse()
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast)
+    };
+    const notifyWarning = (text) => {
+        toast.warning(text, styleToast);
+    };
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    }
 
     const updatevoucherModal = () => {
         setIsupdatevoucherModal(!isupdatevoucherModal)
@@ -31,11 +101,15 @@ const Voucher = () => {
             <UpdateVoucher
                 isupdatevoucherModal={isupdatevoucherModal}
                 toggleModal={updatevoucherModal}
+                updateData={updateData}
+                voucher={voucher}
             />
 
             <NewVoucher
                 isNewVoucherModal={isNewVoucherModal}
                 toggleModal={newVoucherModal}
+                updateData={updateData}
+                voucher={voucher}
             />
 
             <div className='voucher-layout-main'>
@@ -47,47 +121,105 @@ const Voucher = () => {
                         </NavLink>
                     </div>
                     <table className="table table-bordered">
-                        <thead>
+                        <thead style={{ verticalAlign: 'middle' }}>
                             <tr>
                                 <th scope="col">#</th>
                                 {/* name */}
                                 <th scope="col">Name</th>
+
                                 {/* value */}
                                 <th scope="col">Giảm giá(%)</th>
                                 {/* quantity */}
                                 <th scope="col">Lượt sử dụng</th>
+                                {/*  */}
+                                <th scope="col">Category</th>
                                 {/* effect from */}
                                 <th scope="col">Ngày bắt đầu</th>
                                 {/* effect until */}
                                 <th scope="col">Ngày hết hạn</th>
+                                <th scope="col">Description</th>
                                 {/* status */}
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col" colspan="2">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>abcd123</td>
-                                <td>20</td>
-                                <td>3</td>
-                                <td>20/10/2022</td>
-                                <td>20/11/2022</td>
-                                <td>Hoạt Động</td>
-                                <td>
-                                    <NavLink className="btn btn-primary update update-voucher"
-                                        type='buttom' id="update" style={{ borderRadius: 50 }}
-                                        onClick={() => updatevoucherModal()}>
-                                        cập nhập
-                                    </NavLink>
-                                </td>
-                                <td>
-                                    <NavLink className="btn btn-danger delete delete-voucher"
-                                        id="delete" style={{ borderRadius: 50 }}>
-                                        Delete
-                                    </NavLink>
-                                </td>
-                            </tr>
+                        <tbody style={{ verticalAlign: 'middle' }}>
+                            {
+                                !isLoading && dataVoucher && dataVoucher.length > 0 && dataVoucher.map((item, index) => {
+                                    let effectFrom = moment(item.effectFrom).format('DD/MM/YYYY');
+                                    let effectUntil = moment(item.effectUntil).format('DD/MM/YYYY');
+                                    // if (item.status != 0)
+                                    if (item.status == 1) {
+                                        return (
+                                            item.status == 1 &&
+                                            <tr key={item.id}>
+                                                <th scope="row" id="">{index + 1}</th>
+                                                <td id="name">{item.name}</td>
+                                                <td id="value">{item.value}</td>
+                                                <td id="quantity">{item.quantity}</td>
+                                                <td id="category">{item.namecate}</td>
+                                                <td id="effectFrom">{effectFrom}</td>
+                                                <td id="effectUntil">{effectUntil}</td>
+                                                <td id="description"><textarea>{item.description}</textarea></td>
+                                                <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
+                                                <td>
+                                                    <button className="btn btn-primary update update-voucher"
+                                                        type='buttom' id="update" style={{ borderRadius: 50 }}
+                                                        onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                        cập nhập
+                                                    </button>
+                                                </td>
+                                                <td>
+
+                                                    <button className="btn btn-danger delete delete-voucher"
+                                                        id="delete" style={{ borderRadius: 50 }}
+                                                        onClick={() => { deleteVoucher(item.id) }}>
+                                                        Delete
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+                                        )
+                                    } else {
+                                        return (
+
+                                            item.status == 0 &&
+                                            <tr key={item.id} style={{ color: '#c7c7c7' }}>
+                                                <th scope="row" id="">{index + 1}</th>
+                                                <td id="name">{item.name}</td>
+                                                <td id="value">{item.value}</td>
+                                                <td id="quantity">{item.quantity}</td>
+                                                <td id="category">{item.namecate}</td>
+                                                <td id="effectFrom">{effectFrom}</td>
+                                                <td id="effectUntil">{effectUntil}</td>
+                                                <td id="description"><textarea>{item.description}</textarea></td>
+                                                <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
+                                                <td>
+                                                    <button className="btn btn-primary update update-voucher"
+                                                        type='buttom' id="update" style={{ borderRadius: 50 }}
+                                                        onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                        cập nhập
+                                                    </button>
+                                                </td>
+                                                <td>
+
+                                                    <button className="btn btn-danger delete delete-voucher"
+                                                        id="delete" style={{ borderRadius: 50 }}
+                                                        onClick={() => { deleteVoucher(item.id) }}>
+                                                        Delete
+                                                    </button>
+
+                                                </td>
+
+                                            </tr>
+
+
+                                        )
+                                    }
+
+                                })
+                            }
+
                         </tbody>
                         <tfoot>
                             <tr>

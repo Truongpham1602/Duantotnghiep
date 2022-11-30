@@ -51,6 +51,13 @@ const Bill = () => {
 
   const [Products, setProducts] = useState("null");
   const [user, setUser] = useState({});
+  const [isModalVoucher, setIsModalVoucher] = useState(false);
+  const { data: dataVoucher, isLoading } = useCallGetAPI(
+    `http://localhost:8080/api/voucher/get`
+  );
+  const [lstVoucher, setLstVoucher] = useState([]);
+  const [voucherSelect, setVoucherSelect] = useState();
+
   const vnpay = [
     {
       title: "Ngân hàng",
@@ -81,7 +88,9 @@ const Bill = () => {
       });
       setTotalPrice(total);
     };
+    dataCart && setTotal();
     setImageUrls([]);
+
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
         let nameImg = item.name;
@@ -90,14 +99,34 @@ const Bill = () => {
         });
       });
     });
-    dataCart && setTotal();
-  }, [dataCart]);
+
+    setLstVoucher(dataVoucher);
+  }, [dataCart, dataVoucher]);
 
   const createOrder = async () => {
     let res = await axios.post(
       `http://localhost:8080/order/createNoUser?voucher_Id=`,
       user
     );
+  };
+
+  const toggle = () => {
+    setIsModalVoucher(!isModalVoucher);
+  };
+
+  const addVoucher = () => {
+    let radio = document.getElementsByClassName("voucher");
+    console.log(radio.length);
+    for (let i = 0; i < radio.length; i++) {
+      if (radio.item(i).checked) {
+        setVoucherSelect(radio.item(i).value);
+        toggle();
+        return;
+      } else {
+        setVoucherSelect(0);
+      }
+      toggle();
+    }
   };
 
   return (
@@ -322,8 +351,111 @@ const Bill = () => {
               </>
             );
           })}
-          <div>Voucher</div>
-          <div className="cart-right col-6 bg-light ">
+
+          <div
+            style={{
+              display: "flex",
+              width: "70%",
+              marginLeft: "5%",
+              float: "left",
+              justifyContent: "space-between",
+            }}
+          >
+            {lstVoucher.map((item, index) => {
+              if (item.id == voucherSelect) {
+                return (
+                  <>
+                    <div>{item.name}</div>
+                    <div>
+                      {item.type === 1 ? item.value + "%" : item.value + "K"}
+                    </div>
+                    <div>{item.namecate}</div>
+                  </>
+                );
+              }
+            })}
+          </div>
+          <button
+            style={{
+              float: "right",
+              display: "inline-block",
+              marginRight: "10px",
+            }}
+            type="button"
+            onClick={() => toggle()}
+          >
+            Chọn Voucher
+          </button>
+          <Modal
+            isOpen={isModalVoucher}
+            toggle={() => toggle()}
+            size="lg"
+            centered
+          >
+            <ModalHeader toggle={() => toggle()}>Voucher</ModalHeader>
+            <ModalBody>
+              <Row>
+                {lstVoucher.map((item, index) => {
+                  if (
+                    item.status != 0 &&
+                    Number(item.status) > 0 &&
+                    new Date(new Date(item["effectFrom"]).toDateString()) <=
+                      new Date(new Date().toDateString()) &&
+                    new Date(new Date(item["effectUntil"]).toDateString()) >=
+                      new Date(new Date().toDateString())
+                  ) {
+                    return (
+                      <Col
+                        md={12}
+                        style={{
+                          borderBottom: "1px solid",
+                          marginBottom: "5px",
+                        }}
+                      >
+                        <Row>
+                          <Col md={6}>
+                            <span>{item.name}</span>
+                            <span
+                              style={{
+                                marginLeft: "auto",
+                                marginRight: "0px",
+                                float: "right",
+                              }}
+                            >
+                              Còn {item.quantity} voucher
+                            </span>
+                            <p>{item.namecate}</p>
+                          </Col>
+                          <Col md={5}>{item.effectUntil}</Col>
+                          <Col md={1}>
+                            <input
+                              type="radio"
+                              className="voucher"
+                              value={item.id}
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    );
+                  }
+                })}
+              </Row>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="primary"
+                onClick={() => {
+                  addVoucher();
+                }}
+              >
+                Ok
+              </Button>
+              <Button color="secondary" onClick={() => toggle()}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+          <div className="cart-right col-4 bg-light">
             <div className="summary">
               <ul>
                 <li>
