@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import '../user/user.css';
 import moment from 'moment';
 import {
     ref,
@@ -44,7 +45,7 @@ const CreateUser = (props) => {
     const { isCreateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload } = props;
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
     // const [updateData, setUpdateData] = useState(props);
-    const [user, setUser] = useState({ fullName: '', password: '', email: '', telephone: '', address: '' });
+    const [user, setUser] = useState({ fullName: '', password: '', email: '', telephone: '', address: '',});
     const [check, setCheck] = useState({ });
 
     const arrRole = [
@@ -67,71 +68,60 @@ const CreateUser = (props) => {
             copyUser[id] = event.target.value;
         }
 
+        
+        
+
         setUser({
             ...copyUser
         })
     }
     const createUser = () => {
         try {
-
-
-            // if (user.fullName.trim().length <= 0 || user.password.trim().length <= 0
-            // || user.email.trim().length <= 0 || user.telephone.trim().length <= 0
-            //    || user.address.trim().length <= 0 
-            // ) {
-            //     notifyWarning("Cần nhập thông tin!")
-            //     return
-            // } 
-
             let ch0 = { ...check };
+            let validForm = true;
             const create = async () => {
-                if (user.fullName?.trim().length <= 0
-                && user.password?.trim().length <= 0
-                && user.email?.trim().length <= 0
-                && user.telephone?.trim().length <= 0
-                && user.address?.trim().length <= 0
-            ) {
-                ch0["fullName"] = "Name not null"
-                ch0["password"] = "Password not null"
-                ch0["email"] = "Email not null"
-                ch0["telephone"] = "Telephone not null"
-                ch0["address"] = "Address not null"
-                setCheck({ ...ch0 })
-                return
-            }
-            else if (user.fullName.trim().length <= 0) {
+             if (user.fullName.trim().length == 0) {
                 ch0["fullName"] = "Name not null"
                 setCheck({ ...ch0 })
-                return
+                validForm = false;
+            }else {
+                ch0["fullName"] = ""
+                setCheck({ ...ch0 })
             }
-            else if (user.password.trim().length <= 0) {
+             if (user.password.trim().length == 0) {
                 ch0["password"] = "Password not null"
                 setCheck({ ...ch0 })
-                return
+                validForm = false;
+            }else {
+                ch0["password"] = ""
+                setCheck({ ...ch0 })
             }
-            else if (user.email.trim().length <= 0) {
+             if (user.email.trim().length == 0) {
                 ch0["email"] = "Email not null"
                 setCheck({ ...ch0 })
-                return
+                validForm = false;
+            }else {
+                ch0["email"] = ""
+                setCheck({ ...ch0 })
             }
-            else if (user.telephone.trim().length <= 0) {
+             if (user.telephone.trim().length == 0) {
                 ch0["telephone"] = "Telephone not null"
                 setCheck({ ...ch0 })
-                return
+                validForm = false;
+            }else {
+                ch0["telephone"] = ""
+                setCheck({ ...ch0 })
             }
-            else if (user.address.trim().length <= 0) {
+             if (user.address.trim().length == 0) {
                 ch0["address"] = "Address not null"
                 setCheck({ ...ch0 })
-                return
+                validForm = false;
+            }else {
+                ch0["address"] = ""
+                setCheck({ ...ch0 })
             }
-            else if ( check.fullname.trim().length > 0
-                || check.password.trim().length > 0
-                || check.email.trim().length > 0
-                || check.telephone.trim().length > 0
-                || check.address.trim().length > 0) {
-                return
-            }
-
+           
+            if(validForm) {
                 let res = await axios.post(User_Rest_API_URL + '/post', {
                     roleId: user.roleId,
                     fullName: user.fullName,
@@ -154,6 +144,7 @@ const CreateUser = (props) => {
                 updateData(data, `create`)
                 toggle()
                 notifySuccess('Thêm mới user thành công')
+            }
             }
             create()
         } catch (error) {
