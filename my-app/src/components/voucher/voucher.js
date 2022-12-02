@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Pagination } from 'react-bootstrap';
 import '../voucher/voucher.css';
 import UpdateVoucher from './UpdateVoucher';
 import NewVoucher from './NewVoucher';
@@ -7,27 +8,62 @@ import axios from 'axios';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
+import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, PaginationLink, PaginationItem } from 'reactstrap';
 
 const Voucher = () => {
 
     const [voucher, setVoucher] = useState({});
     const [isNewVoucherModal, setIsNewVoucherModal] = useState(false)
     const [isupdatevoucherModal, setIsupdatevoucherModal] = useState(false)
+    const [nestedModal, setNestedModal] = useState(false);
     const [dataVoucher, setData] = useState([]);
     const [page, setPage] = useState(0);
+    const [voucherId, setVoucherId] = useState()
+    const [pageNumber, setPageNumber] = useState()
+    const [totalPage, setTotalPage] = useState([])
     const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/voucher/get`);
+
+
+    const pageable = async (id) => {
+        if (id <= 0) {
+            id = 0
+        } else if (id >= totalPage.length - 1) {
+            id = totalPage.length - 1
+        }
+        const res = await axios.get(`http://localhost:8080/api/voucher/get?page=${id}`)
+        let data = res ? res.data : []
+        setData(data.content)
+        setPageNumber(data.number)
+        console.log(data.number);
+    }
+
     useEffect(() => {
-        if (dataPro && dataPro.length > 0) {
-            setData(dataPro)
+        if (dataPro.content) {
+            setData(dataPro.content)
+            setPageNumber(dataPro.number)
+            for (let i = 1; i <= dataPro.totalPages; i++) {
+                setTotalPage((prev) => [...prev, i])
+
+            }
         }
     }, [dataPro])
 
+    const updateTotalPage = async () => {
+        const res = await axios.get(`http://localhost:8080/api/category/get`)
+        let data = res ? res.data : []
+        if (data.totalPages > totalPage.length) {
+            for (let i = 1; i <= dataPro.totalPages; i++) {
+                setTotalPage((prev) => [...prev, i])
+            }
+        }
+    }
 
     const updateData = (res, type) => {
         if (type === 'create') {
             let copydata = dataVoucher;
             copydata.unshift(res);
             setData(copydata);
+            updateTotalPage();
         }
         else if (type === 'update') {
             let copydata = dataVoucher;
@@ -56,6 +92,7 @@ const Voucher = () => {
                 setData(copyList)
                 console.log(copyList);
                 notifySuccess("Thay đổi trạng thái thành công !!")
+                toggleNested()
                 // notifyWarning("Thay đổi trạng thái thành công !!")
             }
             updateStatusFalse()
@@ -80,6 +117,12 @@ const Voucher = () => {
         progress: undefined,
         theme: "colored",
     }
+
+    const toggleNested = (id) => {
+        setNestedModal(!nestedModal);
+        console.log(id);
+        id && setVoucherId(id)
+    };
 
     const updatevoucherModal = () => {
         setIsupdatevoucherModal(!isupdatevoucherModal)
@@ -117,10 +160,10 @@ const Voucher = () => {
                     <div className='card-header mb-5'>
                         <NavLink className="btn btn-primary" style={{ borderRadius: 50 }}
                             onClick={() => newVoucherModal()}>
-                            Thêm voucher
+                            Create voucher
                         </NavLink>
                     </div>
-                    <table className="table table-bordered">
+                    <Table className="table table-bordered">
                         <thead style={{ verticalAlign: 'middle' }}>
                             <tr>
                                 <th scope="col">#</th>
@@ -128,18 +171,18 @@ const Voucher = () => {
                                 <th scope="col">Name</th>
 
                                 {/* value */}
-                                <th scope="col">Giảm giá(%)</th>
+                                <th scope="col">Discount Price Section(%)</th>
                                 {/* quantity */}
                                 <th scope="col">Lượt sử dụng</th>
                                 {/*  */}
                                 <th scope="col">Category</th>
                                 {/* effect from */}
-                                <th scope="col">Ngày bắt đầu</th>
+                                <th scope="col">Start day</th>
                                 {/* effect until */}
-                                <th scope="col">Ngày hết hạn</th>
+                                <th scope="col">Expiration date</th>
                                 <th scope="col">Description</th>
                                 {/* status */}
-                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Status</th>
                                 <th scope="col" colspan="2">Action</th>
                             </tr>
                         </thead>
@@ -148,6 +191,7 @@ const Voucher = () => {
                                 !isLoading && dataVoucher && dataVoucher.length > 0 && dataVoucher.map((item, index) => {
                                     let effectFrom = moment(item.effectFrom).format('DD/MM/YYYY');
                                     let effectUntil = moment(item.effectUntil).format('DD/MM/YYYY');
+                                    { console.log(dataVoucher.length) }
                                     // if (item.status != 0)
                                     if (item.status == 1) {
                                         return (
@@ -166,14 +210,14 @@ const Voucher = () => {
                                                     <button className="btn btn-primary update update-voucher"
                                                         type='buttom' id="update" style={{ borderRadius: 50 }}
                                                         onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                        cập nhập
+                                                        Update
                                                     </button>
                                                 </td>
                                                 <td>
 
                                                     <button className="btn btn-danger delete delete-voucher"
                                                         id="delete" style={{ borderRadius: 50 }}
-                                                        onClick={() => { deleteVoucher(item.id) }}>
+                                                        onClick={() => toggleNested(item.id)}>
                                                         Delete
                                                     </button>
 
@@ -198,14 +242,14 @@ const Voucher = () => {
                                                     <button className="btn btn-primary update update-voucher"
                                                         type='buttom' id="update" style={{ borderRadius: 50 }}
                                                         onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                        cập nhập
+                                                        Update
                                                     </button>
                                                 </td>
                                                 <td>
 
                                                     <button className="btn btn-danger delete delete-voucher"
                                                         id="delete" style={{ borderRadius: 50 }}
-                                                        onClick={() => { deleteVoucher(item.id) }}>
+                                                        onClick={() => toggleNested(item.id)}>
                                                         Delete
                                                     </button>
 
@@ -219,22 +263,76 @@ const Voucher = () => {
 
                                 })
                             }
+                            <Modal
+                                isOpen={nestedModal}
+                                toggle={toggleNested}
+                            // size='lg'
+                            >
+                                <ModalHeader>Delete</ModalHeader>
+                                <ModalBody>
+                                    Bạn có chắc chắn xóa không?
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button type='button' color="primary" onClick={() => { deleteVoucher(voucherId) }}>
+                                        Delete
+                                    </Button>{' '}
+                                    <Button color="secondary" onClick={() => toggleNested()}>
+                                        Cancel
+                                    </Button>
+                                </ModalFooter>
+                            </Modal>
 
                         </tbody>
                         <tfoot>
                             <tr>
                                 <td colSpan='10'>
-                                    <button className="hoverable" onClick={onBack}>
+                                    {/* <button className="hoverable" onClick={onBack}>
                                         Back
                                     </button>
                                     <label style={{ margin: '0 10px' }}>{page + 1}</label>
                                     <button className="hoverable" onClick={onNext}>
                                         Next
-                                    </button>
+                                    </button> */}
+                                    <Pagination>
+                                        <PaginationItem>
+                                            <PaginationLink
+                                                first
+                                                onClick={() => pageable(0)}
+                                            />
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationLink
+                                                onClick={() => pageable(pageNumber - 1)}
+                                                previous
+                                            />
+                                        </PaginationItem>
+                                        {totalPage.map(item => {
+                                            return (
+                                                <PaginationItem>
+                                                    <PaginationLink onClick={() => pageable(item - 1)}>
+                                                        {item}
+                                                    </PaginationLink>
+                                                </PaginationItem>
+                                            )
+                                        })}
+                                        <PaginationItem>
+                                            <PaginationLink
+                                                onClick={() => pageable(pageNumber + 1)}
+                                                next
+                                            />
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationLink
+                                                onClick={() => pageable(totalPage.length - 1)}
+                                                last
+                                            />
+                                        </PaginationItem>
+                                    </Pagination>
                                 </td>
                             </tr>
+
                         </tfoot>
-                    </table>
+                    </Table>
                 </div>
             </div>
         </>

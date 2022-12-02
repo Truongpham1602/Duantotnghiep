@@ -396,7 +396,7 @@ const UpdateVoucher = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={(e) => { updateVoucher(); }}>
-                        Cập Nhập
+                        Save
                     </Button>{' '}
                     <Button color="secondary" onClick={toggleModal}>
                         Cancel

@@ -1,13 +1,18 @@
 package bangiay.com.service.impl;
 
+
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.VoucherDTO;
@@ -15,6 +20,8 @@ import bangiay.com.dao.CategoryDao;
 import bangiay.com.dao.VoucherDao;
 import bangiay.com.entity.Voucher;
 import bangiay.com.service.VoucherService;
+
+import  java.util.function.Function;
 
 @Service
 public class VoucherServiceImpl implements VoucherService {
@@ -60,15 +67,29 @@ public class VoucherServiceImpl implements VoucherService {
 	}
 
 	
-	public List<VoucherDTO> findAll() {
+	public Page<VoucherDTO> findAll(Integer size , Integer page) {
 		// TODO Auto-generated method stub
-		List<Voucher> vou = voucherDAO.findAll();
-		List<VoucherDTO> result = vou.stream().map(d -> modelMapper.map(d, VoucherDTO.class)).collect(Collectors.toList());
-		for (int i = 0; i < vou.size(); i ++) {
-			result.get(i).setCategoryId(vou.get(i).getCategory().getId());
-			result.get(i).setName_cate(vou.get(i).getCategory().getNamecate());
-		}
-		return result;
+		Pageable pageable = PageRequest.of(page, size);
+//		Page<Voucher> vou = voucherDAO.findAll(pageable);
+		
+		Page<Voucher> entities = voucherDAO.findAll(pageable);
+		Page<VoucherDTO> dtoPage = entities.map(new Function<Voucher, VoucherDTO>() {
+		    @Override
+		    public VoucherDTO apply(Voucher entity) {
+		        VoucherDTO dto = new VoucherDTO();
+		        dto = modelMapper.map(entity, VoucherDTO.class);
+		        dto.setCategoryId(entity.getCategory().getId());
+				dto.setName_cate(entity.getCategory().getNamecate());
+		        return dto;
+		    }
+		});
+				
+//		Page<VoucherDTO> result =  vou.stream().map(d -> modelMapper.map(d, VoucherDTO.class)).collect(Collectors.toList());
+//		for (int i = 0; i < vou.size(); i ++) {
+//			result.get(i).setCategoryId(vou.get(i).getCategory().getId());
+//			result.get(i).setName_cate(vou.get(i).getCategory().getNamecate());
+//		}
+		return dtoPage;
 	}
 
 	@Override

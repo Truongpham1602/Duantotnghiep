@@ -67,7 +67,7 @@ const Admin = () => {
                                         Order Status
                                     </NavLink>
                                     <NavLink className="nav-link collapsed" to='/admin/voucher'>
-                                        <div className="sb-nav-link-icon"><i className='fas fa-address-card'></i></div>
+                                        <div className="sb-nav-link-icon"><i className='fas fa-shopping-bag'></i></div>
                                         Voucher
                                     </NavLink>
                                     <div className="sb-sidenav-menu-heading">Interface</div>
