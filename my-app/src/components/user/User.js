@@ -30,7 +30,7 @@ const User = () => {
   const [isCreateModal, setIsCreateModal] = useState(false)
   const [isUpdateModal, setisUpdateModal] = useState(false)
   const [nestedModal, setNestedModal] = useState(false);
-  const [isUserDetailModal, setisUserDetailsModal] = useState(false)
+  const [isDetailsModal, setisdetailsModal] = useState(false)
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
   let [urlImg, setUrlImg] = useState();
@@ -97,8 +97,8 @@ const User = () => {
     setisUpdateModal(!isUpdateModal)
   }
 
-  const userDetailsModal = () => {
-    setisUserDetailsModal(!isUserDetailModal)
+  const detailsModal = () => {
+    setisdetailsModal(!isDetailsModal)
   }
 
   const toggleNested = (id) => {
@@ -160,8 +160,14 @@ const User = () => {
   return (
     <>
       <UserDetails
-        isUserDetailModal={isUserDetailModal}
-        toggleModal={userDetailsModal}
+        isDetailsModal={isDetailsModal}
+        toggleModal={detailsModal}
+        updateData={updateData}
+        uploadFile={uploadFile}
+        setImageUpload={setImageUpload}
+        imageUpload={imageUpload}
+        urlImg={urlImg}
+        user={user}
       />
       <CreateUser
         isCreateModal={isCreateModal}
@@ -212,7 +218,7 @@ const User = () => {
                     <th scope="row" id="">
                       {index + 1}
                     </th>
-                    <td id="category" onClick={() => userDetailsModal()}>{item.fullName}</td>
+                    <td id="category" onClick={() => { editUser(item.id); detailsModal() }}>{item.fullName}</td>
                     {/* <td id="category">{item.password}</td> */}
                     <td id="price">{item.email}</td>
                     <td id="quantity">{item.telephone}</td>
