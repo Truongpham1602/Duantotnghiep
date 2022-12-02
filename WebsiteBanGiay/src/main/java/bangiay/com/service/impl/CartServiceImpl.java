@@ -112,9 +112,20 @@ public class CartServiceImpl implements CartService {
 	private List<CartDTO> lstCart = new ArrayList<CartDTO>();
 
 	@Override
-	public CartDTO addToCartDTONoUser(CartDTO cartDTO) {
+	public List<CartDTO> addToCartDTONoUser(CartDTO cartDTO) {
 		SizeDTO size = this.sizeService.findById(cartDTO.getSize_Id());
 		ProductDTO pro = this.proService.finById(size.getProductId());
+		cartDTO.setProduct_ID(pro.getId());
+		for (CartDTO c : lstCart) {
+			if (c.getProduct_ID().equals(pro.getId())) {
+				c.setQuantity(c.getQuantity() + 1);
+				return lstCart;
+			}
+			if (c.getSize_Id().equals(size.getId())) {
+				c.setSize_Id(cartDTO.getSize_Id());
+				return lstCart;
+			}
+		}
 		cartDTO.setColor_Product(pro.getColor());
 		cartDTO.setName_Product(pro.getName());
 		cartDTO.setPrice(pro.getPrice());
@@ -123,7 +134,7 @@ public class CartServiceImpl implements CartService {
 		byte[] data = SerializationUtils.serialize(lstSizeDTO);
 		cartDTO.setSize(SerializationUtils.deserialize(data));
 		lstCart.add(cartDTO);
-		return cartDTO;
+		return lstCart;
 	}
 
 	@Override
@@ -131,10 +142,12 @@ public class CartServiceImpl implements CartService {
 		for (int i = 0; i < lstCart.size(); i++) {
 			SizeDTO size = this.sizeService.findById(lstCart.get(i).getSize_Id());
 			ProductDTO pro = this.proService.finById(size.getProductId());
+			lstCart.get(i).setProduct_ID(pro.getId());
 			lstCart.get(i).setName_Product(pro.getName());
 			lstCart.get(i).setPrice(pro.getPrice());
 			lstCart.get(i).setSizeName(size.getSize());
 			lstCart.get(i).setQuantityTotal(pro.getQuantity());
+			lstCart.get(i).setCategory_Id(pro.getCategoryId());
 			List<MediaDTO> media = this.mediaService.findAllByPro_Id(pro.getId());
 			byte[] datamedia = SerializationUtils.serialize(media);
 			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(pro.getId());

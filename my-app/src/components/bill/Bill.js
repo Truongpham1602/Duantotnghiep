@@ -12,6 +12,16 @@ import axios from "axios";
 import "../css/ship.css";
 import useCallGetAPI from "../../customHook/CallGetApi";
 
+import Badge from "@mui/material/Badge";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCol,
+  MDBContainer,
+  MDBIcon,
+  MDBRow,
+  MDBTypography,
+} from "mdb-react-ui-kit";
 import {
   Button,
   Modal,
@@ -26,15 +36,9 @@ import {
   Form,
 } from "reactstrap";
 import Badge from "@mui/material/Badge";
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCol,
-  MDBContainer,
-  MDBIcon,
-  MDBRow,
-  MDBTypography,
-} from "mdb-react-ui-kit";
+import { width } from "@mui/system";
+import { CgFormatJustify } from "react-icons/cg";
+import { async } from "@firebase/util";
 
 // class Bill extends React.Component {
 const Bill = () => {
@@ -46,7 +50,7 @@ const Bill = () => {
   const [lstcart, setLstCart] = useState([]);
   const [source, setSource] = useState();
   const [number, setNumber] = useState({});
-  const imagesListRef = ref(storage, "images/");
+
   const [imageUrls, setImageUrls] = useState([]);
 
   const [Products, setProducts] = useState("null");
@@ -56,7 +60,10 @@ const Bill = () => {
     `http://localhost:8080/api/voucher/get`
   );
   const [lstVoucher, setLstVoucher] = useState([]);
-  const [voucherSelect, setVoucherSelect] = useState();
+
+  const [voucherSelect, setVoucherSelect] = useState({});
+  const [sealer, setSealer] = useState();
+  const imagesListRef = ref(storage, "images/");
 
   const vnpay = [
     {
@@ -89,8 +96,10 @@ const Bill = () => {
       setTotalPrice(total);
     };
     dataCart && setTotal();
-    setImageUrls([]);
+    setLstVoucher(dataVoucher);
+  }, [dataCart, dataVoucher]);
 
+  useEffect(() => {
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
         let nameImg = item.name;
@@ -99,9 +108,7 @@ const Bill = () => {
         });
       });
     });
-
-    setLstVoucher(dataVoucher);
-  }, [dataCart, dataVoucher]);
+  }, []);
 
   const createOrder = async () => {
     let res = await axios.post(
@@ -114,16 +121,40 @@ const Bill = () => {
     setIsModalVoucher(!isModalVoucher);
   };
 
-  const addVoucher = () => {
+  const addVoucher = async () => {
     let radio = document.getElementsByClassName("voucher");
-    console.log(radio.length);
     for (let i = 0; i < radio.length; i++) {
       if (radio.item(i).checked) {
-        setVoucherSelect(radio.item(i).value);
+        let res = await axios.get(
+          `http://localhost:8080/api/voucher/get/${radio.item(i).value}`
+        );
+        setVoucherSelect(res.data);
+        let total = 0;
+        let totalSealer = 0;
+        dataCart.map((item) => {
+          total += item.price;
+          if (item.category_Id === res.data.categoryId) {
+            totalSealer += item.price;
+          }
+        });
+        if (res.data.type === 1) {
+          total = total - (totalSealer * res.data.value) / 100;
+          setSealer((totalSealer * res.data.value) / 100);
+        } else {
+          total = totalSealer - res.data.value;
+          setSealer(res.data.value);
+        }
+        setTotalPrice(total);
         toggle();
         return;
       } else {
+        let total = 0;
+        dataCart.map((item) => {
+          total += item.price;
+        });
+        setTotalPrice(total);
         setVoucherSelect(0);
+        setSealer();
       }
       toggle();
     }
@@ -462,7 +493,7 @@ const Bill = () => {
                   Tổng Cộng: <span>{totalPrice}</span>
                 </li>
                 <li>
-                  Giảm giá: <span>{}</span>
+                  Giảm: <span>{sealer}</span>
                 </li>
                 <li className="total">
                   Tổng: <span>{lstcart.length}</span> Sản Phẩm

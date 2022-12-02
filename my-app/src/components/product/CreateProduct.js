@@ -195,7 +195,7 @@ const CreateProduct = (props) => {
                         }
                     ].slice(0, sizeSelect)
                     let resImg = await axios.post(`http://localhost:8080/api/media/create`, image)
-                    await axios.post(`http://localhost:8080/api/size/post`, datasize)
+                    await axios.post(`http://localhost:8080/api/size/postList`, datasize)
                     updateData(datares, resImg.data[0].url, `create`)
                     setSizeSelect()
                     toggle()
@@ -475,9 +475,7 @@ const CreateProduct = (props) => {
                                                                 </div>
                                                             </FormGroup>
                                                         </Col>
-
                                                     </Row>
-
                                                 </Col>
 
                                             )

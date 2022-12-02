@@ -18,7 +18,7 @@ public interface CartService {
 
 	Cart findByID(Integer id);
 
-	CartDTO addToCartDTONoUser(CartDTO cartDTO);
+	List<CartDTO> addToCartDTONoUser(CartDTO cartDTO);
 
 	List<CartDTO> getCartNoUser();
 

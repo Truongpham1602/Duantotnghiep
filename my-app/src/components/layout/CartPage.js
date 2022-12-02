@@ -108,7 +108,7 @@ const Cart = () => {
                                                     </div>
                                                     <div className="col-lg-10">
                                                         {lstcart.size.map(item => {
-                                                            return <button style={{ backgroundColor: 'cyan', margin: '2px' }} className="btn">{item.size}</button>
+                                                            return <button style={{ backgroundColor: 'cyan', margin: '2px' }} className="btnSize">{item.size}</button>
                                                         })}
                                                     </div>
                                                 </div>
