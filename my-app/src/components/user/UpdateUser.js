@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment'
+import { ToastContainer, toast } from 'react-toastify';
 import {
     ref,
     uploadBytes,
@@ -36,6 +37,28 @@ const UpdateUser = (props) => {
         })
     }
 
+    const notifyWarning = (text) => {
+        toast.warning(text, styleToast);
+    };
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast)
+    };
+    const notifyError = (text) => {
+        toast.error(text, styleToast);
+    };
+    
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    }
+    
+
 
     const arrRole = [
         {
@@ -64,6 +87,7 @@ const UpdateUser = (props) => {
             data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
             toggle()
             updateData(data, 'update')
+            notifySuccess('Cập nhật thành công')
         } catch (error) {
             console.log(error.message)
         }
@@ -76,6 +100,7 @@ const UpdateUser = (props) => {
 
     return (
         <div>
+            <ToastContainer />
             <Modal isOpen={isUpdateModal} toggle={() => toggle()}
                 size='lg'
                 centered
