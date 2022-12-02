@@ -39,7 +39,7 @@ const Home = () => {
     copydata.unshift(res.data);
     setCart(copydata);
     navigate(window.location.pathname);
-    toast.success("Add to cart success", styleToast);
+    toast.success("Add to cart success");
   };
 
   return (
