@@ -13,7 +13,7 @@ const VouCher_Rest_API_URL = 'http://localhost:8080/api/voucher';
 
 const NewVoucher = (props) => {
     const { isNewVoucherModal, toggleModal, updateData } = props;
-    const [voucher, setVoucher] = useState({ name: '', value: '', quantity: '', type: 1, categoryId: '', effectFrom: '', effectUntil: '' });
+    const [voucher, setVoucher] = useState({ name: '', value: '', quantity: '', type: '', categoryId: '', effectFrom: '', effectUntil: '', status: 1 });
     const [lstcate, setLstCate] = useState([]);
     const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`);
     const [check, setCheck] = useState({ name: '' });
@@ -216,7 +216,7 @@ const NewVoucher = (props) => {
             <ToastContainer />
             <Modal isOpen={isNewVoucherModal} toggle={() => toggle()} size='lg' centered>
                 <form className="needs-validation" onSubmit={handleSubmit(createVoucher)}>
-                    <ModalHeader toggle={() => toggle()}>Thêm Mới Voucher</ModalHeader>
+                    <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
                     <ModalBody>
                         <div className="row">
                             <div className="col-10 offset-1">
@@ -405,7 +405,7 @@ const NewVoucher = (props) => {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" type="submit">
-                            Thêm Mới
+                            Add New
                         </Button>{' '}
                         <Button color="secondary" onClick={() => toggle()}>
                             Cancel
