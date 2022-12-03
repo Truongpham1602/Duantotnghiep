@@ -11,7 +11,7 @@ import { storage } from "../../Firebase";
 import axios from "axios";
 import "../css/ship.css";
 import useCallGetAPI from "../../customHook/CallGetApi";
-
+import "../bill/bill.css";
 import Badge from "@mui/material/Badge";
 import {
   MDBCard,
@@ -40,7 +40,8 @@ import { CgFormatJustify } from "react-icons/cg";
 import { async } from "@firebase/util";
 
 // class Bill extends React.Component {
-const Bill = () => {
+const Bill = (props) => {
+  const { updateData } = props;
   const [lstproduct, setLstProduct] = useState([]);
   const { data: dataCart } = useCallGetAPI(
     `http://localhost:8080/cart/getCart?user_Id=`
@@ -63,7 +64,14 @@ const Bill = () => {
   const [voucherSelect, setVoucherSelect] = useState({});
   const [sealer, setSealer] = useState();
   const imagesListRef = ref(storage, "images/");
-
+  const [account, setAccount] = useState({
+    Email: "",
+    Name: "",
+    Phone_Number: "",
+    Address: "",
+    Description: "",
+  });
+  const [check, setCheck] = useState({});
   const vnpay = [
     {
       title: "Ngân hàng",
@@ -83,6 +91,69 @@ const Bill = () => {
     let copy = { ...user };
     copy[id] = e.target.value;
     setUser(copy);
+  };
+  const thanhToan = () => {
+    try {
+      let ch0 = { ...check };
+      let validForm = true;
+      const create = async () => {
+        if (account.Email.trim().length == 0) {
+          ch0["Email"] = "Email not null";
+          setCheck({ ...ch0 });
+          validForm = false;
+        } else {
+          ch0["Email"] = "";
+          setCheck({ ...ch0 });
+        }
+        if (account.Name.trim().length == 0) {
+          ch0["Name"] = "Name not null";
+          setCheck({ ...ch0 });
+          validForm = false;
+        } else {
+          ch0["Name"] = "";
+          setCheck({ ...ch0 });
+        }
+        if (account.Phone_Number.trim().length == 0) {
+          ch0["Phone_Number"] = "Phone_Number not null";
+          setCheck({ ...ch0 });
+          validForm = false;
+        } else {
+          ch0["Phone_Number"] = "";
+          setCheck({ ...ch0 });
+        }
+        if (account.Address.trim().length == 0) {
+          ch0["Address"] = "Address not null";
+          setCheck({ ...ch0 });
+          validForm = false;
+        } else {
+          ch0["Address"] = "";
+          setCheck({ ...ch0 });
+        }
+        if (account.Description.trim().length == 0) {
+          ch0["Description"] = "Description not null";
+          setCheck({ ...ch0 });
+          validForm = false;
+        } else {
+          ch0["Description"] = "";
+          setCheck({ ...ch0 });
+        }
+        if (validForm) {
+          let res = {
+            email: account.Email,
+            Name: account.Name,
+            Phone_Number: account.Phone_Number,
+            Address: account.Address,
+            Description: account.Description,
+          };
+          let data = res && res.data ? res.data : [];
+          updateData(data, `create`);
+          toggle();
+        }
+      };
+      create();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   useEffect(() => {
@@ -258,14 +329,17 @@ const Bill = () => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="email">Email</Label>
+                  <Label for="Email">Email</Label>
                   <Input
-                    id="email"
-                    name="email"
+                    id="Email"
+                    name="Email"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "email")}
+                    onChange={(event) => handleOnchangeInput(event, "Email")}
                   />
+                  {check.Email && check.Email.length > 0 && (
+                    <p className="checkError1">{check.Email}</p>
+                  )}
                 </FormGroup>
               </Col>
               <Col md={6}>
@@ -280,6 +354,9 @@ const Bill = () => {
                       handleOnchangeInput(event, "nameRecipient")
                     }
                   />
+                  {check.Name && check.Name.length > 0 && (
+                    <p className="checkError1">{check.Name}</p>
+                  )}
                 </FormGroup>
               </Col>
             </Row>
@@ -296,6 +373,9 @@ const Bill = () => {
                       handleOnchangeInput(event, "telephone")
                     }
                   />
+                  {check.Phone_Number && check.Phone_Number.length > 0 && (
+                    <p className="checkError1">{check.Phone_Number}</p>
+                  )}
                 </FormGroup>
               </Col>
               <Col md={6}>
@@ -308,6 +388,9 @@ const Bill = () => {
                     type="text"
                     onChange={(event) => handleOnchangeInput(event, "address")}
                   />
+                  {check.Address && check.Address.length > 0 && (
+                    <p className="checkError1">{check.Address}</p>
+                  )}
                 </FormGroup>
               </Col>
             </Row>
@@ -324,6 +407,9 @@ const Bill = () => {
                       handleOnchangeInput(event, "description")
                     }
                   />
+                  {check.Description && check.Description.length > 0 && (
+                    <p className="checkError1">{check.Description}</p>
+                  )}
                 </FormGroup>
                 <div>Phương thức thanh toán</div>
                 <Input type="select">
@@ -503,9 +589,10 @@ const Bill = () => {
             <div className="checkout">
               <button
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
                   createOrder();
-                  window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
+                  thanhToan(e);
+                  //window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
                 }}
               >
                 Đặt hàng
