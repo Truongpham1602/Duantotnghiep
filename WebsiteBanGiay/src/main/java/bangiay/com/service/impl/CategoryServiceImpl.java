@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import bangiay.com.DTO.CategoryDTO;
+import bangiay.com.DTO.UserDTO;
+import bangiay.com.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,9 +49,9 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public List<Category> findAll() {
-		// TODO Auto-generated method stub
-		return categoryDAO.findAll();
+	public Page<CategoryDTO> findAll(Pageable pageable) {
+
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(categoryDAO.findAll(pageable), CategoryDTO.class);
 	}
 
 	@Override

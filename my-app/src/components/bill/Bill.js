@@ -88,9 +88,60 @@ const Bill = (props) => {
   ];
   // const [user, setUser] = useState({})
   const handleOnchangeInput = (e, id) => {
-    let copy = { ...user };
+    let copy = { ...account };
     copy[id] = e.target.value;
-    setUser(copy);
+    try {
+      let ch0 = { ...check };
+      let vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+      let re =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (id == "email") {
+        if (re(copy[id] == true)) {
+          //ch0["email"] = "This is a valid email address";
+          ch0["email"] = "";
+        } else {
+          ch0["email"] = "Invalid email, please enter correct email format";
+        }
+      } else {
+        if (id == "Name") {
+          if (copy[id] == 0) {
+            ch0[id] = "Name not null";
+          } else {
+            ch0[id] = "";
+          }
+        } else if (id == "Phone_Number") {
+          if (copy[id] == 0) {
+            ch0["Phone_Number"] = "Phone Number not null";
+            if (vnf_regex(copy[id] == false)) {
+              ch0["Phone_Number"] = "please enter correct phone format";
+            }
+          } else {
+            ch0["Phone_Number"] = "";
+          }
+        } else if (id == "Address") {
+          if (copy[id] == 0) {
+            ch0["Address"] = "Address not null";
+          } else {
+            ch0["Address"] = "";
+          }
+        } else {
+          ch0[id] = "";
+        }
+        setCheck({
+          ...ch0,
+        });
+      }
+    } catch (error) {
+      // let ch0 = { ...check };
+      // ch0[id] = `${id} không được để trống !!`
+      console.log(error);
+      // setCheck({
+      //     ...ch0
+      // })
+    }
+    setAccount({
+      ...copy,
+    });
   };
   const thanhToan = () => {
     try {
@@ -241,7 +292,7 @@ const Bill = (props) => {
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
                       <MDBTypography tag="h5">
-                        Mã Đơn Hàng{" "}
+                        Code orders{" "}
                         <span className="text-primary font-weight-bold">
                           #Y34XDHR
                         </span>
@@ -249,10 +300,10 @@ const Bill = (props) => {
                     </div>
                     <div className="text-end">
                       <p>
-                        Nhận hàng dự kiến:<span>01/12/2022</span>
+                        Estimated Delivery:<span>01/12/2022</span>
                       </p>
                       <p>
-                        Mã Vận Đơn:{" "}
+                        Bill of Lading Code:{" "}
                         <span className="font-weight-bold">
                           234094567242423422898
                         </span>
@@ -323,19 +374,19 @@ const Bill = (props) => {
       >
         <Col md={7} style={{ padding: "1%", marginTop: "2%" }}>
           <div>
-            <h3>Thông tin người nhận</h3>
+            <h3>Receiver's information</h3>
           </div>
           <Form style={{ padding: "0% 0% 0% 5%" }}>
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="Email">Email</Label>
+                  <Label for="email">Email</Label>
                   <Input
-                    id="Email"
-                    name="Email"
+                    id="email"
+                    name="email"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "Email")}
+                    onChange={(event) => handleOnchangeInput(event, "email")}
                   />
                   {check.Email && check.Email.length > 0 && (
                     <p className="checkError1">{check.Email}</p>
@@ -411,7 +462,7 @@ const Bill = (props) => {
                     <p className="checkError1">{check.Description}</p>
                   )}
                 </FormGroup>
-                <div>Phương thức thanh toán</div>
+                <div>Payment methods</div>
                 <Input type="select">
                   {vnpay.map((item) => {
                     return (
@@ -433,7 +484,7 @@ const Bill = (props) => {
             padding: "1%",
           }}
         >
-          <h3>Đơn hàng</h3>
+          <h3>ORDERS</h3>
           {lstcart.map((lstcart, index) => {
             return (
               <>
@@ -500,7 +551,7 @@ const Bill = (props) => {
             type="button"
             onClick={() => toggle()}
           >
-            Chọn Voucher
+            Select Voucher
           </button>
           <Modal
             isOpen={isModalVoucher}
@@ -575,13 +626,13 @@ const Bill = (props) => {
             <div className="summary">
               <ul>
                 <li>
-                  Tổng Cộng: <span>{totalPrice}</span>
+                  Total: <span>{totalPrice}</span>
                 </li>
                 <li>
-                  Giảm: <span>{sealer}</span>
+                  Sale: <span>{sealer}</span>
                 </li>
                 <li className="total">
-                  Tổng: <span>{lstcart.length}</span> Sản Phẩm
+                  Total: <span>{lstcart.length}</span> Products
                 </li>
               </ul>
             </div>
@@ -589,13 +640,13 @@ const Bill = (props) => {
             <div className="checkout">
               <button
                 type="button"
-                onClick={(e) => {
+                onClick={() => {
                   createOrder();
-                  thanhToan(e);
+                  //thanhToan(e);
                   //window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
                 }}
               >
-                Đặt hàng
+                ORDER
               </button>
             </div>
           </div>

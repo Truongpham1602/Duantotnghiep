@@ -3,11 +3,14 @@ package bangiay.com.service;
 import java.util.List;
 
 import bangiay.com.DTO.OrdersDTO;
+import bangiay.com.DTO.UserDTO;
 import bangiay.com.entity.Orders;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
-	public List<OrdersDTO> findAll();
+	Page<OrdersDTO> findAll(Pageable pageable);
 
 	public List<OrdersDTO> findOrderBySize_ID(Integer user_IdOrTelephone);
 

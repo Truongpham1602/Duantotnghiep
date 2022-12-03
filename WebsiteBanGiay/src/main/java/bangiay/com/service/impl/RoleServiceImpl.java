@@ -2,7 +2,12 @@ package bangiay.com.service.impl;
 
 import java.util.List;
 
+import bangiay.com.DTO.RoleDTO;
+import bangiay.com.DTO.UserDTO;
+import bangiay.com.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.dao.RoleDao;
@@ -37,8 +42,9 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public List<Role> findAll() {
-		return roleDAO.findAll();
+	public Page<RoleDTO> findAll(Pageable pageable) {
+
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(roleDAO.findAll(pageable), RoleDTO.class);
 	}
 
 	@Override

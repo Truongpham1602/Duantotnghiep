@@ -5,8 +5,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,17 +33,18 @@ public class UserServicelmpl implements UserService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public List<UserDTO> findAll() {
-		List<User> user = userDao.findAll();
+	public Page<UserDTO> findAll(Pageable pageable) {
 
-		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d,UserDTO.class)).collect(Collectors.toList());
-		for (int i = 0; i < user.size(); i++) {
-			result.get(i).setNameRole(user.get(i).getRole().getRoleName());
-		}
-
-		return result;
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(userDao.findAll(pageable), UserDTO.class);
 	}
-
+	//		List<User> user = userDao.findAll();
+//
+//		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d,UserDTO.class)).collect(Collectors.toList());
+//		for (int i = 0; i < user.size(); i++) {
+//			result.get(i).setNameRole(user.get(i).getRole().getRoleName());
+//		}
+//
+//		return result;
 	@Override
 	public UserDTO create(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);

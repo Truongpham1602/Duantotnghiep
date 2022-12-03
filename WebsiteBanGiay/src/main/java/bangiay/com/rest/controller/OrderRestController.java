@@ -2,8 +2,12 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
+import bangiay.com.DTO.SizeDTO;
 import bangiay.com.doMain.constant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,9 +32,17 @@ public class OrderRestController {
 	@Autowired
 	OrderService orderService;
 
-	@GetMapping("/findAll")
-	public List<OrdersDTO> findAll() {
-		return this.orderService.findAll();
+	@GetMapping("/index")
+	public ResponseEntity<Page<OrdersDTO>> getPage(
+			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
+			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
+	) {
+		Pageable pageable = PageRequest.of(page - 1 , size);
+//        Page<User> userPage = userService.findAll(status,username,pageable);
+//        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
+//        return ResponseEntity.ok().body(userDTOS);
+//        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
+		return ResponseEntity.ok(orderService.findAll(pageable));
 	}
 
 	@DeleteMapping("/delete/{id}")

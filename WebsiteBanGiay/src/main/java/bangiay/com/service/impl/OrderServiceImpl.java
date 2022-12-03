@@ -7,11 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.DTO.UserDTO;
 import bangiay.com.doMain.constant;
 import bangiay.com.doMain.exception.AppException;
 import bangiay.com.entity.*;
+import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.CartDTO;
@@ -45,11 +49,9 @@ public class OrderServiceImpl implements OrderService {
 	private CartService cartService;
 
 	@Override
-	public List<OrdersDTO> findAll() {
-		List<Orders> order = this.orderDao.findAll();
-		List<OrdersDTO> orderDTO = order.stream().map(d -> modelMapper.map(d, OrdersDTO.class))
-				.collect(Collectors.toList());
-		return orderDTO;
+	public Page<OrdersDTO> findAll(Pageable pageable) {
+
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(orderDao.findAll(pageable), OrdersDTO.class);
 	}
 
 	@Override

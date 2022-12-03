@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.DTO.UserDTO;
+import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.BillDTO;
@@ -70,9 +74,9 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
-	public List<BillDTO> findAll() {
-		return billDao.findAll().stream().map(bill -> modelMapper.map(bill, BillDTO.class))
-				.collect(Collectors.toList());
+	public Page<BillDTO> findAll(Pageable pageable) {
+
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(billDao.findAll(pageable), BillDTO.class);
 	}
 
 	@Override

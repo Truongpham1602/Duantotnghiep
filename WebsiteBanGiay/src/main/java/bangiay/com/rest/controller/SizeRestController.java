@@ -2,16 +2,14 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
+import bangiay.com.DTO.UserDTO;
+import bangiay.com.doMain.constant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import bangiay.com.DTO.SizeDTO;
 import bangiay.com.service.SizeService;
@@ -21,36 +19,47 @@ import bangiay.com.service.SizeService;
 @RequestMapping("/api/size")
 public class SizeRestController {
 	@Autowired
-	SizeService SizeService;
+	SizeService sizeService;
 
-	@GetMapping("/index")
-	public List<SizeDTO> findAll() {
-		return SizeService.findAll();
-	}
-
+//	@GetMapping("/index")
+//	public List<SizeDTO> findAll() {
+//		return sizeService.findAll();
+//	}
+@GetMapping("/index")
+public ResponseEntity<Page<SizeDTO>> getPage(
+		@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
+		@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
+) {
+	Pageable pageable = PageRequest.of(page - 1 , size);
+//        Page<User> userPage = userService.findAll(status,username,pageable);
+//        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
+//        return ResponseEntity.ok().body(userDTOS);
+//        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
+	return ResponseEntity.ok(sizeService.findAll(pageable));
+}
 	@GetMapping("/find/{id}")
 	public SizeDTO findAll(@PathVariable("id") Integer id) {
-		return SizeService.findById(id);
+		return sizeService.findById(id);
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") Integer id) {
-		SizeService.delete(id);
+		sizeService.delete(id);
 	}
 
 	@PostMapping("/postList")
 	public List<SizeDTO> postList(@RequestBody List<SizeDTO> SizeDTO) {
-		return SizeService.saveList(SizeDTO);
+		return sizeService.saveList(SizeDTO);
 	}
 
 	@PostMapping("/post")
 	public SizeDTO post(@RequestBody SizeDTO SizeDTO) {
-		return SizeService.save(SizeDTO);
+		return sizeService.save(SizeDTO);
 	}
 
 	@PutMapping("/put/{id}")
 	public SizeDTO put(@RequestBody SizeDTO SizeDTO, @PathVariable("id") Integer id) {
 		SizeDTO.setId(id);
-		return SizeService.save(SizeDTO);
+		return sizeService.save(SizeDTO);
 	}
 }
