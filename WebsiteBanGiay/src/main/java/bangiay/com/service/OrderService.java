@@ -2,31 +2,42 @@ package bangiay.com.service;
 
 import java.util.List;
 
-import bangiay.com.DTO.OrdersDTO;
-import bangiay.com.entity.Orders;
+
+import bangiay.com.DTO.OrderDTO;
+import bangiay.com.DTO.OrderDTO;
+import bangiay.com.entity.Order;
+import bangiay.com.entity.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
-	public List<OrdersDTO> findAll();
-	Page<OrdersDTO> findAll(Pageable pageable);
-	public List<OrdersDTO> findOrderBySize_ID(Integer user_IdOrTelephone);
+	public List<OrderDTO> findAll();
+	Page<OrderDTO> findAll(Pageable pageable);
+	public List<OrderDTO> findOrderBySize_ID(Integer user_IdOrTelephone);
 
-	public List<OrdersDTO> createHasUser(Integer user_Id, Integer voucher_Id);
 
-	public OrdersDTO finById(int id);
+	// Cập nhật thanh toán đơn hàng thành công
+	public OrderDTO updatePaymentOrder(Integer id);
 
-	public void delete(int id);
+	// Cập nhật đơn hàng bị hủy
+	public OrderDTO updateCancelOrder(Integer id);
 
-	List<OrdersDTO> createNoUser(OrdersDTO ordersDTO, Integer voucher_Id);
+	// Cập nhật đơn hàng đã giao
+	public OrderDTO updateDeliveredOrder(Integer id);
 
-	List<OrdersDTO> updateConfirm(Integer user_IdOrTelephone);
+	public OrderDTO findById(Integer id);
 
-	List<OrdersDTO> updateDelivered(Integer user_IdOrTelephone);
+	// Tìm danh sách đơn hàng theo user_Id hoặc SĐT
+	public List<OrderDTO> findByUser_IdOrTelephone(String user_idOrTelephone);
+
+
+	List<OrderDTO> updateDelivered(Integer user_IdOrTelephone);
 
 	//List<OrdersDTO> getOrderStatus(Integer status);
 
-	Orders updateOrderWithStatus(Integer id,Integer status);
+	Order updateOrderWithStatus(Integer id, Integer status);
+
+	OrderDTO create(OrderDTO orderDTO, Integer user_Id, Integer voucher_Id);
 
 }

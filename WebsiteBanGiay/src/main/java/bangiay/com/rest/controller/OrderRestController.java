@@ -11,33 +11,33 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import bangiay.com.DTO.OrdersDTO;
+import bangiay.com.DTO.OrderDTO;
 import bangiay.com.service.OrderService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/order")
+
+@RequestMapping("api/order")
+
 public class OrderRestController {
 
 	@Autowired
 	OrderService orderService;
 
 	@GetMapping("/findAll")
-	public List<OrdersDTO> findAll() {
+	public List<OrderDTO> findAll() {
 		return this.orderService.findAll();
 	}
 	@GetMapping("/select")
-	public ResponseEntity<Page<OrdersDTO>> getPage(
+	public ResponseEntity<Page<OrderDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
 			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
 	) {
@@ -45,41 +45,40 @@ public class OrderRestController {
 		return ResponseEntity.ok(orderService.findAll(pageable));
 	}
 
-	@DeleteMapping("/delete/{id}")
-	public void delete(@PathVariable("id") Integer id) {
+//	@DeleteMapping("/delete/{id}")
+//		public void delete(@PathVariable("id") Integer id) {
+//	}
+
+	@PostMapping("/create")
+	public OrderDTO create(@RequestParam(value = "user_Id", required = false, defaultValue = "0") Integer user_Id,
+			@RequestParam(value = "voucher_Id", required = false, defaultValue = "0") Integer voucher_Id,
+			@RequestBody OrderDTO orderDTO) {
+		return this.orderService.create(orderDTO, user_Id, voucher_Id);
 	}
 
-	@PostMapping("/createHasUser/{user_Id}")
-	public List<OrdersDTO> createHasUser(@PathVariable("user_Id") Integer user_Id,
-			@RequestParam(value = "voucher_Id", required = false, defaultValue = "0") Integer voucher_Id) {
-		return this.orderService.createHasUser(user_Id, voucher_Id);
+	@GetMapping("/payment/{id}")
+	public OrderDTO updatePaymentOrder(@PathVariable("id") Integer id) {
+		return this.orderService.updatePaymentOrder(id);
 	}
 
-	@PutMapping("/confirm/{user_IdOrTelephone}")
-	public List<OrdersDTO> updateConfirm(@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
-		return this.orderService.updateConfirm(user_IdOrTelephone);
+	@GetMapping("/cance/{id}")
+	public OrderDTO updateCancelOrder(@PathVariable("id") Integer id) {
+		return this.orderService.updateCancelOrder(id);
 	}
 
-	@PutMapping("/delivered/{user_IdOrTelephone}")
-	public List<OrdersDTO> updateDelivered(@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
-		return this.orderService.updateConfirm(user_IdOrTelephone);
+	@GetMapping("/delivered/{id}")
+	public OrderDTO updateDeliveredOrder(@PathVariable("id") Integer id) {
+		return this.orderService.updateDeliveredOrder(id);
 	}
 
 	@GetMapping("/find/{id}")
-	public OrdersDTO finByID(@PathVariable("id") Integer id) {
-		return this.orderService.finById(id);
+	public OrderDTO finByID(@PathVariable("id") Integer id) {
+		return this.orderService.findById(id);
 	}
 
 	@GetMapping("/findOrderBySize_ID/{user_IdOrTelephone}")
-	public List<OrdersDTO> findOrderBySize_ID(@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
-		return this.orderService.findOrderBySize_ID(user_IdOrTelephone);
-	}
-
-	@PostMapping("/createNoUser")
-	public List<OrdersDTO> createNoUser(
-			@RequestParam(value = "voucher_Id", required = false, defaultValue = "0") Integer voucher_Id,
-			@RequestBody OrdersDTO ordersDTO) {
-		return this.orderService.createNoUser(ordersDTO, voucher_Id);
+	public List<OrderDTO> findOrderBySize_ID(@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
+		return null;
 	}
 	@PostMapping ("updateStatus")
 	public ResponseEntity<?> updateOrderWithStatus(@RequestParam("id")Integer id,

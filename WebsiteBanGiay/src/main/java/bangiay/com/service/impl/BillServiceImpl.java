@@ -15,13 +15,15 @@ import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.BillDTO;
 import bangiay.com.DTO.BillDetailDTO;
-import bangiay.com.DTO.OrdersDTO;
 import bangiay.com.dao.BillDao;
+import bangiay.com.dao.OrderDao;
+import bangiay.com.dao.OrderDetailDao;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.Bill;
+import bangiay.com.entity.Order;
+import bangiay.com.entity.OrderDetail;
 import bangiay.com.service.BillService;
 import bangiay.com.service.Bill_DetailService;
-import bangiay.com.service.OrderService;
 
 @Service
 public class BillServiceImpl implements BillService {
@@ -35,41 +37,44 @@ public class BillServiceImpl implements BillService {
 	private UserDao userDao;
 
 	@Autowired
-	private OrderService orderService;
+	private OrderDetailDao orderDetailDao;
+
+	@Autowired
+	private OrderDao orderDao;
 
 	@Autowired
 	private Bill_DetailService bill_DetailService;
 
 	@Override
-	public BillDTO createBill(BillDTO billDTO, Integer user_IdOrName_Recipient) {
-		List<OrdersDTO> lstOrder = this.orderService.findOrderBySize_ID(user_IdOrName_Recipient);
-		Bill bill = modelMapper.map(billDTO, Bill.class);
-		if (billDTO.getUserId() != null) {
-			bill.setUSER_ID(userDao.findById(billDTO.getUserId()).orElse(null));
-		}
-		bill.setCreated(Timestamp.from(Instant.now()));
-		// Insert Bill to DB
-		this.billDao.save(bill);
-		billDTO.setCreated(bill.getCreated());
-		billDTO.setCreator(bill.getCreator());
-		billDTO.setId(bill.getId());
-		// find OrderBySize_ID
-		List<BillDetailDTO> lstBillDetail = new ArrayList<BillDetailDTO>();
-		for (int i = 0; i < lstOrder.size(); i++) {
-			if (lstOrder.get(i).getStatus() == 1) {
-				if (lstOrder.get(i).getTelephone() != null) {
-				}
-				if (lstOrder.get(i).getVoucherId() != null) {
-					lstBillDetail.add(new BillDetailDTO(null, bill.getId(), lstOrder.get(i).getSizeId(),
-							lstOrder.get(i).getVoucherId(), lstOrder.get(i).getQuantity(), lstOrder.get(i).getPrice()));
+	public BillDTO createBill(BillDTO billDTO, Integer id) {
+		Order order = this.orderDao.findById(id).orElse(null);
+		if (order.getStatus() == 2) {
+			List<OrderDetail> lstOrderDetail = this.orderDetailDao.findByOrder_Id(id);
+			Bill bill = new Bill();
+			bill.setUSER_ID(order.getUser());
+			bill.setNameRecipient(order.getNameRecipient());
+			bill.setTelephone(order.getTelephone());
+			bill.setAddress(order.getAddress());
+			bill.setCreator(billDTO.getCreator());
+			bill.setCreated(Timestamp.from(Instant.now()));
+			// Insert Bill to DB
+			this.billDao.save(bill);
+			billDTO = modelMapper.map(bill, BillDTO.class);
+			List<BillDetailDTO> lstBillDetailDTO = new ArrayList<BillDetailDTO>();
+			for (int i = 0; i < lstOrderDetail.size(); i++) {
+				if (lstOrderDetail.get(i).getVoucher() != null) {
+					lstBillDetailDTO.add(new BillDetailDTO(null, bill.getId(), lstOrderDetail.get(i).getSize().getId(),
+							lstOrderDetail.get(i).getVoucher().getId(), lstOrderDetail.get(i).getQuantity(),
+							lstOrderDetail.get(i).getPrice()));
 				} else {
-					lstBillDetail.add(new BillDetailDTO(null, bill.getId(), lstOrder.get(i).getSizeId(), null,
-							lstOrder.get(i).getQuantity(), lstOrder.get(i).getPrice()));
+					lstBillDetailDTO.add(new BillDetailDTO(null, bill.getId(), lstOrderDetail.get(i).getSize().getId(),
+							null, lstOrderDetail.get(i).getQuantity(), lstOrderDetail.get(i).getPrice()));
 				}
 			}
+			this.bill_DetailService.createAll(lstBillDetailDTO);
+			return billDTO;
 		}
-		this.bill_DetailService.createAll(lstBillDetail);
-		return billDTO;
+		return null;
 	}
 
 	@Override
