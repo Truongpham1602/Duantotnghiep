@@ -84,9 +84,8 @@ const Bill = () => {
     });
   }, [])
 
-
   const createOrder = async () => {
-    let res = await axios.post(`http://localhost:8080/order/createNoUser?voucher_Id=`, user)
+    let res = await axios.post(`http://localhost:8080/api/order/create?voucher_Id=`, user)
 
   }
 

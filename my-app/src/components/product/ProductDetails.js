@@ -342,7 +342,7 @@ const ProductDetails = (props) => {
                 <ModalHeader toggle={() => toggle()}>Details Product</ModalHeader>
                 <ModalBody>
                     <div className="product-details row">
-                        <div className="product-details-left row col-lg-7">
+                        <div className="product-details-left row col-lg-7 pt-3">
                             <div className="product-details-left-small-img">
                                 {product.name?.length > 0 && imageUrls.map((img, index1) => {
                                     return (
@@ -351,7 +351,7 @@ const ProductDetails = (props) => {
                                                 <>
                                                     {index2 > 0 &&
                                                         img.nameImg === item.url &&
-                                                        <img onClick={() => { findImageById(item.id); toggleImage() }} src={img.url} style={{ height: '81.25px', width: '81.25px', padding: '3px 0px 3px 0px' }} />
+                                                        <img onClick={() => { findImageById(item.id); toggleImage() }} src={img.url} style={{ height: '88.25px', width: '88.25px', padding: '3px 0px 3px 0px' }} />
                                                     }
                                                 </>
                                             )
@@ -359,7 +359,7 @@ const ProductDetails = (props) => {
                                     )
                                 })}
                                 {product.medias?.length < 5 &&
-                                    <img onClick={() => { toggleImage() }} style={{ height: '81.25px', width: '81.25px', padding: '3px 0px 3px 0px' }} />
+                                    <img onClick={() => { toggleImage() }} style={{ height: '88.25px', width: '88.25px', padding: '3px 0px 3px 0px' }} />
                                 }
                             </div>
                             <div className="product-details-left-big-img">
@@ -369,7 +369,7 @@ const ProductDetails = (props) => {
                                             return (
                                                 <>
                                                     {index2 === 0 && img.nameImg === item.url &&
-                                                        <img onClick={() => { findImageById(item.id); toggleImage() }} src={img.url} style={{ height: '325px', width: '97%' }} />
+                                                        <img onClick={() => { findImageById(item.id); toggleImage() }} src={img.url} style={{ height: '353px', width: '100%' }} />
                                                     }
                                                 </>
                                             )
@@ -383,7 +383,10 @@ const ProductDetails = (props) => {
                                 <h1>{product.name}</h1>
                             </div>
                             <div className="product-details-right-product-color">
-                                <p className="color"><span className="colorDetails">Color: </span>{product.color}<span style={{ color: 'red' }}>*</span></p>
+                                <p className="color"><span className="colorDetails">Color: </span>{product.color}</p>
+                            </div>
+                            <div className="product-details-right-product-color">
+                                <p className="color"><span className="colorDetails">Cate: </span>{product.name_cate}</p>
                             </div>
                             <div className="product-details-right-product-price">
                                 <p><span className="priceDetails">Price: </span>{product.price}<sup>đ</sup></p>
