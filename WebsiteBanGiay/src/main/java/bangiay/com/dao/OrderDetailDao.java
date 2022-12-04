@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import bangiay.com.entity.Order;
+import bangiay.com.entity.OrderDetail;
 
 @Repository
-public interface OrderDao extends JpaRepository<Order, Integer> {
-	@Query("SELECT o FROM Order o WHERE o.user.id=?1 or o.telephone=?1")
-	List<Order> getOrderBySize_ID(Integer user_IdOrTelephone);
+public interface OrderDetailDao extends JpaRepository<OrderDetail, Integer> {
+	@Query("SELECT o FROM OrderDetail o WHERE o.order.id=?1")
+	List<OrderDetail> findByOrder_Id(Integer id);
 }

@@ -2,23 +2,26 @@ package bangiay.com.service;
 
 import java.util.List;
 
-import bangiay.com.DTO.OrdersDTO;
+import bangiay.com.DTO.OrderDTO;
 
 public interface OrderService {
 
-	public List<OrdersDTO> findAll();
+	public List<OrderDTO> findAll();
 
-	public List<OrdersDTO> findOrderBySize_ID(Integer user_IdOrTelephone);
+	public OrderDTO create(OrderDTO orderDTO, Integer user_Id, Integer voucher_Id);
 
-	public List<OrdersDTO> createHasUser(Integer user_Id, Integer voucher_Id);
+	// Cập nhật thanh toán đơn hàng thành công
+	public OrderDTO updatePaymentOrder(Integer id);
 
-	public OrdersDTO finById(int id);
+	// Cập nhật đơn hàng bị hủy
+	public OrderDTO updateCancelOrder(Integer id);
 
-	public void delete(int id);
+	// Cập nhật đơn hàng đã giao
+	public OrderDTO updateDeliveredOrder(Integer id);
 
-	List<OrdersDTO> createNoUser(OrdersDTO ordersDTO, Integer voucher_Id);
+	public OrderDTO findById(Integer id);
 
-	List<OrdersDTO> updateConfirm(Integer user_IdOrTelephone);
+	// Tìm danh sách đơn hàng theo user_Id hoặc SĐT
+	public List<OrderDTO> findByUser_IdOrTelephone(String user_idOrTelephone);
 
-	List<OrdersDTO> updateDelivered(Integer user_IdOrTelephone);
 }
