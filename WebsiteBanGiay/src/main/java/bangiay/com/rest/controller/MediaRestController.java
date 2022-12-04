@@ -4,7 +4,7 @@ package bangiay.com.rest.controller;
 import java.util.List;
 
 import bangiay.com.DTO.MediaDTO;
-import bangiay.com.DTO.SizeDTO;
+import bangiay.com.DTO.RoleDTO;
 import bangiay.com.doMain.constant;
 import bangiay.com.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +22,21 @@ import bangiay.com.service.impl.MediaServiceImpl;
 public class MediaRestController {
 	@Autowired
 	private MediaServiceImpl mediaServiceImpl;
+
 	@Autowired
-    private MediaService mediaService;
-	@GetMapping("/index")
+	private MediaService mediaService;
+	@GetMapping("/findAll")
+	public List<MediaDTO> findAll() {
+		return mediaServiceImpl.findAll();
+	}
+	@GetMapping("/select")
 	public ResponseEntity<Page<MediaDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
 			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
 	) {
 		Pageable pageable = PageRequest.of(page - 1 , size);
-//        Page<User> userPage = userService.findAll(status,username,pageable);
-//        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
-//        return ResponseEntity.ok().body(userDTOS);
-//        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
 		return ResponseEntity.ok(mediaService.findAll(pageable));
 	}
-
 	@GetMapping("/findById/{id}")
 	public MediaDTO findById(@PathVariable Integer id) {
 		return mediaServiceImpl.findById(id);

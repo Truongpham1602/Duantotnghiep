@@ -4,7 +4,7 @@ package bangiay.com.rest.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bangiay.com.DTO.SizeDTO;
+import bangiay.com.DTO.MediaDTO;
 import bangiay.com.doMain.constant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,19 +35,18 @@ public class CartRestController {
 	private ModelMapper modelMapper;
 //	private static Logger logger = LoggerFactory.getLogger(CartController.class);
 
-	@GetMapping("/index")
+	@GetMapping("/getAll")
+	public ResponseEntity<List<CartDTO>> getAll() {
+		return ResponseEntity.ok().body(cartService.findAll());
+	}
+	@GetMapping("/select")
 	public ResponseEntity<Page<CartDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
 			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
 	) {
 		Pageable pageable = PageRequest.of(page - 1 , size);
-//        Page<User> userPage = userService.findAll(status,username,pageable);
-//        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
-//        return ResponseEntity.ok().body(userDTOS);
-//        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
 		return ResponseEntity.ok(cartService.findAll(pageable));
 	}
-
 	@GetMapping("/getCart")
 	public ResponseEntity<List<CartDTO>> getCartByUser_Id(
 			@RequestParam(value = "user_Id", required = false) Integer user_Id) {

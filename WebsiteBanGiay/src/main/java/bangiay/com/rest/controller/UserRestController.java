@@ -19,7 +19,12 @@ import bangiay.com.service.UserService;
 public class UserRestController {
 	@Autowired
 	UserService userService;
+
 	@GetMapping("/index")
+	public List<UserDTO> findAll() {
+		return userService.findAll();
+	}
+	@GetMapping("/select")
 	public ResponseEntity<Page<UserDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
 			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
@@ -31,11 +36,6 @@ public class UserRestController {
 //        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
 		return ResponseEntity.ok(userService.findAll(pageable));
 	}
-//	@GetMapping("/index")
-//	public List<UserDTO> findAll() {
-//		return userService.findAll();
-//	}
-	
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") int id) {
 		userService.delete(id);

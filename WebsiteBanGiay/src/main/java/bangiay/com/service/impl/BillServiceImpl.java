@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bangiay.com.DTO.UserDTO;
 import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,11 +73,15 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
+	public List<BillDTO> findAll() {
+		return billDao.findAll().stream().map(bill -> modelMapper.map(bill, BillDTO.class))
+				.collect(Collectors.toList());
+	}
+	@Override
 	public Page<BillDTO> findAll(Pageable pageable) {
 
 		return ObjectMapperUtils.mapEntityPageIntoDtoPage(billDao.findAll(pageable), BillDTO.class);
 	}
-
 	@Override
 	public BillDTO updateBill(BillDTO billDTO) {
 		Bill bill = billDao.findById(billDTO.getId()).orElseThrow(() -> new RuntimeException("Bill isn't existed"));

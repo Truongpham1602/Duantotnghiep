@@ -2,7 +2,7 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
-import bangiay.com.DTO.SizeDTO;
+import bangiay.com.DTO.RoleDTO;
 import bangiay.com.doMain.constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,16 +32,16 @@ public class OrderRestController {
 	@Autowired
 	OrderService orderService;
 
-	@GetMapping("/index")
+	@GetMapping("/findAll")
+	public List<OrdersDTO> findAll() {
+		return this.orderService.findAll();
+	}
+	@GetMapping("/select")
 	public ResponseEntity<Page<OrdersDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
 			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
 	) {
 		Pageable pageable = PageRequest.of(page - 1 , size);
-//        Page<User> userPage = userService.findAll(status,username,pageable);
-//        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
-//        return ResponseEntity.ok().body(userDTOS);
-//        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
 		return ResponseEntity.ok(orderService.findAll(pageable));
 	}
 

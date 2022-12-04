@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bangiay.com.DTO.UserDTO;
 import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +30,19 @@ public class Bill_DetailServiceImpl implements Bill_DetailService{
 	@Autowired
 	ModelMapper modelMapper;
 
+	@Override
+	public List<BillDetailDTO> findAll() {
+		List<BillDetail> billDetails = this.billDetailDao.findAll();
+		List<BillDetailDTO> billDetailsDTO = billDetails.stream().map(
+			b -> modelMapper.map(b,BillDetailDTO.class)).collect(Collectors.toList()
+		);
+		return billDetailsDTO;
+	}
+	@Override
 	public Page<BillDetailDTO> findAll(Pageable pageable) {
 
 		return ObjectMapperUtils.mapEntityPageIntoDtoPage(billDetailDao.findAll(pageable), BillDetailDTO.class);
 	}
-
 	@Override
 	public List<BillDetailDTO> createAll(List<BillDetailDTO> lstBillDetailDTO) {
 		BillDetail billDetail = modelMapper.map(lstBillDetailDTO, BillDetail.class);

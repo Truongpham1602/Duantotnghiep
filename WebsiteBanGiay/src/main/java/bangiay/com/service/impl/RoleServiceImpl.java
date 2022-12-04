@@ -3,7 +3,6 @@ package bangiay.com.service.impl;
 import java.util.List;
 
 import bangiay.com.DTO.RoleDTO;
-import bangiay.com.DTO.UserDTO;
 import bangiay.com.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +40,10 @@ public class RoleServiceImpl implements RoleService {
 		return roleDAO.findById(id).orElseThrow(() -> new Exception("Role is not exists" + id));
 	}
 
+	@Override
+	public List<Role> findAll() {
+		return roleDAO.findAll();
+	}
 	@Override
 	public Page<RoleDTO> findAll(Pageable pageable) {
 

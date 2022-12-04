@@ -145,63 +145,6 @@ const Bill = (props) => {
   };
   const thanhToan = () => {
     try {
-      let ch0 = { ...check };
-      let validForm = true;
-      const create = async () => {
-        if (account.Email.trim().length == 0) {
-          ch0["Email"] = "Email not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["Email"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (account.Name.trim().length == 0) {
-          ch0["Name"] = "Name not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["Name"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (account.Phone_Number.trim().length == 0) {
-          ch0["Phone_Number"] = "Phone_Number not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["Phone_Number"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (account.Address.trim().length == 0) {
-          ch0["Address"] = "Address not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["Address"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (account.Description.trim().length == 0) {
-          ch0["Description"] = "Description not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["Description"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (validForm) {
-          let res = {
-            email: account.Email,
-            Name: account.Name,
-            Phone_Number: account.Phone_Number,
-            Address: account.Address,
-            Description: account.Description,
-          };
-          let data = res && res.data ? res.data : [];
-          updateData(data, `create`);
-          toggle();
-        }
-      };
-      create();
     } catch (error) {
       console.log(error.message);
     }
@@ -218,6 +161,7 @@ const Bill = (props) => {
     };
     dataCart && setTotal();
     setLstVoucher(dataVoucher);
+    console.log(dataVoucher);
   }, [dataCart, dataVoucher]);
 
   useEffect(() => {
@@ -232,10 +176,57 @@ const Bill = (props) => {
   }, []);
 
   const createOrder = async () => {
-    let res = await axios.post(
-      `http://localhost:8080/order/createNoUser?voucher_Id=`,
-      user
-    );
+    let ch0 = { ...check };
+    let validForm = true;
+    const create = async () => {
+      if (account.Email.trim().length == 0) {
+        ch0["Email"] = "Email not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["Email"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (account.Name.trim().length == 0) {
+        ch0["Name"] = "Name not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["Name"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (account.Phone_Number.trim().length == 0) {
+        ch0["Phone_Number"] = "Phone_Number not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["Phone_Number"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (account.Address.trim().length == 0) {
+        ch0["Address"] = "Address not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["Address"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (account.Description.trim().length == 0) {
+        ch0["Description"] = "Description not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["Description"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (validForm) {
+        let res = await axios.post(
+          `http://localhost:8080/order/createNoUser?voucher_Id=`,
+          user
+        );
+        window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
+      }
+    };
   };
 
   const toggle = () => {
@@ -639,15 +630,13 @@ const Bill = (props) => {
 
             <div className="checkout">
               <button
-                type="button"
-                onClick={() => {
+                type="submit"
+                onClick={(e) => {
                   createOrder();
-                  //thanhToan(e);
-                  //window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
                 }}
               >
                 ORDER
-              </button>
+              </button>{" "}
             </div>
           </div>
         </Col>

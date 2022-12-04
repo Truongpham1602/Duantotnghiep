@@ -3,6 +3,7 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
+import bangiay.com.DTO.RoleDTO;
 import bangiay.com.doMain.constant;
 import bangiay.com.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +29,15 @@ public class ProductRestController {
 	ProductService productService;
 
 	@GetMapping("/index")
+	public List<ProductDTO> findAll() {
+		return productService.findAll();
+	}
+	@GetMapping("/select")
 	public ResponseEntity<Page<ProductDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
 			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
 	) {
 		Pageable pageable = PageRequest.of(page - 1 , size);
-//        Page<User> userPage = userService.findAll(status,username,pageable);
-//        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
-//        return ResponseEntity.ok().body(userDTOS);
-//        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
 		return ResponseEntity.ok(productService.findAll(pageable));
 	}
 

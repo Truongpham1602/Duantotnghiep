@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bangiay.com.DTO.RoleDTO;
 import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,21 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	public List<ProductDTO> findAll() {
+		List<Product> pro = proDAO.findAll();
+		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d, ProductDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < pro.size(); i++) {
+			List<Media> media = mediaDao.findMediaByProduct_Id(pro.get(i).getId());
+			if (media.size() > 0) {
+				result.get(i).setImage(media.get(0).getUrl());
+			}
+			result.get(i).setName_cate(pro.get(i).getCategory().getNamecate());
+
+		}
+		return result;
+	}
+	@Override
 	public Page<ProductDTO> findAll(Pageable pageable){
 		List<Product> pro = proDAO.findAll();
 		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d, ProductDTO.class))

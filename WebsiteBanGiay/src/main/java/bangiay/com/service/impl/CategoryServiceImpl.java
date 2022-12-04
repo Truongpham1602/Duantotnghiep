@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import bangiay.com.DTO.CategoryDTO;
-import bangiay.com.DTO.UserDTO;
 import bangiay.com.utils.ObjectMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,11 +48,15 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
+	public List<Category> findAll() {
+		// TODO Auto-generated method stub
+		return categoryDAO.findAll();
+	}
+	@Override
 	public Page<CategoryDTO> findAll(Pageable pageable) {
 
 		return ObjectMapperUtils.mapEntityPageIntoDtoPage(categoryDAO.findAll(pageable), CategoryDTO.class);
 	}
-
 	@Override
 	public Page<Category> paging(Optional<Integer> pageNumber, int size) {
 		// TODO Auto-generated method stub

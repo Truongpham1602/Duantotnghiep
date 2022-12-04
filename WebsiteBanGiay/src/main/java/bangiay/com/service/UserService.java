@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
-
+    public List<UserDTO> findAll();
 	Page<UserDTO> findAll(Pageable pageable);
 	public UserDTO create(UserDTO userDTO);
 	

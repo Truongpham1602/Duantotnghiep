@@ -2,7 +2,6 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
-import bangiay.com.DTO.UserDTO;
 import bangiay.com.doMain.constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,22 +20,22 @@ public class SizeRestController {
 	@Autowired
 	SizeService sizeService;
 
-//	@GetMapping("/index")
-//	public List<SizeDTO> findAll() {
-//		return sizeService.findAll();
-//	}
-@GetMapping("/index")
-public ResponseEntity<Page<SizeDTO>> getPage(
-		@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
-		@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
-) {
-	Pageable pageable = PageRequest.of(page - 1 , size);
+	@GetMapping("/index")
+	public List<SizeDTO> findAll() {
+		return sizeService.findAll();
+	}
+	@GetMapping("/select")
+	public ResponseEntity<Page<SizeDTO>> getPage(
+			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
+			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
+	) {
+		Pageable pageable = PageRequest.of(page - 1 , size);
 //        Page<User> userPage = userService.findAll(status,username,pageable);
 //        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
 //        return ResponseEntity.ok().body(userDTOS);
 //        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
-	return ResponseEntity.ok(sizeService.findAll(pageable));
-}
+		return ResponseEntity.ok(sizeService.findAll(pageable));
+	}
 	@GetMapping("/find/{id}")
 	public SizeDTO findAll(@PathVariable("id") Integer id) {
 		return sizeService.findById(id);

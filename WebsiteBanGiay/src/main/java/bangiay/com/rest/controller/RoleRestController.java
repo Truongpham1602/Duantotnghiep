@@ -37,16 +37,16 @@ public class RoleRestController {
 		return roleService.findById(id);
 	}
 
-	@GetMapping("/index")
+	@GetMapping("/get")
+	public List<Role> getAll() {
+		return roleService.findAll();
+	}
+	@GetMapping("/select")
 	public ResponseEntity<Page<RoleDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
 			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
 	) {
 		Pageable pageable = PageRequest.of(page - 1 , size);
-//        Page<User> userPage = userService.findAll(status,username,pageable);
-//        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
-//        return ResponseEntity.ok().body(userDTOS);
-//        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
 		return ResponseEntity.ok(roleService.findAll(pageable));
 	}
 
