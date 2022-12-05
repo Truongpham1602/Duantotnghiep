@@ -15,7 +15,7 @@ import Product1 from '../components/layout/Product';
 import HeaderPage from '../components/layout/HeaderPage';
 import ProductTest from '../components/HOME/ProductTest';
 import ProductList from '../components/HOME/ProductList';
-
+import Order from '../components/order/Order';
 import ProductOne from '../components/HOME/ProductOne';
 
 import {
@@ -43,6 +43,7 @@ function App() {
           <Route path="" element={<> <Product /><User /></>} />
           <Route path="product" element={<> <Product /></>} />
           <Route path="user" element={<> <User /></>} />
+          <Route path="order" element={<> <Order /></>} />
           <Route path="voucher" element={<> <Voucher /></>} />
           <Route path="category" element={<> <Category /></>} />
         </Route>

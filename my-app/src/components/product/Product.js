@@ -17,10 +17,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../../Firebase";
 import {
-  UncontrolledAccordion,
-  AccordionBody,
-  AccordionHeader,
-  AccordionItem, Table
+  Table
 } from 'reactstrap';
 
 // class Product extends React.Component {

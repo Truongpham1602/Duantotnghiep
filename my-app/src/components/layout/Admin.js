@@ -63,7 +63,7 @@ const Admin = () => {
                                         Categories
                                     </NavLink>
                                     <NavLink className="nav-link collapsed" to='/admin/order'>
-                                        <div className="sb-nav-link-icon"><i className='fas fa-first-order'></i></div>
+                                        <div className="sb-nav-link-icon"><i className="fas fa-table"></i></div>
                                         Order Status
                                     </NavLink>
                                     <NavLink className="nav-link collapsed" to='/admin/voucher'>
