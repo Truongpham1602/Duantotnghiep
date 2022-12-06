@@ -65,7 +65,7 @@ const Bill = () => {
     const setTotal = () => {
       setLstCart(dataCart)
       dataCart.map(item => {
-        total += item.price
+        total += item.price * item.quantity
       })
       setTotalPrice(total)
     }
@@ -74,6 +74,7 @@ const Bill = () => {
   }, [dataCart, dataVoucher])
 
   useEffect(() => {
+    setImageUrls([])
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
         let nameImg = item.name;
@@ -102,7 +103,7 @@ const Bill = () => {
         let total = 0;
         let totalSealer = 0;
         dataCart.map(item => {
-          total += item.price
+          total += item.price * item.quantity
           if (item.category_Id === res.data.categoryId) {
             totalSealer += item.price
           }
@@ -120,7 +121,7 @@ const Bill = () => {
       } else {
         let total = 0;
         dataCart.map(item => {
-          total += item.price
+          total += item.price * item.quantity
         })
         setTotalPrice(total)
         setVoucherSelect(0)
