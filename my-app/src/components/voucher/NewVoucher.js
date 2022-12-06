@@ -245,7 +245,7 @@ const NewVoucher = (props) => {
                                         )} */}
                                     </div>
                                     <div className="col-sm-6">
-                                        <label className="form-label">Giảm (%)-(VND)</label>
+                                        <label className="form-label">Discount (%)-(VND)</label>
                                         <input
                                             type="number"
                                             className="form-control"
@@ -270,7 +270,7 @@ const NewVoucher = (props) => {
                                         )} */}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Nguồn giảm</label>
+                                        <label className="form-label">Discount Price Section</label>
                                         <select
                                             className="form-control"
                                             placeholder=""
@@ -296,7 +296,7 @@ const NewVoucher = (props) => {
                                         </select>
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Lượt sử dụng</label>
+                                        <label className="form-label">Usage turns</label>
                                         <input
                                             type="number"
                                             className="form-control"
@@ -319,7 +319,7 @@ const NewVoucher = (props) => {
                                         )} */}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Danh mục</label>
+                                        <label className="form-label">Category</label>
                                         <select
                                             className="form-control"
                                             id="name_cate"
@@ -330,7 +330,7 @@ const NewVoucher = (props) => {
                                         // {...register("isActive", { required: false })}
                                         >
                                             <option value="" disabled selected>
-                                                chọn danh mục
+                                                Select category
                                             </option>
                                             {
                                                 lstcate.map((item, index) => {
@@ -344,7 +344,7 @@ const NewVoucher = (props) => {
                                         {check.categoryId && check.categoryId.length > 0 && <p className="checkError">{check.categoryId}</p>}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Ngày bắt đầu</label>
+                                        <label className="form-label">Start day</label>
                                         <input
                                             type="date"
                                             min="2022-01-01"
@@ -360,7 +360,7 @@ const NewVoucher = (props) => {
                                         {check.effectFrom && check.effectFrom.length > 0 && <p className="checkError">{check.effectFrom}</p>}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Ngày kết thúc</label>
+                                        <label className="form-label">Expiration date</label>
                                         <input
                                             type="date"
                                             max="2024-01-01"
@@ -376,7 +376,7 @@ const NewVoucher = (props) => {
                                         {check.effectUntil && check.effectUntil.length > 0 && <p className="checkError">{check.effectUntil}</p>}
                                     </div>
                                     <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Mô tả</label>
+                                        <label className="form-label">Description</label>
                                         <textarea
                                             type="description"
                                             className="form-control "

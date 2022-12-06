@@ -231,7 +231,7 @@ const UpdateVoucher = (props) => {
                                     )} */}
                                     </div>
                                     <div className="col-sm-6">
-                                        <label className="form-label">Giảm giá</label>
+                                        <label className="form-label">Discount Price Section</label>
                                         <input
                                             type="number"
                                             placeholder=""
@@ -251,7 +251,7 @@ const UpdateVoucher = (props) => {
                                     )} */}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Lượt sử dụng</label>
+                                        <label className="form-label">Usage turns</label>
                                         <input
                                             type="number"
                                             className="form-control"
@@ -274,7 +274,7 @@ const UpdateVoucher = (props) => {
                                     )} */}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Trạng thái</label>
+                                        <label className="form-label">Status</label>
                                         <select
                                             className="form-control"
                                             id="status"
@@ -307,7 +307,7 @@ const UpdateVoucher = (props) => {
                                         </select>
                                     </div>
                                     <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Danh Mục</label>
+                                        <label className="form-label">Category</label>
                                         <select
                                             className="form-control"
                                             id="categoryId"
@@ -335,7 +335,7 @@ const UpdateVoucher = (props) => {
                                         </select>
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Ngày bắt đầu</label>
+                                        <label className="form-label">Start day</label>
                                         <input
                                             type="date"
                                             min="2022-01-01"
@@ -351,7 +351,7 @@ const UpdateVoucher = (props) => {
                                         {check.effectFrom && check.effectFrom.length > 0 && <p className="checkError">{check.effectFrom}</p>}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Ngày kết thúc</label>
+                                        <label className="form-label">Expiration date</label>
                                         <input
                                             type="date"
                                             // min="2022-01-01"
@@ -367,7 +367,7 @@ const UpdateVoucher = (props) => {
                                         {check.effectUntil && check.effectUntil.length > 0 && <p className="checkError">{check.effectUntil}</p>}
                                     </div>
                                     <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Mô tả</label>
+                                        <label className="form-label">Description</label>
                                         <textarea
                                             type="description"
                                             // min="2022-01-01"

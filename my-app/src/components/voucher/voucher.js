@@ -173,7 +173,7 @@ const Voucher = () => {
                                 {/* value */}
                                 <th scope="col">Discount Price Section(%)</th>
                                 {/* quantity */}
-                                <th scope="col">Lượt sử dụng</th>
+                                <th scope="col">Usage turns</th>
                                 {/*  */}
                                 <th scope="col">Category</th>
                                 {/* effect from */}
@@ -270,7 +270,7 @@ const Voucher = () => {
                             >
                                 <ModalHeader>Delete</ModalHeader>
                                 <ModalBody>
-                                    Bạn có chắc chắn xóa không?
+                                    Are you sure delete?
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button type='button' color="primary" onClick={() => { deleteVoucher(voucherId) }}>
@@ -281,7 +281,11 @@ const Voucher = () => {
                                     </Button>
                                 </ModalFooter>
                             </Modal>
-
+                            {isLoading &&
+                                <tr>
+                                    <h3>Loading...</h3>
+                                </tr>
+                            }
                         </tbody>
                         <tfoot>
                             <tr>
