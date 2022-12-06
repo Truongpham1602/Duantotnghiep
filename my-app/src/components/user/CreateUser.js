@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import '../user/user.css';
+import '../user/User.css';
 import moment from 'moment';
 import {
     ref,
@@ -45,8 +45,8 @@ const CreateUser = (props) => {
     const { isCreateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload } = props;
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
     // const [updateData, setUpdateData] = useState(props);
-    const [user, setUser] = useState({ fullName: '', password: '', email: '', telephone: '', address: '',});
-    const [check, setCheck] = useState({ });
+    const [user, setUser] = useState({ fullName: '', password: '', email: '', telephone: '', address: '', });
+    const [check, setCheck] = useState({});
 
     const arrRole = [
         {
@@ -68,8 +68,8 @@ const CreateUser = (props) => {
             copyUser[id] = event.target.value;
         }
 
-        
-        
+
+
 
         setUser({
             ...copyUser
@@ -80,71 +80,71 @@ const CreateUser = (props) => {
             let ch0 = { ...check };
             let validForm = true;
             const create = async () => {
-             if (user.fullName.trim().length == 0) {
-                ch0["fullName"] = "Name not null"
-                setCheck({ ...ch0 })
-                validForm = false;
-            }else {
-                ch0["fullName"] = ""
-                setCheck({ ...ch0 })
-            }
-             if (user.password.trim().length == 0) {
-                ch0["password"] = "Password not null"
-                setCheck({ ...ch0 })
-                validForm = false;
-            }else {
-                ch0["password"] = ""
-                setCheck({ ...ch0 })
-            }
-             if (user.email.trim().length == 0) {
-                ch0["email"] = "Email not null"
-                setCheck({ ...ch0 })
-                validForm = false;
-            }else {
-                ch0["email"] = ""
-                setCheck({ ...ch0 })
-            }
-             if (user.telephone.trim().length == 0) {
-                ch0["telephone"] = "Telephone not null"
-                setCheck({ ...ch0 })
-                validForm = false;
-            }else {
-                ch0["telephone"] = ""
-                setCheck({ ...ch0 })
-            }
-             if (user.address.trim().length == 0) {
-                ch0["address"] = "Address not null"
-                setCheck({ ...ch0 })
-                validForm = false;
-            }else {
-                ch0["address"] = ""
-                setCheck({ ...ch0 })
-            }
-           
-            if(validForm) {
-                let res = await axios.post(User_Rest_API_URL + '/post', {
-                    roleId: user.roleId,
-                    fullName: user.fullName,
-                    password: user.password,
-                    email: user.email,
-                    telephone: user.telephone,
-                    address: user.address,
-                    image: user.image,
-                    created: user.created,
-                    creator: user.creator,
-                    modified: user.modified,
-                    modifier: user.modifier,
-                    status: user.status
-                })
-                let data = (res && res.data) ? res.data : []
-                data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
-                if (data.modified > 0) {
-                    data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
+                if (user.fullName.trim().length == 0) {
+                    ch0["fullName"] = "Name not null"
+                    setCheck({ ...ch0 })
+                    validForm = false;
+                } else {
+                    ch0["fullName"] = ""
+                    setCheck({ ...ch0 })
                 }
-                updateData(data, `create`)
-                toggle()
-                notifySuccess('Thêm mới user thành công')
-            }
+                if (user.password.trim().length == 0) {
+                    ch0["password"] = "Password not null"
+                    setCheck({ ...ch0 })
+                    validForm = false;
+                } else {
+                    ch0["password"] = ""
+                    setCheck({ ...ch0 })
+                }
+                if (user.email.trim().length == 0) {
+                    ch0["email"] = "Email not null"
+                    setCheck({ ...ch0 })
+                    validForm = false;
+                } else {
+                    ch0["email"] = ""
+                    setCheck({ ...ch0 })
+                }
+                if (user.telephone.trim().length == 0) {
+                    ch0["telephone"] = "Telephone not null"
+                    setCheck({ ...ch0 })
+                    validForm = false;
+                } else {
+                    ch0["telephone"] = ""
+                    setCheck({ ...ch0 })
+                }
+                if (user.address.trim().length == 0) {
+                    ch0["address"] = "Address not null"
+                    setCheck({ ...ch0 })
+                    validForm = false;
+                } else {
+                    ch0["address"] = ""
+                    setCheck({ ...ch0 })
+                }
+
+                if (validForm) {
+                    let res = await axios.post(User_Rest_API_URL + '/post', {
+                        roleId: user.roleId,
+                        fullName: user.fullName,
+                        password: user.password,
+                        email: user.email,
+                        telephone: user.telephone,
+                        address: user.address,
+                        image: user.image,
+                        created: user.created,
+                        creator: user.creator,
+                        modified: user.modified,
+                        modifier: user.modifier,
+                        status: user.status
+                    })
+                    let data = (res && res.data) ? res.data : []
+                    data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
+                    if (data.modified > 0) {
+                        data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
+                    }
+                    updateData(data, `create`)
+                    toggle()
+                    notifySuccess('Thêm mới user thành công')
+                }
             }
             create()
         } catch (error) {
@@ -218,7 +218,7 @@ const CreateUser = (props) => {
                                         value={user.email}
                                         onChange={(event) => handleOnchangeInput(event, 'email')}
                                     />
-                                     {check.email && check.email.length > 0 && <p className="checkError1">{check.email}</p>}
+                                    {check.email && check.email.length > 0 && <p className="checkError1">{check.email}</p>}
                                 </FormGroup>
                             </Col>
                             <Col md={6}>
@@ -233,7 +233,7 @@ const CreateUser = (props) => {
                                         // value={user.image}
                                         onChange={(event) => { handleOnchangeInput(event, 'image'); setImageUpload(event.target.files[0]) }}
                                     />
-                                     {/* {check.password && check.password.length > 0 && <p color='red'>{check.password}</p>} */}
+                                    {/* {check.password && check.password.length > 0 && <p color='red'>{check.password}</p>} */}
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -253,7 +253,7 @@ const CreateUser = (props) => {
                                                 value={user.telephone}
                                                 onChange={(event) => handleOnchangeInput(event, 'telephone')}
                                             />
-                                             {check.telephone && check.telephone.length > 0 && <p className="checkError1">{check.telephone}</p>}
+                                            {check.telephone && check.telephone.length > 0 && <p className="checkError1">{check.telephone}</p>}
                                         </FormGroup>
                                     </Col>
                                     <Col md={12}>
@@ -269,7 +269,7 @@ const CreateUser = (props) => {
                                                 value={user.address}
                                                 onChange={(event) => handleOnchangeInput(event, 'address')}
                                             />
-                                             {check.address && check.address.length > 0 && <p className="checkError1">{check.address}</p>}
+                                            {check.address && check.address.length > 0 && <p className="checkError1">{check.address}</p>}
                                         </FormGroup>
                                     </Col>
                                     <Col md={12}>
@@ -284,14 +284,14 @@ const CreateUser = (props) => {
                                                 type="select"
                                                 onChange={(event) => handleOnchangeInput(event, 'roleId')}
                                             >
-                                                    {arrRole.map(item => {
-                                                        if (user.roleId === item.id) {
-                                                            return <option selected value={item.id}>{item.title}</option>
-                                                        }
-                                                        return <option value={item.id}>{item.title}</option>
-                                                    })}
+                                                {arrRole.map(item => {
+                                                    if (user.roleId === item.id) {
+                                                        return <option selected value={item.id}>{item.title}</option>
+                                                    }
+                                                    return <option value={item.id}>{item.title}</option>
+                                                })}
 
-                                            </Input>    
+                                            </Input>
                                         </FormGroup>
                                     </Col>
                                 </Row>
