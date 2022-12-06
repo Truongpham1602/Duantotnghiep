@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.CartDTO;
@@ -52,6 +54,16 @@ public class OrderSeviceImpl implements OrderService {
 	public List<OrderDTO> findAll() {
 		return this.orderDao.findAll().stream().map(o -> modelMapper.map(o, OrderDTO.class))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Page<OrderDTO> findAll(Pageable pageable) {
+		return null;
+	}
+
+	@Override
+	public List<OrderDTO> findOrderBySize_ID(Integer user_IdOrTelephone) {
+		return null;
 	}
 
 	@Override
@@ -112,6 +124,16 @@ public class OrderSeviceImpl implements OrderService {
 	@Override
 	public List<OrderDTO> findByUser_IdOrTelephone(String user_idOrTelephone) {
 
+		return null;
+	}
+
+	@Override
+	public List<OrderDTO> updateDelivered(Integer user_IdOrTelephone) {
+		return null;
+	}
+
+	@Override
+	public Order updateOrderWithStatus(Integer id, Integer status) {
 		return null;
 	}
 

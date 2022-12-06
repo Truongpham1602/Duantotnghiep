@@ -59,7 +59,7 @@ const Bill = (props) => {
   const { data: dataVoucher, isLoading } = useCallGetAPI(
     `http://localhost:8080/api/voucher/get`
   );
-  const [lstVoucher, setLstVoucher] = useState([]);
+  //const [lstVoucher, setLstVoucher] = useState([]);
 
   const [voucherSelect, setVoucherSelect] = useState({});
   const [sealer, setSealer] = useState();
@@ -92,18 +92,22 @@ const Bill = (props) => {
     copy[id] = e.target.value;
     try {
       let ch0 = { ...check };
-      let vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-      let re =
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (id == "email") {
-        if (re(copy[id] == true)) {
+      let vnf_regex = /((09|03|07|08|028|024|05)+([0-9]{8})\b)/g;
+      let re = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+
+      if (id == "Email") {
+        if (re.test(e.target.value) == false) {
           //ch0["email"] = "This is a valid email address";
-          ch0["email"] = "";
+          ch0["Email"] = "Invalid email, please enter correct email format";
         } else {
-          ch0["email"] = "Invalid email, please enter correct email format";
+          ch0["Email"] = "";
         }
+        setCheck({
+          ...ch0,
+        });
       } else {
         if (id == "Name") {
+          console.log(copy[id]);
           if (copy[id] == 0) {
             ch0[id] = "Name not null";
           } else {
@@ -112,11 +116,12 @@ const Bill = (props) => {
         } else if (id == "Phone_Number") {
           if (copy[id] == 0) {
             ch0["Phone_Number"] = "Phone Number not null";
-            if (vnf_regex(copy[id] == false)) {
-              ch0["Phone_Number"] = "please enter correct phone format";
-            }
           } else {
-            ch0["Phone_Number"] = "";
+            if (vnf_regex.test(e.target.value) == false) {
+              ch0["Phone_Number"] = "please enter correct phone format";
+            } else {
+              ch0["Phone_Number"] = "";
+            }
           }
         } else if (id == "Address") {
           if (copy[id] == 0) {
@@ -160,9 +165,9 @@ const Bill = (props) => {
       setTotalPrice(total);
     };
     dataCart && setTotal();
-    setLstVoucher(dataVoucher);
-    console.log(dataVoucher);
-  }, [dataCart, dataVoucher]);
+    // setLstVoucher(dataVoucher);
+    // console.log(dataVoucher);
+  }, [dataCart /*, dataVoucher*/]);
 
   useEffect(() => {
     listAll(imagesListRef).then((response) => {
@@ -177,56 +182,47 @@ const Bill = (props) => {
 
   const createOrder = async () => {
     let ch0 = { ...check };
-    let validForm = true;
-    const create = async () => {
-      if (account.Email.trim().length == 0) {
-        ch0["Email"] = "Email not null";
-        setCheck({ ...ch0 });
-        validForm = false;
-      } else {
-        ch0["Email"] = "";
-        setCheck({ ...ch0 });
-      }
-      if (account.Name.trim().length == 0) {
-        ch0["Name"] = "Name not null";
-        setCheck({ ...ch0 });
-        validForm = false;
-      } else {
-        ch0["Name"] = "";
-        setCheck({ ...ch0 });
-      }
-      if (account.Phone_Number.trim().length == 0) {
-        ch0["Phone_Number"] = "Phone_Number not null";
-        setCheck({ ...ch0 });
-        validForm = false;
-      } else {
-        ch0["Phone_Number"] = "";
-        setCheck({ ...ch0 });
-      }
-      if (account.Address.trim().length == 0) {
-        ch0["Address"] = "Address not null";
-        setCheck({ ...ch0 });
-        validForm = false;
-      } else {
-        ch0["Address"] = "";
-        setCheck({ ...ch0 });
-      }
-      if (account.Description.trim().length == 0) {
-        ch0["Description"] = "Description not null";
-        setCheck({ ...ch0 });
-        validForm = false;
-      } else {
-        ch0["Description"] = "";
-        setCheck({ ...ch0 });
-      }
-      if (validForm) {
-        let res = await axios.post(
-          `http://localhost:8080/order/createNoUser?voucher_Id=`,
-          user
-        );
-        window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
-      }
-    };
+    if (account.Email == 0) {
+      ch0["Email"] = "Email not null";
+      setCheck({ ...ch0 });
+    } else if (check.Email == 0) {
+      ch0["Email"] = "";
+      setCheck({ ...ch0 });
+    }
+    if (account.Name == 0) {
+      ch0["Name"] = "Name not null";
+      setCheck({ ...ch0 });
+    } else if (check.Name == 0) {
+      ch0["Name"] = "";
+      setCheck({ ...ch0 });
+    }
+    if (account.Phone_Number == 0) {
+      ch0["Phone_Number"] = "Phone_Number not null";
+      setCheck({ ...ch0 });
+    } else if (check.Phone_Number == 0) {
+      ch0["Phone_Number"] = "";
+      setCheck({ ...ch0 });
+    }
+    if (account.Address == 0) {
+      ch0["Address"] = "Address not null";
+      setCheck({ ...ch0 });
+    } else if (check.Address == 0) {
+      ch0["Address"] = "";
+      setCheck({ ...ch0 });
+    }
+    if (
+      check.Email == 0 ||
+      check.Name == 0 ||
+      check.Phone_Number == 0 ||
+      check.Address == 0
+    ) {
+      return;
+    }
+    let res = await axios.post(
+      `http://localhost:8080/order/createNoUser?voucher_Id=`,
+      user
+    );
+    window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
   };
 
   const toggle = () => {
@@ -316,7 +312,7 @@ const Bill = (props) => {
                       <MDBIcon
                         fas
                         icon="clipboard-list me-lg-4 mb-3 mb-lg-0"
-                        size="3x"
+                        bssize="3x"
                       />
                       <div>
                         <p className="fw-bold mb-1">Order</p>
@@ -327,7 +323,7 @@ const Bill = (props) => {
                       <MDBIcon
                         fas
                         icon="box-open me-lg-4 mb-3 mb-lg-0"
-                        size="3x"
+                        bssize="3x"
                       />
                       <div>
                         <p className="fw-bold mb-1">Order</p>
@@ -338,7 +334,7 @@ const Bill = (props) => {
                       <MDBIcon
                         fas
                         icon="shipping-fast me-lg-4 mb-3 mb-lg-0"
-                        size="3x"
+                        bssize="3x"
                       />
                       <div>
                         <p className="fw-bold mb-1">Order</p>
@@ -346,7 +342,11 @@ const Bill = (props) => {
                       </div>
                     </div>
                     <div className="d-lg-flex align-items-center">
-                      <MDBIcon fas icon="home me-lg-4 mb-3 mb-lg-0" size="3x" />
+                      <MDBIcon
+                        fas
+                        icon="home me-lg-4 mb-3 mb-lg-0"
+                        bssize="3x"
+                      />
                       <div>
                         <p className="fw-bold mb-1">Order</p>
                         <p className="fw-bold mb-0">Arrived</p>
@@ -377,7 +377,7 @@ const Bill = (props) => {
                     name="email"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "email")}
+                    onChange={(event) => handleOnchangeInput(event, "Email")}
                   />
                   {check.Email && check.Email.length > 0 && (
                     <p className="checkError1">{check.Email}</p>
@@ -392,9 +392,7 @@ const Bill = (props) => {
                     name="nameRecipient"
                     placeholder=""
                     type="text"
-                    onChange={(event) =>
-                      handleOnchangeInput(event, "nameRecipient")
-                    }
+                    onChange={(event) => handleOnchangeInput(event, "Name")}
                   />
                   {check.Name && check.Name.length > 0 && (
                     <p className="checkError1">{check.Name}</p>
@@ -412,7 +410,7 @@ const Bill = (props) => {
                     placeholder=""
                     type="text"
                     onChange={(event) =>
-                      handleOnchangeInput(event, "telephone")
+                      handleOnchangeInput(event, "Phone_Number")
                     }
                   />
                   {check.Phone_Number && check.Phone_Number.length > 0 && (
@@ -428,7 +426,7 @@ const Bill = (props) => {
                     name="address"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "address")}
+                    onChange={(event) => handleOnchangeInput(event, "Address")}
                   />
                   {check.Address && check.Address.length > 0 && (
                     <p className="checkError1">{check.Address}</p>
@@ -444,9 +442,9 @@ const Bill = (props) => {
                     id="description"
                     name="description"
                     type="textarea"
-                    size="lg"
+                    bssize="lg"
                     onChange={(event) =>
-                      handleOnchangeInput(event, "description")
+                      handleOnchangeInput(event, "Description")
                     }
                   />
                   {check.Description && check.Description.length > 0 && (
@@ -519,7 +517,7 @@ const Bill = (props) => {
               justifyContent: "space-between",
             }}
           >
-            {lstVoucher.map((item, index) => {
+            {/* {lstVoucher.map((item, index) => {
               if (item.id == voucherSelect) {
                 return (
                   <>
@@ -531,7 +529,7 @@ const Bill = (props) => {
                   </>
                 );
               }
-            })}
+            })} */}
           </div>
           <button
             style={{
@@ -547,12 +545,12 @@ const Bill = (props) => {
           <Modal
             isOpen={isModalVoucher}
             toggle={() => toggle()}
-            size="lg"
+            bssize="lg"
             centered
           >
             <ModalHeader toggle={() => toggle()}>Voucher</ModalHeader>
             <ModalBody>
-              <Row>
+              {/* <Row>
                 {lstVoucher.map((item, index) => {
                   if (
                     item.status != 0 &&
@@ -597,7 +595,7 @@ const Bill = (props) => {
                     );
                   }
                 })}
-              </Row>
+              </Row> */}
             </ModalBody>
             <ModalFooter>
               <Button
@@ -632,7 +630,7 @@ const Bill = (props) => {
               <button
                 type="submit"
                 onClick={(e) => {
-                  createOrder();
+                  createOrder(e);
                 }}
               >
                 ORDER

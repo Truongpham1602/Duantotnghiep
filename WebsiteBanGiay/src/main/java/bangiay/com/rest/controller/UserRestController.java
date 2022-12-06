@@ -24,18 +24,14 @@ public class UserRestController {
 	public List<UserDTO> findAll() {
 		return userService.findAll();
 	}
-	@GetMapping("/select")
-	public ResponseEntity<Page<UserDTO>> getPage(
-			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
-			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
-	) {
-		Pageable pageable = PageRequest.of(page - 1 , size);
-//        Page<User> userPage = userService.findAll(status,username,pageable);
-//        Page<UserDTO> userDTOS = ObjectMapperUtils.mapEntityPageIntoDtoPage(userPage, UserDTO.class);
-//        return ResponseEntity.ok().body(userDTOS);
-//        return ResponseEntity.ok(userService.findAll(status,username,PageRequest.of(page - 1, size, userSorter.getSort())));
-		return ResponseEntity.ok(userService.findAll(pageable));
-	}
+//	@GetMapping("/select")
+//	public ResponseEntity<Page<UserDTO>> getPage(
+//			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
+//			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
+//	) {
+//		Pageable pageable = PageRequest.of(page - 1 , size);
+//		return ResponseEntity.ok(userService.findAll(pageable));
+//	}
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") int id) {
 		userService.delete(id);

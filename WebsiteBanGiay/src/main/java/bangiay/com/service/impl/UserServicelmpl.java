@@ -43,15 +43,15 @@ public class UserServicelmpl implements UserService {
 
 		return result;
 	}
-	@Override
-	public Page<UserDTO> findAll(Pageable pageable) {
-		List<User> user = userDao.findAll();
-		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d,UserDTO.class)).collect(Collectors.toList());
-		for (int i = 0; i < user.size(); i++) {
-			result.get(i).setNameRole(user.get(i).getRole().getRoleName());
-		}
-		return ObjectMapperUtils.mapEntityPageIntoDtoPage(userDao.findAll(pageable), UserDTO.class);
-	}
+//	@Override
+//	public Page<UserDTO> findAll(Pageable pageable) {
+//		List<User> user = userDao.findAll();
+//		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d,UserDTO.class)).collect(Collectors.toList());
+//		for (int i = 0; i < user.size(); i++) {
+//			result.get(i).setNameRole(user.get(i).getRole().getRoleName());
+//		}
+//		return ObjectMapperUtils.mapEntityPageIntoDtoPage(userDao.findAll(pageable), UserDTO.class);
+//	}
 
 
 	@Override
