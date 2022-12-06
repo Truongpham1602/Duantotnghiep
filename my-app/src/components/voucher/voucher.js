@@ -166,7 +166,7 @@ const Voucher = () => {
                     <Table className="table table-bordered">
                         <thead style={{ verticalAlign: 'middle' }}>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Stt</th>
                                 {/* name */}
                                 <th scope="col">Name</th>
 
