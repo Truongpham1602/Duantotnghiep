@@ -3,10 +3,12 @@ import axios from 'axios';
 import CreateUser from './CreateUser';
 import UpdateUser from './UpdateUser';
 import UserDetails from './UserDetails';
+import { Pagination } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
-  Row, Col, Form
+  Row, Col, Form, PaginationLink, PaginationItem
 } from 'reactstrap';
 import {
   Table
@@ -24,7 +26,7 @@ import { storage } from "../../Firebase";
 // class User extends React.Component {
 const User = () => {
 
-  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/user/index`);
+  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/user/get`);
   const [user, setUser] = useState({});
   const [dataUser, setData] = useState([]);
   const [isCreateModal, setIsCreateModal] = useState(false)
@@ -37,7 +39,8 @@ const User = () => {
   const imagesListRef = ref(storage, "images/");
   const [page, setPage] = useState(0);
   const [userId, setUserId] = useState()
-
+  const [pageNumber, setPageNumber] = useState()
+  const [totalPage, setTotalPage] = useState([])
 
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
@@ -50,8 +53,40 @@ const User = () => {
           });
         });
       });
+
     }
+    
+    if (dataPro.content) {
+      setData(dataPro.content)
+      setPageNumber(dataPro.number)
+      for (let i = 1; i <= dataPro.totalPages; i++) {
+          setTotalPage((prev) => [...prev, i])
+
+      }
+  }
   }, [dataPro])
+
+
+  const notifyWarning = (text) => {
+    toast.warning(text, styleToast);
+};
+const notifySuccess = (text) => {
+    toast.success(text, styleToast)
+};
+const notifyError = (text) => {
+    toast.error(text, styleToast);
+};
+
+const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+}
 
 
   const uploadFile = () => {
@@ -72,6 +107,15 @@ const User = () => {
     }
 
   };
+  const updateTotalPage = async () => {
+    const res = await axios.get(`http://localhost:8080/api/category/get`)
+    let data = res ? res.data : []
+    if (data.totalPages > totalPage.length) {
+        for (let i = 1; i <= dataPro.totalPages; i++) {
+            setTotalPage((prev) => [...prev, i])
+        }
+    }
+}
 
 
   const updateData = (res, type) => {
@@ -79,6 +123,7 @@ const User = () => {
       let copydata = dataUser;
       copydata.unshift(res);
       setData(copydata);
+      updateTotalPage();
     }
     else if (type === 'update') {
       let copydata = dataUser;
@@ -111,11 +156,14 @@ const User = () => {
     try {
       const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`)
       setUser(res.data)
-
+      
       imageUrls.map((img) => {
         if (img.nameImg === res.data.image) {
           return setUrlImg(img.url)
         }
+        // else{
+        //   setUrlImg("")
+        // }
       })
 
     } catch (error) {
@@ -123,18 +171,32 @@ const User = () => {
     }
   }
 
+  const pageable = async (id) => {
+    if (id <= 0) {
+        id = 0
+    } else if (id >= totalPage.length - 1) {
+        id = totalPage.length - 1
+    }
+    const res = await axios.get(`http://localhost:8080/admin/user/get?page=${id}`)
+    let data = res ? res.data : []
+    setData(data.content)
+    setPageNumber(data.number)
+    console.log(data.number);
+}
+
   const deleteUser = async (id) => {
-    // e.preventDefault();
+
     try {
-      await axios.delete(`http://localhost:8080/admin/user/delete/${id}`)
+      const res = await axios.put(`http://localhost:8080/admin/user/setStatusFalse/${id}`)
       let copyList = dataUser;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
       toggleNested()
-      // updateData(res.data)
+      notifySuccess("Success Delete ")
     } catch (error) {
-      console.log(error.message)
+      
     }
+       
   }
 
 
@@ -147,13 +209,13 @@ const User = () => {
   // };
 
 
-  const onBack = () => {
-    setPage(page - 1 > -1 ? page - 1 : page);
-  };
+  // const onBack = () => {
+  //   setPage(page - 1 > -1 ? page - 1 : page);
+  // };
 
-  const onNext = () => {
-    setPage(page + 1 < dataUser.length / 7 ? page + 1 : page);
-  };
+  // const onNext = () => {
+  //   setPage(page + 1 < dataUser.length / 7 ? page + 1 : page);
+  // };
 
 
 
@@ -188,6 +250,7 @@ const User = () => {
         user={user}
       />
       <div>
+        
         <Table bordered >
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
@@ -200,7 +263,7 @@ const User = () => {
               <th>Telephone</th>
               <th>Address</th>
               <th>Role</th>
-              <th>Trạng thái</th>
+              {/* <th>Trạng thái</th> */}
               <th>Image</th>
               <th colspan="1">Action</th>
               <th colspan="1">
@@ -226,7 +289,7 @@ const User = () => {
                     {/* <td id="created">{item.created}</td> */}
                     {/* <td id="created">{item.modified}</td> */}
                     <td id="modified">{item.nameRole}</td>
-                    <td id="status">{Number(item.status) ? "Hoạt động" : "Không hoạt động"}</td>
+                    {/* <td id="status">{Number(item.status) ? "Hoạt động" : "Không hoạt động"}</td> */}
                     <td id="image" >
                       {imageUrls.map((img) => {
                         return (
@@ -280,20 +343,43 @@ const User = () => {
               </tr>
             }
           </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan='10'>
-                <button className="hoverable" onClick={onBack}>
-                  Back
-                </button>
-                <label style={{ margin: '0 10px' }}>{page + 1}</label>
-                <button className="hoverable" onClick={onNext}>
-                  Next
-                </button>
-              </td>
-            </tr>
-          </tfoot>
         </Table>
+        <Pagination>
+              <PaginationItem>
+                <PaginationLink
+                  first
+                  onClick={() => pageable(0)}
+                />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink
+                  onClick={() => pageable(pageNumber - 1)}
+                  previous
+                />
+              </PaginationItem>
+              {totalPage.map(item => {
+                return (
+                  <PaginationItem>
+                    <PaginationLink onClick={() => pageable(item - 1)}>
+                      {item}
+                      {console.log(item)}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              })}
+              <PaginationItem>
+                <PaginationLink
+                  onClick={() => pageable(pageNumber + 1)}
+                  next
+                />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink
+                  onClick={() => pageable(totalPage.length - 1)}
+                  last
+                />
+              </PaginationItem>
+            </Pagination>
       </div>
     </>
   )

@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
+import '../user/user.css';
 import moment from 'moment'
 import { ToastContainer, toast } from 'react-toastify';
 import {
@@ -19,14 +20,40 @@ const UpdateUser = (props) => {
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
 
     const { isUpdateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload, urlImg } = props;
-    const [user, setUser] = useState(props.user);
+    const [user, setUser] = useState({ fullName: '', password: '', email: '', telephone: '', address: '', roleId: 1, image:'',status: 1});
+    const [check, setCheck] = useState({ fullName: '' });
 
     useEffect(() => {
         setUser(props.user)
     }, [props.user])
 
     const handleOnchangeInput = (event, id) => {
-        let copyUser = { ...user };
+        const copyUser = { ...user };
+        copyUser[id] = event.target.value;
+
+        try {
+            // console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
+            if (id != 'image') {
+            let ch0 = { ...check };
+            if (copyUser[id].trim().length <= 0) {
+                ch0[id] = `${id} not null !!`
+                setCheck({
+                    ...ch0
+                })
+            }else {
+                    ch0[id] = ""
+                }
+                setCheck({
+                    ...ch0
+                })
+            }
+            if(id == 'image'){
+                if(copyUser['image'].trim().length <= 0)setImageUpload('')
+            }
+        }catch (error) {
+            console.log(error);
+        }
+
         if (id === 'image') {
             copyUser[id] = event.target.files[0].name;
         } else {
@@ -62,10 +89,13 @@ const UpdateUser = (props) => {
 
     const arrRole = [
         {
-            id: 3, title: 'Khách hàng'
+            id:1 , title:'Quản lý'
         },
         {
             id: 2, title: 'Nhân viên'
+        },
+        {
+            id: 3, title: 'Khách hàng'
         }
     ]
 
@@ -81,6 +111,53 @@ const UpdateUser = (props) => {
 
     const updateUser = async () => {
         try {
+
+            let validForm = true;
+            let ch0 = { ...check };
+            if (user.fullName?.trim().length <= 0
+            && user.password?.trim().length <= 0
+            && user.email?.trim().length <= 0
+            && user.telephone?.trim().length <= 0
+            && user.address?.trim().length <= 0
+            
+        ) {
+            ch0["fullName"] = "Name not null"
+            ch0["password"] = "Password not null"
+            ch0["email"] = "Email not null"
+            ch0["telephone"] = "Telephone not null"
+            ch0["address"] = "Address not null"
+            setCheck({ ...ch0 })
+            return
+        }
+         if (user.fullName.trim().length <= 0) {
+            ch0["name"] = "Name not null"
+            setCheck({ ...ch0 })
+            validForm = false;
+        }
+         if (user.password.trim().length <= 0) {
+            ch0["password"] = "Password not null"
+            setCheck({ ...ch0 })
+            validForm = false;
+        }
+         if (user.email.trim().length <= 0) {
+            ch0["email"] = "Email not null"
+            setCheck({ ...ch0 })
+            validForm = false;
+        }
+         if (user.telephone.trim().length <= 0) {
+            ch0["telephone"] = "Telephone not null"
+            setCheck({ ...ch0 })
+            validForm = false;
+        }
+         if (user.address.trim().length <= 0) {
+            ch0["address"] = "Address not null"
+            setCheck({ ...ch0 })
+            validForm = false;
+        } 
+
+
+
+            if(validForm){
             const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`, user)
             let data = (res && res.data) ? res.data : [];
             data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
@@ -88,9 +165,12 @@ const UpdateUser = (props) => {
             toggle()
             updateData(data, 'update')
             notifySuccess('Cập nhật thành công')
-        } catch (error) {
+            }
+            
+        }catch (error) {
             console.log(error.message)
         }
+        
     }
 
     const toggle = () => {
@@ -122,6 +202,7 @@ const UpdateUser = (props) => {
                                         value={user.fullName}
                                         onChange={(event) => handleOnchangeInput(event, 'fullName')}
                                     />
+                                    {check.fullName && check.fullName.length > 0 && <p className="checkError1">{check.fullName}</p>}
                                 </FormGroup>
                             </Col>
                             <Col md={6}>
@@ -137,6 +218,7 @@ const UpdateUser = (props) => {
                                         value={user.email}
                                         onChange={(event) => handleOnchangeInput(event, 'email')}
                                     />
+                                    {check.email && check.email.length > 0 && <p className="checkError1">{check.email}</p>}
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -154,6 +236,7 @@ const UpdateUser = (props) => {
                                         value={user.telephone}
                                         onChange={(event) => handleOnchangeInput(event, 'telephone')}
                                     />
+                                    {check.telephone && check.telephone.length > 0 && <p className="checkError1">{check.telephone}</p>}
                                 </FormGroup>
                             </Col>
                             <Col md={6}>
@@ -189,6 +272,7 @@ const UpdateUser = (props) => {
                                                 value={user.address}
                                                 onChange={(event) => handleOnchangeInput(event, 'address')}
                                             />
+                                            {check.address && check.address.length > 0 && <p className="checkError1">{check.address}</p>}
                                         </FormGroup>
                                     </Col>
                                     <Col md={12}>
@@ -201,6 +285,7 @@ const UpdateUser = (props) => {
                                                 name="roleId"
                                                 placeholder=""
                                                 type="select"
+                                                value={user.roleId}
                                                 onChange={(event) => handleOnchangeInput(event, 'roleId')}
                                             >
                                                {arrRole.map(item => {

@@ -23,12 +23,9 @@ const NewVoucher = (props) => {
         let copyVoucher = { ...voucher };
         copyVoucher[id] = event.target.value;
         try {
-            // copyVoucher["effectFrom"] > today
             console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
-            // Date(date.toDateString()) < new Date(new Date().toDateString())
             let ch0 = { ...check };
             if (copyVoucher[id].trim().length <= 0) {
-                // ch0[id] = id != "value" ? `${id} không được để trống !!` : "Giảm giá không được để trống !!!"
                 ch0[id] = `${id} not null !!`
                 if (id == "value") {
                     ch0[id] = "Discount cannot be empty !!!"
