@@ -73,13 +73,13 @@ const UpdateVoucher = (props) => {
                     }
                 } else if (id == "effectFrom") {
                     if (new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString())) {
-                        ch1["effectFrom"] = "Bắt đầu từ ngày hôm nay"
+                        ch1["effectFrom"] = "Starting from today"
                         if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) >= new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
                             ch1["effectUntil"] = ""
                         }
                     }
                     else if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) < new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
-                        ch1["effectUntil"] = "sau ngày bắt đầu"
+                        ch1["effectUntil"] = "After the start date"
                         if (new Date(new Date(copyVoucher["effectFrom"]).toDateString()) >= new Date(new Date().toDateString())) {
                             ch1["effectFrom"] = ""
                         }
@@ -90,7 +90,7 @@ const UpdateVoucher = (props) => {
                 }
                 else if (id == "effectUntil") {
                     if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) < new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
-                        ch1["effectUntil"] = "sau ngày bắt đầu"
+                        ch1["effectUntil"] = "After the start date"
                     }
                     else {
                         ch1[id] = ""
@@ -104,7 +104,7 @@ const UpdateVoucher = (props) => {
             }
         } catch (error) {
             let ch1 = { ...check };
-            ch1[id] = `${id} không được để trống !!`
+            ch1[id] = `${id} cannot be left blank !!`
             console.log(error);
             setCheck({
                 ...ch1
@@ -191,7 +191,7 @@ const UpdateVoucher = (props) => {
             data.effectUntil = moment(data.effectUntil).format('DD/MM/YYYY HH:mm:ss');
             toggle()
             updateData(data, 'update')
-            notifySuccess("Cập nhập thành công")
+            notifySuccess("Update successful")
         } catch (error) {
             console.log(error.message);
         }

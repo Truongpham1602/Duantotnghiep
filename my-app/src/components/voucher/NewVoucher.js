@@ -47,13 +47,13 @@ const NewVoucher = (props) => {
                 }
                 else if (id == "effectFrom") {
                     if (new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString())) {
-                        ch0["effectFrom"] = "Bắt đầu từ ngày hôm nay"
+                        ch0["effectFrom"] = "Starting from today"
                         if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) >= new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
                             ch0["effectUntil"] = ""
                         }
                     }
                     else if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) < new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
-                        ch0["effectUntil"] = "sau ngày bắt đầu"
+                        ch0["effectUntil"] = "After the start date"
                         if (new Date(new Date(copyVoucher["effectFrom"]).toDateString()) >= new Date(new Date().toDateString())) {
                             ch0["effectFrom"] = ""
                         }
@@ -66,7 +66,7 @@ const NewVoucher = (props) => {
                 else if (id == "effectUntil") {
 
                     if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) < new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
-                        ch0["effectUntil"] = "sau ngày bắt đầu"
+                        ch0["effectUntil"] = "After the start date"
                     }
                     else {
                         ch0[id] = ""
@@ -193,7 +193,7 @@ const NewVoucher = (props) => {
                 updateData(datares, `create`)
                 console.log(datares);
                 toggle()
-                notifySuccess("Thêm thành công")
+                notifySuccess("Create successful")
             }
             createVou();
         } catch (error) {
