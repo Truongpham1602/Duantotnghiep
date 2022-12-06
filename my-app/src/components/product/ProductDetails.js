@@ -82,7 +82,7 @@ const ProductDetails = (props) => {
         {
             title: 46,
             status: false
-        },
+        }
     ])
 
     useEffect(() => {

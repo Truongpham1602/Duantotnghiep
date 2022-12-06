@@ -24,10 +24,10 @@ const Home = () => {
         setProduct(res.data)
         navigate('/productOne')
     }
-    const addToCart = async (size_Id) => {
+    const addToCart = async (size_Id, quantity) => {
         let res = await axios.post(`http://localhost:8080/cart/addToCart`, {
             size_Id: size_Id,
-            quantity: 1
+            quantity: quantity
         })
         // let copydata = cart
         // copydata.unshift(res.data);
