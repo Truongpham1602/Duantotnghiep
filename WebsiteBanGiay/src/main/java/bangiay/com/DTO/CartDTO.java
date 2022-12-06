@@ -25,6 +25,7 @@ public class CartDTO implements Serializable {
 	private Integer status;
 	private Double price;
 	private Integer category_Id;
+	private Integer quantitySize;
 	private Object size;
 	private Object media;
 }

@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import '../user/user.css';
+import '../user/User.css';
 import moment from 'moment';
 import {
     ref,
@@ -45,8 +45,11 @@ const CreateUser = (props) => {
     const { isCreateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload } = props;
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
     // const [updateData, setUpdateData] = useState(props);
+
     const [user, setUser] = useState({ fullName: '', password: '', email: '', telephone: '', address: '', roleId: 2, image:'',status: 1});
     const [check, setCheck] = useState({ fullName: '' });
+
+
 
     const arrRole = [
         {
@@ -161,6 +164,7 @@ const CreateUser = (props) => {
             data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
             if (data.modified > 0) {
                 data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
+
             }
             updateData(data, `create`)
             toggle()
@@ -241,7 +245,7 @@ const CreateUser = (props) => {
                                         value={user.email}
                                         onChange={(event) => handleOnchangeInput(event, 'email')}
                                     />
-                                     {check.email && check.email.length > 0 && <p className="checkError1">{check.email}</p>}
+                                    {check.email && check.email.length > 0 && <p className="checkError1">{check.email}</p>}
                                 </FormGroup>
                             </Col>
                             <Col md={6}>
@@ -256,7 +260,9 @@ const CreateUser = (props) => {
                                         // value={user.image}
                                         onChange={(event) => { handleOnchangeInput(event, 'image'); setImageUpload(event.target.files[0]) }}
                                     />
+
                                      {check.image && check.image.length > 0 && <p className="checkError1">{check.image}</p>}
+
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -276,7 +282,7 @@ const CreateUser = (props) => {
                                                 value={user.telephone}
                                                 onChange={(event) => handleOnchangeInput(event, 'telephone')}
                                             />
-                                             {check.telephone && check.telephone.length > 0 && <p className="checkError1">{check.telephone}</p>}
+                                            {check.telephone && check.telephone.length > 0 && <p className="checkError1">{check.telephone}</p>}
                                         </FormGroup>
                                     </Col>
                                     <Col md={12}>
@@ -292,7 +298,7 @@ const CreateUser = (props) => {
                                                 value={user.address}
                                                 onChange={(event) => handleOnchangeInput(event, 'address')}
                                             />
-                                             {check.address && check.address.length > 0 && <p className="checkError1">{check.address}</p>}
+                                            {check.address && check.address.length > 0 && <p className="checkError1">{check.address}</p>}
                                         </FormGroup>
                                     </Col>
                                     <Col md={12}>
@@ -307,14 +313,14 @@ const CreateUser = (props) => {
                                                 type="select"
                                                 onChange={(event) => handleOnchangeInput(event, 'roleId')}
                                             >
-                                                    {arrRole.map(item => {
-                                                        if (user.roleId === item.id) {
-                                                            return <option selected value={item.id}>{item.title}</option>
-                                                        }
-                                                        return <option value={item.id}>{item.title}</option>
-                                                    })}
+                                                {arrRole.map(item => {
+                                                    if (user.roleId === item.id) {
+                                                        return <option selected value={item.id}>{item.title}</option>
+                                                    }
+                                                    return <option value={item.id}>{item.title}</option>
+                                                })}
 
-                                            </Input>    
+                                            </Input>
                                         </FormGroup>
                                     </Col>
                                 </Row>
