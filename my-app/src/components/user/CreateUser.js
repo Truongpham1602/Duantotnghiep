@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import '../user/User.css';
+import '../user/user.css';
 import moment from 'moment';
 import {
     ref,

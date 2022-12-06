@@ -45,15 +45,6 @@ const User = () => {
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
-      listAll(imagesListRef).then((response) => {
-        response.items.forEach((item) => {
-          let nameImg = item.name;
-          getDownloadURL(item).then((url) => {
-            setImageUrls((prev) => [...prev, { nameImg, url }]);
-          });
-        });
-      });
-
     }
     
     if (dataPro.content) {
@@ -65,6 +56,18 @@ const User = () => {
       }
   }
   }, [dataPro])
+
+  useEffect(() => {
+    setImageUrls([])
+    listAll(imagesListRef).then((response) => {
+      response.items.forEach((item) => {
+        let nameImg = item.name;
+        getDownloadURL(item).then((url) => {
+          setImageUrls((prev) => [...prev, { nameImg, url }]);
+        });
+      });
+    });
+  }, [])
 
 
   const notifyWarning = (text) => {
@@ -156,15 +159,17 @@ const styleToast = {
     try {
       const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`)
       setUser(res.data)
-      
-      imageUrls.map((img) => {
-        if (img.nameImg === res.data.image) {
-          return setUrlImg(img.url)
-        }
-        // else{
-        //   setUrlImg("")
-        // }
+      console.log(res.data.image)
+      if(res.data.image?.length > 0){
+        imageUrls.map((img) => {
+          if (img.nameImg === res.data.image) {
+            return setUrlImg(img.url)
+          }
       })
+    }else{
+      setUrlImg("")
+    }
+      
 
     } catch (error) {
       console.log(error.message)
