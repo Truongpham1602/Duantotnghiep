@@ -91,7 +91,7 @@ const Voucher = () => {
                 copyList.fill(res.data, getIndex, getIndex + 1);
                 setData(copyList)
                 console.log(copyList);
-                notifySuccess("Thay đổi trạng thái thành công !!")
+                notifySuccess("Status change successful !!")
                 toggleNested()
                 // notifyWarning("Thay đổi trạng thái thành công !!")
             }
