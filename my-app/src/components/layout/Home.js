@@ -39,17 +39,16 @@ const Home = () => {
     // copydata.unshift(res.data);
     setCart(res.data);
     navigate(window.location.pathname);
-    toast.success("Add to cart success", styleToast);
+    toast.success("Add to cart success");
   };
+  return (
+    <>
+      <ToastContainer />
+      <Header dataCart={cart} />
+      <Outlet context={[addToCart, product]} />
+      <Footer />
+    </>
+  );
 };
-
-return (
-  <>
-    <ToastContainer />
-    <Header dataCart={cart} />
-    <Outlet context={[addToCart, product]} />
-    <Footer />
-  </>
-);
 
 export default Home;
