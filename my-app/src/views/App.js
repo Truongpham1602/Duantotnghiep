@@ -15,7 +15,6 @@ import Product1 from "../components/layout/Product";
 import HeaderPage from "../components/layout/HeaderPage";
 import ProductTest from "../components/HOME/ProductTest";
 import ProductList from "../components/HOME/ProductList";
-
 import ProductOne from "../components/HOME/ProductOne";
 
 import { Routes, Route } from "react-router-dom";
@@ -108,6 +107,15 @@ function App() {
             }
           />
           <Route
+            path="order"
+            element={
+              <>
+                {" "}
+                <Order />
+              </>
+            }
+          />
+          <Route
             path="voucher"
             element={
               <>
@@ -117,15 +125,16 @@ function App() {
             }
           />
           <Route
-            path="order"
+            path="category"
             element={
               <>
                 {" "}
-                <Order />
+                <Category />
               </>
             }
           />
         </Route>
+
         <Route path="cart" element={<Cart />}></Route>
         <Route path="checkout" element={<Bill />}></Route>
         <Route path="login" element={<Login />}></Route>

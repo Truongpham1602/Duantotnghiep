@@ -14,58 +14,63 @@ import {
 } from "firebase/storage";
 import { storage } from "../../Firebase";
 import { padding } from "@mui/system";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ProductOne = () => {
     const [nextProductDetail, addToCart, product] = useOutletContext()
     const imagesListRef = ref(storage, "images/");
     const [imageUrls, setImageUrls] = useState([]);
     const [size_Id, setSize_Id] = useState()
-    const sizes = [
+    const [sizes, setSizes] = useState([
         {
-            id: 36,
-            title: 36
+            title: 36,
+            status: false
         },
         {
-            id: 37,
-            title: 37
+            title: 37,
+            status: false
         },
         {
-            id: 38,
-            title: 38
+            title: 38,
+            status: false
         },
         {
-            id: 39,
-            title: 39
+            title: 39,
+            status: false
         },
         {
-            id: 40,
-            title: 40
+            title: 40,
+            status: false
         },
         {
-            id: 41,
-            title: 41
+            title: 41,
+            status: false
         },
         {
-            id: 42,
-            title: 42
+            title: 42,
+            status: false
         },
         {
-            id: 43,
-            title: 43
+            title: 43,
+            status: false
         },
         {
-            id: 44,
-            title: 44
+            title: 44,
+            status: false
         },
         {
-            id: 45,
-            title: 45
+            title: 45,
+            status: false
         },
         {
-            id: 46,
-            title: 46
-        },
-    ]
+            title: 46,
+            status: false
+        }
+    ])
+    const [quantitySize, setQuantitySize] = useState()
+    const [valueNumberinout, setValueNumberInout] = useState(1)
+
     useEffect(() => {
         setImageUrls([])
         listAll(imagesListRef).then((response) => {
@@ -76,6 +81,13 @@ const ProductOne = () => {
                 });
             });
         });
+        product.sizes?.map(item => {
+            let copydata = sizes;
+            let getIndex = copydata.findIndex((p) => { return p.title == item.size });
+            let size = { id: item.id, title: item.size, quantity: item.quantity, status: true }
+            copydata.fill(size, getIndex, getIndex + 1);
+            setSizes(copydata)
+        })
     }, [])
     // const bigImgClick = () => {
     //     document.querySelector(".product-content-left-big-img").style.display = "none"
@@ -93,13 +105,24 @@ const ProductOne = () => {
         document.querySelector(".product-buttom-right-content-big").classList.toggle("activeB")
     }
 
-    const setActive = (e) => {
+    const handleNumberInput = (value) => {
+        if (value >= quantitySize) {
+            toast.warning('Số lượng lớn hơn số lượng đang có!!!')
+            return
+        }
+        setValueNumberInout(value)
+    }
+
+    const setActive = async (e) => {
+        const res = await axios.get(`http://localhost:8080/api/size/find/${e.target.value}`)
         let btnSize = document.getElementsByClassName('btn')
         for (let i = 0; i < btnSize.length; i++) {
             btnSize.item(i).classList.remove('acitve-Size');
         }
         e.target.classList.add('acitve-Size');
         setSize_Id(e.target.value);
+        setQuantitySize(res.data.quantity)
+        setValueNumberInout(1)
     }
 
     return (
@@ -163,31 +186,19 @@ const ProductOne = () => {
                             </div>
                             <div className="col-lg-11 size">
                                 {sizes.map((item, index1) => {
-                                    return (
-                                        product.sizes.map((size, index2) => {
-                                            return (
-                                                <>
-                                                    {item.id == size.size && size.quantity > 0 &&
-                                                        <button onClick={(e) => setActive(e)} value={size.id} className="btn">{item.title}</button>
-                                                    }
-                                                    {item.id == size.size && size.quantity <= 0 &&
-                                                        <button onClick={(e) => setActive(e)} className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
-                                                    }
-                                                    {item.id != size.size &&
-                                                        <button onClick={(e) => setActive(e)} className="btn" style={{ borderColor: 'white' }} disabled>{item.title}</button>
-                                                    }
-                                                </>
-                                            )
-                                        })
-                                    )
+                                    if (item.quantity > 0 && item.status == true) {
+                                        return <button onClick={(e) => { setActive(e) }} value={item.id} className="btn">{item.title}</button>
+                                    } else if (item.quantity <= 0 || item.status === false) {
+                                        return <button className="btn" style={{ borderColor: 'white', color: '#b6b6b6fe' }} disabled >{item.title}</button>
+                                    }
                                 })}
                             </div>
                         </div>
                         <div className="product-content-right-product-quantity">
-                            <p className="quantityLeft">Số Lượng: <NumericInput min={0} /></p>
+                            <p className="quantityLeft">Số Lượng: <NumericInput key={valueNumberinout} min={1} value={valueNumberinout} max={quantitySize} onChange={(value) => handleNumberInput(value)} /></p>
                         </div>
                         <div className="product-content-right-product-button">
-                            <button class="fas fa-cart-arrow-down btnGioHang" onClick={() => addToCart(size_Id)}> Thêm vào giỏ hàng</button>
+                            <button class="fas fa-cart-arrow-down btnGioHang" onClick={() => addToCart(size_Id, valueNumberinout)}> Thêm vào giỏ hàng</button>
                         </div>
                     </div>
                 </div>

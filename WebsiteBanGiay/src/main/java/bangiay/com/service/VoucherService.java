@@ -14,8 +14,9 @@ public interface VoucherService {
 	public VoucherDTO update (VoucherDTO voucherDTO);
 	
 	void deleteById(Integer id);
-	 public VoucherDTO setStatusFalse(Integer id);
 	
+	public VoucherDTO setStatusFalse(Integer id);
+
 	public Page<VoucherDTO> findAll (Integer size , Integer page);
 	
 	VoucherDTO findById (Integer id);

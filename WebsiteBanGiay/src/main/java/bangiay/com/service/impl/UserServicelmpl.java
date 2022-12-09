@@ -3,20 +3,26 @@ package bangiay.com.service.impl;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.UserDTO;
+import bangiay.com.DTO.VoucherDTO;
 import bangiay.com.dao.RoleDao;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.User;
+import bangiay.com.entity.Voucher;
 import bangiay.com.service.UserService;
 
 @Service
@@ -32,25 +38,15 @@ public class UserServicelmpl implements UserService {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	@Override
-	public List<UserDTO> findAll() {
-		List<User> user = userDao.findAll();
 
-		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d,UserDTO.class)).collect(Collectors.toList());
-		for (int i = 0; i < user.size(); i++) {
-			result.get(i).setNameRole(user.get(i).getRole().getRoleName());
-		}
-
-		return result;
-	}
 //	@Override
-//	public Page<UserDTO> findAll(Pageable pageable) {
+//	public List<UserDTO> findAll() {
 //		List<User> user = userDao.findAll();
 //		List<UserDTO> result = user.stream().map(d -> modelMapper.map(d,UserDTO.class)).collect(Collectors.toList());
 //		for (int i = 0; i < user.size(); i++) {
-//			result.get(i).setNameRole(user.get(i).getRole().getRoleName());
+//			result.get(i).setNameRole(user.get(i).getRoler().getRoleName());
 //		}
-//		return ObjectMapperUtils.mapEntityPageIntoDtoPage(userDao.findAll(pageable), UserDTO.class);
+//		return result;
 //	}
 
 
@@ -58,7 +54,8 @@ public class UserServicelmpl implements UserService {
 	public UserDTO create(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
 
-		user.setRole(this.roleDao.findById(1).get());
+		user.setRole(this.roleDao.findById(userDTO.getRoleId()).get());
+
 		user.setCreated(Timestamp.from(Instant.now()));
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		this.userDao.save(user);
@@ -70,7 +67,9 @@ public class UserServicelmpl implements UserService {
 	@Override
 	public UserDTO update(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
-		user.setRole(this.roleDao.findById(1).get());
+
+		user.setRole(this.roleDao.findById(userDTO.getRoleId()).get());
+
 		user.setCreated(user.getCreated());
 		user.setModified(Timestamp.from(Instant.now()));
 		this.userDao.save(user);
@@ -83,6 +82,7 @@ public class UserServicelmpl implements UserService {
 	public UserDTO finById(int id) {
 		User user = userDao.findById(id).get();
 		UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+		userDTO.setRoleId(user.getRole().getId());
 		return userDTO;
 	}
 
@@ -91,10 +91,31 @@ public class UserServicelmpl implements UserService {
 		userDao.deleteById(id);
 	}
 
+
+	public Page<UserDTO> findAll(Integer size , Integer page) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<User> entities = userDao.getPageWhereStatus(pageable);
+		Page<UserDTO> dtoPage = entities.map(new Function<User, UserDTO>() {
+		    @Override
+		    public UserDTO apply(User entity) {
+		    	UserDTO dto = new UserDTO();
+		        dto = modelMapper.map(entity, UserDTO.class);
+		        dto.setId(entity.getId());
+		        dto.setNameRole(entity.getRole().getRoleName());
+		        return dto;
+		    }
+		});
+		return dtoPage;
+	}
+
 	@Override
-	public User findByUsername(String username) {
-		return null;
-//		return userDao.findByUsername(username);
+	public UserDTO setStatusFalse(Integer id ) {
+		User user = this.userDao.findById(id).orElseGet(null);
+		user.setStatus(0);
+		this.userDao.save(user);
+		UserDTO user1 = modelMapper.map(user, UserDTO.class);
+		user1.setStatus(0);
+		return user1;
 	}
 
 }

@@ -61,7 +61,7 @@ public class OrderRestController {
 		return this.orderService.updatePaymentOrder(id);
 	}
 
-	@GetMapping("/cance/{id}")
+	@GetMapping("/cancel/{id}")
 	public OrderDTO updateCancelOrder(@PathVariable("id") Integer id) {
 		return this.orderService.updateCancelOrder(id);
 	}

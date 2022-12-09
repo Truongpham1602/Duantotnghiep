@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,5 +87,17 @@ public class CartRestController {
 	@PostMapping(value = "/addToCart")
 	public ResponseEntity<List<CartDTO>> addToCart(@RequestBody CartDTO dto) {
 		return ResponseEntity.ok().body(cartService.addToCartDTONoUser(dto));
+	}
+
+	@GetMapping(value = "/updateSizeNoUser/{pro_Id}")
+	public ResponseEntity<List<CartDTO>> updateSizeNoUser(@PathVariable(name = "pro_Id") Integer pro_Id,
+			@RequestParam(name = "size_Id") Integer size_Id) {
+		return ResponseEntity.ok().body(cartService.updateSizeNoUser(pro_Id, size_Id));
+	}
+
+	@GetMapping(value = "/updateQuantityNoUser/{pro_Id}")
+	public ResponseEntity<List<CartDTO>> updateQuantityNoUser(@PathVariable(name = "pro_Id") Integer pro_Id,
+			@RequestParam("quantity") Integer quantity) {
+		return ResponseEntity.ok().body(cartService.updatequantityNoUser(pro_Id, quantity));
 	}
 }

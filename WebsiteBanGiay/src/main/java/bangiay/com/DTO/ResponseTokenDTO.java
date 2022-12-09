@@ -1,9 +1,11 @@
 package bangiay.com.DTO;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class ResponseTokenDTO {
+public class ResponseTokenDTO implements Serializable {
 
 	private String token;
 

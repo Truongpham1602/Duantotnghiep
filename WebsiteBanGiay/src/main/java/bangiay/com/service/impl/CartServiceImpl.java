@@ -155,12 +155,46 @@ public class CartServiceImpl implements CartService {
 			lstCart.get(i).setSizeName(size.getSize());
 			lstCart.get(i).setQuantityTotal(pro.getQuantity());
 			lstCart.get(i).setCategory_Id(pro.getCategoryId());
+			lstCart.get(i).setQuantitySize(size.getQuantity());
 			List<MediaDTO> media = this.mediaService.findAllByPro_Id(pro.getId());
 			byte[] datamedia = SerializationUtils.serialize(media);
 			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(pro.getId());
 			byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
 			lstCart.get(i).setMedia(SerializationUtils.deserialize(datamedia));
 			lstCart.get(i).setSize(SerializationUtils.deserialize(datalstSizeDTO));
+		}
+		return lstCart;
+	}
+
+	@Override
+	public CartDTO updateSize(Integer id, Integer size_Id) {
+		return null;
+	}
+
+	@Override
+	public CartDTO quantity(Integer id, Integer quantity) {
+
+		return null;
+	}
+
+	@Override
+	public List<CartDTO> updateSizeNoUser(Integer id_pro, Integer size_Id) {
+		for (CartDTO c : lstCart) {
+			if (c.getProduct_ID().equals(id_pro)) {
+				SizeDTO size = this.sizeService.findById(size_Id);
+				c.setSize_Id(size_Id);
+				c.setQuantitySize(size.getQuantity());
+			}
+		}
+		return lstCart;
+	}
+
+	@Override
+	public List<CartDTO> updatequantityNoUser(Integer id_pro, Integer quantity) {
+		for (CartDTO c : lstCart) {
+			if (c.getProduct_ID().equals(id_pro)) {
+				c.setQuantity(quantity);
+			}
 		}
 		return lstCart;
 	}

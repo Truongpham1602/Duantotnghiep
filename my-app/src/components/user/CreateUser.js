@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "../user/user.css";
 import moment from "moment";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import { storage } from "../../Firebase";
 
 import {
@@ -55,25 +56,20 @@ const CreateUser = (props) => {
   } = props;
   // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
   // const [updateData, setUpdateData] = useState(props);
+  // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
+  // const [updateData, setUpdateData] = useState(props);
+
   const [user, setUser] = useState({
     fullName: "",
     password: "",
     email: "",
     telephone: "",
     address: "",
+    roleId: 2,
+    image: "",
+    status: 1,
   });
-  const [check, setCheck] = useState({});
-
-  const arrRole = [
-    {
-      id: 2,
-      title: "Nhân viên",
-    },
-    {
-      id: 3,
-      title: "Khách hàng",
-    },
-  ];
+  const [check, setCheck] = useState({ fullName: "" });
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
@@ -84,85 +80,153 @@ const CreateUser = (props) => {
       copyUser[id] = event.target.value;
     }
 
-    setUser({
-      ...copyUser,
-    });
-  };
-  const createUser = () => {
-    try {
-      let ch0 = { ...check };
-      let validForm = true;
-      const create = async () => {
-        if (user.fullName.trim().length == 0) {
-          ch0["fullName"] = "Name not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["fullName"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (user.password.trim().length == 0) {
-          ch0["password"] = "Password not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["password"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (user.email.trim().length == 0) {
-          ch0["email"] = "Email not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["email"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (user.telephone.trim().length == 0) {
-          ch0["telephone"] = "Telephone not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["telephone"] = "";
-          setCheck({ ...ch0 });
-        }
-        if (user.address.trim().length == 0) {
-          ch0["address"] = "Address not null";
-          setCheck({ ...ch0 });
-          validForm = false;
-        } else {
-          ch0["address"] = "";
-          setCheck({ ...ch0 });
-        }
+    const handleOnchangeInput = (event, id) => {
+      const copyUser = { ...user };
+      copyUser[id] = event.target.value;
 
-        if (validForm) {
-          let res = await axios.post(User_Rest_API_URL + "/post", {
-            roleId: user.roleId,
-            fullName: user.fullName,
-            password: user.password,
-            email: user.email,
-            telephone: user.telephone,
-            address: user.address,
-            image: user.image,
-            created: user.created,
-            creator: user.creator,
-            modified: user.modified,
-            modifier: user.modifier,
-            status: user.status,
-          });
-          let data = res && res.data ? res.data : [];
-          data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
-          if (data.modified > 0) {
-            data.modified = moment(data.modified).format("DD/MM/YYYY HH:mm:ss");
+      try {
+        // console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
+        if (id != "image") {
+          let ch0 = { ...check };
+          if (copyUser[id].trim().length <= 0) {
+            ch0[id] = `${id} not null !!`;
+            setCheck({
+              ...ch0,
+            });
+          } else {
+            ch0[id] = "";
           }
-          updateData(data, `create`);
-          toggle();
-          notifySuccess("Thêm mới user thành công");
+          setCheck({
+            ...ch0,
+          });
         }
-      };
-      create();
-    } catch (error) {
-      console.log(error.message);
-    }
+        if (id == "image") {
+          if (copyUser["image"].trim().length <= 0) setImageUpload("");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (id === "image") {
+        copyUser[id] = event.target.files[0].name;
+      } else {
+        ch0["fullName"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (user.password.trim().length == 0) {
+        ch0["password"] = "Password not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["password"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (user.email.trim().length == 0) {
+        ch0["email"] = "Email not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["email"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (user.telephone.trim().length == 0) {
+        ch0["telephone"] = "Telephone not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["telephone"] = "";
+        setCheck({ ...ch0 });
+      }
+      if (user.address.trim().length == 0) {
+        ch0["address"] = "Address not null";
+        setCheck({ ...ch0 });
+        validForm = false;
+      } else {
+        ch0["address"] = "";
+        setCheck({ ...ch0 });
+      }
+      setUser({
+        ...copyUser,
+      });
+    };
+
+    const createUser = () => {
+      try {
+        let validForm = true;
+        let ch0 = { ...check };
+        const create = async () => {
+          if (
+            user.fullName?.trim().length <= 0 &&
+            user.password?.trim().length <= 0 &&
+            user.email?.trim().length <= 0 &&
+            user.telephone?.trim().length <= 0 &&
+            user.address?.trim().length <= 0
+          ) {
+            ch0["fullName"] = "Name not null";
+            ch0["password"] = "Password not null";
+            ch0["email"] = "Email not null";
+            ch0["telephone"] = "Telephone not null";
+            ch0["address"] = "Address not null";
+            setCheck({ ...ch0 });
+            return;
+          }
+          if (user.fullName.trim().length <= 0) {
+            ch0["name"] = "Name not null";
+            setCheck({ ...ch0 });
+            validForm = false;
+          }
+          if (user.password.trim().length <= 0) {
+            ch0["password"] = "Password not null";
+            setCheck({ ...ch0 });
+            validForm = false;
+          }
+          if (user.email.trim().length <= 0) {
+            ch0["email"] = "Email not null";
+            setCheck({ ...ch0 });
+            validForm = false;
+          }
+          if (user.telephone.trim().length <= 0) {
+            ch0["telephone"] = "Telephone not null";
+            setCheck({ ...ch0 });
+            validForm = false;
+          }
+          if (user.address.trim().length <= 0) {
+            ch0["address"] = "Address not null";
+            setCheck({ ...ch0 });
+            validForm = false;
+          }
+          if (validForm) {
+            let res = await axios.post(User_Rest_API_URL + "/post", {
+              roleId: user.roleId,
+              fullName: user.fullName,
+              password: user.password,
+              email: user.email,
+              telephone: user.telephone,
+              address: user.address,
+              image: user.image,
+              created: user.created,
+              creator: user.creator,
+              modified: user.modified,
+              modifier: user.modifier,
+              status: user.status,
+            });
+            let data = res && res.data ? res.data : [];
+            data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
+            if (data.modified > 0) {
+              data.modified = moment(data.modified).format(
+                "DD/MM/YYYY HH:mm:ss"
+              );
+            }
+            updateData(data, `create`);
+            toggle();
+            notifySuccess("Thêm mới user thành công");
+          }
+        };
+        create();
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
   };
 
   const toggle = () => {
@@ -173,6 +237,8 @@ const CreateUser = (props) => {
       email: "",
       telephone: "",
       address: "",
+      roleId: "",
+      image: "",
     });
     setImageUpload("");
   };
@@ -248,7 +314,10 @@ const CreateUser = (props) => {
                       setImageUpload(event.target.files[0]);
                     }}
                   />
-                  {/* {check.password && check.password.length > 0 && <p color='red'>{check.password}</p>} */}
+
+                  {check.image && check.image.length > 0 && (
+                    <p className="checkError1">{check.image}</p>
+                  )}
                 </FormGroup>
               </Col>
             </Row>

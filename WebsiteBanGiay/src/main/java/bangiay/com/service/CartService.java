@@ -17,6 +17,10 @@ public interface CartService {
 
 	CartDTO updateCart(CartDTO cartDTO);
 
+	CartDTO updateSize(Integer id, Integer size_Id);
+
+	CartDTO quantity(Integer id, Integer quantity);
+
 	void deleteById(Integer id);
 
 	Cart findByID(Integer id);
@@ -24,6 +28,10 @@ public interface CartService {
 	List<CartDTO> addToCartDTONoUser(CartDTO cartDTO);
 
 	List<CartDTO> getCartNoUser();
+
+	List<CartDTO> updateSizeNoUser(Integer id_pro, Integer size_Id);
+
+	List<CartDTO> updatequantityNoUser(Integer id_pro, Integer quantity);
 
 	List<CartDTO> findByUser_Id(Integer user_Id);
 //    List<CartDTO> getCartNoUser();

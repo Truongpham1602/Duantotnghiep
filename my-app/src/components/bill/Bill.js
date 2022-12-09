@@ -160,16 +160,16 @@ const Bill = (props) => {
     const setTotal = () => {
       setLstCart(dataCart);
       dataCart.map((item) => {
-        total += item.price;
+        total += item.price * item.quantity;
       });
       setTotalPrice(total);
     };
     dataCart && setTotal();
-    // setLstVoucher(dataVoucher);
-    // console.log(dataVoucher);
-  }, [dataCart /*, dataVoucher*/]);
+    setLstVoucher(dataVoucher);
+  }, [dataCart, dataVoucher]);
 
   useEffect(() => {
+    setImageUrls([]);
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
         let nameImg = item.name;
@@ -239,8 +239,10 @@ const Bill = (props) => {
         setVoucherSelect(res.data);
         let total = 0;
         let totalSealer = 0;
+
         dataCart.map((item) => {
-          total += item.price;
+          total += item.price * item.quantity;
+
           if (item.category_Id === res.data.categoryId) {
             totalSealer += item.price;
           }
@@ -257,8 +259,9 @@ const Bill = (props) => {
         return;
       } else {
         let total = 0;
+
         dataCart.map((item) => {
-          total += item.price;
+          total += item.price * item.quantity;
         });
         setTotalPrice(total);
         setVoucherSelect(0);

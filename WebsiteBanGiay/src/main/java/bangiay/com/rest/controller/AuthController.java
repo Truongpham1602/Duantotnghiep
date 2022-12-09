@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,12 +59,10 @@ public class AuthController {
 		return ResponseEntity.ok(new ResponseTokenDTO(token));
 	}
 
-//	@PostMapping("/getLoginUser")
-//	public String getLogin() {
-//		String user_Id = jwtUtil.getUsernameByToken(
-//				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYmMiLCJleHAiOjE2NjkxNDA1NDEsInVzZXIiOnsiaWQiOjIwOSwicm9sZUlkIjpudWxsLCJuYW1lUm9sZSI6bnVsbCwiZnVsbE5hbWUiOm51bGwsInBhc3N3b3JkIjpudWxsLCJlbWFpbCI6ImVtYWlsQDEyMyIsInRlbGVwaG9uZSI6IjkxMjM0NTY3ODkiLCJhZGRyZXNzIjpudWxsLCJpbWFnZSI6bnVsbCwiY3JlYXRlZCI6bnVsbCwiY3JlYXRvciI6bnVsbCwibW9kaWZpZWQiOm51bGwsIm1vZGlmaWVyIjpudWxsLCJzdGF0dXMiOm51bGx9LCJpYXQiOjE2NjkwNTQxNDF9.ox5ThLDRSU8GMfa82NQumLv652RMonAsL2_v44qkXGA");
-////		System.out.println(token.getToken());
-//		return user_Id;
-//	}
 
+	@PostMapping("/getLoginUser")
+	public String getLogin(@ModelAttribute ResponseTokenDTO token) {
+		String user_Id = jwtUtil.getUsernameByToken(token.getToken());
+		return user_Id;
+	}
 }
