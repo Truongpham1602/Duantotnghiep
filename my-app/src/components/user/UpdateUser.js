@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
-import '../user/user.css';
+import '../user/User.css';
 import moment from 'moment'
 import { ToastContainer, toast } from 'react-toastify';
 import {
@@ -20,7 +20,7 @@ const UpdateUser = (props) => {
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
 
     const { isUpdateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload, urlImg } = props;
-    const [user, setUser] = useState({ fullName: '', password: '', email: '', telephone: '', address: '', roleId: 1, image:'',status: 1});
+    const [user, setUser] = useState({ fullName: '', password: '', email: '', telephone: '', address: '', roleId: 1, image: '', status: 1 });
     const [check, setCheck] = useState({ fullName: '' });
 
     useEffect(() => {
@@ -34,23 +34,23 @@ const UpdateUser = (props) => {
         try {
             // console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
             if (id != 'image') {
-            let ch0 = { ...check };
-            if (copyUser[id].trim().length <= 0) {
-                ch0[id] = `${id} not null !!`
-                setCheck({
-                    ...ch0
-                })
-            }else {
+                let ch0 = { ...check };
+                if (copyUser[id].trim().length <= 0) {
+                    ch0[id] = `${id} not null !!`
+                    setCheck({
+                        ...ch0
+                    })
+                } else {
                     ch0[id] = ""
                 }
                 setCheck({
                     ...ch0
                 })
             }
-            if(id == 'image'){
-                if(copyUser['image'].trim().length <= 0)setImageUpload('')
+            if (id == 'image') {
+                if (copyUser['image'].trim().length <= 0) setImageUpload('')
             }
-        }catch (error) {
+        } catch (error) {
             console.log(error);
         }
 
@@ -73,7 +73,7 @@ const UpdateUser = (props) => {
     const notifyError = (text) => {
         toast.error(text, styleToast);
     };
-    
+
     const styleToast = {
         position: "top-right",
         autoClose: 5000,
@@ -84,12 +84,12 @@ const UpdateUser = (props) => {
         progress: undefined,
         theme: "colored",
     }
-    
+
 
 
     const arrRole = [
         {
-            id:1 , title:'Quản lý'
+            id: 1, title: 'Quản lý'
         },
         {
             id: 2, title: 'Nhân viên'
@@ -115,62 +115,62 @@ const UpdateUser = (props) => {
             let validForm = true;
             let ch0 = { ...check };
             if (user.fullName?.trim().length <= 0
-            && user.password?.trim().length <= 0
-            && user.email?.trim().length <= 0
-            && user.telephone?.trim().length <= 0
-            && user.address?.trim().length <= 0
-            
-        ) {
-            ch0["fullName"] = "Name not null"
-            ch0["password"] = "Password not null"
-            ch0["email"] = "Email not null"
-            ch0["telephone"] = "Telephone not null"
-            ch0["address"] = "Address not null"
-            setCheck({ ...ch0 })
-            return
-        }
-         if (user.fullName.trim().length <= 0) {
-            ch0["name"] = "Name not null"
-            setCheck({ ...ch0 })
-            validForm = false;
-        }
-         if (user.password.trim().length <= 0) {
-            ch0["password"] = "Password not null"
-            setCheck({ ...ch0 })
-            validForm = false;
-        }
-         if (user.email.trim().length <= 0) {
-            ch0["email"] = "Email not null"
-            setCheck({ ...ch0 })
-            validForm = false;
-        }
-         if (user.telephone.trim().length <= 0) {
-            ch0["telephone"] = "Telephone not null"
-            setCheck({ ...ch0 })
-            validForm = false;
-        }
-         if (user.address.trim().length <= 0) {
-            ch0["address"] = "Address not null"
-            setCheck({ ...ch0 })
-            validForm = false;
-        } 
+                && user.password?.trim().length <= 0
+                && user.email?.trim().length <= 0
+                && user.telephone?.trim().length <= 0
+                && user.address?.trim().length <= 0
 
-
-
-            if(validForm){
-            const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`, user)
-            let data = (res && res.data) ? res.data : [];
-            data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
-            data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
-            toggle()
-            updateData(data, 'update')
-            notifySuccess('Cập nhật thành công')
+            ) {
+                ch0["fullName"] = "Name not null"
+                ch0["password"] = "Password not null"
+                ch0["email"] = "Email not null"
+                ch0["telephone"] = "Telephone not null"
+                ch0["address"] = "Address not null"
+                setCheck({ ...ch0 })
+                return
             }
-            
-        }catch (error) {
+            if (user.fullName.trim().length <= 0) {
+                ch0["name"] = "Name not null"
+                setCheck({ ...ch0 })
+                validForm = false;
+            }
+            if (user.password.trim().length <= 0) {
+                ch0["password"] = "Password not null"
+                setCheck({ ...ch0 })
+                validForm = false;
+            }
+            if (user.email.trim().length <= 0) {
+                ch0["email"] = "Email not null"
+                setCheck({ ...ch0 })
+                validForm = false;
+            }
+            if (user.telephone.trim().length <= 0) {
+                ch0["telephone"] = "Telephone not null"
+                setCheck({ ...ch0 })
+                validForm = false;
+            }
+            if (user.address.trim().length <= 0) {
+                ch0["address"] = "Address not null"
+                setCheck({ ...ch0 })
+                validForm = false;
+            }
+
+
+
+            if (validForm) {
+                const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`, user)
+                let data = (res && res.data) ? res.data : [];
+                data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
+                data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
+                toggle()
+                updateData(data, 'update')
+                notifySuccess('Cập nhật thành công')
+            }
+
+        } catch (error) {
             console.log(error.message)
         }
-        
+
     }
 
     const toggle = () => {
@@ -288,35 +288,35 @@ const UpdateUser = (props) => {
                                                 value={user.roleId}
                                                 onChange={(event) => handleOnchangeInput(event, 'roleId')}
                                             >
-                                               {arrRole.map(item => {
-                                                        if (user.roleId === item.id) {
-                                                            return <option selected value={item.id}>{item.title}</option>
-                                                        }
-                                                        return <option value={item.id}>{item.title}</option>
-                                                    })}
+                                                {arrRole.map(item => {
+                                                    if (user.roleId === item.id) {
+                                                        return <option selected value={item.id}>{item.title}</option>
+                                                    }
+                                                    return <option value={item.id}>{item.title}</option>
+                                                })}
                                             </Input>
                                         </FormGroup>
                                     </Col>
                                     <Col md={12}>
                                         <FormGroup>
                                             <Label for="Status">
-                                            Trạng thái 
+                                                Trạng thái
                                             </Label>
                                             <select
-                                            className="form-control"
-                                            id="status"
-                                            name="status"
-                                            placeholder=""
-                                            value={user.status}
-                                            onChange={(event) => handleOnchangeInput(event, 'status')}
-                                        >
-                                            {status.map(item => {
-                                                if (user.status === item.id) {
-                                                    return <option selected value={item.id}>{item.title}</option>
-                                                }
-                                                return <option value={item.id}>{item.title}</option>
-                                            })}
-                                        </select>
+                                                className="form-control"
+                                                id="status"
+                                                name="status"
+                                                placeholder=""
+                                                value={user.status}
+                                                onChange={(event) => handleOnchangeInput(event, 'status')}
+                                            >
+                                                {status.map(item => {
+                                                    if (user.status === item.id) {
+                                                        return <option selected value={item.id}>{item.title}</option>
+                                                    }
+                                                    return <option value={item.id}>{item.title}</option>
+                                                })}
+                                            </select>
                                         </FormGroup>
                                     </Col>
                                 </Row>

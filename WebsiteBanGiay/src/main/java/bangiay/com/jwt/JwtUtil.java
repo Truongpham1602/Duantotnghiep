@@ -61,7 +61,7 @@ public class JwtUtil {
 			claims.put("isNhanVien", true);
 		}
 
-		User user = this.userDao.findByFullName(userDetails.getUsername());
+		User user = this.userDao.findUserByEmailOrTelePhone(userDetails.getUsername() , userDetails.getUsername());
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(user.getId());
 		userDTO.setEmail(user.getEmail());

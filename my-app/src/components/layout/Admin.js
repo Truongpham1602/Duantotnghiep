@@ -47,28 +47,28 @@ const Admin = () => {
                                     <div className="sb-sidenav-menu-heading">Core</div>
                                     <NavLink className="nav-link" href="#">
                                         <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
-                                        Dashboard
+                                        Bảng điều khiển
                                     </NavLink>
                                     <NavLink className="nav-link collapsed" to='/admin/user' data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                                        User
+                                        Tài khoản
                                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                                     </NavLink>
                                     <NavLink className="nav-link" to="product" activeClassName="active">
                                         <div className="sb-nav-link-icon"><i className='fas fa-store-alt-slash'></i></div>
-                                        Product
+                                        Sản phẩm
                                     </NavLink>
                                     <NavLink className="nav-link collapsed" to='/admin/category'>
                                         <div className="sb-nav-link-icon"><i className='fas fa-address-card'></i></div>
-                                        Categories
+                                        Loại sản phẩm
                                     </NavLink>
                                     <NavLink className="nav-link collapsed" to='/admin/order'>
                                         <div className="sb-nav-link-icon"><i className="fas fa-table"></i></div>
-                                        Order Status
+                                        Đơn hàng
                                     </NavLink>
                                     <NavLink className="nav-link collapsed" to='/admin/voucher'>
                                         <div className="sb-nav-link-icon"><i className='fas fa-shopping-bag'></i></div>
-                                        Voucher
+                                        Khuyến mãi
                                     </NavLink>
                                     <div className="sb-sidenav-menu-heading">Interface</div>
                                     <div className="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">

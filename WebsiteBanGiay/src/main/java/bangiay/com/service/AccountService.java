@@ -16,7 +16,7 @@ public class AccountService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userDao.findByFullName(username);
+		User user = userDao.findUserByEmailOrTelePhone(username , username);
 		if (user != null) {
 			return org.springframework.security.core.userdetails.User.withUsername(username)
 					.password(user.getPassword()).roles(user.getRoler().getRoleName()).build();
