@@ -45,6 +45,8 @@ public class AuthConfig {
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().cors();
+//		http.authorizeHttpRequests().antMatchers("/auth/login").permitAll().anyRequest().authenticated();
+		
 //
 //		http.authorizeHttpRequests().antMatchers("/auth/**", "/admin/user/**,/cart/**").permitAll().anyRequest()
 //				.authenticated().and().exceptionHandling().authenticationEntryPoint(jwtEntrypoint).and()

@@ -91,7 +91,7 @@ const Voucher = () => {
                 copyList.fill(res.data, getIndex, getIndex + 1);
                 setData(copyList)
                 console.log(copyList);
-                notifySuccess("Status change successful !!")
+                notifySuccess("Bạn đã tạm dừng thành công !!")
                 toggleNested()
                 // notifyWarning("Thay đổi trạng thái thành công !!")
             }
@@ -160,7 +160,7 @@ const Voucher = () => {
                     <div className='card-header mb-5'>
                         <NavLink className="btn btn-primary" style={{ borderRadius: 50 }}
                             onClick={() => newVoucherModal()}>
-                            Create voucher
+                            Thêm mới
                         </NavLink>
                     </div>
                     <Table className="table table-bordered">
@@ -168,22 +168,22 @@ const Voucher = () => {
                             <tr>
                                 <th scope="col">Stt</th>
                                 {/* name */}
-                                <th scope="col">Name</th>
+                                <th scope="col">Tên</th>
 
                                 {/* value */}
-                                <th scope="col">Discount Price Section(%)</th>
+                                <th scope="col">Phần giá chiết khấu(%)</th>
                                 {/* quantity */}
-                                <th scope="col">Usage turns</th>
+                                <th scope="col">Lượng sử dụng</th>
                                 {/*  */}
-                                <th scope="col">Category</th>
+                                <th scope="col">Danh mục</th>
                                 {/* effect from */}
-                                <th scope="col">Start day</th>
+                                <th scope="col">Ngày bắt đầu</th>
                                 {/* effect until */}
-                                <th scope="col">Expiration date</th>
-                                <th scope="col">Description</th>
+                                <th scope="col">Ngày hết hạn</th>
+                                <th scope="col">Mô tả</th>
                                 {/* status */}
-                                <th scope="col">Status</th>
-                                <th scope="col" colspan="2">Action</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col" colspan="2">Hoạt động</th>
                             </tr>
                         </thead>
                         <tbody style={{ verticalAlign: 'middle' }}>
@@ -197,7 +197,7 @@ const Voucher = () => {
                                         return (
                                             item.status == 1 &&
                                             <tr key={item.id}>
-                                                <th scope="row" id="">{index + 1}</th>
+                                                <th scope="row" id="">{pageNumber * 7 + index + 1}</th>
                                                 <td id="name">{item.name}</td>
                                                 <td id="value">{item.value}</td>
                                                 <td id="quantity">{item.quantity}</td>
@@ -210,7 +210,7 @@ const Voucher = () => {
                                                     <button className="btn btn-primary update update-voucher"
                                                         type='buttom' id="update" style={{ borderRadius: 50 }}
                                                         onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                        Update
+                                                        Cập nhập
                                                     </button>
                                                 </td>
                                                 <td>
@@ -218,7 +218,7 @@ const Voucher = () => {
                                                     <button className="btn btn-danger delete delete-voucher"
                                                         id="delete" style={{ borderRadius: 50 }}
                                                         onClick={() => toggleNested(item.id)}>
-                                                        Delete
+                                                        Tạm dừng
                                                     </button>
 
                                                 </td>
@@ -229,7 +229,7 @@ const Voucher = () => {
 
                                             item.status == 0 &&
                                             <tr key={item.id} style={{ color: '#c7c7c7' }}>
-                                                <th scope="row" id="">{index + 1}</th>
+                                                <th scope="row" id="">{pageNumber * 7 + index + 1}</th>
                                                 <td id="name">{item.name}</td>
                                                 <td id="value">{item.value}</td>
                                                 <td id="quantity">{item.quantity}</td>
@@ -242,7 +242,7 @@ const Voucher = () => {
                                                     <button className="btn btn-primary update update-voucher"
                                                         type='buttom' id="update" style={{ borderRadius: 50 }}
                                                         onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                        Update
+                                                        Cập nhập
                                                     </button>
                                                 </td>
                                                 <td>
@@ -250,7 +250,7 @@ const Voucher = () => {
                                                     <button className="btn btn-danger delete delete-voucher"
                                                         id="delete" style={{ borderRadius: 50 }}
                                                         onClick={() => toggleNested(item.id)}>
-                                                        Delete
+                                                        Tạm dừng
                                                     </button>
 
                                                 </td>
@@ -268,16 +268,16 @@ const Voucher = () => {
                                 toggle={toggleNested}
                             // size='lg'
                             >
-                                <ModalHeader>Delete</ModalHeader>
+                                <ModalHeader>Tạm dừng</ModalHeader>
                                 <ModalBody>
-                                    Are you sure delete?
+                                    Bạn muốn dừng voucher chứ?
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button type='button' color="primary" onClick={() => { deleteVoucher(voucherId) }}>
-                                        Delete
+                                        Tạm dừng
                                     </Button>{' '}
                                     <Button color="secondary" onClick={() => toggleNested()}>
-                                        Cancel
+                                        Hủy bỏ
                                     </Button>
                                 </ModalFooter>
                             </Modal>

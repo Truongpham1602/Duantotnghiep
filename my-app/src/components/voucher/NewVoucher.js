@@ -13,7 +13,7 @@ const VouCher_Rest_API_URL = 'http://localhost:8080/api/voucher';
 
 const NewVoucher = (props) => {
     const { isNewVoucherModal, toggleModal, updateData } = props;
-    const [voucher, setVoucher] = useState({ name: '', value: '', quantity: '', type: '', categoryId: '', effectFrom: '', effectUntil: '', status: 1 });
+    const [voucher, setVoucher] = useState({ name: '', value: '', quantity: '', type: 1, categoryId: '', effectFrom: '', effectUntil: '', status: 1 });
     const [lstcate, setLstCate] = useState([]);
     const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`);
     const [check, setCheck] = useState({ name: '' });
@@ -26,9 +26,9 @@ const NewVoucher = (props) => {
             console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
             let ch0 = { ...check };
             if (copyVoucher[id].trim().length <= 0) {
-                ch0[id] = `${id} not null !!`
+                ch0[id] = `${id} không được để trống !!`
                 if (id == "value") {
-                    ch0[id] = "Discount cannot be empty !!!"
+                    ch0[id] = "Giảm giá không được để trống !!!"
                 }
                 setCheck({
                     ...ch0
@@ -36,7 +36,7 @@ const NewVoucher = (props) => {
             } else {
                 if (id == "value" || id == "quantity") {
                     if (Number(copyVoucher[id]) <= 0) {
-                        ch0[id] = id == "value" ? "Discount cannot be less than 0 !!!" : "Quantity should not be less than 0 !!"
+                        ch0[id] = id == "value" ? "Giảm giá phải lớn hơn 0 !!!" : "Lượt sử dụng phải lớn hơn 0 !!"
                     }
                     else {
                         ch0[id] = ""
@@ -44,13 +44,13 @@ const NewVoucher = (props) => {
                 }
                 else if (id == "effectFrom") {
                     if (new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString())) {
-                        ch0["effectFrom"] = "Starting from today"
+                        ch0["effectFrom"] = "Bắt đầu từ ngày hôm nay"
                         if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) >= new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
                             ch0["effectUntil"] = ""
                         }
                     }
                     else if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) < new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
-                        ch0["effectUntil"] = "After the start date"
+                        ch0["effectUntil"] = "Sau ngày bắt đầu"
                         if (new Date(new Date(copyVoucher["effectFrom"]).toDateString()) >= new Date(new Date().toDateString())) {
                             ch0["effectFrom"] = ""
                         }
@@ -63,7 +63,7 @@ const NewVoucher = (props) => {
                 else if (id == "effectUntil") {
 
                     if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) < new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
-                        ch0["effectUntil"] = "After the start date"
+                        ch0["effectUntil"] = "Sau ngày bắt đầu"
                     }
                     else {
                         ch0[id] = ""
@@ -133,42 +133,42 @@ const NewVoucher = (props) => {
                     && voucher.effectFrom?.trim().length <= 0
                     && voucher.effectUntil?.trim().length <= 0
                 ) {
-                    ch0["name"] = "Name not null"
-                    ch0["value"] = "Discount not null"
-                    ch0["quantity"] = "Quantily not null"
-                    ch0["categoryId"] = "Need to select category"
-                    ch0["effectFrom"] = "Date not null"
-                    ch0["effectUntil"] = "Date not null"
+                    ch0["name"] = "Tên không để trống"
+                    ch0["value"] = "Giảm giá không để trống"
+                    ch0["quantity"] = "Lượt sử dụng không để trống"
+                    ch0["categoryId"] = "Cần chọn danh mục"
+                    ch0["effectFrom"] = "Bạn chưa chọn ngày"
+                    ch0["effectUntil"] = "Bạn chưa chọn ngày"
                     setCheck({ ...ch0 })
                     return
                 }
                 else if (voucher.name.trim().length <= 0) {
-                    ch0["name"] = "Name not null"
+                    ch0["name"] = "Tên không để trống"
                     setCheck({ ...ch0 })
                     return
                 }
                 else if (voucher.value.trim().length <= 0) {
-                    ch0["value"] = "Discount not null"
+                    ch0["value"] = "Giảm giá không để trống"
                     setCheck({ ...ch0 })
                     return
                 }
                 else if (voucher.quantity.trim().length <= 0) {
-                    ch0["quantity"] = "Quantily not null"
+                    ch0["quantity"] = "Lượt sử dụng không để trống"
                     setCheck({ ...ch0 })
                     return
                 }
                 else if (voucher.categoryId.trim().length <= 0) {
-                    ch0["categoryId"] = "Need to select category"
+                    ch0["categoryId"] = "Cần chọn danh mục"
                     setCheck({ ...ch0 })
                     return
                 }
                 else if (voucher.effectFrom.trim().length <= 0) {
-                    ch0["effectFrom"] = "Date not null"
+                    ch0["effectFrom"] = "Bạn chưa chọn ngày"
                     setCheck({ ...ch0 })
                     return
                 }
                 else if (voucher.effectUntil.trim().length <= 0) {
-                    ch0["effectUntil"] = "Date not null"
+                    ch0["effectUntil"] = "Bạn chưa chọn ngày"
                     setCheck({ ...ch0 })
                     return
                 }
@@ -190,7 +190,7 @@ const NewVoucher = (props) => {
                 updateData(datares, `create`)
                 console.log(datares);
                 toggle()
-                notifySuccess("Create successful")
+                notifySuccess("Thêm mới thành công")
             }
             createVou();
         } catch (error) {
@@ -213,14 +213,14 @@ const NewVoucher = (props) => {
             <ToastContainer />
             <Modal isOpen={isNewVoucherModal} toggle={() => toggle()} size='lg' centered>
                 <form className="needs-validation" onSubmit={handleSubmit(createVoucher)}>
-                    <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
+                    <ModalHeader toggle={() => toggle()}>Thêm mới</ModalHeader>
                     <ModalBody>
                         <div className="row">
                             <div className="col-10 offset-1">
 
                                 <div className="row g-3">
                                     <div className="col-sm-6">
-                                        <label className="form-label">Name</label>
+                                        <label className="form-label">Tên</label>
                                         <input
                                             type="text"
                                             className="form-control"
@@ -242,7 +242,7 @@ const NewVoucher = (props) => {
                                         )} */}
                                     </div>
                                     <div className="col-sm-6">
-                                        <label className="form-label">Discount (%)-(VND)</label>
+                                        <label className="form-label">Giảm giá (%)-(VND)</label>
                                         <input
                                             type="number"
                                             className="form-control"
@@ -267,7 +267,7 @@ const NewVoucher = (props) => {
                                         )} */}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Discount Price Section</label>
+                                        <label className="form-label">Phần giá chiết khấu</label>
                                         <select
                                             className="form-control"
                                             placeholder=""
@@ -293,7 +293,7 @@ const NewVoucher = (props) => {
                                         </select>
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Usage turns</label>
+                                        <label className="form-label">Lượt sử dụng</label>
                                         <input
                                             type="number"
                                             className="form-control"
@@ -316,7 +316,7 @@ const NewVoucher = (props) => {
                                         )} */}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Category</label>
+                                        <label className="form-label">Danh mục</label>
                                         <select
                                             className="form-control"
                                             id="name_cate"
@@ -341,7 +341,7 @@ const NewVoucher = (props) => {
                                         {check.categoryId && check.categoryId.length > 0 && <p className="checkError">{check.categoryId}</p>}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Start day</label>
+                                        <label className="form-label">Ngày bắt đầu</label>
                                         <input
                                             type="date"
                                             min="2022-01-01"
@@ -357,7 +357,7 @@ const NewVoucher = (props) => {
                                         {check.effectFrom && check.effectFrom.length > 0 && <p className="checkError">{check.effectFrom}</p>}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Expiration date</label>
+                                        <label className="form-label">Ngày kết thúc</label>
                                         <input
                                             type="date"
                                             max="2024-01-01"
@@ -373,7 +373,7 @@ const NewVoucher = (props) => {
                                         {check.effectUntil && check.effectUntil.length > 0 && <p className="checkError">{check.effectUntil}</p>}
                                     </div>
                                     <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Description</label>
+                                        <label className="form-label">Mô tả</label>
                                         <textarea
                                             type="description"
                                             className="form-control "
@@ -402,10 +402,10 @@ const NewVoucher = (props) => {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" type="submit">
-                            Add New
+                            Thêm mới
                         </Button>{' '}
                         <Button color="secondary" onClick={() => toggle()}>
-                            Cancel
+                            Hủy bỏ
                         </Button>
                     </ModalFooter>
                 </form>

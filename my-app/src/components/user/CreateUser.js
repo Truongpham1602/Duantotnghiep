@@ -1,9 +1,10 @@
 import { React, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import "../user/user.css";
+import "../user/User.css";
 import moment from "moment";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import { storage } from "../../Firebase";
 
 import {
@@ -68,59 +69,51 @@ const CreateUser = (props) => {
   });
   const [check, setCheck] = useState({ fullName: "" });
 
-  const arrRole = [
-    {
-      id: 2,
-      title: "Nhân viên",
-    },
-    {
-      id: 3,
-      title: "Khách hàng",
-    },
-  ];
-
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
     copyUser[id] = event.target.value;
 
-    try {
-      // console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
-      if (id != "image") {
-        let ch0 = { ...check };
-        if (copyUser[id].trim().length <= 0) {
-          ch0[id] = `${id} not null !!`;
+    const arrRole = [
+      {
+        id: 2,
+        title: "Nhân viên",
+      },
+      {
+        id: 3,
+        title: "Khách hàng",
+      },
+    ];
+
+    const handleOnchangeInput = (event, id) => {
+      const copyUser = { ...user };
+      copyUser[id] = event.target.value;
+
+      try {
+        // console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
+        if (id != "image") {
+          let ch0 = { ...check };
+          if (copyUser[id].trim().length <= 0) {
+            ch0[id] = `${id} not null !!`;
+            setCheck({
+              ...ch0,
+            });
+          } else {
+            ch0[id] = "";
+          }
           setCheck({
             ...ch0,
           });
-        } else {
-          ch0[id] = "";
         }
-        setCheck({
-          ...ch0,
+
+        if (id === "image") {
+          copyUser[id] = event.target.files[0].name;
+        } else {
+          copyUser[id] = event.target.value;
+        }
+        setUser({
+          ...copyUser,
         });
-      }
-      if (id == "image") {
-        if (copyUser["image"].trim().length <= 0) setImageUpload("");
-      }
-    } catch (error) {
-      console.log(error);
-    }
 
-    if (id === "image") {
-      copyUser[id] = event.target.files[0].name;
-    } else {
-      copyUser[id] = event.target.value;
-    }
-    setUser({
-      ...copyUser,
-    });
-  };
-
-  const createUser = () => {
-    try {
-      let validForm = true;
-      let ch0 = { ...check };
-      const create = async () => {
         if (
           user.fullName?.trim().length <= 0 &&
           user.password?.trim().length <= 0 &&
@@ -162,7 +155,7 @@ const CreateUser = (props) => {
           validForm = false;
         }
         if (validForm) {
-          let res = await axios.post(User_Rest_API_URL + "/post", {
+          let res = axios.post(User_Rest_API_URL + "/post", {
             roleId: user.roleId,
             fullName: user.fullName,
             password: user.password,
@@ -185,11 +178,11 @@ const CreateUser = (props) => {
           toggle();
           notifySuccess("Thêm mới user thành công");
         }
-      };
-      create();
-    } catch (error) {
-      console.log(error.message);
-    }
+        create();
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
   };
 
   const toggle = () => {
@@ -380,5 +373,4 @@ const CreateUser = (props) => {
     </div>
   );
 };
-
 export default CreateUser;

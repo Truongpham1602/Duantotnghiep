@@ -38,7 +38,7 @@ public class VoucherServiceImpl implements VoucherService {
 	public VoucherDTO create(VoucherDTO voucherDTO) {
 		Voucher voucher = modelMapper.map(voucherDTO, Voucher.class);
 		voucher.setCategory(this.cateDao.findById(voucherDTO.getCategoryId()).get());
-		voucher.setStatus(voucherDTO.getStatus());
+//		voucher.setStatus(voucherDTO.getStatus());
 		this.voucherDAO.save(voucher);
 		voucherDTO.setId(voucher.getId());
 		voucherDTO.setName_cate(voucher.getCategory().getNamecate());

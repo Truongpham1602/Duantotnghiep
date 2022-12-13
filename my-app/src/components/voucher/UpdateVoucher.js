@@ -57,9 +57,9 @@ const UpdateVoucher = (props) => {
 
             let ch1 = { ...check };
             if (copyVoucher[id].trim().length <= 0) {
-                ch1[id] = `${id} not null !!`
+                ch1[id] = `${id} không được để trống !!`
                 if (id == "value") {
-                    ch1[id] = "Discount cannot be empty !!"
+                    ch1[id] = "Giảm giá không được để trống !!"
                 }
                 setCheck({
                     ...ch1
@@ -67,19 +67,19 @@ const UpdateVoucher = (props) => {
             } else {
                 if (id == "value" || id == "quantity") {
                     if (Number(copyVoucher[id]) <= 0) {
-                        ch1[id] = id == "value" ? "Discount cannot be less than 0 !!" : "Quantity should not be less than 0 !!"
+                        ch1[id] = id == "value" ? "Giảm giá phải lớn hơn 0 !!" : "Lượt sử dụng phải lớn hơn 0 !!"
                     } else {
                         ch1[id] = ""
                     }
                 } else if (id == "effectFrom") {
                     if (new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString())) {
-                        ch1["effectFrom"] = "Starting from today"
+                        ch1["effectFrom"] = "Bắt đầu từ ngày hôm nay"
                         if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) >= new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
                             ch1["effectUntil"] = ""
                         }
                     }
                     else if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) < new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
-                        ch1["effectUntil"] = "After the start date"
+                        ch1["effectUntil"] = "Sau ngày bắt đầu"
                         if (new Date(new Date(copyVoucher["effectFrom"]).toDateString()) >= new Date(new Date().toDateString())) {
                             ch1["effectFrom"] = ""
                         }
@@ -90,7 +90,7 @@ const UpdateVoucher = (props) => {
                 }
                 else if (id == "effectUntil") {
                     if (new Date(new Date(copyVoucher["effectUntil"]).toDateString()) < new Date(new Date(copyVoucher["effectFrom"]).toDateString())) {
-                        ch1["effectUntil"] = "After the start date"
+                        ch1["effectUntil"] = "Sau ngày bắt đầu"
                     }
                     else {
                         ch1[id] = ""
@@ -104,7 +104,7 @@ const UpdateVoucher = (props) => {
             }
         } catch (error) {
             let ch1 = { ...check };
-            ch1[id] = `${id} cannot be left blank !!`
+            ch1[id] = `${id} không được để trống !!`
             console.log(error);
             setCheck({
                 ...ch1
@@ -144,38 +144,39 @@ const UpdateVoucher = (props) => {
                 && quantity.trim().length <= 0
                 && voucher.effectFrom?.trim().length <= 0
                 && voucher.effectUntil?.trim().length <= 0) {
-                ch1["name"] = "Name not null"
-                ch1["value"] = "Discount not null"
-                ch1["quantity"] = "Quantity not null"
-                ch1["effectFrom"] = "Date not null"
-                ch1["effectUntil"] = "Date not null"
+                ch1["name"] = "Tên không để trống"
+                ch1["value"] = "Giảm giá không để trống"
+                ch1["quantity"] = "Lượt sử dụng không để trống"
+                ch1["effectFrom"] = "Bạn chưa chọn ngày"
+                ch1["effectUntil"] = "Bạn chưa chọn ngày"
                 setCheck({ ...ch1 })
                 return
             } else if (voucher.name?.trim().length <= 0) {
-                ch1["name"] = "Name not null"
+                ch1["name"] = "Tên không để trống"
                 setCheck({ ...ch1 })
                 return
             }
             else if (value.trim().length <= 0) {
-                ch1["value"] = "Discount not null"
+                ch1["value"] = "Giảm giá không để trống"
                 setCheck({ ...ch1 })
                 return
             }
             else if (quantity.trim().length <= 0) {
-                ch1["quantity"] = "Quantity not null"
+                ch1["quantity"] = "Lượt sử dụng không để trống"
                 setCheck({ ...ch1 })
                 return
             }
             else if (voucher.effectFrom?.trim().length <= 0) {
-                ch1["effectFrom"] = "Date not null"
+                ch1["effectFrom"] = "Bạn chưa chọn ngày"
                 setCheck({ ...ch1 })
                 return
             }
             else if (voucher.effectUntil?.trim().length <= 0) {
-                ch1["effectUntil"] = "Date not null"
+                ch1["effectUntil"] = "Bạn chưa chọn ngày"
                 setCheck({ ...ch1 })
                 return
-            } else if (
+            }
+            else if (
                 check.effectUntil.trim().length > 0
                 || check.effectFrom.trim().length > 0
                 || check.name.trim().length > 0
@@ -187,11 +188,11 @@ const UpdateVoucher = (props) => {
 
             const res = await axios.put(`http://localhost:8080/api/voucher/update/${voucher.id}`, voucher)
             let data = (res && res.data) ? res.data : [];
-            data.effectFrom = moment(data.effectFrom).format('DD/MM/YYYY HH:mm:ss');
-            data.effectUntil = moment(data.effectUntil).format('DD/MM/YYYY HH:mm:ss');
+            // data.effectFrom = moment(data.effectFrom).format('DD/MM/YYYY HH:mm:ss');
+            // data.effectUntil = moment(data.effectUntil).format('DD/MM/YYYY HH:mm:ss');
             toggle()
             updateData(data, 'update')
-            notifySuccess("Update successful")
+            notifySuccess("Cập nhập thành công")
         } catch (error) {
             console.log(error.message);
         }
@@ -201,19 +202,20 @@ const UpdateVoucher = (props) => {
     const toggle = () => {
         toggleModal()
         setVoucher({})
+        setCheck({})
     }
     return (
         <div>
             <ToastContainer />
             <Modal isOpen={isupdatevoucherModal} toggle={() => toggle()} size='lg' centered>
-                <ModalHeader toggle={() => toggle()}>Update Voucher</ModalHeader>
+                <ModalHeader toggle={() => toggle()}>Cập Nhập</ModalHeader>
                 <ModalBody>
                     <div className="row">
                         <div className="col-10 offset-1">
                             <form className="needs-validation">
                                 <div className="row g-3">
                                     <div className="col-sm-6">
-                                        <label className="form-label">Name</label>
+                                        <label className="form-label">Tên</label>
                                         {/* không cho người dùng nhập thì dùng readOnly */}
                                         <input type="text"
                                             className="form-control"
@@ -231,7 +233,7 @@ const UpdateVoucher = (props) => {
                                     )} */}
                                     </div>
                                     <div className="col-sm-6">
-                                        <label className="form-label">Discount Price Section</label>
+                                        <label className="form-label">Phần giá chiết khấu</label>
                                         <input
                                             type="number"
                                             placeholder=""
@@ -251,7 +253,7 @@ const UpdateVoucher = (props) => {
                                     )} */}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Usage turns</label>
+                                        <label className="form-label">Lượt sử dụng</label>
                                         <input
                                             type="number"
                                             className="form-control"
@@ -274,7 +276,7 @@ const UpdateVoucher = (props) => {
                                     )} */}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Status</label>
+                                        <label className="form-label">Trạng thái</label>
                                         <select
                                             className="form-control"
                                             id="status"
@@ -307,7 +309,7 @@ const UpdateVoucher = (props) => {
                                         </select>
                                     </div>
                                     <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Category</label>
+                                        <label className="form-label">Danh mục</label>
                                         <select
                                             className="form-control"
                                             id="categoryId"
@@ -335,7 +337,7 @@ const UpdateVoucher = (props) => {
                                         </select>
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Start day</label>
+                                        <label className="form-label">Ngày bắt đầu</label>
                                         <input
                                             type="date"
                                             min="2022-01-01"
@@ -351,7 +353,7 @@ const UpdateVoucher = (props) => {
                                         {check.effectFrom && check.effectFrom.length > 0 && <p className="checkError">{check.effectFrom}</p>}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Expiration date</label>
+                                        <label className="form-label">Ngày kết thúc</label>
                                         <input
                                             type="date"
                                             // min="2022-01-01"
@@ -367,7 +369,7 @@ const UpdateVoucher = (props) => {
                                         {check.effectUntil && check.effectUntil.length > 0 && <p className="checkError">{check.effectUntil}</p>}
                                     </div>
                                     <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Description</label>
+                                        <label className="form-label">Mô tả</label>
                                         <textarea
                                             type="description"
                                             // min="2022-01-01"
@@ -396,10 +398,10 @@ const UpdateVoucher = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={(e) => { updateVoucher(); }}>
-                        Save
+                        Cập nhập
                     </Button>{' '}
                     <Button color="secondary" onClick={toggleModal}>
-                        Cancel
+                        Hủy bỏ
                     </Button>
                 </ModalFooter>
             </Modal>
