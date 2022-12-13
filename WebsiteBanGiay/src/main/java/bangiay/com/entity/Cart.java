@@ -26,14 +26,8 @@ public class Cart {
 	@Column(name = "CREATED")
 	private java.sql.Timestamp created;
 
-	@Column(name = "CREATOR")
-	private String creator;
-
 	@Column(name = "MODIFIED")
 	private java.sql.Timestamp modified;
-
-	@Column(name = "MODIFIER")
-	private String modifier;
 
 	@Column(name = "STATUS")
 	private Integer status;

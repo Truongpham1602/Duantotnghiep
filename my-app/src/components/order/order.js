@@ -143,10 +143,10 @@ const Order = (props) => {
                         <th>Address</th>
                         <th>Created</th>
                         <th>Description</th>
-                        <th>Un Payment</th>
-                        <th>Payment</th>
-                        <th>Delivered</th>
-                        <th>Cancel</th>
+                        <th>Order Placed</th>
+                        <th>Order Paid</th>
+                        <th>Completed</th>
+                        <th>Canceled</th>
                     </tr>
                 </thead>
                 <tbody style={{ verticalAlign: 'middle' }}>

@@ -1,59 +1,64 @@
 package bangiay.com.entity;
 
-import lombok.Data;
-
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.Data;
 
 @Entity
 @Data
 @Table(name = "user")
 public class User {
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 
-    @ManyToOne
-   	@JoinColumn(name="ROLER_ID")
-    private Role roler;
+	@ManyToOne
+	@JoinColumn(name = "ROLER_ID")
+	private Role roler;
 
-    @Column(name = "FullNAME")
-    private String fullName;
+	@Column(name = "FullNAME")
+	private String fullName;
 
-    @Column(name = "PASSWORD")
-    private String password;
+	@Column(name = "PASSWORD")
+	private String password;
 
-    @Column(name = "EMAIL")
-    private String email;
+	@Column(name = "EMAIL")
+	private String email;
 
-    @Column(name = "TELEPHONE")
-    private String telephone;
+	@Column(name = "TELEPHONE")
+	private String telephone;
 
-    @Column(name = "ADDRESS")
-    private String address;
+	@Column(name = "ADDRESS")
+	private String address;
 
-    @Column(name = "Image")
-    private String image;
+	@Column(name = "CREATED")
+	private java.sql.Timestamp created;
 
-    @Column(name = "CREATED")
-    private java.sql.Timestamp created;
+	@Column(name = "CREATOR")
+	private String creator;
 
-    @Column(name = "CREATOR")
-    private String creator;
+	@Column(name = "MODIFIED")
+	private java.sql.Timestamp modified;
 
-    @Column(name = "MODIFIED")
-    private java.sql.Timestamp modified;
+	@Column(name = "MODIFIER")
+	private String modifier;
 
-    @Column(name = "MODIFIER")
-    private String modifier;
+	@Column(name = "STATUS")
+	private Integer status;
 
-    @Column(name = "STATUS")
-    private Integer status;
-
-
-    @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
-    private List<Bill> billList;
-
+	@OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
+	private List<Bill> billList;
 
 }

@@ -38,4 +38,7 @@ public class Category {
 
 	@Column(name = "MODIFIER")
 	private String modifier;
+
+	@Column(name = "STATUS")
+	private Integer status;
 }
