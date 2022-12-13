@@ -1,632 +1,940 @@
-import { React, useState, useEffect } from 'react';
-import axios from 'axios';
-import moment from 'moment'
-import useCallGetAPI from '../../customHook/CallGetApi';
+import { React, useState, useEffect } from "react";
+import axios from "axios";
+import moment from "moment";
+import useCallGetAPI from "../../customHook/CallGetApi";
 import { useForm } from "react-hook-form";
 import {
-    Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label,
-    Row, Col, Form, Input
-} from 'reactstrap';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  FormGroup,
+  Label,
+  Row,
+  Col,
+  Form,
+  Input,
+} from "reactstrap";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const Product_Rest_API_URL = 'http://localhost:8080/admin/product';
+const Product_Rest_API_URL = "http://localhost:8080/admin/product";
 
 const CreateProduct = (props) => {
+  const {
+    isCreateModal,
+    toggleModal,
+    updateData,
+    handleImages,
+    handleUpdateImages,
+    imageFiles,
+    setImageFiles,
+  } = props;
+  const [check, setCheck] = useState({});
+  const sizeCheck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const size = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
+  const [lstsizeSelect, setLstSizeSelect] = useState([]);
+  const [product, setProduct] = useState({
+    name: "",
+    color: "",
+    price: "",
+    quantity: "",
+    namecate: "",
+    sizes: "",
+    description: "",
+    medias: "",
+  });
+  const [lstSize, setLstSize] = useState([]);
+  let [sizeSelect, setSizeSelect] = useState(0);
+  const [nestedModal, setNestedModal] = useState(false);
+  const [closeAll, setCloseAll] = useState(false);
+  const { data: cates } = useCallGetAPI(
+    `http://localhost:8080/api/category/get`
+  );
+  const [lstCate, setLstCate] = useState([]);
+  const [cate, setCate] = useState();
 
-    const { isCreateModal, toggleModal, updateData, handleImages, handleUpdateImages, imageFiles, setImageFiles } = props;
-    const sizeCheck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-    const size = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
-    const [lstsizeSelect, setLstSizeSelect] = useState([]);
-    const [product, setProduct] = useState({});
-    const [lstSize, setLstSize] = useState([]);
-    let [sizeSelect, setSizeSelect] = useState(0);
-    const [nestedModal, setNestedModal] = useState(false);
-    const [closeAll, setCloseAll] = useState(false);
-    const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`);
-    const [lstCate, setLstCate] = useState([]);
-    const [cate, setCate] = useState()
-
-    const handleOnchangeinput = (event, id) => {
-        let copyProduct = { ...product };
-        copyProduct[id] = event.target.value;
-        setProduct({
-            ...copyProduct
-        })
-    }
-
-    useEffect(() => {
-        setLstCate(cates)
-    }, [cates])
-
-    const notifySuccess = (text) => {
-        toast.success(text, styleToast)
-    };
-    const notifyWarning = (text) => {
-        toast.warning(text, styleToast);
-    };
-    const notifyError = (text) => {
-        toast.error(text, styleToast);
-    };
-
-    const styleToast = {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-    }
-
-    const createProduct = (data) => {
-        try {
-            handleUpdateImages()
-            if (product.name.trim().length <= 0 || product.color.trim().length <= 0
-                || product.price.trim().length <= 0 || product.quantity.trim().length <= 0
-            ) {
-                notifyWarning("Cần nhập thông tin!")
-                return
-            } else if (imageFiles.length <= 0) {
-                notifyWarning("Chưa chọn ảnh!")
-                return
-            } else if (imageFiles.length > 5) {
-                notifyWarning("Không chọn quá 5 ảnh!")
-                return
-            } else if (sizeSelect <= 0) {
-                notifyWarning("Chưa chọn size!")
-                return
-            }
-            const nums = [
-                data.size1,
-                data.size2,
-                data.size3,
-                data.size4,
-                data.size5,
-                data.size6,
-                data.size7,
-                data.size8,
-                data.size9,
-                data.size10,
-            ];
-            const newNums = nums.slice(0, sizeSelect);
-            const hasDuplicate = newNums.some(x => newNums.indexOf(x) !== newNums.lastIndexOf(x));
-            if (hasDuplicate) {
-                notifyWarning("Size bị trùng, vui lòng chọn lại!");
-                return
-            } else {
-                const createPro = async () => {
-                    let res = await axios.post(Product_Rest_API_URL + '/post', {
-                        categoryId: product.categoryId,
-                        color: product.color,
-                        name: product.name,
-                        description: product.description,
-                        code: product.code,
-                        price: product.price,
-                        quantity: product.quantity
-                    })
-                    let datares = (res && res.data) ? res.data : []
-                    datares.created = moment(datares.created).format('DD/MM/YYYY HH:mm:ss');
-                    if (datares.modified > 0) {
-                        datares.modified = moment(datares.modified).format('DD/MM/YYYY HH:mm:ss');
-                    }
-                    let image = [
-                        {
-                            productId: res.data.id,
-                            url: imageFiles[0]?.name,
-                            type: 'image'
-                        },
-                        {
-                            productId: res.data.id,
-                            url: imageFiles[1]?.name,
-                            type: 'image'
-                        },
-                        {
-                            productId: res.data.id,
-                            url: imageFiles[2]?.name,
-                            type: 'image'
-                        },
-                        {
-                            productId: res.data.id,
-                            url: imageFiles[3]?.name,
-                            type: 'image'
-                        },
-                        {
-                            productId: res.data.id,
-                            url: imageFiles[4]?.name,
-                            type: 'image'
-                        }
-                    ].slice(0, imageFiles.length)
-                    let datasize = [
-                        {
-                            productId: res.data.id,
-                            size: data.size1,
-                            quantity: data.quantity1
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size2,
-                            quantity: data.quantity2
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size3,
-                            quantity: data.quantity3
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size4,
-                            quantity: data.quantity4
-                        }, {
-                            productId: res.data.id,
-                            size: data.size5,
-                            quantity: data.quantity5
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size6,
-                            quantity: data.quantity6
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size7,
-                            quantity: data.quantity7
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size8,
-                            quantity: data.quantity8
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size9,
-                            quantity: data.quantity9
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size10,
-                            quantity: data.quantity10
-                        },
-                        {
-                            productId: res.data.id,
-                            size: data.size11,
-                            quantity: data.quantity11
-                        }
-                    ].slice(0, sizeSelect)
-                    let resImg = await axios.post(`http://localhost:8080/api/media/create`, image)
-                    await axios.post(`http://localhost:8080/api/size/postList`, datasize)
-                    updateData(datares, resImg.data[0].url, `create`)
-                    setSizeSelect()
-                    toggle()
-                    notifySuccess("Thêm thành công")
-                }
-                createPro()
-            }
-        } catch (error) {
-            notifyWarning("Cần nhập thông tin")
-            console.log(error)
+  const handleOnchangeinput = (event, id) => {
+    let gia = /(([0-9]{6})\b)/g;
+    let soluong = /(([0-9]{1})\b)/g;
+    let chu = /[a-zA-Z]/g;
+    let copyProduct = { ...product };
+    copyProduct[id] = event.target.value;
+    try {
+      let ch0 = { ...check };
+      if (id == "name") {
+        if (chu.test(event.target.value) == false) {
+          ch0["name"] = "Sai định dạng";
+        } else {
+          ch0[id] = "";
         }
-
-    }
-
-    const toggleNested = () => {
-        setNestedModal(!nestedModal);
-        setCloseAll(false);
-        setCate()
-    };
-    const toggleAll = () => {
-        setNestedModal(!nestedModal);
-        setCloseAll(false);
-        setCate()
-    };
-
-    const toggle = () => {
-        toggleModal()
-        setProduct({})
-        setLstSizeSelect([])
-        setImageFiles([])
-    }
-
-    const {
-        register,
-        handleSubmit
-    } = useForm();
-
-    const { ref } = register;
-
-
-
-    const checkSize = (e) => {
-        let Select = e.target.value
-        setSizeSelect(Select)
-        setLstSizeSelect([])
-        for (let i = 1; i <= Select; i++) {
-            setLstSizeSelect((prev) => [...prev, i])
+        setCheck({
+          ...ch0,
+        });
+      } else {
+        if (id == "color") {
+          if (chu.test(event.target.value) == false) {
+            ch0["color"] = "Sai định dạng";
+          } else {
+            ch0[id] = "";
+          }
+        } else if (id == "price") {
+          if (gia.test(event.target.value) == false) {
+            ch0["price"] = "giá sản phẩm phải là số";
+          } else {
+            ch0["price"] = "";
+          }
+        } else if (id == "quantity") {
+          if (soluong.test(event.target.value) == false) {
+            ch0["quantity"] = "Số lượng sản phẩm phải là số";
+          } else {
+            ch0["quantity"] = "";
+          }
+        } else if (id == "namecate") {
+          if (copyProduct[id] == 0) {
+            ch0["namecate"] = "Tên danh mục không được để trống";
+          } else {
+            ch0["namecate"] = "";
+          }
+        } else if (id == "sizes") {
+          if (copyProduct[id] == 0) {
+            ch0["sizes"] = "Số lượng kích cỡ không được để trống";
+          } else {
+            ch0["sizes"] = "";
+          }
+        } else if (id == "medias") {
+          if (copyProduct[id] == 0) {
+            ch0["medias"] = "Ảnh không được để trống";
+          } else {
+            ch0["medias"] = "";
+          }
+        } else {
+          ch0[id] = "";
         }
+        setCheck({
+          ...ch0,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
+    setProduct({
+      ...copyProduct,
+    });
+  };
 
-    const createCate = async () => {
-        try {
-            let res = await axios.post('http://localhost:8080/api/category/create', { namecate: cate })
-            let data = (res && res.data) ? res.data : {}
-            let copydata = lstCate
-            if (res.data) {
-                copydata.unshift(data);
-                setLstCate(copydata);
-                notifySuccess('Thêm mới cate thành công')
-                toggleNested()
-            }
-        } catch (error) {
-            notifyError('Thêm mới thất bại!')
-            console.log(error);
-        }
+  useEffect(() => {
+    setLstCate(cates);
+  }, [cates]);
+
+  const notifySuccess = (text) => {
+    toast.success(text, styleToast);
+  };
+  const notifyWarning = (text) => {
+    toast.warning(text, styleToast);
+  };
+  const notifyError = (text) => {
+    toast.error(text, styleToast);
+  };
+
+  const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  };
+
+  const createProduct = (data) => {
+    try {
+      let ch0 = { ...check };
+      if (
+        product.name.trim().length <= 0 ||
+        product.color.trim().length <= 0 ||
+        product.price.trim().length <= 0 ||
+        product.quantity.trim().length <= 0 ||
+        product.categoryId.length <= 0 ||
+        data.size1.length <= 0
+      ) {
+        ch0["name"] = "Tên không được để trống";
+        ch0["color"] = "Màu sắc không được để trống";
+        ch0["price"] = "Giá không được để trống";
+        ch0["quantity"] = "Số lượng sản phẩm không được để trống";
+        ch0["categoryId"] = "Hãy chọn danh mục";
+        ch0["sizes"] = "Hãy chọn số lượng cỡ giày";
+        ch0["medias"] = "Hãy chọn ảnh";
+        setCheck({ ...ch0 });
+        return;
+      } else if (product.name.trim().length == 0) {
+        ch0["name"] = "Tên không được để trống";
+        setCheck({ ...ch0 });
+        return;
+      } else if (product.color.trim().length == 0) {
+        ch0["color"] = "Màu sắc không được để trống";
+        setCheck({ ...ch0 });
+        return;
+      } else if (product.price.trim().length == 0) {
+        ch0["price"] = "Giá không được để trống";
+        setCheck({ ...ch0 });
+        return;
+      } else if (product.quantity.trim().length == 0) {
+        ch0["quantity"] = "Số lượng không được để trống";
+        setCheck({ ...ch0 });
+        return;
+      } else if (false) {
+      } else if (
+        check.name.trim().length > 0 ||
+        check.color.trim().length > 0 ||
+        check.price.trim().length > 0 ||
+        check.quantity.trim().length > 0
+      ) {
+        return;
+      }
+      const nums = [
+        data.size1,
+        data.size2,
+        data.size3,
+        data.size4,
+        data.size5,
+        data.size6,
+        data.size7,
+        data.size8,
+        data.size9,
+        data.size10,
+      ];
+      const newNums = nums.slice(0, sizeSelect);
+      const hasDuplicate = newNums.some(
+        (x) => newNums.indexOf(x) !== newNums.lastIndexOf(x)
+      );
+      if (hasDuplicate) {
+        notifyWarning("Size bị trùng, vui lòng chọn lại!");
+        return;
+      } else {
+        const createPro = async () => {
+          let res = await axios.post(Product_Rest_API_URL + "/post", {
+            categoryId: product.categoryId,
+            color: product.color,
+            name: product.name,
+            namecate: product.namecate,
+            sizes: product.sizes,
+            medias: product.medias,
+            description: product.description,
+            code: product.code,
+            price: product.price,
+            quantity: product.quantity,
+          });
+          let datares = res && res.data ? res.data : [];
+          datares.created = moment(datares.created).format(
+            "DD/MM/YYYY HH:mm:ss"
+          );
+          if (datares.modified > 0) {
+            datares.modified = moment(datares.modified).format(
+              "DD/MM/YYYY HH:mm:ss"
+            );
+          }
+          let image = [
+            {
+              productId: res.data.id,
+              url: imageFiles[0]?.name,
+              type: "image",
+            },
+            {
+              productId: res.data.id,
+              url: imageFiles[1]?.name,
+              type: "image",
+            },
+            {
+              productId: res.data.id,
+              url: imageFiles[2]?.name,
+              type: "image",
+            },
+            {
+              productId: res.data.id,
+              url: imageFiles[3]?.name,
+              type: "image",
+            },
+            {
+              productId: res.data.id,
+              url: imageFiles[4]?.name,
+              type: "image",
+            },
+          ].slice(0, imageFiles.length);
+          let datasize = [
+            {
+              productId: res.data.id,
+              size: data.size1,
+              quantity: data.quantity1,
+            },
+            {
+              productId: res.data.id,
+              size: data.size2,
+              quantity: data.quantity2,
+            },
+            {
+              productId: res.data.id,
+              size: data.size3,
+              quantity: data.quantity3,
+            },
+            {
+              productId: res.data.id,
+              size: data.size4,
+              quantity: data.quantity4,
+            },
+            {
+              productId: res.data.id,
+              size: data.size5,
+              quantity: data.quantity5,
+            },
+            {
+              productId: res.data.id,
+              size: data.size6,
+              quantity: data.quantity6,
+            },
+            {
+              productId: res.data.id,
+              size: data.size7,
+              quantity: data.quantity7,
+            },
+            {
+              productId: res.data.id,
+              size: data.size8,
+              quantity: data.quantity8,
+            },
+            {
+              productId: res.data.id,
+              size: data.size9,
+              quantity: data.quantity9,
+            },
+            {
+              productId: res.data.id,
+              size: data.size10,
+              quantity: data.quantity10,
+            },
+            {
+              productId: res.data.id,
+              size: data.size11,
+              quantity: data.quantity11,
+            },
+          ].slice(0, sizeSelect);
+          let resImg = await axios.post(
+            `http://localhost:8080/api/media/create`,
+            image
+          );
+          await axios.post(`http://localhost:8080/api/size/postList`, datasize);
+          updateData(datares, resImg.data[0].url, `create`);
+          setSizeSelect();
+          toggle();
+          notifySuccess("Thêm thành công");
+        };
+        createPro();
+      }
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    return (
-        <>
-            <ToastContainer />
-            <Modal isOpen={isCreateModal} toggle={() => toggle()}
-                size='xl'
-                centered
-            >
-                <Form onSubmit={handleSubmit(createProduct)} innerRef={ref}>
-                    <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
-                    <ModalBody>
-                        <Row>
-                            <Col md={7}>
-                                <Row>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <Label for="name">
-                                                Name
-                                            </Label>
-                                            <div>
-                                                <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                    id="name"
-                                                    name="name"
-                                                    placeholder=""
-                                                    type="text"
-                                                    value={product.name}
-                                                    onChange={(event) => handleOnchangeinput(event, 'name')}
-                                                />
-                                            </div>
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <Label for="color">
-                                                Color
-                                            </Label>
-                                            <div>
-                                                <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                    id="color"
-                                                    name="color"
-                                                    placeholder=""
-                                                    type="text"
-                                                    value={product.color}
-                                                    onChange={(event) => handleOnchangeinput(event, 'color')}
-                                                />
-                                            </div>
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <Label for="price">
-                                                Price
-                                            </Label>
-                                            <div>
-                                                <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                    id="price"
-                                                    name="price"
-                                                    placeholder=""
-                                                    type="text"
-                                                    value={product.price}
-                                                    onChange={(event) => handleOnchangeinput(event, 'price')}
-                                                />
-                                            </div>
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <Label for="quantity">
-                                                Quantity
-                                            </Label>
-                                            <div>
-                                                <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                    id="quantity"
-                                                    name="quantity"
-                                                    placeholder=""
-                                                    type="text"
-                                                    value={product.quantity}
-                                                    onChange={(event) => handleOnchangeinput(event, 'quantity')}
-                                                />
-                                            </div>
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={6}>
-                                        <Row>
-                                            <Col md={10}>
-                                                <FormGroup>
-                                                    <Label for="category">
-                                                        Category
-                                                    </Label>
-                                                    <div>
-                                                        <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                            id="category"
-                                                            name="category"
-                                                            placeholder=""
-                                                            type="select"
-                                                            onChange={(event) => handleOnchangeinput(event, 'categoryId')}
-                                                        >
-                                                            {lstCate.map((item, index) => {
-                                                                return (
-                                                                    <option key={index} value={item.id}>
-                                                                        {item.namecate}
-                                                                    </option>
-                                                                )
-                                                            })}
-                                                        </select>
-                                                    </div>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col md={2} style={{ padding: '0px 12px 0px 0px', marginLeft: '0%' }}>
-                                                <Label for="category">
-                                                    add
-                                                </Label>
-                                                <button type='button' style={{ border: '1px solid', width: '100%', borderRadius: '15px' }} onClick={toggleNested}>
-                                                    +
-                                                </button>
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                    <Col md={6}>
-                                        <Row>
-                                            <Col md={12}>
-                                                <FormGroup>
-                                                    <Label for="size">
-                                                        Số lượng size
-                                                    </Label>
-                                                    <div>
-                                                        <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                            id="size"
-                                                            name="size"
-                                                            placeholder=""
-                                                            type="select"
-                                                            onChange={(e) => { checkSize(e) }}
-                                                        >
-                                                            <option value=''>
-                                                                Chọn size
-                                                            </option>
-                                                            {
-                                                                sizeCheck.map((item, index) => {
-                                                                    return (
-                                                                        <option value={item}>
-                                                                            {item}
-                                                                        </option>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                    <Col md={12}>
-                                        <FormGroup>
-                                            <Label for="description">
-                                                Description
-                                            </Label>
-                                            <div>
-                                                <textarea style={{ border: '1px solid', width: '100%', borderRadius: '5px', height: '100px' }}
-                                                    id="description"
-                                                    name="description"
-                                                    onChange={(event) => handleOnchangeinput(event, 'description')}
-                                                />
-                                            </div>
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                {lstsizeSelect.length >= 1 &&
-                                    <Row>
-                                        {lstsizeSelect.map((item) => {
-                                            return (
-                                                <Col md={6}>
-                                                    <Row>
-                                                        <Col md={4}>
-                                                            <FormGroup>
-                                                                <Label for="description">
-                                                                    Size
-                                                                </Label>
-                                                                <div>
-                                                                    <select style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                                        id="size"
-                                                                        name="size"
-                                                                        placeholder=""
-                                                                        type="select"
-                                                                        {...register(`size${item}`)}
-                                                                    >
-                                                                        {
-                                                                            size.map((size) => {
-                                                                                return (
-                                                                                    <option value={size}>
-                                                                                        {size}
-                                                                                    </option>
-                                                                                )
-                                                                            })
-                                                                        }
-                                                                    </select>
-                                                                </div>
-                                                            </FormGroup>
-                                                        </Col>
-                                                        <Col md={8}>
-                                                            <FormGroup>
-                                                                <Label for="description">
-                                                                    Quantity
-                                                                </Label>
-                                                                <div>
-                                                                    <input style={{ border: '1px solid', width: '100%', borderRadius: '5px' }}
-                                                                        {...register(`quantity${item}`)} />
-                                                                </div>
-                                                            </FormGroup>
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
+  const toggleNested = () => {
+    setNestedModal(!nestedModal);
+    setCloseAll(false);
+    setCate();
+  };
+  const toggleAll = () => {
+    setNestedModal(!nestedModal);
+    setCloseAll(false);
+    setCate();
+  };
 
-                                            )
-                                        }
-                                        )
-                                        }
-                                    </Row>
-                                }
-                            </Col>
-                            <Col md={5}>
-                                <Row>
-                                    <Col md={12}>
-                                        <Label>
-                                            Image
-                                        </Label>
-                                        <div>
-                                            <input type='file' multiple onChange={(e) => handleImages(e)}
-                                                style={{ border: '1px solid', width: '100%', borderRadius: '5px' }} />
-                                        </div>
-                                    </Col>
-                                    <Col md={12} style={{ marginTop: '1%' }}>
-                                        {imageFiles.length > 0 && imageFiles && imageFiles.map((item, index) => {
-                                            return (
-                                                <>
-                                                    {
-                                                        imageFiles.length === 1 &&
-                                                        <img src={URL.createObjectURL(item)}
-                                                            width='100%' height='285rem' style={{ borderRadius: '15px', border: '1px solid' }} />
-                                                    }
-                                                    {
-                                                        imageFiles.length === 2 &&
-                                                        <div style={{ padding: '0 20% 0 20%' }}>
-                                                            <img src={URL.createObjectURL(item)}
-                                                                width='100%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
-                                                        </div>
-                                                    }
-                                                    {
-                                                        imageFiles.length === 3 &&
-                                                        <>
-                                                            {index === 0 &&
-                                                                <div style={{ padding: '0 20% 0 20%' }}>
-                                                                    <img src={URL.createObjectURL(item)}
-                                                                        width='100%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
-                                                                </div>
-                                                            }
-                                                            {index > 0 &&
-                                                                <img src={URL.createObjectURL(item)}
-                                                                    width='48.883%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
-                                                            }
-                                                        </>
-                                                    }
-                                                    {
-                                                        imageFiles.length === 4 &&
-                                                        <>
-                                                            {index === 0 &&
-                                                                <img src={URL.createObjectURL(item)}
-                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px', marginRight: '5px' }} />
-                                                            }
-                                                            {index === 1 &&
-                                                                <img src={URL.createObjectURL(item)}
-                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
-                                                            }
+  const toggle = () => {
+    toggleModal();
+    setProduct({});
+    setLstSizeSelect([]);
+    setImageFiles([]);
+  };
 
-                                                            {index === 2 &&
-                                                                <img src={URL.createObjectURL(item)}
-                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
-                                                            }
-                                                            {index === 3 && <img src={URL.createObjectURL(item)}
-                                                                width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid' }} />}
+  const { register, handleSubmit } = useForm();
 
-                                                        </>
-                                                    }
-                                                    {
-                                                        imageFiles.length === 5 &&
-                                                        <>
-                                                            {index === 0 &&
-                                                                <div style={{ padding: '0 20% 0 20%' }}>
-                                                                    <img src={URL.createObjectURL(item)}
-                                                                        width='100%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
-                                                                </div>
-                                                            }
-                                                            {index === 1 &&
-                                                                <img src={URL.createObjectURL(item)}
-                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px', marginRight: '5px' }} />
-                                                            }
-                                                            {index === 2 &&
-                                                                <img src={URL.createObjectURL(item)}
-                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginBottom: '5px' }} />
-                                                            }
+  const { ref } = register;
 
-                                                            {index === 3 &&
-                                                                <img src={URL.createObjectURL(item)}
-                                                                    width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid', marginRight: '5px' }} />
-                                                            }
-                                                            {index === 4 && <img src={URL.createObjectURL(item)}
-                                                                width='49%' height='142rem' style={{ borderRadius: '15px', border: '1px solid' }} />}
+  const checkSize = (e) => {
+    let Select = e.target.value;
+    setSizeSelect(Select);
+    setLstSizeSelect([]);
+    for (let i = 1; i <= Select; i++) {
+      setLstSizeSelect((prev) => [...prev, i]);
+    }
+  };
 
-                                                        </>
-                                                    }
-                                                </>
-                                            )
-                                        })}
-                                        {imageFiles.length <= 0 &&
-                                            <img
-                                                width='100%' height='285rem' style={{ borderRadius: '15px', border: '1px solid' }} />
-                                        }
+  const createCate = async () => {
+    try {
+      let res = await axios.post("http://localhost:8080/api/category/create", {
+        namecate: cate,
+      });
+      let data = res && res.data ? res.data : {};
+      let copydata = lstCate;
+      if (res.data) {
+        copydata.unshift(data);
+        setLstCate(copydata);
+        notifySuccess("Thêm mới cate thành công");
+        toggleNested();
+      }
+    } catch (error) {
+      notifyError("Thêm mới thất bại!");
+      console.log(error);
+    }
+  };
 
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </ModalBody >
-                    <ModalFooter>
-                        <Button color="primary" type='submit'>
-                            Add New
-                        </Button>
-                        <Button color="secondary" onClick={() => toggle()}>
-                            Cancel
-                        </Button>
-                    </ModalFooter>
-                </Form >
-                <Modal
-                    isOpen={nestedModal}
-                    toggle={toggleNested}
-                    onClosed={closeAll ? toggle : undefined}
-                    // size='lg'
-                    centered
-                >
-                    <ModalHeader>Thêm category</ModalHeader>
-                    <ModalBody>
-                        <Input id="namecate"
-                            placeholder="Name Category"
-                            name="namecate"
-                            onChange={(event) => setCate(event.target.value)}
+  return (
+    <>
+      <ToastContainer />
+      <Modal isOpen={isCreateModal} toggle={() => toggle()} size="xl" centered>
+        <Form onSubmit={handleSubmit(createProduct)} innerRef={ref}>
+          <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
+          <ModalBody>
+            <Row>
+              <Col md={7}>
+                <Row>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="name">Tên</Label>
+                      <div>
+                        <input
+                          style={{
+                            border: "1px solid",
+                            width: "100%",
+                            borderRadius: "5px",
+                          }}
+                          id="name"
+                          name="name"
+                          placeholder=""
+                          type="text"
+                          value={product.name}
+                          onChange={(event) =>
+                            handleOnchangeinput(event, "name")
+                          }
                         />
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button type='button' color="primary" onClick={() => { createCate() }}>
-                            Add
-                        </Button>
-                        <Button color="secondary" onClick={toggleNested}>
-                            Cancel
-                        </Button>
-                    </ModalFooter>
-                </Modal>
-            </Modal >
+                        {check.name && check.name.length > 0 && (
+                          <p className="checkError">{check.name}</p>
+                        )}
+                      </div>
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="color">Màu</Label>
+                      <div>
+                        <input
+                          style={{
+                            border: "1px solid",
+                            width: "100%",
+                            borderRadius: "5px",
+                          }}
+                          id="color"
+                          name="color"
+                          placeholder=""
+                          type="text"
+                          value={product.color}
+                          onChange={(event) =>
+                            handleOnchangeinput(event, "color")
+                          }
+                        />
+                        {check.color && check.color.length > 0 && (
+                          <p className="checkError">{check.color}</p>
+                        )}
+                      </div>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="price">Giá</Label>
+                      <div>
+                        <input
+                          style={{
+                            border: "1px solid",
+                            width: "100%",
+                            borderRadius: "5px",
+                          }}
+                          id="price"
+                          name="price"
+                          placeholder=""
+                          type="text"
+                          value={product.price}
+                          onChange={(event) =>
+                            handleOnchangeinput(event, "price")
+                          }
+                        />
+                        {check.price && check.price.length > 0 && (
+                          <p className="checkError">{check.price}</p>
+                        )}
+                      </div>
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Label for="quantity">Số lượng</Label>
+                      <div>
+                        <input
+                          style={{
+                            border: "1px solid",
+                            width: "100%",
+                            borderRadius: "5px",
+                          }}
+                          id="quantity"
+                          name="quantity"
+                          placeholder=""
+                          type="text"
+                          value={product.quantity}
+                          onChange={(event) =>
+                            handleOnchangeinput(event, "quantity")
+                          }
+                        />
+                        {check.quantity && check.quantity.length > 0 && (
+                          <p className="checkError">{check.quantity}</p>
+                        )}
+                      </div>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={6}>
+                    <Row>
+                      <Col md={10}>
+                        <FormGroup>
+                          <Label for="namecate">Danh mục</Label>
+                          <div>
+                            <select
+                              style={{
+                                border: "1px solid",
+                                width: "100%",
+                                borderRadius: "5px",
+                              }}
+                              id="namecate"
+                              name="namecate"
+                              placeholder=""
+                              type="select"
+                              onChange={(event) =>
+                                handleOnchangeinput(event, "categoryId")
+                              }
+                            >
+                              <option value="" disabled selected>
+                                Chọn danh mục
+                              </option>
+                              {lstCate.map((item, index) => {
+                                return (
+                                  <option key={item.id} value={item.id}>
+                                    {item.namecate}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                            {check.categoryId &&
+                              check.categoryId.length > 0 && (
+                                <p className="checkError">{check.categoryId}</p>
+                              )}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                      <Col
+                        md={2}
+                        style={{
+                          padding: "0px 12px 0px 0px",
+                          marginLeft: "0%",
+                        }}
+                      >
+                        <Label for="category">add</Label>
+                        <button
+                          type="button"
+                          style={{
+                            border: "1px solid",
+                            width: "100%",
+                            borderRadius: "15px",
+                          }}
+                          onClick={toggleNested}
+                        >
+                          +
+                        </button>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col md={6}>
+                    <Row>
+                      <Col md={12}>
+                        <FormGroup>
+                          <Label for="sizes">Số lượng size</Label>
+                          <div>
+                            <select
+                              style={{
+                                border: "1px solid",
+                                width: "100%",
+                                borderRadius: "5px",
+                              }}
+                              id="sizes"
+                              name="sizes"
+                              placeholder=""
+                              type="select"
+                              onChange={(event) => {
+                                handleOnchangeinput(event, "sizes");
+                                checkSize(event);
+                              }}
+                            >
+                              <option value="">Chọn size</option>
+                              {sizeCheck.map((item, index) => {
+                                return <option value={item}>{item}</option>;
+                              })}
+                            </select>
+                            {check.sizes && check.sizes.length > 0 && (
+                              <p className="checkError">{check.sizes}</p>
+                            )}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col md={12}>
+                    <FormGroup>
+                      <Label for="description">Mô tả</Label>
+                      <div>
+                        <textarea
+                          style={{
+                            border: "1px solid",
+                            width: "100%",
+                            borderRadius: "5px",
+                            height: "100px",
+                          }}
+                          id="description"
+                          name="description"
+                          onChange={(event) =>
+                            handleOnchangeinput(event, "description")
+                          }
+                        />
+                        {check.description && check.description.length > 0 && (
+                          <p className="checkError">{check.description}</p>
+                        )}
+                      </div>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {lstsizeSelect.length >= 1 && (
+                  <Row>
+                    {lstsizeSelect.map((item) => {
+                      return (
+                        <Col md={6}>
+                          <Row>
+                            <Col md={4}>
+                              <FormGroup>
+                                <Label for="description">Size</Label>
+                                <div>
+                                  <select
+                                    style={{
+                                      border: "1px solid",
+                                      width: "100%",
+                                      borderRadius: "5px",
+                                    }}
+                                    id="size"
+                                    name="size"
+                                    placeholder=""
+                                    type="select"
+                                    {...register(`size${item}`)}
+                                  >
+                                    {size.map((size) => {
+                                      return (
+                                        <option value={size}>{size}</option>
+                                      );
+                                    })}
+                                  </select>
+                                </div>
+                              </FormGroup>
+                            </Col>
+                            <Col md={8}>
+                              <FormGroup>
+                                <Label for="description">Quantity</Label>
+                                <div>
+                                  <input
+                                    style={{
+                                      border: "1px solid",
+                                      width: "100%",
+                                      borderRadius: "5px",
+                                    }}
+                                    {...register(`quantity${item}`)}
+                                  />
+                                </div>
+                              </FormGroup>
+                            </Col>
+                          </Row>
+                        </Col>
+                      );
+                    })}
+                  </Row>
+                )}
+              </Col>
+              <Col md={5}>
+                <Row>
+                  <Col md={12}>
+                    <Label>Image</Label>
+                    <div>
+                      <input
+                        type="file"
+                        multiple
+                        onChange={(e) => handleImages(e)}
+                        style={{
+                          border: "1px solid",
+                          width: "100%",
+                          borderRadius: "5px",
+                        }}
+                      />
+                    </div>
+                  </Col>
+                  <Col md={12} style={{ marginTop: "1%" }}>
+                    {imageFiles.length > 0 &&
+                      imageFiles &&
+                      imageFiles.map((item, index) => {
+                        return (
+                          <>
+                            {imageFiles.length === 1 && (
+                              <img
+                                src={URL.createObjectURL(item)}
+                                width="100%"
+                                height="285rem"
+                                style={{
+                                  borderRadius: "15px",
+                                  border: "1px solid",
+                                }}
+                              />
+                            )}
+                            {imageFiles.length === 2 && (
+                              <div style={{ padding: "0 20% 0 20%" }}>
+                                <img
+                                  src={URL.createObjectURL(item)}
+                                  width="100%"
+                                  height="142rem"
+                                  style={{
+                                    borderRadius: "15px",
+                                    border: "1px solid",
+                                    marginBottom: "5px",
+                                  }}
+                                />
+                              </div>
+                            )}
+                            {imageFiles.length === 3 && (
+                              <>
+                                {index === 0 && (
+                                  <div style={{ padding: "0 20% 0 20%" }}>
+                                    <img
+                                      src={URL.createObjectURL(item)}
+                                      width="100%"
+                                      height="142rem"
+                                      style={{
+                                        borderRadius: "15px",
+                                        border: "1px solid",
+                                        marginBottom: "5px",
+                                      }}
+                                    />
+                                  </div>
+                                )}
+                                {index > 0 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="48.883%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                      marginRight: "5px",
+                                    }}
+                                  />
+                                )}
+                              </>
+                            )}
+                            {imageFiles.length === 4 && (
+                              <>
+                                {index === 0 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="49%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                      marginBottom: "5px",
+                                      marginRight: "5px",
+                                    }}
+                                  />
+                                )}
+                                {index === 1 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="49%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                      marginBottom: "5px",
+                                    }}
+                                  />
+                                )}
 
-        </>
+                                {index === 2 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="49%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                      marginRight: "5px",
+                                    }}
+                                  />
+                                )}
+                                {index === 3 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="49%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                    }}
+                                  />
+                                )}
+                              </>
+                            )}
+                            {imageFiles.length === 5 && (
+                              <>
+                                {index === 0 && (
+                                  <div style={{ padding: "0 20% 0 20%" }}>
+                                    <img
+                                      src={URL.createObjectURL(item)}
+                                      width="100%"
+                                      height="142rem"
+                                      style={{
+                                        borderRadius: "15px",
+                                        border: "1px solid",
+                                        marginBottom: "5px",
+                                      }}
+                                    />
+                                  </div>
+                                )}
+                                {index === 1 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="49%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                      marginBottom: "5px",
+                                      marginRight: "5px",
+                                    }}
+                                  />
+                                )}
+                                {index === 2 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="49%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                      marginBottom: "5px",
+                                    }}
+                                  />
+                                )}
 
-    );
-
-}
+                                {index === 3 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="49%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                      marginRight: "5px",
+                                    }}
+                                  />
+                                )}
+                                {index === 4 && (
+                                  <img
+                                    src={URL.createObjectURL(item)}
+                                    width="49%"
+                                    height="142rem"
+                                    style={{
+                                      borderRadius: "15px",
+                                      border: "1px solid",
+                                    }}
+                                  />
+                                )}
+                              </>
+                            )}
+                          </>
+                        );
+                      })}
+                    {imageFiles.length <= 0 && (
+                      <img
+                        width="100%"
+                        height="285rem"
+                        style={{ borderRadius: "15px", border: "1px solid" }}
+                      />
+                    )}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="primary"
+              type="submit"
+              onClick={() => {
+                createProduct();
+              }}
+            >
+              Add New
+            </Button>
+            <Button color="secondary" onClick={() => toggle()}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Form>
+        <Modal
+          isOpen={nestedModal}
+          toggle={toggleNested}
+          onClosed={closeAll ? toggle : undefined}
+          // size='lg'
+          centered
+        >
+          <ModalHeader>Thêm category</ModalHeader>
+          <ModalBody>
+            <Input
+              id="namecate"
+              placeholder="Name Category"
+              name="namecate"
+              onChange={(event) => setCate(event.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              type="button"
+              color="primary"
+              onClick={() => {
+                //createProduct();
+                createCate();
+              }}
+            >
+              Add
+            </Button>
+            <Button color="secondary" onClick={toggleNested}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </Modal>
+    </>
+  );
+};
 
 export default CreateProduct;

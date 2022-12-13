@@ -29,9 +29,6 @@ public class Media {
 	@Column(name = "URL")
 	private String url;
 
-	@Column(name = "DESCRIPTION")
-	private Integer description;
-
 	@Column(name = "TYPE")
 	private String type;
 }

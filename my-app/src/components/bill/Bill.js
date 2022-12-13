@@ -61,7 +61,7 @@ const Bill = (props) => {
   );
   //const [lstVoucher, setLstVoucher] = useState([]);
 
-  const [voucherSelect, setVoucherSelect] = useState({});
+  //const [voucherSelect, setVoucherSelect] = useState({});
   const [sealer, setSealer] = useState();
   const imagesListRef = ref(storage, "images/");
   const [account, setAccount] = useState({
@@ -165,8 +165,8 @@ const Bill = (props) => {
       setTotalPrice(total);
     };
     dataCart && setTotal();
-    setLstVoucher(dataVoucher);
-  }, [dataCart, dataVoucher]);
+    // setLstVoucher(dataVoucher);
+  }, [dataCart /*dataVoucher*/]);
 
   useEffect(() => {
     setImageUrls([]);
@@ -236,7 +236,7 @@ const Bill = (props) => {
         let res = await axios.get(
           `http://localhost:8080/api/voucher/get/${radio.item(i).value}`
         );
-        setVoucherSelect(res.data);
+        // setVoucherSelect(res.data);
         let total = 0;
         let totalSealer = 0;
 
@@ -264,7 +264,7 @@ const Bill = (props) => {
           total += item.price * item.quantity;
         });
         setTotalPrice(total);
-        setVoucherSelect(0);
+        //setVoucherSelect(0);
         setSealer();
       }
       toggle();
