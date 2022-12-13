@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +23,7 @@ import bangiay.com.entity.Product;
 import bangiay.com.service.MediaService;
 import bangiay.com.service.ProductService;
 import bangiay.com.service.SizeService;
+import bangiay.com.utils.ObjectMapperUtils;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -54,8 +54,9 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return result;
 	}
+
 	@Override
-	public Page<ProductDTO> findAll(Pageable pageable){
+	public Page<ProductDTO> findAll(Pageable pageable) {
 		List<Product> pro = proDAO.findAll();
 		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d, ProductDTO.class))
 				.collect(Collectors.toList());
@@ -131,13 +132,6 @@ public class ProductServiceImpl implements ProductService {
 		System.out.println("ra if rồi");
 		return proDAO.findAll();
 
-
 	}
-	public List<ProductDTO> getAllProductByCategoryParent (Integer id){
-		return proDAO.getProductByCategoryParent(id).stream().map(pro -> modelMapper.map(pro, ProductDTO.class))
-				.collect(Collectors.toList());
-
-	}
-
 
 }
