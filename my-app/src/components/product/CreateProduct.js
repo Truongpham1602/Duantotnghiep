@@ -40,9 +40,8 @@ const CreateProduct = (props) => {
     color: "",
     price: "",
     quantity: "",
-    namecate: "",
+    categoryId: "",
     sizes: "",
-    description: "",
     medias: "",
   });
   const [lstSize, setLstSize] = useState([]);
@@ -56,7 +55,7 @@ const CreateProduct = (props) => {
   const [cate, setCate] = useState();
 
   const handleOnchangeinput = (event, id) => {
-    let gia = /(([0-9]{6})\b)/g;
+    let gia = /(([0-9]{4})\b)/g;
     let soluong = /(([0-9]{1})\b)/g;
     let chu = /[a-zA-Z]/g;
     let copyProduct = { ...product };
@@ -64,8 +63,10 @@ const CreateProduct = (props) => {
     try {
       let ch0 = { ...check };
       if (id == "name") {
-        if (chu.test(event.target.value) == false) {
+        if (copyProduct[id].trim().length > 0 && chu.test(event.target.value) == false) {
           ch0["name"] = "Sai định dạng";
+        } else if (copyProduct[id].trim().length == 0) {
+          ch0["name"] = "Tên không được để trống";
         } else {
           ch0[id] = "";
         }
@@ -74,28 +75,34 @@ const CreateProduct = (props) => {
         });
       } else {
         if (id == "color") {
-          if (chu.test(event.target.value) == false) {
+          if (copyProduct[id].trim().length > 0 && chu.test(event.target.value) == false) {
             ch0["color"] = "Sai định dạng";
+          } else if (copyProduct[id].trim().length == 0) {
+            ch0["color"] = "Màu không được để trống";
           } else {
             ch0[id] = "";
           }
         } else if (id == "price") {
-          if (gia.test(event.target.value) == false) {
-            ch0["price"] = "giá sản phẩm phải là số";
+          if (copyProduct[id].trim().length > 0 && gia.test(event.target.value) == false) {
+            ch0["price"] = "Giá sản phẩm phải là số";
+          } else if (copyProduct[id].trim().length == 0) {
+            ch0["price"] = "Giá không được để trống";
           } else {
             ch0["price"] = "";
           }
         } else if (id == "quantity") {
-          if (soluong.test(event.target.value) == false) {
-            ch0["quantity"] = "Số lượng sản phẩm phải là số";
+          if (copyProduct[id].trim().length > 0 && soluong.test(event.target.value) == false) {
+            ch0["quantity"] = "Số lượng phải là số";
+          } else if (copyProduct[id].trim().length == 0) {
+            ch0["quantity"] = "Số lượng không được để trống";
           } else {
             ch0["quantity"] = "";
           }
-        } else if (id == "namecate") {
+        } else if (id == "categoryId") {
           if (copyProduct[id] == 0) {
-            ch0["namecate"] = "Tên danh mục không được để trống";
+            ch0["categoryId"] = "Danh mục không được để trống";
           } else {
-            ch0["namecate"] = "";
+            ch0["categoryId"] = "";
           }
         } else if (id == "sizes") {
           if (copyProduct[id] == 0) {
@@ -104,8 +111,10 @@ const CreateProduct = (props) => {
             ch0["sizes"] = "";
           }
         } else if (id == "medias") {
-          if (copyProduct[id] == 0) {
-            ch0["medias"] = "Ảnh không được để trống";
+          if (event.target.files.length == 0) {
+            ch0["medias"] = "Cần chọn ảnh";
+          } else if (event.target.files.length > 5) {
+            ch0["medias"] = "Không chọn quá 5 ảnh";
           } else {
             ch0["medias"] = "";
           }
@@ -152,45 +161,35 @@ const CreateProduct = (props) => {
   const createProduct = (data) => {
     try {
       let ch0 = { ...check };
-      if (
-        product.name.trim().length <= 0 ||
-        product.color.trim().length <= 0 ||
-        product.price.trim().length <= 0 ||
-        product.quantity.trim().length <= 0 ||
-        product.categoryId.length <= 0 ||
-        data.size1.length <= 0
-      ) {
-        ch0["name"] = "Tên không được để trống";
-        ch0["color"] = "Màu sắc không được để trống";
-        ch0["price"] = "Giá không được để trống";
-        ch0["quantity"] = "Số lượng sản phẩm không được để trống";
-        ch0["categoryId"] = "Hãy chọn danh mục";
-        ch0["sizes"] = "Hãy chọn số lượng cỡ giày";
-        ch0["medias"] = "Hãy chọn ảnh";
-        setCheck({ ...ch0 });
-        return;
-      } else if (product.name.trim().length == 0) {
+      if (product.name.trim().length == 0) {
         ch0["name"] = "Tên không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (product.color.trim().length == 0) {
+      } if (product.color.trim().length == 0) {
         ch0["color"] = "Màu sắc không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (product.price.trim().length == 0) {
+      } if (product.price.trim().length == 0) {
         ch0["price"] = "Giá không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (product.quantity.trim().length == 0) {
+      } if (product.quantity.trim().length == 0) {
         ch0["quantity"] = "Số lượng không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (false) {
-      } else if (
+      } if (product.categoryId.trim().length == 0) {
+        ch0["categoryId"] = "Danh mục không được để trống";
+        setCheck({ ...ch0 });
+      } if (imageFiles.length == 0) {
+        ch0["medias"] = "Cần chọn ảnh";
+        setCheck({ ...ch0 });
+      } if (sizeSelect == 0) {
+        ch0["sizes"] = "Cần chọn số lượng cỡ giày";
+        setCheck({ ...ch0 });
+      }
+      if (
         check.name.trim().length > 0 ||
         check.color.trim().length > 0 ||
         check.price.trim().length > 0 ||
-        check.quantity.trim().length > 0
+        check.quantity.trim().length > 0 ||
+        check.sizes.trim().length > 0 ||
+        check.medias.trim().length > 0
       ) {
         return;
       }
@@ -215,18 +214,7 @@ const CreateProduct = (props) => {
         return;
       } else {
         const createPro = async () => {
-          let res = await axios.post(Product_Rest_API_URL + "/post", {
-            categoryId: product.categoryId,
-            color: product.color,
-            name: product.name,
-            namecate: product.namecate,
-            sizes: product.sizes,
-            medias: product.medias,
-            description: product.description,
-            code: product.code,
-            price: product.price,
-            quantity: product.quantity,
-          });
+          let res = await axios.post(Product_Rest_API_URL + "/post", product);
           let datares = res && res.data ? res.data : [];
           datares.created = moment(datares.created).format(
             "DD/MM/YYYY HH:mm:ss"
@@ -350,7 +338,24 @@ const CreateProduct = (props) => {
 
   const toggle = () => {
     toggleModal();
-    setProduct({});
+    setProduct({
+      name: "",
+      color: "",
+      price: "",
+      quantity: "",
+      categoryId: "",
+      sizes: "",
+      medias: ""
+    });
+    setCheck({
+      name: "",
+      color: "",
+      price: "",
+      quantity: "",
+      namecate: "",
+      sizes: "",
+      medias: ""
+    })
     setLstSizeSelect([]);
     setImageFiles([]);
   };
@@ -582,7 +587,7 @@ const CreateProduct = (props) => {
                                 checkSize(event);
                               }}
                             >
-                              <option value="">Chọn size</option>
+                              <option value="" disabled selected>Chọn size</option>
                               {sizeCheck.map((item, index) => {
                                 return <option value={item}>{item}</option>;
                               })}
@@ -608,9 +613,9 @@ const CreateProduct = (props) => {
                           }}
                           id="description"
                           name="description"
-                          onChange={(event) =>
-                            handleOnchangeinput(event, "description")
-                          }
+                          onChange={(event) => {
+                            handleOnchangeinput(event);
+                          }}
                         />
                         {check.description && check.description.length > 0 && (
                           <p className="checkError">{check.description}</p>
@@ -675,12 +680,12 @@ const CreateProduct = (props) => {
               <Col md={5}>
                 <Row>
                   <Col md={12}>
-                    <Label>Image</Label>
+                    <Label>Ảnh</Label>
                     <div>
                       <input
                         type="file"
                         multiple
-                        onChange={(e) => handleImages(e)}
+                        onChange={(e) => { handleImages(e, 'medias'); handleOnchangeinput(e, 'medias') }}
                         style={{
                           border: "1px solid",
                           width: "100%",
@@ -688,6 +693,10 @@ const CreateProduct = (props) => {
                         }}
                       />
                     </div>
+                    {check.medias &&
+                      check.medias.length > 0 && (
+                        <p className="checkError">{check.medias}</p>
+                      )}
                   </Col>
                   <Col md={12} style={{ marginTop: "1%" }}>
                     {imageFiles.length > 0 &&

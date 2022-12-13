@@ -285,7 +285,7 @@ const Product = () => {
               })
             }
 
-          <Modal
+            <Modal
               isOpen={nestedModal}
               toggle={toggleNested}
             // size='lg'

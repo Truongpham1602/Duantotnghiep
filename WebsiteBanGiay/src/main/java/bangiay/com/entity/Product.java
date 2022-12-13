@@ -19,6 +19,7 @@ import lombok.Data;
 @Data
 @Table(name = "product")
 public class Product {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")

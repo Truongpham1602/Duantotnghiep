@@ -1,6 +1,5 @@
 package bangiay.com.jwt;
 
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -12,7 +11,6 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -63,13 +61,13 @@ public class JwtUtil {
 			claims.put("isNhanVien", true);
 		}
 
-		User user = this.userDao.findUserByEmailOrTelePhone(userDetails.getUsername() , userDetails.getUsername());
+		List<User> user = this.userDao.findUserByEmailOrTelePhone(userDetails.getUsername(), userDetails.getUsername());
 		UserDTO userDTO = new UserDTO();
-		userDTO.setId(user.getId());
-		userDTO.setEmail(user.getEmail());
-		userDTO.setTelephone(user.getTelephone());
+		userDTO.setId(user.get(0).getId());
+		userDTO.setEmail(user.get(0).getEmail());
+		userDTO.setTelephone(user.get(0).getTelephone());
 //		claims.put("user", userDTO);
-		String token = Jwts.builder().setClaims(claims).setSubject(String.valueOf(user.getId()))
+		String token = Jwts.builder().setClaims(claims).setSubject(String.valueOf(user.get(0).getId()))
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
 				.signWith(SignatureAlgorithm.HS256, secret).compact();
