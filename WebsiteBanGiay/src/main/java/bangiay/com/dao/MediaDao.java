@@ -1,5 +1,6 @@
 package bangiay.com.dao;
 
+
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ import bangiay.com.entity.Media;
 public interface MediaDao extends JpaRepository<Media, Integer> {
 	@Query("SELECT o FROM Media o WHERE o.product.id=?1")
 	List<Media> findMediaByProduct_Id(Integer product_Id);
+
 }

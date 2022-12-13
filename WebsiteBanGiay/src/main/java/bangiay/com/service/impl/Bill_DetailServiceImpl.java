@@ -5,8 +5,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.BillDetailDTO;
@@ -26,7 +29,7 @@ public class Bill_DetailServiceImpl implements Bill_DetailService{
 	
 	@Autowired
 	ModelMapper modelMapper;
-	
+
 	@Override
 	public List<BillDetailDTO> findAll() {
 		List<BillDetail> billDetails = this.billDetailDao.findAll();
@@ -35,7 +38,11 @@ public class Bill_DetailServiceImpl implements Bill_DetailService{
 		);
 		return billDetailsDTO;
 	}
+	@Override
+	public Page<BillDetailDTO> findAll(Pageable pageable) {
 
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(billDetailDao.findAll(pageable), BillDetailDTO.class);
+	}
 	@Override
 	public List<BillDetailDTO> createAll(List<BillDetailDTO> lstBillDetailDTO) {
 		BillDetail billDetail = modelMapper.map(lstBillDetailDTO, BillDetail.class);

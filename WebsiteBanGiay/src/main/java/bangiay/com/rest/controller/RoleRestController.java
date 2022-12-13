@@ -2,24 +2,25 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
+import bangiay.com.DTO.RoleDTO;
+import bangiay.com.DTO.SizeDTO;
+import bangiay.com.doMain.constant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import bangiay.com.entity.Role;
 import bangiay.com.service.impl.RoleServiceImpl;
 
 @RestController
-@RequestMapping("/role/")
+@RequestMapping("/role")
 public class RoleRestController {
 	@Autowired
 	RoleServiceImpl roleService;
+
 
 	@PostMapping("/create")
 	public Role create(@RequestBody Role role) {
@@ -40,6 +41,14 @@ public class RoleRestController {
 	public List<Role> getAll() {
 		return roleService.findAll();
 	}
+	@GetMapping("/select")
+	public ResponseEntity<Page<RoleDTO>> getPage(
+			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
+			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
+	) {
+		Pageable pageable = PageRequest.of(page - 1 , size);
+		return ResponseEntity.ok(roleService.findAll(pageable));
+	}
 
 	@PutMapping("/update/{id}")
 	public Role update(@RequestBody Role role, @PathVariable Integer id) {
@@ -50,4 +59,5 @@ public class RoleRestController {
 	public void deleteById(@PathVariable Integer id) {
 		roleService.delete(id);
 	}
+
 }

@@ -1,7 +1,9 @@
 package bangiay.com.jwt;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.core.annotation.Order;
+
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+
 public class JwtFilter extends OncePerRequestFilter{
+
     @Autowired
     JwtUtil jwtUtil;
 

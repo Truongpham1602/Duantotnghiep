@@ -9,35 +9,34 @@ import {
 
 
 // class UpdateProduct extends Component {
-const UpdateProduct = (props) => {
-    const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
+const UpdateBill = (props) => {
+    const user = [1,2,3];
     const { isUpdateModal, toggleModal, updateData } = props;
-    const [product, setProduct] = useState(props.product);
+    const [bill, setBill] = useState(props.bill);
 
     useEffect(() => {
-        setProduct(props.product)
-    }, [props.product])
+        setBill(props.bill)
+    }, [props.bill])
 
     const handleOnchangeInput = (event, id) => {
-        let copyProduct = { ...product };
-        copyProduct[id] = event.target.value;
-        setProduct({
-            ...copyProduct
+        let copyBill = { ...bill };
+        copyBill[id] = event.target.value;
+        setBill({
+            ...copyBill
         })
     }
 
 
-    const updateProduct = async () => {
+    const UpdateBill = async () => {
         try {
-            const res = await axios.put(`http://localhost:8080/admin/product/put/${product.id}`, {
-                categoryId: product.categoryId,
-                color: product.color,
-                name: product.name,
-                description: product.description,
-                code: product.code,
-                price: product.price,
-                quantity: product.quantity,
-                created: product.created
+            const res = await axios.put(`http://localhost:8080/admin/bill/post/${bill.id}`, {
+                userId: bill.userId,
+                code: bill.code,
+                name_recipient: bill.name_recipient,
+                telephone: bill.telephone,
+                address: bill.address,
+                created: bill.created,
+                modified: bill.modified
             })
             let data = (res && res.data) ? res.data : [];
             data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
@@ -51,7 +50,7 @@ const UpdateProduct = (props) => {
 
     const toggle = () => {
         toggleModal()
-        setProduct({})
+        setBill({})
     }
 
     return (
@@ -62,35 +61,52 @@ const UpdateProduct = (props) => {
             >
                 <ModalHeader toggle={() => toggle()}>Update</ModalHeader>
                 <ModalBody>
-                    <Form>
+                <Form>
                         <Row>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="name">
-                                        Name
+                                    <Label for="userId">
+                                        User
                                     </Label>
                                     <Input
-                                        id="name"
-                                        name="name"
+                                        id="userId"
+                                        name="userId"
                                         placeholder=""
-                                        type="text"
-                                        value={product.name}
-                                        onChange={(event) => handleOnchangeInput(event, 'name')}
-                                    />
+                                        type="select"
+                                        value={user.userId}
+                                        onChange={(event) => handleOnchangeInput(event, 'userId')}
+                                    >
+                                    <option value='1'>
+                                        1
+                                    </option>
+                                    <option value='2'>
+                                        2
+                                    </option>
+                                    </Input>
+                                   
+                                    
                                 </FormGroup>
                             </Col>
+                            <Col md={1}>
+                                        <Label for="user">
+                                            Thêm
+                                        </Label>
+                                        <Button color="secondary">
+                                            +
+                                        </Button>
+                                    </Col>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="color">
-                                        Color
+                                    <Label for="code">
+                                         Code
                                     </Label>
                                     <Input
-                                        id="color"
-                                        name="color"
+                                        id="code"
+                                        name="code"
                                         placeholder=""
                                         type="text"
-                                        value={product.color}
-                                        onChange={(event) => handleOnchangeInput(event, 'color')}
+                                        value={bill.code}
+                                        onChange={(event) => handleOnchangeInput(event, 'code')}
                                     />
                                 </FormGroup>
                             </Col>
@@ -98,31 +114,31 @@ const UpdateProduct = (props) => {
                         <Row>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="price">
-                                        Price
+                                    <Label for="name_recipient">
+                                        Name_Recipient
                                     </Label>
                                     <Input
-                                        id="price"
-                                        name="price"
+                                        id="name_recipient"
+                                        name="name_recipient"
                                         placeholder=""
                                         type="text"
-                                        value={product.price}
-                                        onChange={(event) => handleOnchangeInput(event, 'price')}
+                                        value={bill.name_recipient}
+                                        onChange={(event) => handleOnchangeInput(event, 'name_recipient')}
                                     />
                                 </FormGroup>
                             </Col>
                             <Col md={6}>
                                 <FormGroup>
-                                    <Label for="quantity">
-                                        Quantity
+                                    <Label for="telephone">
+                                         Telephone
                                     </Label>
                                     <Input
-                                        id="quantity"
-                                        name="quantity"
+                                        id="telephone"
+                                        name="telephone"
                                         placeholder=""
                                         type="text"
-                                        value={product.quantity}
-                                        onChange={(event) => handleOnchangeInput(event, 'quantity')}
+                                        value={bill.telephone}
+                                        onChange={(event) => handleOnchangeInput(event, 'telephone')}
                                     />
                                 </FormGroup>
                             </Col>
@@ -132,94 +148,30 @@ const UpdateProduct = (props) => {
                                 <Row>
                                     <Col md={10}>
                                         <FormGroup>
-                                            <Label for="category">
-                                                Category
+                                            <Label for="address">
+                                                Address
                                             </Label>
                                             <Input
-                                                id="category"
-                                                name="category"
+                                                id="address"
+                                                name="address"
                                                 placeholder=""
-                                                type="select"
-                                                onChange={(event) => handleOnchangeInput(event, 'category')}
+                                                type="text"
+                                                onChange={(event) => handleOnchangeInput(event, 'address')}
                                             >
-                                                <option value='1'>
-                                                    1
-                                                </option>
-                                                <option value='2'>
-                                                    2
-                                                </option>
+                
                                             </Input>
                                         </FormGroup>
                                     </Col>
-                                    <Col md={1}>
-                                        <Label for="category">
-                                            Thêm
-                                        </Label>
-                                        <Button color="secondary">
-                                            +
-                                        </Button>
-                                    </Col>
+                                   
                                 </Row>
+                                
                             </Col>
-                            <Col md={6}>
-                                <Row>
-                                    <Col md={10}>
-                                        <FormGroup>
-                                            <Label for="size">
-                                                size
-                                            </Label>
-                                            <Input
-                                                id="size"
-                                                name="size"
-                                                placeholder=""
-                                                type="select"
-                                                onChange={(event) => handleOnchangeInput(event, 'size')}
-                                            >
-                                                {
-                                                    size.map((item, index) => {
-                                                        return (
-                                                            <option value={item}>
-                                                                {item}
-                                                            </option>
-                                                        )
-                                                    })
-                                                }
-
-                                            </Input>
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={1}>
-                                        <Label for="category">
-                                            Thêm
-                                        </Label>
-                                        <Button color="secondary">
-                                            +
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={12}>
-                                <FormGroup>
-                                    <Label for="description">
-                                        Description
-                                    </Label>
-                                    <Input
-                                        id="description"
-                                        name="description"
-                                        type="textarea"
-                                        size='lg'
-                                        value={product.description}
-                                        onChange={(event) => handleOnchangeInput(event, 'description')}
-                                    />
-                                </FormGroup>
-                            </Col>
-                        </Row>
+                        </Row> 
+                           
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={(e) => { updateProduct(); handleOnchangeInput(e, 'category'); handleOnchangeInput(e, 'size') }}>
+                    <Button color="primary" onClick={(e) => { UpdateBill(); handleOnchangeInput(e, 'user')}}>
                         Save
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>
@@ -231,4 +183,4 @@ const UpdateProduct = (props) => {
     );
 }
 
-export default UpdateProduct;
+export default UpdateBill;

@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
@@ -80,7 +83,11 @@ public class CartServiceImpl implements CartService {
 		return cartDao.findAll().stream().map(cart -> modelMapper.map(cart, CartDTO.class))
 				.collect(Collectors.toList());
 	}
+	@Override
+	public Page<CartDTO> findAll(Pageable pageable) {
 
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(cartDao.findAll(pageable), CartDTO.class);
+	}
 	@Override
 	public List<CartDTO> findByUser_Id(Integer user_Id) {
 		List<Cart> lstCart = this.cartDao.findByUser_Id(user_Id);

@@ -2,7 +2,14 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
+import bangiay.com.DTO.RoleDTO;
+import bangiay.com.doMain.constant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +24,9 @@ import bangiay.com.service.OrderService;
 
 @CrossOrigin(origins = "*")
 @RestController
+
 @RequestMapping("api/order")
+
 public class OrderRestController {
 
 	@Autowired
@@ -26,6 +35,14 @@ public class OrderRestController {
 	@GetMapping("/findAll")
 	public List<OrderDTO> findAll() {
 		return this.orderService.findAll();
+	}
+	@GetMapping("/select")
+	public ResponseEntity<Page<OrderDTO>> getPage(
+			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
+			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
+	) {
+		Pageable pageable = PageRequest.of(page - 1 , size);
+		return ResponseEntity.ok(orderService.findAll(pageable));
 	}
 
 //	@DeleteMapping("/delete/{id}")
@@ -62,6 +79,11 @@ public class OrderRestController {
 	@GetMapping("/findOrderBySize_ID/{user_IdOrTelephone}")
 	public List<OrderDTO> findOrderBySize_ID(@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
 		return null;
+	}
+	@PostMapping ("updateStatus")
+	public ResponseEntity<?> updateOrderWithStatus(@RequestParam("id")Integer id,
+												   @RequestParam("status") Integer status){
+		return new ResponseEntity<>(orderService.updateOrderWithStatus(id, status), HttpStatus.OK);
 	}
 
 }

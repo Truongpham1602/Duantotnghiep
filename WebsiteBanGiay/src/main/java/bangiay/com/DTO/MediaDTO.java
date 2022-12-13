@@ -1,15 +1,14 @@
 package bangiay.com.DTO;
 
-import java.io.Serializable;
-
 import lombok.Data;
 
 @Data
-public class MediaDTO implements Serializable {
-	private Integer id;
-	private Integer productId;
-	private String url;
-	private Integer description;
-	private String type;
+public class MediaDTO {
+    private Integer id;
+    private Integer productId;
+    private String url;
+
+    private String type;
+
 
 }

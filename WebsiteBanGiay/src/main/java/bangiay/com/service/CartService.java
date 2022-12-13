@@ -4,13 +4,17 @@ import java.util.List;
 
 import bangiay.com.DTO.CartDTO;
 import bangiay.com.entity.Cart;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CartService {
+
 	CartDTO createCart(CartDTO cartDTO);
 
 	List<CartDTO> findAll();
 
-	// Page<User> findAll(Pageable pageable);
+	Page<CartDTO> findAll(Pageable pageable);
+
 	CartDTO updateCart(CartDTO cartDTO);
 
 	CartDTO updateSize(Integer id, Integer size_Id);
@@ -31,4 +35,5 @@ public interface CartService {
 
 	List<CartDTO> findByUser_Id(Integer user_Id);
 //    List<CartDTO> getCartNoUser();
+
 }

@@ -1,5 +1,6 @@
 package bangiay.com.jwt;
 
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -11,6 +12,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -61,7 +63,7 @@ public class JwtUtil {
 			claims.put("isNhanVien", true);
 		}
 
-		User user = this.userDao.findByFullName(userDetails.getUsername());
+		User user = this.userDao.findUserByEmailOrTelePhone(userDetails.getUsername() , userDetails.getUsername());
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(user.getId());
 		userDTO.setEmail(user.getEmail());
@@ -125,4 +127,5 @@ public class JwtUtil {
 
 		return roles;
 	}
+
 }

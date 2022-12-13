@@ -3,8 +3,11 @@ package bangiay.com.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.SizeDTO;
@@ -29,6 +32,10 @@ public class SizeServiceImpl implements SizeService {
 		List<Size> pro = sizeDAO.findAll();
 		List<SizeDTO> result = pro.stream().map(d -> modelMapper.map(d, SizeDTO.class)).collect(Collectors.toList());
 		return result;
+	}
+	@Override
+	public Page<SizeDTO> findAll(Pageable pageable) {
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(sizeDAO.findAll(pageable), SizeDTO.class);
 	}
 
 	@Override

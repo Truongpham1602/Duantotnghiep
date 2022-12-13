@@ -15,10 +15,12 @@ import lombok.Data;
 @Data
 @Table(name = "media")
 public class Media {
+
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
 
 	@ManyToOne
 	@JoinColumn(name = "PRODUCT_ID")

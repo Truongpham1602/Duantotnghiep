@@ -7,5 +7,5 @@ import bangiay.com.entity.Voucher;
 
 @Repository
 public interface VoucherDao extends JpaRepository<Voucher, Integer> {
-
+	
 }

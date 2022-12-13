@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.BillDTO;
@@ -79,7 +82,11 @@ public class BillServiceImpl implements BillService {
 		return billDao.findAll().stream().map(bill -> modelMapper.map(bill, BillDTO.class))
 				.collect(Collectors.toList());
 	}
+	@Override
+	public Page<BillDTO> findAll(Pageable pageable) {
 
+		return ObjectMapperUtils.mapEntityPageIntoDtoPage(billDao.findAll(pageable), BillDTO.class);
+	}
 	@Override
 	public BillDTO updateBill(BillDTO billDTO) {
 		Bill bill = billDao.findById(billDTO.getId()).orElseThrow(() -> new RuntimeException("Bill isn't existed"));

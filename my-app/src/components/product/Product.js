@@ -3,6 +3,10 @@ import axios from 'axios';
 import CreateProduct from './CreateProduct';
 import UpdateProduct from './UpdateProduct';
 import useCallGetAPI from '../../customHook/CallGetApi';
+import {
+  Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
+  Row, Col, Form
+} from 'reactstrap';
 import ProductDetails from './ProductDetails';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,7 +26,8 @@ import {
 
 // class Product extends React.Component {
 const Product = () => {
-
+  const [nestedModal, setNestedModal] = useState(false);
+  const [proId, setProId] = useState()
   const [product, setProduct] = useState({});
   const [dataProduct, setData] = useState([]);
   const [page, setPage] = useState(0);
@@ -33,6 +38,10 @@ const Product = () => {
   let [urlImgs, setUrlImgs] = useState();
   const [imageFiles, setImageFiles] = useState([])
 
+  const toggleNested = (id) => {
+    setNestedModal(!nestedModal);
+    id && setProId(id)
+  };
 
   const updateData = (res, resImg, type) => {
     if (type === 'create') {
@@ -106,6 +115,7 @@ const Product = () => {
       let copyList = dataProduct;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
+      toggleNested()
       // updateData(res.data)
     } catch (error) {
       console.log(error.message)
@@ -268,12 +278,31 @@ const Product = () => {
                       <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editProduct(item.id); updateModal() }}>Update</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => { deleteProduct(item.id) }} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
                     </td>
                   </tr>
                 )
               })
             }
+
+          <Modal
+              isOpen={nestedModal}
+              toggle={toggleNested}
+            // size='lg'
+            >
+              <ModalHeader>Delete</ModalHeader>
+              <ModalBody>
+                Bạn có chắc chắn xóa không?
+              </ModalBody>
+              <ModalFooter>
+                <Button type='button' color="primary" onClick={() => { deleteProduct(proId) }}>
+                  Delete
+                </Button>{' '}
+                <Button color="secondary" onClick={() => toggleNested()}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
 
             {isLoading &&
               <tr>

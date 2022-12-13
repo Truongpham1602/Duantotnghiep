@@ -1,32 +1,69 @@
 import { React, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Pagination } from 'react-bootstrap';
 import '../voucher/voucher.css';
 import UpdateVoucher from './UpdateVoucher';
 import NewVoucher from './NewVoucher';
 import axios from 'axios';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import moment from 'moment';
+import { ToastContainer, toast } from 'react-toastify';
+import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, PaginationLink, PaginationItem } from 'reactstrap';
 
 const Voucher = () => {
 
     const [voucher, setVoucher] = useState({});
     const [isNewVoucherModal, setIsNewVoucherModal] = useState(false)
     const [isupdatevoucherModal, setIsupdatevoucherModal] = useState(false)
+    const [nestedModal, setNestedModal] = useState(false);
     const [dataVoucher, setData] = useState([]);
     const [page, setPage] = useState(0);
+    const [voucherId, setVoucherId] = useState()
+    const [pageNumber, setPageNumber] = useState()
+    const [totalPage, setTotalPage] = useState([])
     const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/voucher/get`);
+
+
+    const pageable = async (id) => {
+        if (id <= 0) {
+            id = 0
+        } else if (id >= totalPage.length - 1) {
+            id = totalPage.length - 1
+        }
+        const res = await axios.get(`http://localhost:8080/api/voucher/get?page=${id}`)
+        let data = res ? res.data : []
+        setData(data.content)
+        setPageNumber(data.number)
+        console.log(data.number);
+    }
+
     useEffect(() => {
-        if (dataPro && dataPro.length > 0) {
-            setData(dataPro)
+        if (dataPro.content) {
+            setData(dataPro.content)
+            setPageNumber(dataPro.number)
+            for (let i = 1; i <= dataPro.totalPages; i++) {
+                setTotalPage((prev) => [...prev, i])
+
+            }
         }
     }, [dataPro])
 
+    const updateTotalPage = async () => {
+        const res = await axios.get(`http://localhost:8080/api/category/get`)
+        let data = res ? res.data : []
+        if (data.totalPages > totalPage.length) {
+            for (let i = 1; i <= dataPro.totalPages; i++) {
+                setTotalPage((prev) => [...prev, i])
+            }
+        }
+    }
 
     const updateData = (res, type) => {
         if (type === 'create') {
             let copydata = dataVoucher;
             copydata.unshift(res);
             setData(copydata);
+            updateTotalPage();
         }
         else if (type === 'update') {
             let copydata = dataVoucher;
@@ -53,12 +90,39 @@ const Voucher = () => {
                 let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
                 copyList.fill(res.data, getIndex, getIndex + 1);
                 setData(copyList)
+                console.log(copyList);
+                notifySuccess("Bạn đã tạm dừng thành công !!")
+                toggleNested()
+                // notifyWarning("Thay đổi trạng thái thành công !!")
             }
             updateStatusFalse()
         } catch (error) {
             console.log(error.message)
         }
     }
+
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast)
+    };
+    const notifyWarning = (text) => {
+        toast.warning(text, styleToast);
+    };
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    }
+
+    const toggleNested = (id) => {
+        setNestedModal(!nestedModal);
+        console.log(id);
+        id && setVoucherId(id)
+    };
 
     const updatevoucherModal = () => {
         setIsupdatevoucherModal(!isupdatevoucherModal)
@@ -96,113 +160,183 @@ const Voucher = () => {
                     <div className='card-header mb-5'>
                         <NavLink className="btn btn-primary" style={{ borderRadius: 50 }}
                             onClick={() => newVoucherModal()}>
-                            Thêm voucher
+                            Thêm mới
                         </NavLink>
                     </div>
-                    <table className="table table-bordered">
+                    <Table className="table table-bordered">
                         <thead style={{ verticalAlign: 'middle' }}>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Stt</th>
                                 {/* name */}
-                                <th scope="col">Name</th>
+                                <th scope="col">Tên</th>
 
                                 {/* value */}
-                                <th scope="col">Giảm giá(%)</th>
+                                <th scope="col">Phần giá chiết khấu(%)</th>
                                 {/* quantity */}
-                                <th scope="col">Lượt sử dụng</th>
+                                <th scope="col">Lượng sử dụng</th>
                                 {/*  */}
-                                <th scope="col">Category</th>
+                                <th scope="col">Danh mục</th>
                                 {/* effect from */}
                                 <th scope="col">Ngày bắt đầu</th>
                                 {/* effect until */}
                                 <th scope="col">Ngày hết hạn</th>
-                                <th scope="col">Description</th>
+                                <th scope="col">Mô tả</th>
                                 {/* status */}
                                 <th scope="col">Trạng thái</th>
-                                <th scope="col" colspan="2">Action</th>
+                                <th scope="col" colspan="2">Hoạt động</th>
                             </tr>
                         </thead>
                         <tbody style={{ verticalAlign: 'middle' }}>
                             {
                                 !isLoading && dataVoucher && dataVoucher.length > 0 && dataVoucher.map((item, index) => {
+                                    let effectFrom = moment(item.effectFrom).format('DD/MM/YYYY');
+                                    let effectUntil = moment(item.effectUntil).format('DD/MM/YYYY');
+                                    { console.log(dataVoucher.length) }
                                     // if (item.status != 0)
-                                    return (
-                                        <tr key={item.id}>
-                                            <th scope="row" id="">{index + 1}</th>
-                                            <td id="name">{item.name}</td>
-                                            <td id="value">{item.value}</td>
-                                            <td id="quantity">{item.quantity}</td>
-                                            <td id="category">{item.namecate}</td>
-                                            <td id="effectFrom">{item.effectFrom}</td>
-                                            <td id="effectUntil">{item.effectUntil}</td>
-                                            <td id="description"><textarea>{item.description}</textarea></td>
-                                            <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
-                                            <td>
-                                                <button className="btn btn-primary update update-voucher"
-                                                    type='buttom' id="update" style={{ borderRadius: 50 }}
-                                                    onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                    cập nhập
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button className="btn btn-danger delete delete-voucher"
-                                                    id="delete" style={{ borderRadius: 50 }}
-                                                    onClick={() => { deleteVoucher(item.id) }}>
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
+                                    if (item.status == 1) {
+                                        return (
+                                            item.status == 1 &&
+                                            <tr key={item.id}>
+                                                <th scope="row" id="">{pageNumber * 7 + index + 1}</th>
+                                                <td id="name">{item.name}</td>
+                                                <td id="value">{item.value}</td>
+                                                <td id="quantity">{item.quantity}</td>
+                                                <td id="category">{item.namecate}</td>
+                                                <td id="effectFrom">{effectFrom}</td>
+                                                <td id="effectUntil">{effectUntil}</td>
+                                                <td id="description"><textarea>{item.description}</textarea></td>
+                                                <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
+                                                <td>
+                                                    <button className="btn btn-primary update update-voucher"
+                                                        type='buttom' id="update" style={{ borderRadius: 50 }}
+                                                        onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                        Cập nhập
+                                                    </button>
+                                                </td>
+                                                <td>
+
+                                                    <button className="btn btn-danger delete delete-voucher"
+                                                        id="delete" style={{ borderRadius: 50 }}
+                                                        onClick={() => toggleNested(item.id)}>
+                                                        Tạm dừng
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+                                        )
+                                    } else {
+                                        return (
+
+                                            item.status == 0 &&
+                                            <tr key={item.id} style={{ color: '#c7c7c7' }}>
+                                                <th scope="row" id="">{pageNumber * 7 + index + 1}</th>
+                                                <td id="name">{item.name}</td>
+                                                <td id="value">{item.value}</td>
+                                                <td id="quantity">{item.quantity}</td>
+                                                <td id="category">{item.namecate}</td>
+                                                <td id="effectFrom">{effectFrom}</td>
+                                                <td id="effectUntil">{effectUntil}</td>
+                                                <td id="description"><textarea>{item.description}</textarea></td>
+                                                <td id="status">{Number(item.status) == 1 ? "Hoạt động" : "Không hoạt động"}</td>
+                                                <td>
+                                                    <button className="btn btn-primary update update-voucher"
+                                                        type='buttom' id="update" style={{ borderRadius: 50 }}
+                                                        onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                        Cập nhập
+                                                    </button>
+                                                </td>
+                                                <td>
+
+                                                    <button className="btn btn-danger delete delete-voucher"
+                                                        id="delete" style={{ borderRadius: 50 }}
+                                                        onClick={() => toggleNested(item.id)}>
+                                                        Tạm dừng
+                                                    </button>
+
+                                                </td>
+
+                                            </tr>
+
+
+                                        )
+                                    }
+
                                 })
                             }
-                            {/* {
-                                !isLoading && dataVoucher && dataVoucher.length > 7 && Object.length(
-                                    dataVoucher.slice(7 * page, 7 * page + 7)
-                                ).map((item, index) => {
-                                    return (
-                                        <tr key={item.id}>
-                                            <th scope="row" id="">{index + 1}</th>
-                                            <td id="name">{item.name}</td>
-                                            <td id="description">{item.description}</td>
-                                            <td id="value">{item.value}</td>
-                                            <td id="quantity">{item.quantity}</td>
-                                            <td id="category">{item.name_cate}</td>
-                                            <td id="effectFrom">{item.effectFrom}</td>
-                                            <td id="effectUntil">{item.effectUntil}</td>
-                                            <td id="status">{item.status ? "Hoạt động" : "Không hoạt động"}</td>
-                                            <td>
-                                                <NavLink className="btn btn-primary update update-voucher"
-                                                    type='buttom' id="update" style={{ borderRadius: 50 }}
-                                                    onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                    cập nhập
-                                                </NavLink>
-                                            </td>
-                                            <td>
-                                                <NavLink className="btn btn-danger delete delete-voucher"
-                                                    id="delete" style={{ borderRadius: 50 }}>
-                                                    Delete
-                                                </NavLink>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            } */}
-
+                            <Modal
+                                isOpen={nestedModal}
+                                toggle={toggleNested}
+                            // size='lg'
+                            >
+                                <ModalHeader>Tạm dừng</ModalHeader>
+                                <ModalBody>
+                                    Bạn muốn dừng voucher chứ?
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button type='button' color="primary" onClick={() => { deleteVoucher(voucherId) }}>
+                                        Tạm dừng
+                                    </Button>{' '}
+                                    <Button color="secondary" onClick={() => toggleNested()}>
+                                        Hủy bỏ
+                                    </Button>
+                                </ModalFooter>
+                            </Modal>
+                            {isLoading &&
+                                <tr>
+                                    <h3>Loading...</h3>
+                                </tr>
+                            }
                         </tbody>
                         <tfoot>
                             <tr>
                                 <td colSpan='10'>
-                                    <button className="hoverable" onClick={onBack}>
+                                    {/* <button className="hoverable" onClick={onBack}>
                                         Back
                                     </button>
                                     <label style={{ margin: '0 10px' }}>{page + 1}</label>
                                     <button className="hoverable" onClick={onNext}>
                                         Next
-                                    </button>
+                                    </button> */}
+                                    <Pagination>
+                                        <PaginationItem>
+                                            <PaginationLink
+                                                first
+                                                onClick={() => pageable(0)}
+                                            />
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationLink
+                                                onClick={() => pageable(pageNumber - 1)}
+                                                previous
+                                            />
+                                        </PaginationItem>
+                                        {totalPage.map(item => {
+                                            return (
+                                                <PaginationItem>
+                                                    <PaginationLink onClick={() => pageable(item - 1)}>
+                                                        {item}
+                                                    </PaginationLink>
+                                                </PaginationItem>
+                                            )
+                                        })}
+                                        <PaginationItem>
+                                            <PaginationLink
+                                                onClick={() => pageable(pageNumber + 1)}
+                                                next
+                                            />
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationLink
+                                                onClick={() => pageable(totalPage.length - 1)}
+                                                last
+                                            />
+                                        </PaginationItem>
+                                    </Pagination>
                                 </td>
                             </tr>
+
                         </tfoot>
-                    </table>
+                    </Table>
                 </div>
             </div>
         </>

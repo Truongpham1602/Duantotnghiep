@@ -13,10 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 public class User {
 	@Id
@@ -26,7 +30,7 @@ public class User {
 
 	@ManyToOne
 	@JoinColumn(name = "ROLER_ID")
-	private Role roler;
+	private Role role;
 
 	@Column(name = "FullNAME")
 	private String fullName;
@@ -60,5 +64,10 @@ public class User {
 
 	@OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
 	private List<Bill> billList;
+
+//    @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
+//    private List<Bill> billList;
+//    @OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
+//    private List<Cart> cartList;
 
 }

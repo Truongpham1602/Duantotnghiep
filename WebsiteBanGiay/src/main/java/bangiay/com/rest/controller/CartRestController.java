@@ -1,9 +1,16 @@
 package bangiay.com.rest.controller;
 
-import java.util.List;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import bangiay.com.DTO.MediaDTO;
+import bangiay.com.doMain.constant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +29,7 @@ import bangiay.com.service.CartService;
 @RestController
 @RequestMapping(value = "cart")
 public class CartRestController {
+
 	@Autowired
 	private CartService cartService;
 	@Autowired
@@ -32,7 +40,14 @@ public class CartRestController {
 	public ResponseEntity<List<CartDTO>> getAll() {
 		return ResponseEntity.ok().body(cartService.findAll());
 	}
-
+	@GetMapping("/select")
+	public ResponseEntity<Page<CartDTO>> getPage(
+			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
+			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
+	) {
+		Pageable pageable = PageRequest.of(page - 1 , size);
+		return ResponseEntity.ok(cartService.findAll(pageable));
+	}
 	@GetMapping("/getCart")
 	public ResponseEntity<List<CartDTO>> getCartByUser_Id(
 			@RequestParam(value = "user_Id", required = false) Integer user_Id) {
@@ -41,6 +56,7 @@ public class CartRestController {
 		}
 		return ResponseEntity.ok().body(cartService.getCartNoUser());
 	}
+
 
 	@GetMapping("/getOneById")
 	@CrossOrigin
