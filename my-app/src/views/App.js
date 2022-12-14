@@ -15,7 +15,7 @@ import Product1 from '../components/layout/Product';
 import HeaderPage from '../components/layout/HeaderPage';
 import ProductTest from '../components/HOME/ProductTest';
 import ProductList from '../components/HOME/ProductList';
-import Order from '../components/order/order';
+import Order from '../components/order/Order';
 import ProductOne from '../components/HOME/ProductOne';
 
 import {

@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
-import '../user/User.css';
+import '../user/user.css';
 import moment from 'moment'
 import { ToastContainer, toast } from 'react-toastify';
 import {
@@ -121,36 +121,36 @@ const UpdateUser = (props) => {
                 && user.address?.trim().length <= 0
 
             ) {
-                ch0["fullName"] = "Name not null"
-                ch0["password"] = "Password not null"
-                ch0["email"] = "Email not null"
-                ch0["telephone"] = "Telephone not null"
-                ch0["address"] = "Address not null"
+                ch0["fullName"] = "Họ tên không được để trống"
+                ch0["password"] = "Mật khẩu không được để trống"
+                ch0["email"] = "Email không được để trống"
+                ch0["telephone"] = "Số điện thoại không được để trống"
+                ch0["address"] = "Địa chỉ không được để trống"
                 setCheck({ ...ch0 })
                 return
             }
             if (user.fullName.trim().length <= 0) {
-                ch0["name"] = "Name not null"
+                ch0["name"] = "Họ tên không được để trống"
                 setCheck({ ...ch0 })
                 validForm = false;
             }
             if (user.password.trim().length <= 0) {
-                ch0["password"] = "Password not null"
+                ch0["password"] = "Mật khẩu không được để trống"
                 setCheck({ ...ch0 })
                 validForm = false;
             }
             if (user.email.trim().length <= 0) {
-                ch0["email"] = "Email not null"
+                ch0["email"] = "Email không được để trống"
                 setCheck({ ...ch0 })
                 validForm = false;
             }
             if (user.telephone.trim().length <= 0) {
-                ch0["telephone"] = "Telephone not null"
+                ch0["telephone"] = "Số điện thoại không được để trống"
                 setCheck({ ...ch0 })
                 validForm = false;
             }
             if (user.address.trim().length <= 0) {
-                ch0["address"] = "Address not null"
+                ch0["address"] = "Địa chỉ không được để trống"
                 setCheck({ ...ch0 })
                 validForm = false;
             }
@@ -192,7 +192,7 @@ const UpdateUser = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="name">
-                                        FullName
+                                        Họ tên
                                     </Label>
                                     <Input
                                         id="fullName"
@@ -226,7 +226,7 @@ const UpdateUser = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="telephone">
-                                        Telephone
+                                        Số điện thoại
                                     </Label>
                                     <Input
                                         id="telephone"
@@ -242,7 +242,7 @@ const UpdateUser = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="image">
-                                        Image
+                                        Hình ảnh
                                     </Label>
                                     <Input
                                         id="image"
@@ -262,7 +262,7 @@ const UpdateUser = (props) => {
                                     <Col md={12}>
                                         <FormGroup>
                                             <Label for="address">
-                                                Address
+                                                Địa chỉ
                                             </Label>
                                             <Input
                                                 id="address"
@@ -334,10 +334,10 @@ const UpdateUser = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={(e) => { updateUser(); uploadFile(e) }}>
-                        Save
+                        Lưu
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>
-                        Cancel
+                        Thoát
                     </Button>
                 </ModalFooter>
             </Modal>

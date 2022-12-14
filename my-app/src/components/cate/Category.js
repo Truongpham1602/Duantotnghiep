@@ -2,11 +2,11 @@ import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateCategory from './CreateCategory';
 import UpdateCategory from './UpdateCategory';
-import CategoryDetails from './CategoryDetails';
+import { Pagination } from 'react-bootstrap';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
-  Row, Col, Form
+  Row, Col, Form, PaginationLink, PaginationItem
 } from 'reactstrap';
 import {
   Table
@@ -32,13 +32,47 @@ const Category = () => {
   const [isUpdateModal, setisUpdateModal] = useState(false)
   const [page, setPage] = useState(0);
   const [cateId, setCateId] = useState()
+  const [pageNumber, setPageNumber] = useState()
+  const [totalPage, setTotalPage] = useState([])
 
 
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
     }
+
+    if (dataPro.content) {
+      setData(dataPro.content)
+      setPageNumber(dataPro.number)
+      for (let i = 1; i <= dataPro.totalPages; i++) {
+        setTotalPage((prev) => [...prev, i])
+
+      }
+    }
   }, [dataPro])
+
+  const pageable = async (id) => {
+    if (id <= 0) {
+      id = 0
+    } else if (id >= totalPage.length - 1) {
+      id = totalPage.length - 1
+    }
+    const res = await axios.get(`http://localhost:8080/api/category/get?page=${id}`)
+    let data = res ? res.data : []
+    setData(data.content)
+    setPageNumber(data.number)
+    console.log(data.number);
+  }
+
+  const updateTotalPage = async () => {
+    const res = await axios.get(`http://localhost:8080/api/category/get`)
+    let data = res ? res.data : []
+    if (data.totalPages > totalPage.length) {
+      for (let i = 1; i <= dataPro.totalPages; i++) {
+        setTotalPage((prev) => [...prev, i])
+      }
+    }
+  }
 
 
   const updateData = (res, type) => {
@@ -46,6 +80,7 @@ const Category = () => {
       let copydata = dataCategory;
       copydata.unshift(res);
       setData(copydata);
+      updateTotalPage()
     }
     else if (type === 'update') {
       let copydata = dataCategory;
@@ -107,16 +142,6 @@ const Category = () => {
   // };
 
 
-  const onBack = () => {
-    setPage(page - 1 > -1 ? page - 1 : page);
-  };
-
-  const onNext = () => {
-    setPage(page + 1 < dataCategory.length / 7 ? page + 1 : page);
-  };
-
-
-
   return (
     <>
       {/* <CategoryDetails
@@ -138,14 +163,14 @@ const Category = () => {
         <Table bordered >
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
-              <th colSpan='10'><h3>Category</h3></th>
+              <th colSpan='10'><h3>Loại sản phẩm</h3></th>
             </tr>
             <tr>
               <th>STT</th>
-              <th>Name</th>
+              <th>Tên thể loại</th>
               <th colspan="1">Action</th>
               <th colspan="1">
-                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Create</button>
+                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Thêm</button>
               </th>
             </tr>
           </thead>
@@ -161,54 +186,77 @@ const Category = () => {
                     </th>
                     <td id="category">{item.namecate}</td>
                     <td>
-                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editCategory(item.id); updateModal() }}>Update</button>
+                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editCategory(item.id); updateModal() }}>Cập nhật</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
-                                
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Xóa</button>
+
                     </td>
                   </tr>
                 )
               })
             }
             <Modal
-                  isOpen={nestedModal}
-                  toggle={toggleNested}
-                  // size='lg'
-                >
-                  <ModalHeader>Delete</ModalHeader>
-                  <ModalBody>
-                    Bạn có chắc chắn xóa không?
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button type='button' color="primary" onClick={() => { deleteCategory(cateId) }}>
-                      Delete
-                    </Button>{' '}
-                    <Button color="secondary" onClick={() =>toggleNested()}>
-                      Cancel
-                    </Button>
-                  </ModalFooter>
-                </Modal>
+              isOpen={nestedModal}
+              toggle={toggleNested}
+            // size='lg'
+            >
+              <ModalHeader>Xóa</ModalHeader>
+              <ModalBody>
+                Bạn có chắc chắn xóa không?
+              </ModalBody>
+              <ModalFooter>
+                <Button type='button' color="primary" onClick={() => { deleteCategory(cateId) }}>
+                  Xóa
+                </Button>{' '}
+                <Button color="secondary" onClick={() => toggleNested()}>
+                  Thoát
+                </Button>
+              </ModalFooter>
+            </Modal>
             {isLoading &&
               <tr>
                 <h3>Loading...</h3>
               </tr>
             }
           </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan='10'>
-                <button className="hoverable" onClick={onBack}>
-                  Back
-                </button>
-                <label style={{ margin: '0 10px' }}>{page + 1}</label>
-                <button className="hoverable" onClick={onNext}>
-                  Next
-                </button>
-              </td>
-            </tr>
-          </tfoot>
         </Table>
+        <Pagination>
+          <PaginationItem>
+            <PaginationLink
+              first
+              onClick={() => pageable(0)}
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(pageNumber - 1)}
+              previous
+            />
+          </PaginationItem>
+          {totalPage.map(item => {
+            return (
+              <PaginationItem>
+                <PaginationLink onClick={() => pageable(item - 1)}>
+                  {item}
+                  {console.log(item)}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          })}
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(pageNumber + 1)}
+              next
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(totalPage.length - 1)}
+              last
+            />
+          </PaginationItem>
+        </Pagination>
       </div>
     </>
   )

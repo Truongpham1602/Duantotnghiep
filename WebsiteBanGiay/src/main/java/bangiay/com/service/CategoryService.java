@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
+import bangiay.com.DTO.CategoryDTO;
+import bangiay.com.DTO.UserDTO;
 import bangiay.com.entity.Category;
 
 public interface CategoryService {
@@ -12,7 +14,7 @@ Category save(Category category);
 void deleteById(Integer id);
 Category updateById(Integer id, Category category) throws Exception;
 List<Category> findAllByParentId(Integer id);
-List<Category> findAll();
+public Page<CategoryDTO> findAll (Integer size , Integer page);
 Page<Category> paging(Optional<Integer>pageNumber,int size);
 Category findById(int id) throws Exception;
 

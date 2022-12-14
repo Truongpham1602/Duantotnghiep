@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import '../user/User.css';
+import '../user/user.css';
 import moment from 'moment';
 import {
     ref,
@@ -71,7 +71,7 @@ const CreateUser = (props) => {
             if (id != 'image') {
                 let ch0 = { ...check };
                 if (copyUser[id].trim().length <= 0) {
-                    ch0[id] = `${id} not null !!`
+                    ch0[id] = `${id} không được để trống !!`
                     setCheck({
                         ...ch0
                     })
@@ -112,36 +112,36 @@ const CreateUser = (props) => {
                     && user.address?.trim().length <= 0
 
                 ) {
-                    ch0["fullName"] = "Name not null"
-                    ch0["password"] = "Password not null"
-                    ch0["email"] = "Email not null"
-                    ch0["telephone"] = "Telephone not null"
-                    ch0["address"] = "Address not null"
+                    ch0["fullName"] = "Họ tên không được để trống"
+                    ch0["password"] = "Mật khẩu không được để trống"
+                    ch0["email"] = "Email không được để trống"
+                    ch0["telephone"] = "Số điện thoại không được để trống"
+                    ch0["address"] = "Địa chỉ không được để trống"
                     setCheck({ ...ch0 })
                     return
                 }
                 if (user.fullName.trim().length <= 0) {
-                    ch0["name"] = "Name not null"
+                    ch0["name"] = "Họ tên không được để trống"
                     setCheck({ ...ch0 })
                     validForm = false;
                 }
                 if (user.password.trim().length <= 0) {
-                    ch0["password"] = "Password not null"
+                    ch0["password"] = "Mật khẩu không được để trống"
                     setCheck({ ...ch0 })
                     validForm = false;
                 }
                 if (user.email.trim().length <= 0) {
-                    ch0["email"] = "Email not null"
+                    ch0["email"] = "Email không được để trống"
                     setCheck({ ...ch0 })
                     validForm = false;
                 }
                 if (user.telephone.trim().length <= 0) {
-                    ch0["telephone"] = "Telephone not null"
+                    ch0["telephone"] = "Số điện thoại không được để trống"
                     setCheck({ ...ch0 })
                     validForm = false;
                 }
                 if (user.address.trim().length <= 0) {
-                    ch0["address"] = "Address not null"
+                    ch0["address"] = "Địa chỉ không được để trống"
                     setCheck({ ...ch0 })
                     validForm = false;
                 }
@@ -168,7 +168,7 @@ const CreateUser = (props) => {
                     }
                     updateData(data, `create`)
                     toggle()
-                    notifySuccess('Thêm mới user thành công')
+                    notifySuccess('Thêm mới tài khoản thành công')
                 }
             }
             create()
@@ -201,7 +201,7 @@ const CreateUser = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="name">
-                                        Name
+                                        Họ tên
                                     </Label>
                                     <Input
                                         id="fullName"
@@ -217,7 +217,7 @@ const CreateUser = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="password">
-                                        Password
+                                        Mật khẩu
                                     </Label>
                                     <Input
                                         id="password"
@@ -251,7 +251,7 @@ const CreateUser = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="image">
-                                        Image
+                                        Hình ảnh
                                     </Label>
                                     <Input
                                         id="image"
@@ -272,7 +272,7 @@ const CreateUser = (props) => {
                                     <Col md={12}>
                                         <FormGroup>
                                             <Label for="telephone">
-                                                Telephone
+                                                Số điện thoại
                                             </Label>
                                             <Input
                                                 id="telephone"
@@ -288,7 +288,7 @@ const CreateUser = (props) => {
                                     <Col md={12}>
                                         <FormGroup>
                                             <Label for="address">
-                                                Address
+                                                Địa chỉ
                                             </Label>
                                             <Input
                                                 id="address"
@@ -304,7 +304,7 @@ const CreateUser = (props) => {
                                     <Col md={12}>
                                         <FormGroup>
                                             <Label for="roleId">
-                                                Role
+                                                Vai trò
                                             </Label>
                                             <Input
                                                 id="roleId"
@@ -335,10 +335,10 @@ const CreateUser = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={(e) => { createUser(e); uploadFile(e) }}>
-                        Add New
+                        Thêm
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>
-                        Cancel
+                        Thoát
                     </Button>
                 </ModalFooter>
             </Modal>

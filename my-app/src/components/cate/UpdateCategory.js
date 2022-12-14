@@ -92,14 +92,14 @@ const UpdateCategory = (props) => {
                 size='lg'
                 centered
             >
-                <ModalHeader toggle={() => toggle()}>Update</ModalHeader>
+                <ModalHeader toggle={() => toggle()}>Loại sản phẩm</ModalHeader>
                 <ModalBody>
                     <Form>
                         <Row>
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="name">
-                                        Name cate
+                                        Tên thể loại 
                                     </Label>
                                     <Input
                                         id="fullName"
@@ -116,10 +116,10 @@ const UpdateCategory = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={(e) => { updateCategory(); uploadFile(e) }}>
-                        Save
+                        Lưu
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>
-                        Cancel
+                        Thoát
                     </Button>
                 </ModalFooter>
             </Modal>

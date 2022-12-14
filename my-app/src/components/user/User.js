@@ -259,20 +259,20 @@ const styleToast = {
         <Table bordered >
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
-              <th colSpan='10'><h3>User</h3></th>
+              <th colSpan='10'><h3>Tài khoản</h3></th>
             </tr>
             <tr>
               <th>STT</th>
-              <th>Name</th>
+              <th>Họ tên</th>
               <th>Email</th>
-              <th>Telephone</th>
-              <th>Address</th>
-              <th>Role</th>
+              <th>Số điện thoại</th>
+              <th>Địa chỉ</th>
+              <th>Vai trò</th>
               {/* <th>Trạng thái</th> */}
               <th>Image</th>
               <th colspan="1">Action</th>
               <th colspan="1">
-                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Create</button>
+                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Thêm</button>
               </th>
             </tr>
           </thead>
@@ -313,10 +313,10 @@ const styleToast = {
                       <img src={imageUrls} width="150" height="170" />
                     </td> */}
                     <td>
-                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editUser(item.id); updateModal() }}>Update</button>
+                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editUser(item.id); updateModal() }}>Cập nhật</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Chuyển trạng thái</button>
                     </td>
                   </tr>
                 )
@@ -334,10 +334,10 @@ const styleToast = {
               </ModalBody>
               <ModalFooter>
                 <Button type='button' color="primary" onClick={() => { deleteUser(userId) }}>
-                  Delete
+                  Chuyển
                 </Button>{' '}
                 <Button color="secondary" onClick={() => toggleNested()}>
-                  Cancel
+                  Thoát
                 </Button>
               </ModalFooter>
             </Modal>

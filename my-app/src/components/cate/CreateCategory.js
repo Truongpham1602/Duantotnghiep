@@ -113,7 +113,7 @@ const CreateCategory = (props) => {
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="name">
-                                        Name Cate
+                                        Tên thể loại
                                     </Label>
                                     <Input
                                         id="fullName"
@@ -130,10 +130,10 @@ const CreateCategory = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={(e) => { createCategory(e); uploadFile(e) }}>
-                        Add New
+                        Thêm
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>
-                        Cancel
+                        Thoát
                     </Button>
                 </ModalFooter>
             </Modal>

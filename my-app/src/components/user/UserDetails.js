@@ -96,7 +96,7 @@ const UserDetails = (props) => {
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <label>Phone</label>
+                                                            <label>Số điện thoại</label>
                                                         </div>
                                                         <div class="col-md-6">
                                                             {user.telephone}
@@ -104,7 +104,7 @@ const UserDetails = (props) => {
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <label>Address</label>
+                                                            <label>Địa chỉ</label>
                                                         </div>
                                                         <div class="col-md-6">
                                                             {user.address}
@@ -122,7 +122,7 @@ const UserDetails = (props) => {
                                                     </div> */}
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <label>created</label>
+                                                            <label>Created</label>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <p>{moment(user.created).format('DD/MM/YYYY HH:mm:ss')} - {user.creator}</p>
