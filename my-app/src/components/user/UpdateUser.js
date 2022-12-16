@@ -210,13 +210,13 @@ const UpdateUser = (props) => {
     <div>
       <ToastContainer />
       <Modal isOpen={isUpdateModal} toggle={() => toggle()} size="lg" centered>
-        <ModalHeader toggle={() => toggle()}>Update</ModalHeader>
+        <ModalHeader toggle={() => toggle()}>Cập nhật</ModalHeader>
         <ModalBody>
           <Form>
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="name">FullName</Label>
+                  <Label for="name">Họ tên</Label>
                   <Input
                     id="fullName"
                     name="fullName"
@@ -250,7 +250,7 @@ const UpdateUser = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="telephone">Telephone</Label>
+                  <Label for="telephone">Số điện thoại</Label>
                   <Input
                     id="telephone"
                     name="telephone"
@@ -268,7 +268,7 @@ const UpdateUser = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="image">Image</Label>
+                  <Label for="image">Hình ảnh</Label>
                   <Input
                     id="image"
                     name="image"
@@ -288,7 +288,7 @@ const UpdateUser = (props) => {
                 <Row>
                   <Col md={12}>
                     <FormGroup>
-                      <Label for="address">Address</Label>
+                      <Label for="address">Địa chỉ</Label>
                       <Input
                         id="address"
                         name="address"

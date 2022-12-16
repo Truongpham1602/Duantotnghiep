@@ -83,7 +83,7 @@ const CreateCategory = (props) => {
                 toggle()
             }
             create()
-            notifySuccess('Thêm mới cate thành công')
+            notifySuccess('Thêm mới thành công')
 
         } catch (error) {
             notifyWarning("Cần nhập thông tin")
@@ -106,14 +106,14 @@ const CreateCategory = (props) => {
                 size='lg'
                 centered
             >
-                <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
+                <ModalHeader toggle={() => toggle()}>Thêm</ModalHeader>
                 <ModalBody>
                     <Form>
                         <Row>
                             <Col md={6}>
                                 <FormGroup>
                                     <Label for="name">
-                                        Name Cate
+                                        Tên loại sản phẩm
                                     </Label>
                                     <Input
                                         id="fullName"
@@ -130,10 +130,10 @@ const CreateCategory = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={(e) => { createCategory(e); uploadFile(e) }}>
-                        Add New
+                        Thêm
                     </Button>
                     <Button color="secondary" onClick={() => toggle()}>
-                        Cancel
+                        Thoát
                     </Button>
                 </ModalFooter>
             </Modal>

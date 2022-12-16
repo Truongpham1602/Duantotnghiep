@@ -219,7 +219,7 @@ const UpdateProduct = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="name">Name</Label>
+                  <Label for="name">Tên sản phẩm</Label>
                   <Input
                     id="name"
                     name="name"
@@ -235,7 +235,7 @@ const UpdateProduct = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="color">Color</Label>
+                  <Label for="color">Màu</Label>
                   <Input
                     id="color"
                     name="color"
@@ -253,7 +253,7 @@ const UpdateProduct = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="price">Price</Label>
+                  <Label for="price">Giá</Label>
                   <Input
                     id="price"
                     name="price"
@@ -269,7 +269,7 @@ const UpdateProduct = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="quantity">Quantity</Label>
+                  <Label for="quantity">Số lượng</Label>
                   <Input
                     id="quantity"
                     name="quantity"
@@ -289,7 +289,7 @@ const UpdateProduct = (props) => {
                 <Row>
                   <Col md={10}>
                     <FormGroup>
-                      <Label for="namecate">Category</Label>
+                      <Label for="namecate">Loại sản phẩm</Label>
                       <div>
                         <select
                           style={{
@@ -362,10 +362,10 @@ const UpdateProduct = (props) => {
               handleOnchangeinput(e, "size");
             }}
           >
-            Save
+            Lưu
           </Button>
           <Button color="secondary" onClick={() => toggle()}>
-            Cancel
+            Thoát
           </Button>
         </ModalFooter>
       </Modal>
