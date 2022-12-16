@@ -194,7 +194,7 @@ const ProductDetails = (props) => {
 
     const handleOnchangeFile = (event) => {
         let copy = { ...media };
-        copy['id'] = image.id;
+        copy['id'] = image.dataImage?.id;
         copy['url'] = event.target.files[0].name;
         copy['type'] = 'image';
         copy['productId'] = product.id;
@@ -304,6 +304,22 @@ const ProductDetails = (props) => {
         }
     }
 
+    const deleteImage = async (id) => {
+        try {
+            // handleUpdateImages()
+            await axios.delete(`http://localhost:8080/api/media/delete/${id}`)
+            let copydata = product;
+            copydata.medias = copydata.medias.filter(item => item.id != id);
+            console.log(copydata.medias);
+            setProduct(copydata)
+            notifySuccess('Xóa thành công')
+            toggleImage()
+        } catch (error) {
+            console.log(error.message)
+            notifyError('Lỗi!')
+        }
+    }
+
     const findSizeById = async (id) => {
         try {
             const res = await axios.get(`http://localhost:8080/api/size/find/${id}`)
@@ -321,10 +337,11 @@ const ProductDetails = (props) => {
         }
     }
 
-    const findImageById = async (id) => {
+    const findImageById = async (id, select) => {
         try {
             const res = await axios.get(`http://localhost:8080/api/media/findById/${id}`)
-            setImage(res.data)
+            const dataImage = res.data
+            setImage({ dataImage, select: select })
             imageUrls.map((img) => {
                 if (img.nameImg === res.data.url) {
                     return setImageURL(img.url)
@@ -369,7 +386,7 @@ const ProductDetails = (props) => {
                                             return (
                                                 <>
                                                     {index2 === 0 && img.nameImg === item.url &&
-                                                        <img onClick={() => { findImageById(item.id); toggleImage() }} src={img.url} style={{ height: '353px', width: '100%' }} />
+                                                        <img onClick={() => { findImageById(item.id, 'select'); toggleImage() }} src={img.url} style={{ height: '353px', width: '100%' }} />
                                                     }
                                                 </>
                                             )
@@ -483,18 +500,25 @@ const ProductDetails = (props) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    {image.id > 0 &&
-                        <Button color="primary" onClick={() => updateImage()}>
-                            Save
-                        </Button>
+                    {image.dataImage &&
+                        <>
+                            <Button color="primary" onClick={() => updateImage()}>
+                                Lưu
+                            </Button>
+                            {image.select != 'select' &&
+                                <Button color="danger" onClick={() => deleteImage(image.dataImage.id)}>
+                                    Xóa
+                                </Button>
+                            }
+                        </>
                     }
-                    {!image.id > 0 &&
+                    {!image.dataImage &&
                         <Button color="primary" onClick={() => createImage()}>
-                            Created
+                            Thêm
                         </Button>
                     }
                     <Button color="secondary" onClick={() => toggleImage()}>
-                        Cancel
+                        Hủy
                     </Button>
                 </ModalFooter>
             </Modal>

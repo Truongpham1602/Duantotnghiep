@@ -200,8 +200,9 @@ const CreateUser = (props) => {
       email: "",
       telephone: "",
       address: "",
-      roleId: "",
+      roleId: 2,
       image: "",
+      status: 1,
     });
     setImageUpload("");
   };

@@ -62,6 +62,9 @@ public class User {
 	@Column(name = "STATUS")
 	private Integer status;
 
+	@Column(name = "IMAGE")
+	private String image;
+
 	@OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
 	private List<Bill> billList;
 
