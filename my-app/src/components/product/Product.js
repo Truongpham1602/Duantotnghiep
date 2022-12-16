@@ -276,10 +276,10 @@ const Product = () => {
                                                 <image src={`image/${item.id}`} width="150" height="170" />
                                             </td> */}
                     <td>
-                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editProduct(item.id); updateModal() }}>Update</button>
+                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editProduct(item.id); updateModal() }}>Cập nhật</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Xóa</button>
                     </td>
                   </tr>
                 )
@@ -297,10 +297,10 @@ const Product = () => {
               </ModalBody>
               <ModalFooter>
                 <Button type='button' color="primary" onClick={() => { deleteProduct(proId) }}>
-                  Delete
+                  Xóa
                 </Button>{' '}
                 <Button color="secondary" onClick={() => toggleNested()}>
-                  Cancel
+                  Thoát
                 </Button>
               </ModalFooter>
             </Modal>
