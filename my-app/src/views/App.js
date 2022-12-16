@@ -1,4 +1,5 @@
 import "./App.scss";
+import { ToastContainer, toast } from 'react-toastify';
 import Admin from "../components/layout/Admin";
 import Home from "../components/layout/Home";
 import Product from "../components/product/Product";
@@ -22,28 +23,61 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      {/* <header className="App-header"> */}
-      <Routes>
-        <Route path="/" element={<Home />}>
-          {/* <Route path="cart" element={<> <Cart /></>} /> */}
+    <>
+      <ToastContainer />
+      <div className="App">
+        {/* <header className="App-header"> */}
+        <Routes>
+          <Route path="/" element={<Home />}>
+            {/* <Route path="cart" element={<> <Cart /></>} /> */}
+
+            <Route
+              path=""
+              element={
+                <>
+                  {" "}
+                  <HeaderPage />
+                  <ProductList />
+                </>
+              }
+            />
+            <Route
+              path="shop"
+              element={
+                <>
+                  {" "}
+                  <Product1 />
+                </>
+              }
+            >
+              <Route
+                path=""
+                element={
+                  <>
+                    {" "}
+                    <ProductTest />
+                  </>
+                }
+              />
+            </Route>
+
+            <Route
+              path="productOne"
+              element={
+                <>
+                  {" "}
+                  <ProductOne />
+                </>
+              }
+            ></Route>
+          </Route>
 
           <Route
-            path=""
+            path="admin"
             element={
               <>
                 {" "}
-                <HeaderPage />
-                <ProductList />
-              </>
-            }
-          />
-          <Route
-            path="shop"
-            element={
-              <>
-                {" "}
-                <Product1 />
+                <Admin />
               </>
             }
           >
@@ -52,95 +86,65 @@ function App() {
               element={
                 <>
                   {" "}
-                  <ProductTest />
+                  <Product />
+                  <User />
+                </>
+              }
+            />
+            <Route
+              path="product"
+              element={
+                <>
+                  {" "}
+                  <Product />
+                </>
+              }
+            />
+            <Route
+              path="user"
+              element={
+                <>
+                  {" "}
+                  <User />
+                </>
+              }
+            />
+            <Route
+              path="order"
+              element={
+                <>
+                  {" "}
+                  <Order />
+                </>
+              }
+            />
+            <Route
+              path="voucher"
+              element={
+                <>
+                  {" "}
+                  <Voucher />
+                </>
+              }
+            />
+            <Route
+              path="category"
+              element={
+                <>
+                  {" "}
+                  <Category />
                 </>
               }
             />
           </Route>
-
-          <Route
-            path="productOne"
-            element={
-              <>
-                {" "}
-                <ProductOne />
-              </>
-            }
-          ></Route>
-        </Route>
-
-        <Route
-          path="admin"
-          element={
-            <>
-              {" "}
-              <Admin />
-            </>
-          }
-        >
-          <Route
-            path=""
-            element={
-              <>
-                {" "}
-                <Product />
-                <User />
-              </>
-            }
-          />
-          <Route
-            path="product"
-            element={
-              <>
-                {" "}
-                <Product />
-              </>
-            }
-          />
-          <Route
-            path="user"
-            element={
-              <>
-                {" "}
-                <User />
-              </>
-            }
-          />
-          <Route
-            path="order"
-            element={
-              <>
-                {" "}
-                <Order />
-              </>
-            }
-          />
-          <Route
-            path="voucher"
-            element={
-              <>
-                {" "}
-                <Voucher />
-              </>
-            }
-          />
-          <Route
-            path="category"
-            element={
-              <>
-                {" "}
-                <Category />
-              </>
-            }
-          />
-        </Route>
-        <Route path="cart" element={<Cart />}></Route>
-        <Route path="checkout" element={<Bill />}></Route>
-        <Route path="login" element={<Login />}></Route>
-        <Route path="register" element={<Register />}></Route>
-      </Routes>
-      {/* </header> */}
-    </div>
+          <Route path="cart" element={<Cart />}></Route>
+          <Route path="checkout" element={<Bill />}></Route>
+          <Route path="login" element={<Login />}></Route>
+          <Route path="register" element={<Register />}></Route>
+        </Routes>
+        {/* </header> */}
+      </div>
+    </>
   );
 }
 

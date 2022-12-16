@@ -24,4 +24,5 @@ public interface ProductService {
 
 	public List<Product> listAll(String keyword);
 
+	public void updateStatusFalse(Integer id);
 }

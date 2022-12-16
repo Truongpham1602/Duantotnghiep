@@ -76,4 +76,8 @@ public class ProductRestController {
 		return ResponseEntity.ok(listProducts);
 	}
 
+	@GetMapping("/updateStatusFalse/{id}")
+	public void updateStatusFalse(@PathVariable("id") int id) {
+		productService.updateStatusFalse(id);
+	}
 }

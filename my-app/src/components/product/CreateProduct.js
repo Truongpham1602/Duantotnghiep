@@ -43,6 +43,7 @@ const CreateProduct = (props) => {
     categoryId: "",
     sizes: "",
     medias: "",
+    status: 1
   });
   const [lstSize, setLstSize] = useState([]);
   let [sizeSelect, setSizeSelect] = useState(0);
@@ -345,7 +346,8 @@ const CreateProduct = (props) => {
       quantity: "",
       categoryId: "",
       sizes: "",
-      medias: ""
+      medias: "",
+      status: 1
     });
     setCheck({
       name: "",

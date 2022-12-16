@@ -111,11 +111,12 @@ const Product = () => {
   const deleteProduct = async (id) => {
     // e.preventDefault();
     try {
-      await axios.delete(`http://localhost:8080/admin/product/delete/${id}`)
+      await axios.get(`http://localhost:8080/admin/product/updateStatusFalse/${id}`)
       let copyList = dataProduct;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
       toggleNested()
+      toast.success('Xóa thành công', styleToast)
       // updateData(res.data)
     } catch (error) {
       console.log(error.message)
@@ -229,15 +230,15 @@ const Product = () => {
             </tr>
             <tr>
               <th>STT</th>
-              <th>Name</th>
-              <th>Color</th>
-              {/* <th>Price</th> */}
-              <th>Quantity</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th colspan="1">Action</th>
-              <th colspan="1">
-                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Create</button>
+              <th>Tên</th>
+              <th>Màu</th>
+              <th>Giá</th>
+              <th>Số Lượng</th>
+              <th>Loại</th>
+              <th>Mô tả</th>
+              <th>Ảnh</th>
+              <th colspan="2">
+                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Thêm</button>
               </th>
             </tr>
           </thead>
@@ -253,7 +254,7 @@ const Product = () => {
                     </th>
                     <td id="category" onClick={() => { editProduct(item.id); detailsModal() }}>{item.name}</td>
                     <td id="category">{item.color}</td>
-                    {/* <td id="price">{item.price}</td> */}
+                    <td id="price">{item.price}</td>
                     <td id="quantity">{item.quantity}</td>
                     <td id="category">{item.name_cate}</td>
                     <td id="description">{item.description}</td>
