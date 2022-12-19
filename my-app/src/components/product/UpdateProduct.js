@@ -1,7 +1,8 @@
 import { React, useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
-
+import useCallGetAPI from "../../customHook/CallGetApi";
+import { ToastContainer, toast } from "react-toastify";
 import {
   Button,
   Modal,
@@ -21,14 +22,30 @@ const UpdateProduct = (props) => {
   const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
   const { isUpdateModal, toggleModal, updateData } = props;
   const [product, setProduct] = useState(props.product);
-  const [check, setCheck] = useState({});
+  const [check, setCheck] = useState({
+    name: "",
+    color: "",
+    price: "",
+    quantity: "",
+    categoryId: ""
+  });
+  const { data: cates } = useCallGetAPI(
+    `http://localhost:8080/api/category/get`
+  );
   const [lstCate, setLstCate] = useState([]);
+  const [cate, setCate] = useState();
+  const [nestedModal, setNestedModal] = useState(false);
+  const [closeAll, setCloseAll] = useState(false);
+
   useEffect(() => {
     setProduct(props.product);
   }, [props.product]);
 
+  useEffect(() => {
+    setLstCate(cates);
+  }, [cates]);
   const handleOnchangeinput = (event, id) => {
-    let gia = /(([0-9]{6})\b)/g;
+    let gia = /(([0-9]{4})\b)/g;
     let soluong = /(([0-9]{1})\b)/g;
     let chu = /[a-zA-Z]/g;
     let copyProduct = { ...product };
@@ -36,67 +53,46 @@ const UpdateProduct = (props) => {
     try {
       let ch0 = { ...check };
       if (id == "name") {
-        // if (chu.test(event.target.value) == false) {
-        //   ch0["name"] = "Sai định dạng";
-        // } else {
-        //   if (product.name.trim().length == 0) {
-        //     ch0["name"] = "Tên không được để trống";
-        //   } else {
-        //     ch0[id] = "";
-        //   }
-        // }
-        if (product.name.length == 0) {
+        if (copyProduct[id].trim().length > 0 && chu.test(event.target.value) == false) {
+          ch0["name"] = "Sai định dạng";
+        } else if (copyProduct[id].trim().length == 0) {
           ch0["name"] = "Tên không được để trống";
         } else {
-          if (chu.test(event.target.value) == false) {
-            ch0["name"] = "Sai định dạng";
-          } else {
-            ch0[id] = "";
-          }
+          ch0[id] = "";
         }
         setCheck({
           ...ch0,
         });
       } else {
         if (id == "color") {
-          if (chu.test(event.target.value) == false) {
+          if (copyProduct[id].trim().length > 0 && chu.test(event.target.value) == false) {
             ch0["color"] = "Sai định dạng";
+          } else if (copyProduct[id].trim().length == 0) {
+            ch0["color"] = "Màu không được để trống";
           } else {
-            if (product.color.trim().length == 0) {
-              ch0["color"] = "Màu không được để trống";
-            } else {
-              ch0[id] = "";
-            }
+            ch0[id] = "";
           }
         } else if (id == "price") {
-          if (gia.test(event.target.value) == false) {
-            ch0["price"] = "giá sản phẩm phải là số";
+          if (copyProduct[id].trim().length > 0 && gia.test(event.target.value) == false) {
+            ch0["price"] = "Giá sản phẩm phải là số";
+          } else if (copyProduct[id].trim().length == 0) {
+            ch0["price"] = "Giá không được để trống";
           } else {
             ch0["price"] = "";
           }
         } else if (id == "quantity") {
-          if (soluong.test(event.target.value) == false) {
-            ch0["quantity"] = "Số lượng sản phẩm phải là số";
+          if (copyProduct[id].trim().length > 0 && soluong.test(event.target.value) == false) {
+            ch0["quantity"] = "Số lượng phải là số";
+          } else if (copyProduct[id].trim().length == 0) {
+            ch0["quantity"] = "Số lượng không được để trống";
           } else {
             ch0["quantity"] = "";
           }
-        } else if (id == "namecate") {
+        } else if (id == "categoryId") {
           if (copyProduct[id] == 0) {
-            ch0["namecate"] = "Tên danh mục không được để trống";
+            ch0["categoryId"] = "Danh mục không được để trống";
           } else {
-            ch0["namecate"] = "";
-          }
-        } else if (id == "sizes") {
-          if (copyProduct[id] == 0) {
-            ch0["sizes"] = "Số lượng kích cỡ không được để trống";
-          } else {
-            ch0["sizes"] = "";
-          }
-        } else if (id == "medias") {
-          if (copyProduct[id] == 0) {
-            ch0["medias"] = "Ảnh không được để trống";
-          } else {
-            ch0["medias"] = "";
+            ch0["categoryId"] = "";
           }
         } else {
           ch0[id] = "";
@@ -105,78 +101,41 @@ const UpdateProduct = (props) => {
           ...ch0,
         });
       }
+      setProduct({
+        ...copyProduct,
+      });
     } catch (error) {
       console.log(error);
     }
-    setProduct({
-      ...copyProduct,
-    });
   };
 
   const updateProduct = async () => {
     try {
       let ch0 = { ...check };
-      if (
-        product.name.trim().length <= 0 ||
-        product.color.trim().length <= 0 ||
-        product.price.trim().length <= 0 ||
-        product.quantity.trim().length <= 0 ||
-        product.name_cate.length <= 0 ||
-        product.sizes.length <= 0 ||
-        product.description.trim().length <= 0 ||
-        product.medias.length <= 0
-      ) {
-        ch0["name"] = "Tên không được để trống";
-        ch0["color"] = "Màu sắc không được để trống";
-        ch0["price"] = "Giá không được để trống";
-        ch0["quantity"] = "Số lượng sản phẩm không được để trống";
-        ch0["namecate"] = "Hãy chọn danh mục";
-        ch0["sizes"] = "Hãy chọn số lượng cỡ giày";
-        ch0["description"] = "";
-        ch0["medias"] = "Hãy chọn ảnh";
-        setCheck({ ...ch0 });
-        return;
-      } else if (product.name.trim().length == 0) {
+      product.price = product.price + ''
+      product.quantity = product.quantity + ''
+      product.categoryId = product.categoryId + ''
+      if (product.name.trim().length == 0) {
         ch0["name"] = "Tên không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (product.color.trim().length == 0) {
+      } if (product.color.trim().length == 0) {
         ch0["color"] = "Màu sắc không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (product.price.trim().length == 0) {
+      } if (product.price.trim().length == 0) {
         ch0["price"] = "Giá không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (product.quantity.trim().length == 0) {
+      } if (product.quantity.trim().length == 0) {
         ch0["quantity"] = "Số lượng không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (product.name_cate.length == 0) {
-        ch0["namecate"] = "Hãy chọn danh mục";
+      } if (product.categoryId.trim().length == 0) {
+        ch0["categoryId"] = "Danh mục không được để trống";
         setCheck({ ...ch0 });
-        return;
-      } else if (product.sizes.length == 0) {
-        ch0["sizes"] = "Hãy chọn số lượng cỡ giày";
-        setCheck({ ...ch0 });
-        return;
-      } else if (product.medias.length == 0) {
-        ch0["medias"] = "Hãy chọn ảnh";
-        setCheck({ ...ch0 });
-        return;
-      } else if (product.medias.length > 5) {
-        ch0["medias"] = "Số lượng ảnh không được lớn hơn 5";
-        setCheck({ ...ch0 });
-        return;
-      } else if (
+      }
+      if (
         check.name.trim().length > 0 ||
         check.color.trim().length > 0 ||
         check.price.trim().length > 0 ||
-        check.quantity.trim().length > 0 ||
-        check.namecate.length > 0 ||
-        check.sizes.length > 0 ||
-        check.description.trim().length > 0 ||
-        check.medias.length > 0
+        check.quantity.trim().length > 0
       ) {
         return;
       }
@@ -198,8 +157,9 @@ const UpdateProduct = (props) => {
       let data = res && res.data ? res.data : [];
       data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
       data.modified = moment(data.modified).format("DD/MM/YYYY HH:mm:ss");
+      data.image = product.image
       toggle();
-      updateData(data, "update");
+      updateData(data, "", "update");
     } catch (error) {
       console.log(error.message);
     }
@@ -210,16 +170,60 @@ const UpdateProduct = (props) => {
     setProduct({});
   };
 
+  const createCate = async () => {
+    try {
+      let res = await axios.post("http://localhost:8080/api/category/create", {
+        namecate: cate,
+      });
+      let data = res && res.data ? res.data : {};
+      let copydata = lstCate;
+      if (res.data) {
+        copydata.unshift(data);
+        setLstCate(copydata);
+        notifySuccess("Thêm mới cate thành công");
+        toggleNested();
+      }
+    } catch (error) {
+      notifyError("Thêm mới thất bại!");
+      console.log(error);
+    }
+  };
+
+  const toggleNested = () => {
+    setNestedModal(!nestedModal);
+    setCloseAll(false);
+    setCate();
+  };
+  const notifySuccess = (text) => {
+    toast.success(text, styleToast);
+  };
+  const notifyWarning = (text) => {
+    toast.warning(text, styleToast);
+  };
+  const notifyError = (text) => {
+    toast.error(text, styleToast);
+  };
+
+  const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  };
   return (
-    <div>
+    <>
       <Modal isOpen={isUpdateModal} toggle={() => toggle()} size="lg" centered>
-        <ModalHeader toggle={() => toggle()}>Update</ModalHeader>
+        <ModalHeader toggle={() => toggle()}>Cập nhật</ModalHeader>
         <ModalBody>
           <Form>
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="name">Name</Label>
+                  <Label for="name">Tên</Label>
                   <Input
                     id="name"
                     name="name"
@@ -235,7 +239,7 @@ const UpdateProduct = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="color">Color</Label>
+                  <Label for="color">Màu</Label>
                   <Input
                     id="color"
                     name="color"
@@ -253,7 +257,7 @@ const UpdateProduct = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="price">Price</Label>
+                  <Label for="price">Giá</Label>
                   <Input
                     id="price"
                     name="price"
@@ -269,7 +273,7 @@ const UpdateProduct = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="quantity">Quantity</Label>
+                  <Label for="quantity">Số Lượng</Label>
                   <Input
                     id="quantity"
                     name="quantity"
@@ -287,14 +291,15 @@ const UpdateProduct = (props) => {
             <Row>
               <Col md={12}>
                 <Row>
-                  <Col md={10}>
+                  <Col md={11}>
                     <FormGroup>
-                      <Label for="namecate">Category</Label>
+                      <Label for="namecate">Danh mục</Label>
                       <div>
                         <select
                           style={{
                             border: "1px solid",
                             width: "100%",
+                            height: "37px",
                             borderRadius: "5px",
                           }}
                           id="namecate"
@@ -303,22 +308,23 @@ const UpdateProduct = (props) => {
                           type="select"
                           //value={product.namecate}
                           onChange={(event) =>
-                            handleOnchangeinput(event, "namecate")
+                            handleOnchangeinput(event, "categoryId")
                           }
                         >
                           {lstCate.map((item, index) => {
-                            if (item.id === product.namecate) {
+                            if (item.id == product.categoryId) {
                               return (
-                                <option key={index} value={item.id} selected>
-                                  {item.category}
+                                <option key={item.id} value={item.id} selected>
+                                  {item.namecate}
+                                </option>
+                              );
+                            } else {
+                              return (
+                                <option key={item.id} value={item.id}>
+                                  {item.namecate}
                                 </option>
                               );
                             }
-                            return (
-                              <option key={index} value={item.id}>
-                                {item.category}
-                              </option>
-                            );
                           })}
                         </select>
                         {check.namecate && check.namecate.length > 0 && (
@@ -329,7 +335,7 @@ const UpdateProduct = (props) => {
                   </Col>
                   <Col md={1}>
                     <Label for="category">Thêm</Label>
-                    <Button color="secondary">+</Button>
+                    <Button color="primary" type="button" onClick={toggleNested}>+</Button>
                   </Col>
                 </Row>
               </Col>
@@ -337,7 +343,7 @@ const UpdateProduct = (props) => {
             <Row>
               <Col md={12}>
                 <FormGroup>
-                  <Label for="description">Description</Label>
+                  <Label for="description">Mô Tả</Label>
                   <Input
                     id="description"
                     name="description"
@@ -362,14 +368,46 @@ const UpdateProduct = (props) => {
               handleOnchangeinput(e, "size");
             }}
           >
-            Save
+            Lưu
           </Button>
           <Button color="secondary" onClick={() => toggle()}>
-            Cancel
+            Hủy
           </Button>
         </ModalFooter>
       </Modal>
-    </div>
+      <Modal
+        isOpen={nestedModal}
+        toggle={toggleNested}
+        onClosed={closeAll ? toggle : undefined}
+        // size='lg'
+        centered
+      >
+        <ModalHeader>Thêm danh mục</ModalHeader>
+        <ModalBody>
+          <Input
+            id="namecate"
+            placeholder="Name Category"
+            name="namecate"
+            onChange={(event) => setCate(event.target.value)}
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            type="button"
+            color="primary"
+            onClick={() => {
+              //createProduct();
+              createCate();
+            }}
+          >
+            Thêm
+          </Button>
+          <Button color="secondary" onClick={toggleNested}>
+            Hủy
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </>
   );
 };
 

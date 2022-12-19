@@ -2,6 +2,8 @@ package bangiay.com.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,4 +16,7 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 			+ " ' ' , p.price, ' ', p.quantity, ' ', p.created, ' ', p.creator,"
 			+ " ' ', p.modified, ' ', p.modifier, ' ', p.status) LIKE %?1%")
 	public List<Product> search(String keyword);
+
+	@Query("SELECT p FROM Product p WHERE p.status =1")
+	Page<Product> findPageWhereStatus(Pageable pageable);
 }

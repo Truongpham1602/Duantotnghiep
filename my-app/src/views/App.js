@@ -24,7 +24,6 @@ import { Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>
-      <ToastContainer />
       <div className="App">
         {/* <header className="App-header"> */}
         <Routes>

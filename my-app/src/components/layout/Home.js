@@ -31,6 +31,10 @@ const Home = () => {
     navigate("/productOne");
   };
   const addToCart = async (size_Id, quantity) => {
+    if (size_Id == null) {
+      toast.warning("Chưa chọn size!")
+      return
+    }
     let res = await axios.post(`http://localhost:8080/cart/addToCart`, {
       size_Id: size_Id,
       quantity: quantity,
@@ -39,13 +43,13 @@ const Home = () => {
     // copydata.unshift(res.data);
     setCart(res.data);
     navigate(window.location.pathname);
-    toast.success("Add to cart success");
+    toast.success("Thêm vào giỏ hàng thành công");
   };
   return (
     <>
       <ToastContainer />
       <Header dataCart={cart} />
-      <Outlet context={[addToCart, product]} />
+      <Outlet context={[nextProductDetail, addToCart, product]} />
       <Footer />
     </>
   );

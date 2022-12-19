@@ -3,9 +3,10 @@ import axios from 'axios';
 import CreateProduct from './CreateProduct';
 import UpdateProduct from './UpdateProduct';
 import useCallGetAPI from '../../customHook/CallGetApi';
+import { Pagination } from 'react-bootstrap';
 import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
-  Row, Col, Form
+  Row, Col, Form, PaginationLink, PaginationItem
 } from 'reactstrap';
 import ProductDetails from './ProductDetails';
 import { ToastContainer, toast } from 'react-toastify';
@@ -226,7 +227,7 @@ const Product = () => {
         <Table bordered>
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
-              <th colSpan='10'><h3>Product</h3></th>
+              <th colSpan='10'><h3>Sản Phẩm</h3></th>
             </tr>
             <tr>
               <th>STT</th>
@@ -279,7 +280,7 @@ const Product = () => {
                       <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editProduct(item.id); updateModal() }}>Update</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Xóa</button>
                     </td>
                   </tr>
                 )
@@ -291,16 +292,16 @@ const Product = () => {
               toggle={toggleNested}
             // size='lg'
             >
-              <ModalHeader>Delete</ModalHeader>
+              <ModalHeader>Xóa</ModalHeader>
               <ModalBody>
                 Bạn có chắc chắn xóa không?
               </ModalBody>
               <ModalFooter>
                 <Button type='button' color="primary" onClick={() => { deleteProduct(proId) }}>
-                  Delete
+                  Xóa
                 </Button>{' '}
                 <Button color="secondary" onClick={() => toggleNested()}>
-                  Cancel
+                  Hủy
                 </Button>
               </ModalFooter>
             </Modal>
@@ -314,13 +315,41 @@ const Product = () => {
           <tfoot>
             <tr>
               <td colSpan='10'>
-                <button className="hoverable" onClick={onBack}>
-                  Back
-                </button>
-                <label style={{ margin: '0 10px' }}>{page + 1}</label>
-                <button className="hoverable" onClick={onNext}>
-                  Next
-                </button>
+                <Pagination>
+                  <PaginationItem>
+                    <PaginationLink
+                    // first
+                    // onClick={() => pageable(0)}
+                    />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink
+                    // onClick={() => pageable(pageNumber - 1)}
+                    // previous
+                    />
+                  </PaginationItem>
+                  {/* {totalPage.map(item => {
+                    return (
+                      <PaginationItem>
+                        <PaginationLink onClick={() => pageable(item - 1)}>
+                          {item}
+                        </PaginationLink>
+                      </PaginationItem>
+                    )
+                  })} */}
+                  <PaginationItem>
+                    <PaginationLink
+                    // onClick={() => pageable(pageNumber + 1)}
+                    // next
+                    />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink
+                    // onClick={() => pageable(totalPage.length - 1)}
+                    // last
+                    />
+                  </PaginationItem>
+                </Pagination>
               </td>
             </tr>
           </tfoot>

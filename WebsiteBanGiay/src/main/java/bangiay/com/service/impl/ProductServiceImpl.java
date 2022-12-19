@@ -81,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
 		List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(product.getId());
 		byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
 		productdto.setName_cate(product.getCategory().getNamecate());
+		productdto.setImage(media.get(0).getUrl());
 		productdto.setMedias(SerializationUtils.deserialize(datamedia));
 		productdto.setSizes(SerializationUtils.deserialize(datalstSizeDTO));
 		return productdto;

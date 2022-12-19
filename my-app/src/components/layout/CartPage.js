@@ -18,7 +18,7 @@ import { async } from '@firebase/util';
 
 const Cart = () => {
     const [lstproduct, setLstProduct] = useState([])
-    // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
+    const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
 
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
@@ -95,7 +95,8 @@ const Cart = () => {
             })
             let index = copydata.findIndex((p) => { return p.id == item.size_Id });
             let sizeSelect = copydata.find((p) => { return p.id == item.size_Id });
-            sizeSelect['selected'] = true
+            console.log(sizeSelect);
+            // sizeSelect['selected'] = true
             copydata.fill(sizeSelect, index, index + 1);
             item['size'] = copydata
             setLstCart((prev) => [...prev, item])
@@ -146,8 +147,8 @@ const Cart = () => {
     }
 
     const updateQuantity = async (pro_Id, quantity, totalQuantitySize) => {
-        if (quantity >= totalQuantitySize) {
-            toast.warning('Exceeded the number of products available', styleToast)
+        if (quantity > totalQuantitySize) {
+            toast.warning('Lớn hơn số lượng đang có', styleToast)
             return
         }
         const res = await axios.get(`http://localhost:8080/cart/updateQuantityNoUser/${pro_Id}?quantity=${quantity}`)
@@ -162,7 +163,7 @@ const Cart = () => {
 
     const nextToPayment = () => {
         if (lstcart.length <= 0) {
-            toast.warning('There are no products in the cart', styleToast)
+            toast.warning('Chưa có sản phẩm trong giỏ hàng', styleToast)
             return
         }
         navigate('/checkout')

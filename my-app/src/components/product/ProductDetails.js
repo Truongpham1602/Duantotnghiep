@@ -216,10 +216,11 @@ const ProductDetails = (props) => {
     const checkQuantitySize = () => {
         let totalQuantitySize = 0
         product.sizes.map(item => { totalQuantitySize += item.quantity })
-        console.log(totalQuantitySize);
-        console.log(product.quantity);
-        if (totalQuantitySize + Number(sizeProQuantity.quantity) > product.quantity) {
-            notifyWarning('Quantity > Quantity Pro')
+        if (Number(sizeProQuantity.quantity) <= 0) {
+            notifyWarning('Số lượng cần lớn hơn 0!')
+            return false
+        } else if (totalQuantitySize + Number(sizeProQuantity.quantity) > product.quantity) {
+            notifyWarning('Số lượng không đủ!')
             return false
         }
         return true
@@ -238,12 +239,12 @@ const ProductDetails = (props) => {
                 let copydataProduct = product;
                 copydataProduct.sizes.push(res.data);
                 setProduct(copydataProduct)
-                notifySuccess('Create Success')
+                notifySuccess('Thêm thành công')
                 toggleSize()
             }
         } catch (error) {
             console.log(error.message)
-            notifyError('Created Error')
+            notifyError('Lỗi!!!')
         }
     }
 
@@ -261,12 +262,34 @@ const ProductDetails = (props) => {
                 let getIndex = copydataProduct.sizes.findIndex((p) => { return p.id == res.data.id });
                 copydataProduct.sizes.fill(res.data, getIndex, getIndex + 1);
                 setProduct(copydataProduct)
-                notifySuccess('Update Success')
+                notifySuccess('Cập nhật thành công')
                 toggleSize()
             }
         } catch (error) {
             console.log(error.message)
-            notifyError('Update Error')
+            notifyError('Lỗi!!!')
+        }
+    }
+
+    const deleteSizePro = async () => {
+        try {
+            sizeProQuantity.quantity = 0;
+            const res = await axios.put(`http://localhost:8080/api/size/put/${sizePro.id}`, sizeProQuantity)
+            let copydataSize = sizes;
+            let getIndexSize = copydataSize.findIndex((p) => { return p.title == res.data.size });
+            let size = { id: res.data.id, title: res.data.size, quantity: res.data.quantity, status: true }
+            copydataSize.fill(size, getIndexSize, getIndexSize + 1);
+            setSizes(copydataSize)
+            // set product.sizes
+            let copydataProduct = product;
+            let getIndex = copydataProduct.sizes.findIndex((p) => { return p.id == res.data.id });
+            copydataProduct.sizes.fill(res.data, getIndex, getIndex + 1);
+            setProduct(copydataProduct)
+            notifySuccess('Cập nhật thành công')
+            toggleSize()
+        } catch (error) {
+            console.log(error.message)
+            notifyError('Lỗi!!!')
         }
     }
 
@@ -277,12 +300,12 @@ const ProductDetails = (props) => {
             let copydata = product;
             copydata.medias.push(res.data[0]);
             setProduct(copydata)
-            notifySuccess('Create Success')
+            notifySuccess('Thêm thành công')
             toggleImage()
             navigate('/admin/product')
         } catch (error) {
             console.log(error.message)
-            notifyError('Created Error')
+            notifyError('Lỗi!!!')
         }
     }
 
@@ -296,11 +319,11 @@ const ProductDetails = (props) => {
             let productz = { ...copydata, image: copydata.medias[0].url }
             // setMedia(copydata)
             updateData(productz, '', 'update')
-            notifySuccess('Update Success')
+            notifySuccess('Cập nhật thành công')
             toggleImage()
         } catch (error) {
             console.log(error.message)
-            notifyError('Update Error')
+            notifyError('Lỗi!!!')
         }
     }
 
@@ -328,12 +351,13 @@ const ProductDetails = (props) => {
             let copy = { ...sizeProQuantity };
             copy['productId'] = product.id;
             copy['quantity'] = res.data.quantity;
+            copy['size'] = res.data.size;
             setSizeProQuantity({
                 ...copy
             })
         } catch (error) {
             console.log(error.message)
-            notifyError('ERROR!!!')
+            notifyError('Lỗi!!!')
         }
     }
 
@@ -349,14 +373,14 @@ const ProductDetails = (props) => {
             })
         } catch (error) {
             console.log(error.message)
-            notifyError('ERROR!!!')
+            notifyError('Lỗi!!!')
         }
     }
 
     return (
         <div>
             <Modal isOpen={isDetailsModal} toggle={() => toggle()} size='xl' centered>
-                <ModalHeader toggle={() => toggle()}>Details Product</ModalHeader>
+                <ModalHeader toggle={() => toggle()}>Chi tiết sản phẩm</ModalHeader>
                 <ModalBody>
                     <div className="product-details row">
                         <div className="product-details-left row col-lg-7 pt-3">
@@ -400,18 +424,18 @@ const ProductDetails = (props) => {
                                 <h1>{product.name}</h1>
                             </div>
                             <div className="product-details-right-product-color">
-                                <p className="color"><span className="colorDetails">Color: </span>{product.color}</p>
+                                <p className="color"><span className="colorDetails">Màu: </span>{product.color}</p>
                             </div>
                             <div className="product-details-right-product-color">
-                                <p className="color"><span className="colorDetails">Cate: </span>{product.name_cate}</p>
+                                <p className="color"><span className="colorDetails">Loại: </span>{product.name_cate}</p>
                             </div>
                             <div className="product-details-right-product-price">
-                                <p><span className="priceDetails">Price: </span>{product.price}<sup>đ</sup></p>
+                                <p><span className="priceDetails">Giá: </span>{product.price}<sup>đ</sup></p>
                             </div>
 
                             <div className="product-details-right-product-size row">
                                 <div className="col-lg-1">
-                                    <span className="SizeDetails">Size: </span>
+                                    <span className="SizeDetails">Kích Cỡ: </span>
                                 </div>
                                 <div className="col-lg-11 sizeDetai">
                                     {sizes.map((item, index1) => {
@@ -426,14 +450,14 @@ const ProductDetails = (props) => {
                                 </div>
                             </div>
                             <div className="product-details-right-product-quantity">
-                                <span className="quantityLeft">Quantity: </span><span>{product.quantity}</span>
+                                <span className="quantityLeft">Số Lượng: </span><span>{product.quantity}</span>
                             </div>
                             <div className="product-details-right-product-created">
-                                <span className="createdLeft">Created: </span>
+                                <span className="createdLeft">Ngày Tạo: </span>
                                 <span className="creatorLeft">{moment(product.created).format('DD/MM/YYYY HH:mm:ss')} - {product.creator}</span>
                             </div>
                             <div className="product-details-right-product-modified">
-                                <span className="modifiedLeft">Modified: </span>
+                                <span className="modifiedLeft">Ngày Sửa: </span>
                                 <span className="modifierLeft">{product.modified ? moment(product.modified).format('DD/MM/YYYY HH:mm:ss') : ''} - {product.modifier}</span>
                             </div>
                             {/* <div className="product-details-right-product-button">
@@ -447,7 +471,7 @@ const ProductDetails = (props) => {
                 Do Something
                 </Button>{' '} */}
                     <Button color="secondary" onClick={() => toggle()}>
-                        Cancel
+                        Hủy
                     </Button>
                 </ModalFooter>
             </Modal>
@@ -455,7 +479,7 @@ const ProductDetails = (props) => {
                 <ModalHeader toggle={() => toggleSize()}>Size {sizeSelect}</ModalHeader>
                 <ModalBody>
                     <Label for="description">
-                        Quantity
+                        Số Lượng
                     </Label>
                     <div>
                         <input value={sizeProQuantity.quantity} onChange={(e) => handleOnchangeinput(e)}
@@ -465,17 +489,22 @@ const ProductDetails = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     {sizePro.id > 0 &&
-                        <Button color="primary" onClick={() => updateSizePro()}>
-                            Save
-                        </Button>
+                        <>
+                            <Button color="primary" onClick={() => updateSizePro()}>
+                                Lưu
+                            </Button>
+                            <Button color="danger" onClick={() => deleteSizePro()}>
+                                Xóa
+                            </Button>
+                        </>
                     }
                     {!sizePro.id > 0 &&
                         <Button color="primary" onClick={() => createSizePro()}>
-                            Created
+                            Thêm
                         </Button>
                     }
                     <Button color="secondary" onClick={() => toggleSize()}>
-                        Cancel
+                        Hủy
                     </Button>
                 </ModalFooter>
             </Modal>

@@ -126,12 +126,12 @@ const CreateProduct = (props) => {
           ...ch0,
         });
       }
+      setProduct({
+        ...copyProduct,
+      });
     } catch (error) {
       console.log(error);
     }
-    setProduct({
-      ...copyProduct,
-    });
   };
 
   useEffect(() => {
@@ -331,11 +331,6 @@ const CreateProduct = (props) => {
     setCloseAll(false);
     setCate();
   };
-  const toggleAll = () => {
-    setNestedModal(!nestedModal);
-    setCloseAll(false);
-    setCate();
-  };
 
   const toggle = () => {
     toggleModal();
@@ -354,7 +349,7 @@ const CreateProduct = (props) => {
       color: "",
       price: "",
       quantity: "",
-      namecate: "",
+      categoryId: "",
       sizes: "",
       medias: ""
     })
@@ -399,7 +394,7 @@ const CreateProduct = (props) => {
       <ToastContainer />
       <Modal isOpen={isCreateModal} toggle={() => toggle()} size="xl" centered>
         <Form onSubmit={handleSubmit(createProduct)} innerRef={ref}>
-          <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
+          <ModalHeader toggle={() => toggle()}>Thêm</ModalHeader>
           <ModalBody>
             <Row>
               <Col md={7}>
@@ -553,7 +548,7 @@ const CreateProduct = (props) => {
                           marginLeft: "0%",
                         }}
                       >
-                        <Label for="category">add</Label>
+                        <Label for="category">Thêm</Label>
                         <button
                           type="button"
                           style={{
@@ -634,7 +629,7 @@ const CreateProduct = (props) => {
                           <Row>
                             <Col md={4}>
                               <FormGroup>
-                                <Label for="description">Size</Label>
+                                <Label for="description">Kích Cỡ</Label>
                                 <div>
                                   <select
                                     style={{
@@ -659,7 +654,7 @@ const CreateProduct = (props) => {
                             </Col>
                             <Col md={8}>
                               <FormGroup>
-                                <Label for="description">Quantity</Label>
+                                <Label for="description">Số Lượng</Label>
                                 <div>
                                   <input
                                     style={{
@@ -904,10 +899,10 @@ const CreateProduct = (props) => {
                 createProduct();
               }}
             >
-              Add New
+              Thêm Mới
             </Button>
             <Button color="secondary" onClick={() => toggle()}>
-              Cancel
+              Hủy
             </Button>
           </ModalFooter>
         </Form>
@@ -918,7 +913,7 @@ const CreateProduct = (props) => {
           // size='lg'
           centered
         >
-          <ModalHeader>Thêm category</ModalHeader>
+          <ModalHeader>Thêm danh mục</ModalHeader>
           <ModalBody>
             <Input
               id="namecate"
@@ -936,10 +931,10 @@ const CreateProduct = (props) => {
                 createCate();
               }}
             >
-              Add
+              Thêm
             </Button>
             <Button color="secondary" onClick={toggleNested}>
-              Cancel
+              Hủy
             </Button>
           </ModalFooter>
         </Modal>
