@@ -1,16 +1,12 @@
 package bangiay.com.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-
 import bangiay.com.dao.UserDao;
-import bangiay.com.entity.User;
 
 @Service
 public class AccountService implements UserDetailsService {
@@ -26,8 +22,7 @@ public class AccountService implements UserDetailsService {
 //					.password(user.getPassword()).roles(user.getRole().getRoleName()).build();
 //		}
 //		throw new UsernameNotFoundException("User not found with the name " + username);
-//	}
-//
+
 		return null;
 	}
 }

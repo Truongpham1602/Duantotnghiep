@@ -46,15 +46,15 @@ const User = () => {
     if (dataPro && dataPro.length > 0) {
       setData(dataPro)
     }
-    
+
     if (dataPro.content) {
       setData(dataPro.content)
       setPageNumber(dataPro.number)
       for (let i = 1; i <= dataPro.totalPages; i++) {
-          setTotalPage((prev) => [...prev, i])
+        setTotalPage((prev) => [...prev, i])
 
       }
-  }
+    }
   }, [dataPro])
 
   useEffect(() => {
@@ -72,15 +72,15 @@ const User = () => {
 
   const notifyWarning = (text) => {
     toast.warning(text, styleToast);
-};
-const notifySuccess = (text) => {
+  };
+  const notifySuccess = (text) => {
     toast.success(text, styleToast)
-};
-const notifyError = (text) => {
+  };
+  const notifyError = (text) => {
     toast.error(text, styleToast);
-};
+  };
 
-const styleToast = {
+  const styleToast = {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -89,7 +89,7 @@ const styleToast = {
     draggable: true,
     progress: undefined,
     theme: "colored",
-}
+  }
 
 
   const uploadFile = () => {
@@ -114,11 +114,11 @@ const styleToast = {
     const res = await axios.get(`http://localhost:8080/api/category/get`)
     let data = res ? res.data : []
     if (data.totalPages > totalPage.length) {
-        for (let i = 1; i <= dataPro.totalPages; i++) {
-            setTotalPage((prev) => [...prev, i])
-        }
+      for (let i = 1; i <= dataPro.totalPages; i++) {
+        setTotalPage((prev) => [...prev, i])
+      }
     }
-}
+  }
 
 
   const updateData = (res, type) => {
@@ -160,16 +160,16 @@ const styleToast = {
       const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`)
       setUser(res.data)
       console.log(res.data.image)
-      if(res.data.image?.length > 0){
+      if (res.data.image?.length > 0) {
         imageUrls.map((img) => {
           if (img.nameImg === res.data.image) {
             return setUrlImg(img.url)
           }
-      })
-    }else{
-      setUrlImg("")
-    }
-      
+        })
+      } else {
+        setUrlImg("")
+      }
+
 
     } catch (error) {
       console.log(error.message)
@@ -178,16 +178,16 @@ const styleToast = {
 
   const pageable = async (id) => {
     if (id <= 0) {
-        id = 0
+      id = 0
     } else if (id >= totalPage.length - 1) {
-        id = totalPage.length - 1
+      id = totalPage.length - 1
     }
     const res = await axios.get(`http://localhost:8080/admin/user/get?page=${id}`)
     let data = res ? res.data : []
     setData(data.content)
     setPageNumber(data.number)
     console.log(data.number);
-}
+  }
 
   const deleteUser = async (id) => {
 
@@ -199,9 +199,9 @@ const styleToast = {
       toggleNested()
       notifySuccess("Success Delete ")
     } catch (error) {
-      
+
     }
-       
+
   }
 
 
@@ -251,28 +251,29 @@ const styleToast = {
         uploadFile={uploadFile}
         setImageUpload={setImageUpload}
         imageUpload={imageUpload}
+        setUrlImg={setUrlImg}
         urlImg={urlImg}
         user={user}
       />
       <div>
-        
+
         <Table bordered >
           <thead style={{ verticalAlign: 'middle' }}>
             <tr>
-              <th colSpan='10'><h3>User</h3></th>
+              <th colSpan='10'><h3>Tài khoản</h3></th>
             </tr>
             <tr>
               <th>STT</th>
-              <th>Name</th>
+              <th>Họ tên</th>
               <th>Email</th>
-              <th>Telephone</th>
-              <th>Address</th>
-              <th>Role</th>
+              <th>Số điện thoại</th>
+              <th>Địa chỉ</th>
+              <th>Vai trò</th>
               {/* <th>Trạng thái</th> */}
-              <th>Image</th>
+              <th>Hình ảnh</th>
               <th colspan="1">Action</th>
               <th colspan="1">
-                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Create</button>
+                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Thêm</button>
               </th>
             </tr>
           </thead>
@@ -313,10 +314,10 @@ const styleToast = {
                       <img src={imageUrls} width="150" height="170" />
                     </td> */}
                     <td>
-                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editUser(item.id); updateModal() }}>Update</button>
+                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editUser(item.id); updateModal() }}>Cập nhật</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Chuyển trạng thái</button>
                     </td>
                   </tr>
                 )
@@ -330,14 +331,14 @@ const styleToast = {
             >
               <ModalHeader>Delete</ModalHeader>
               <ModalBody>
-                Bạn có chắc chắn xóa không?
+                Bạn có chắc chắn chuyển sang không hoạt động không ?
               </ModalBody>
               <ModalFooter>
                 <Button type='button' color="primary" onClick={() => { deleteUser(userId) }}>
-                  Delete
+                  Có
                 </Button>{' '}
                 <Button color="secondary" onClick={() => toggleNested()}>
-                  Cancel
+                  Thoát
                 </Button>
               </ModalFooter>
             </Modal>
@@ -350,41 +351,41 @@ const styleToast = {
           </tbody>
         </Table>
         <Pagination>
+          <PaginationItem>
+            <PaginationLink
+              first
+              onClick={() => pageable(0)}
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(pageNumber - 1)}
+              previous
+            />
+          </PaginationItem>
+          {totalPage.map(item => {
+            return (
               <PaginationItem>
-                <PaginationLink
-                  first
-                  onClick={() => pageable(0)}
-                />
+                <PaginationLink onClick={() => pageable(item - 1)}>
+                  {item}
+                  {console.log(item)}
+                </PaginationLink>
               </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  onClick={() => pageable(pageNumber - 1)}
-                  previous
-                />
-              </PaginationItem>
-              {totalPage.map(item => {
-                return (
-                  <PaginationItem>
-                    <PaginationLink onClick={() => pageable(item - 1)}>
-                      {item}
-                      {console.log(item)}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              })}
-              <PaginationItem>
-                <PaginationLink
-                  onClick={() => pageable(pageNumber + 1)}
-                  next
-                />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  onClick={() => pageable(totalPage.length - 1)}
-                  last
-                />
-              </PaginationItem>
-            </Pagination>
+            )
+          })}
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(pageNumber + 1)}
+              next
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(totalPage.length - 1)}
+              last
+            />
+          </PaginationItem>
+        </Pagination>
       </div>
     </>
   )

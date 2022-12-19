@@ -43,6 +43,7 @@ const CreateProduct = (props) => {
     categoryId: "",
     sizes: "",
     medias: "",
+    status: 1
   });
   const [lstSize, setLstSize] = useState([]);
   let [sizeSelect, setSizeSelect] = useState(0);
@@ -345,7 +346,8 @@ const CreateProduct = (props) => {
       quantity: "",
       categoryId: "",
       sizes: "",
-      medias: ""
+      medias: "",
+      status: 1
     });
     setCheck({
       name: "",
@@ -397,7 +399,7 @@ const CreateProduct = (props) => {
       <ToastContainer />
       <Modal isOpen={isCreateModal} toggle={() => toggle()} size="xl" centered>
         <Form onSubmit={handleSubmit(createProduct)} innerRef={ref}>
-          <ModalHeader toggle={() => toggle()}>Create</ModalHeader>
+          <ModalHeader toggle={() => toggle()}>Thêm</ModalHeader>
           <ModalBody>
             <Row>
               <Col md={7}>
@@ -902,10 +904,10 @@ const CreateProduct = (props) => {
                 createProduct();
               }}
             >
-              Add New
+              Thêm
             </Button>
             <Button color="secondary" onClick={() => toggle()}>
-              Cancel
+              Thoát
             </Button>
           </ModalFooter>
         </Form>
@@ -916,7 +918,7 @@ const CreateProduct = (props) => {
           // size='lg'
           centered
         >
-          <ModalHeader>Thêm category</ModalHeader>
+          <ModalHeader>Thêm loại sản phẩm</ModalHeader>
           <ModalBody>
             <Input
               id="namecate"
@@ -934,10 +936,10 @@ const CreateProduct = (props) => {
                 createCate();
               }}
             >
-              Add
+              Thêm
             </Button>
             <Button color="secondary" onClick={toggleNested}>
-              Cancel
+              Thoát
             </Button>
           </ModalFooter>
         </Modal>

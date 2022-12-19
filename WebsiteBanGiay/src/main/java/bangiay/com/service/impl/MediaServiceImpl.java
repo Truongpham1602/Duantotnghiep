@@ -3,7 +3,6 @@ package bangiay.com.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +13,7 @@ import bangiay.com.DTO.MediaDTO;
 import bangiay.com.dao.MediaDao;
 import bangiay.com.entity.Media;
 import bangiay.com.service.MediaService;
+import bangiay.com.utils.ObjectMapperUtils;
 
 @Service
 public class MediaServiceImpl implements MediaService {
@@ -31,15 +31,20 @@ public class MediaServiceImpl implements MediaService {
 				.collect(Collectors.toList());
 		return mediaDTO;
 	}
+
 	@Override
 	public Page<MediaDTO> findAll(Pageable pageable) {
 
 		return ObjectMapperUtils.mapEntityPageIntoDtoPage(mediaDao.findAll(pageable), MediaDTO.class);
 	}
+
 	@Override
 	public List<MediaDTO> createAll(List<MediaDTO> mediaDTO) {
 		List<Media> media = mediaDTO.stream().map(d -> modelMapper.map(d, Media.class)).collect(Collectors.toList());
 		this.mediaDao.saveAll(media);
+		for (int i = 0; i < media.size(); i++) {
+			mediaDTO.get(i).setId(media.get(i).getId());
+		}
 		return mediaDTO;
 	}
 

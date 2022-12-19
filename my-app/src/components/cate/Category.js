@@ -142,10 +142,10 @@ const Category = () => {
             </tr>
             <tr>
               <th>STT</th>
-              <th>Name</th>
+              <th>Tên loại sản phẩm</th>
               <th colspan="1">Action</th>
               <th colspan="1">
-                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Create</button>
+                <button class="btn btn-primary create" id="create" onClick={() => createModal()}>Thêm</button>
               </th>
             </tr>
           </thead>
@@ -161,10 +161,10 @@ const Category = () => {
                     </th>
                     <td id="category">{item.namecate}</td>
                     <td>
-                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editCategory(item.id); updateModal() }}>Update</button>
+                      <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editCategory(item.id); updateModal() }}>Cập nhật</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Delete</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Xóa</button>
                                 
                     </td>
                   </tr>
@@ -182,10 +182,10 @@ const Category = () => {
                   </ModalBody>
                   <ModalFooter>
                     <Button type='button' color="primary" onClick={() => { deleteCategory(cateId) }}>
-                      Delete
+                      Xóa
                     </Button>{' '}
                     <Button color="secondary" onClick={() =>toggleNested()}>
-                      Cancel
+                      Thoát
                     </Button>
                   </ModalFooter>
                 </Modal>

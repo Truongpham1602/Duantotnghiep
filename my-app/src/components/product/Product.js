@@ -123,11 +123,15 @@ const Product = () => {
   const deleteProduct = async (id) => {
     // e.preventDefault();
     try {
-      await axios.delete(`http://localhost:8080/admin/product/delete/${id}`);
+      await axios.get(
+        `http://localhost:8080/admin/product/updateStatusFalse/${id}`
+      );
       let copyList = dataProduct;
       copyList = copyList.filter((item) => item.id !== id);
       setData(copyList);
       toggleNested();
+      toast.success("Xóa thành công", styleToast);
+
       // updateData(res.data)
     } catch (error) {
       console.log(error.message);
@@ -243,18 +247,18 @@ const Product = () => {
               <th>STT</th>
               <th>Tên</th>
               <th>Màu</th>
-              {/* <th>Price</th> */}
+              <th>Giá</th>
               <th>Số Lượng</th>
-              <th>Danh Mục</th>
+              <th>Loại</th>
               <th>Mô tả</th>
-              <th colspan="1">Điều Khiển</th>
-              <th colspan="1">
+              <th>Ảnh</th>
+              <th colspan="2">
                 <button
                   class="btn btn-primary create"
                   id="create"
                   onClick={() => createModal()}
                 >
-                  Tạo
+                  Thêm
                 </button>
               </th>
             </tr>
@@ -280,7 +284,7 @@ const Product = () => {
                         {item.name}
                       </td>
                       <td id="category">{item.color}</td>
-                      {/* <td id="price">{item.price}</td> */}
+                      <td id="price">{item.price}</td>
                       <td id="quantity">{item.quantity}</td>
                       <td id="category">{item.name_cate}</td>
                       <td id="description">{item.description}</td>
@@ -309,7 +313,7 @@ const Product = () => {
                             updateModal();
                           }}
                         >
-                          Sửa
+                          Cập nhật
                         </button>
                       </td>
                       <td>
@@ -318,7 +322,7 @@ const Product = () => {
                           id="delete"
                           onClick={() => toggleNested(item.id)}
                         >
-                          Xóa
+                          Xóa
                         </button>
                       </td>
                     </tr>
@@ -341,10 +345,10 @@ const Product = () => {
                     deleteProduct(proId);
                   }}
                 >
-                  Xóa
+                  Xóa
                 </Button>{" "}
                 <Button color="secondary" onClick={() => toggleNested()}>
-                  Hủy
+                  Thoát
                 </Button>
               </ModalFooter>
             </Modal>
