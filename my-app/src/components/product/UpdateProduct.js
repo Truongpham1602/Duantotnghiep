@@ -116,27 +116,7 @@ const UpdateProduct = (props) => {
   const updateProduct = async () => {
     try {
       let ch0 = { ...check };
-      if (
-        product.name.trim().length <= 0 ||
-        product.color.trim().length <= 0 ||
-        product.price.trim().length <= 0 ||
-        product.quantity.trim().length <= 0 ||
-        product.name_cate.length <= 0 ||
-        product.sizes.length <= 0 ||
-        product.description.trim().length <= 0 ||
-        product.medias.length <= 0
-      ) {
-        ch0["name"] = "Tên không được để trống";
-        ch0["color"] = "Màu sắc không được để trống";
-        ch0["price"] = "Giá không được để trống";
-        ch0["quantity"] = "Số lượng sản phẩm không được để trống";
-        ch0["namecate"] = "Hãy chọn danh mục";
-        ch0["sizes"] = "Hãy chọn số lượng cỡ giày";
-        ch0["description"] = "";
-        ch0["medias"] = "Hãy chọn ảnh";
-        setCheck({ ...ch0 });
-        return;
-      } else if (product.name.trim().length == 0) {
+      if (product.name.trim().length == 0) {
         ch0["name"] = "Tên không được để trống";
         setCheck({ ...ch0 });
         return;
@@ -181,19 +161,19 @@ const UpdateProduct = (props) => {
         return;
       }
       const res = await axios.put(
-        `http://localhost:8080/admin/product/put/${product.id}`,
-        {
-          categoryId: product.categoryId,
-          color: product.color,
-          name: product.name,
-          namecate: product.namecate,
-          sizes: product.sizes,
-          medias: product.medias,
-          description: product.description,
-          code: product.code,
-          price: product.price,
-          quantity: product.quantity,
-        }
+        `http://localhost:8080/admin/product/put/${product.id}`
+        // {
+        //   categoryId: product.categoryId,
+        //   color: product.color,
+        //   name: product.name,
+        //   namecate: product.namecate,
+        //   sizes: product.sizes,
+        //   medias: product.medias,
+        //   description: product.description,
+        //   code: product.code,
+        //   price: product.price,
+        //   quantity: product.quantity,
+        // }
       );
       let data = res && res.data ? res.data : [];
       data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
@@ -213,13 +193,13 @@ const UpdateProduct = (props) => {
   return (
     <div>
       <Modal isOpen={isUpdateModal} toggle={() => toggle()} size="lg" centered>
-        <ModalHeader toggle={() => toggle()}>Update</ModalHeader>
+        <ModalHeader toggle={() => toggle()}>Cập nhật</ModalHeader>
         <ModalBody>
           <Form>
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="name">Name</Label>
+                  <Label for="name">Tên</Label>
                   <Input
                     id="name"
                     name="name"
@@ -235,7 +215,7 @@ const UpdateProduct = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="color">Color</Label>
+                  <Label for="color">Màu</Label>
                   <Input
                     id="color"
                     name="color"
@@ -253,7 +233,7 @@ const UpdateProduct = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="price">Price</Label>
+                  <Label for="price">Giá</Label>
                   <Input
                     id="price"
                     name="price"
@@ -269,7 +249,7 @@ const UpdateProduct = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="quantity">Quantity</Label>
+                  <Label for="quantity">Số lượng</Label>
                   <Input
                     id="quantity"
                     name="quantity"
@@ -289,7 +269,7 @@ const UpdateProduct = (props) => {
                 <Row>
                   <Col md={10}>
                     <FormGroup>
-                      <Label for="namecate">Category</Label>
+                      <Label for="categoryId">Danh mục</Label>
                       <div>
                         <select
                           style={{
@@ -297,26 +277,26 @@ const UpdateProduct = (props) => {
                             width: "100%",
                             borderRadius: "5px",
                           }}
-                          id="namecate"
-                          name="namecate"
+                          id="categoryId"
+                          name="categoryId"
                           placeholder=""
                           type="select"
                           //value={product.namecate}
                           onChange={(event) =>
-                            handleOnchangeinput(event, "namecate")
+                            handleOnchangeinput(event, "categoryId")
                           }
                         >
                           {lstCate.map((item, index) => {
-                            if (item.id === product.namecate) {
+                            if (item.id === product.categoryId) {
                               return (
                                 <option key={index} value={item.id} selected>
-                                  {item.category}
+                                  {item.namecate}
                                 </option>
                               );
                             }
                             return (
                               <option key={index} value={item.id}>
-                                {item.category}
+                                {item.namecate}
                               </option>
                             );
                           })}
@@ -337,7 +317,7 @@ const UpdateProduct = (props) => {
             <Row>
               <Col md={12}>
                 <FormGroup>
-                  <Label for="description">Description</Label>
+                  <Label for="description">Mô tả</Label>
                   <Input
                     id="description"
                     name="description"
@@ -348,6 +328,9 @@ const UpdateProduct = (props) => {
                       handleOnchangeinput(event, "description")
                     }
                   />
+                  {check.description && check.description.length > 0 && (
+                    <p className="checkError">{check.description}</p>
+                  )}
                 </FormGroup>
               </Col>
             </Row>
@@ -362,10 +345,10 @@ const UpdateProduct = (props) => {
               handleOnchangeinput(e, "size");
             }}
           >
-            Save
+            Lưu
           </Button>
           <Button color="secondary" onClick={() => toggle()}>
-            Cancel
+            Hủy
           </Button>
         </ModalFooter>
       </Modal>

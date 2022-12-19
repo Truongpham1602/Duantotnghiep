@@ -1,6 +1,7 @@
 package bangiay.com.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import bangiay.com.entity.User;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,10 @@ public interface UserService {
 	
 	public void delete(int id);
 	//User findByUsername(String username);
+
+//	public Optional<User> findUserByEmail(String email);
+//	public Optional<User> findUserByResetToken(String reset_token);
+//	public void save(User user);
 
 
 }

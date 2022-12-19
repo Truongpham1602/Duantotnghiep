@@ -62,6 +62,10 @@ public class User {
 	@Column(name = "STATUS")
 	private Integer status;
 
+//	@Column(name = "RESET_TOKEN")
+//	private String resetToken;
+
+
 	@OneToMany(mappedBy = "USER_ID", cascade = CascadeType.ALL)
 	private List<Bill> billList;
 

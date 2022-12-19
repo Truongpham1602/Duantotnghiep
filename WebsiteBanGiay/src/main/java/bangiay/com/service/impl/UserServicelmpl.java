@@ -3,6 +3,7 @@ package bangiay.com.service.impl;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -117,5 +118,19 @@ public class UserServicelmpl implements UserService {
 		user1.setStatus(0);
 		return user1;
 	}
+//	@Override
+//	public Optional findUserByEmail(String email) {
+//		return userDao.findByEmail(email);
+//	}
+//
+//	@Override
+//	public Optional findUserByResetToken(String resetToken) {
+//		return userDao.findByResetToken(resetToken);
+//	}
+//
+//	@Override
+//	public void save(User user) {
+//		userDao.save(user);
+//	}
 
 }
