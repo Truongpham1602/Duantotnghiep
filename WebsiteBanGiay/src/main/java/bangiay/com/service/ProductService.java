@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import bangiay.com.DTO.CategoryDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.entity.Product;
 
@@ -12,7 +13,7 @@ public interface ProductService {
 
 	public List<ProductDTO> findAll();
 
-	Page<ProductDTO> findAll(Pageable pageable);
+	Page<ProductDTO> findAll (Integer size , Integer page);
 
 	public ProductDTO create(ProductDTO productDTO);
 

@@ -529,7 +529,7 @@ const CreateProduct = (props) => {
                               }
                             >
                               <option value="" disabled selected>
-                                Chọn danh mục
+                                Chọn loại sản phẩm
                               </option>
                               {lstCate.map((item, index) => {
                                 return (
@@ -553,7 +553,7 @@ const CreateProduct = (props) => {
                           marginLeft: "0%",
                         }}
                       >
-                        <Label for="category">add</Label>
+                        <Label for="category">Thêm</Label>
                         <button
                           type="button"
                           style={{
@@ -659,7 +659,7 @@ const CreateProduct = (props) => {
                             </Col>
                             <Col md={8}>
                               <FormGroup>
-                                <Label for="description">Quantity</Label>
+                                <Label for="description">Số lượng</Label>
                                 <div>
                                   <input
                                     style={{
