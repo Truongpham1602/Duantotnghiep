@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import bangiay.com.DTO.CategoryDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.doMain.constant;
 import bangiay.com.entity.Product;
@@ -39,11 +40,9 @@ public class ProductRestController {
 	}
 
 	@GetMapping("/select")
-	public ResponseEntity<Page<ProductDTO>> getPage(
-			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
-			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size) {
-		Pageable pageable = PageRequest.of(page - 1, size);
-		return ResponseEntity.ok(productService.findAll(pageable));
+	public Page<ProductDTO> findAll(@RequestParam(name="size" , defaultValue ="7")Integer size, 
+			@RequestParam(name="page", defaultValue = "0")Integer page){
+		return productService.findAll(size , page);
 	}
 
 	@DeleteMapping("/delete/{id}")

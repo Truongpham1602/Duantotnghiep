@@ -67,6 +67,9 @@ public class User {
 	@Column(name = "STATUS")
 	private Integer status;
 
+//	@Column(name = "RESET_TOKEN")
+//	private String resetToken;
+
 	@Column(name = "IMAGE")
 	private String image;
 

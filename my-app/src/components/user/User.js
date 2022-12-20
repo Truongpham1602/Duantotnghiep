@@ -111,7 +111,7 @@ const User = () => {
 
   };
   const updateTotalPage = async () => {
-    const res = await axios.get(`http://localhost:8080/api/category/get`)
+    const res = await axios.get(`http://localhost:8080/admin/user/get`)
     let data = res ? res.data : []
     if (data.totalPages > totalPage.length) {
       for (let i = 1; i <= dataPro.totalPages; i++) {
