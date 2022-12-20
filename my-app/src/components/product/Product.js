@@ -2,6 +2,7 @@ import { React, useState, useEffect } from "react";
 import axios from "axios";
 import CreateProduct from "./CreateProduct";
 import UpdateProduct from "./UpdateProduct";
+import { Pagination } from 'react-bootstrap';
 import useCallGetAPI from "../../customHook/CallGetApi";
 import {
   Button,
@@ -14,7 +15,9 @@ import {
   Input,
   Row,
   Col,
-  Form,
+  Form, 
+  PaginationLink, 
+  PaginationItem
 } from "reactstrap";
 import ProductDetails from "./ProductDetails";
 import { ToastContainer, toast } from "react-toastify";
@@ -44,11 +47,37 @@ const Product = () => {
   const [imageUrls, setImageUrls] = useState([]);
   let [urlImgs, setUrlImgs] = useState();
   const [imageFiles, setImageFiles] = useState([]);
+  const [pageNumber, setPageNumber] = useState()
+  const [totalPage, setTotalPage] = useState([])
 
   const toggleNested = (id) => {
     setNestedModal(!nestedModal);
     id && setProId(id);
   };
+
+
+  const pageable = async (id) => {
+    if (id <= 0) {
+      id = 0
+    } else if (id >= totalPage.length - 1) {
+      id = totalPage.length - 1
+    }
+    const res = await axios.get(`http://localhost:8080/admin/product/select?page=${id}`)
+    let data = res ? res.data : []
+    setData(data.content)
+    setPageNumber(data.number)
+    console.log(data.number);
+  }
+
+  const updateTotalPage = async () => {
+    const res = await axios.get(`http://localhost:8080/admin/product/select`)
+    let data = res ? res.data : []
+    if (data.totalPages > totalPage.length) {
+      for (let i = 1; i <= dataPro.totalPages; i++) {
+        setTotalPage((prev) => [...prev, i])
+      }
+    }
+  }
 
   const updateData = (res, resImg, type) => {
     if (type === "create") {
@@ -56,6 +85,7 @@ const Product = () => {
       res["image"] = resImg;
       copydata.unshift(res);
       setData(copydata);
+      updateTotalPage()
     } else if (type === "update") {
       let copydata = dataProduct;
       let getIndex = copydata.findIndex((p) => {
@@ -67,7 +97,7 @@ const Product = () => {
   };
 
   const { data: dataPro, isLoading } = useCallGetAPI(
-    `http://localhost:8080/admin/product/index`
+    `http://localhost:8080/admin/product/select`
   );
   useEffect(() => {
     if (dataPro && dataPro.length > 0) {
@@ -81,6 +111,15 @@ const Product = () => {
           });
         });
       });
+    }
+
+    if (dataPro.content) {
+      setData(dataPro.content)
+      setPageNumber(dataPro.number)
+      for (let i = 1; i <= dataPro.totalPages; i++) {
+        setTotalPage((prev) => [...prev, i])
+
+      }
     }
     // setData(dataPro)
     // console.log(isLoading);
@@ -359,20 +398,43 @@ const Product = () => {
               </tr>
             )}
           </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan="10">
-                <button className="hoverable" onClick={onBack}>
-                  Back
-                </button>
-                <label style={{ margin: "0 10px" }}>{page + 1}</label>
-                <button className="hoverable" onClick={onNext}>
-                  Next
-                </button>
-              </td>
-            </tr>
-          </tfoot>
         </Table>
+        <Pagination>
+          <PaginationItem>
+            <PaginationLink
+              first
+              onClick={() => pageable(0)}
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(pageNumber - 1)}
+              previous
+            />
+          </PaginationItem>
+          {totalPage.map(item => {
+            return (
+              <PaginationItem>
+                <PaginationLink onClick={() => pageable(item - 1)}>
+                  {item}
+                  {console.log(item)}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          })}
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(pageNumber + 1)}
+              next
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => pageable(totalPage.length - 1)}
+              last
+            />
+          </PaginationItem>
+        </Pagination>
       </div>
     </>
   );

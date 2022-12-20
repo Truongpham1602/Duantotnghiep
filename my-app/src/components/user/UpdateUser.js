@@ -381,10 +381,10 @@ const UpdateUser = (props) => {
               uploadFile(e);
             }}
           >
-            Save
+            Lưu
           </Button>
           <Button color="secondary" onClick={() => toggle()}>
-            Cancel
+            Thoát
           </Button>
         </ModalFooter>
       </Modal>
