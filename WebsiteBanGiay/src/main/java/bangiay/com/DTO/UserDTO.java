@@ -1,6 +1,9 @@
 package bangiay.com.DTO;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +29,8 @@ public class UserDTO {
     private java.sql.Timestamp modified;
     private String modifier;
     private Integer status;
+    
+    private Collection<RoleDTO> roles = new ArrayList<>();
 
     public Integer getId() {
         return this.id;

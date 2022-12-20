@@ -26,10 +26,12 @@ const Login = () => {
 
   const handleButton = async () => {
     try {
-      const res = await axios.post("http://localhost:8080/auth/login", user);
-      localStorage.setItem("token", JSON.stringify(res.data));
-      // console.log(localStorage.getItem(res.data));
-      console.log(localStorage.getItem('token'));
+      const res = await axios.post("http://localhost:8080/auth/login", null,
+
+        { params: { userEmail: user.userEmail, password: user.password } });
+      localStorage.setItem("token", res);
+      console.log(localStorage.getItem(res));
+      // console.log(localStorage.getItem('token'));
       // console.log(await axios.post("http://localhost:8080/auth/getLoginUser", localStorage.getItem('token')));
       navigate("/");
     } catch (error) {
@@ -53,8 +55,8 @@ const Login = () => {
                   wrapperClass="mb-4 w-100"
                   placeholder="Email"
                   id="email"
-                  onChange={(e) => handleOnchangeInput(e, "username")}
-                  value={user.username}
+                  onChange={(e) => handleOnchangeInput(e, "userEmail")}
+                  value={user.userEmail}
                   type="text"
                   size="lg"
                 />
@@ -62,8 +64,8 @@ const Login = () => {
                   wrapperClass="mb-4 w-100"
                   placeholder="Password"
                   id="password"
-                  onChange={(e) => handleOnchangeInput(e, "pass")}
-                  value={user.pass}
+                  onChange={(e) => handleOnchangeInput(e, "password")}
+                  value={user.password}
                   type="password"
                   size="lg"
                 />

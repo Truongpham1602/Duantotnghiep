@@ -54,13 +54,13 @@ public class UserServicelmpl implements UserService {
 	public UserDTO create(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
 
-		user.setRole(this.roleDao.findById(userDTO.getRoleId()).get());
+//		user.setRole(this.roleDao.findById(userDTO.getRoleId()).get());
 
 		user.setCreated(Timestamp.from(Instant.now()));
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+//		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
-		userDTO.setNameRole(user.getRole().getRoleName());
+//		userDTO.setNameRole(user.getRole().getRoleName());
 		return userDTO;
 	}
 
@@ -68,13 +68,13 @@ public class UserServicelmpl implements UserService {
 	public UserDTO update(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
 
-		user.setRole(this.roleDao.findById(userDTO.getRoleId()).get());
+//		user.setRole(this.roleDao.findById(userDTO.getRoleId()).get());
 
 		user.setCreated(user.getCreated());
 		user.setModified(Timestamp.from(Instant.now()));
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
-		userDTO.setNameRole(user.getRole().getRoleName());
+//		userDTO.setNameRole(user.getRole().getRoleName());
 		return userDTO;
 	}
 
@@ -82,7 +82,7 @@ public class UserServicelmpl implements UserService {
 	public UserDTO finById(int id) {
 		User user = userDao.findById(id).get();
 		UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-		userDTO.setRoleId(user.getRole().getId());
+//		userDTO.setRoleId(user.getRole().getId());
 		return userDTO;
 	}
 
@@ -101,7 +101,7 @@ public class UserServicelmpl implements UserService {
 		    	UserDTO dto = new UserDTO();
 		        dto = modelMapper.map(entity, UserDTO.class);
 		        dto.setId(entity.getId());
-		        dto.setNameRole(entity.getRole().getRoleName());
+//		        dto.setNameRole(entity.getRole().getRoleName());
 		        return dto;
 		    }
 		});
