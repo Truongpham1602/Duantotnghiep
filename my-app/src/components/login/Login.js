@@ -29,8 +29,8 @@ const Login = () => {
       const res = await axios.post("http://localhost:8080/auth/login", null,
 
         { params: { userEmail: user.userEmail, password: user.password } });
-      localStorage.setItem("token", res);
-      console.log(localStorage.getItem(res));
+      localStorage.setItem("token", res.data);
+      console.log(localStorage.getItem(res.data));
       // console.log(localStorage.getItem('token'));
       // console.log(await axios.post("http://localhost:8080/auth/getLoginUser", localStorage.getItem('token')));
       navigate("/");

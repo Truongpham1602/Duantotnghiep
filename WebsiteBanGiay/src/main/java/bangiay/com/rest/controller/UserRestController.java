@@ -21,7 +21,7 @@ import bangiay.com.DTO.UserDTO;
 import bangiay.com.DTO.VoucherDTO;
 import bangiay.com.service.UserService;
 
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin/user")
 public class UserRestController {

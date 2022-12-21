@@ -24,7 +24,7 @@ import { storage } from "../../Firebase";
 
 // class Category extends React.Component {
 const Category = () => {
-
+  const token = localStorage.getItem('token');
   const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/category/select`);
   const [category, setCategory] = useState({});
   const [dataCategory, setData] = useState([]);
@@ -58,7 +58,8 @@ const Category = () => {
     } else if (id >= totalPage.length - 1) {
       id = totalPage.length - 1
     }
-    const res = await axios.get(`http://localhost:8080/api/category/select?page=${id}`)
+    const res = await axios.get(`http://localhost:8080/api/category/select?page=${id}`,
+      { headers: { "Authorization": `Bearer ${token}` } })
     let data = res ? res.data : []
     setData(data.content)
     setPageNumber(data.number)
@@ -82,7 +83,8 @@ const Category = () => {
     }
   }
   const updateTotalPage = async () => {
-    const res = await axios.get(`http://localhost:8080/api/category/select`)
+    const res = await axios.get(`http://localhost:8080/api/category/select`,
+      { headers: { "Authorization": `Bearer ${token}` } })
     let data = res ? res.data : []
     if (data.totalPages > totalPage.length) {
       for (let i = 1; i <= dataPro.totalPages; i++) {
@@ -112,7 +114,8 @@ const Category = () => {
 
   const editCategory = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/category/get/${id}`)
+      const res = await axios.get(`http://localhost:8080/api/category/get/${id}`,
+        { headers: { "Authorization": `Bearer ${token}` } })
       setCategory(res.data)
     } catch (error) {
       console.log(error.message)
@@ -201,30 +204,30 @@ const Category = () => {
                     </td>
                     <td>
                       <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Xóa</button>
-                                
+
                     </td>
                   </tr>
                 )
               })
             }
             <Modal
-                  isOpen={nestedModal}
-                  toggle={toggleNested}
-                  // size='lg'
-                >
-                  <ModalHeader>Delete</ModalHeader>
-                  <ModalBody>
-                    Bạn có chắc chắn xóa không?
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button type='button' color="primary" onClick={() => { deleteCategory(cateId) }}>
-                      Xóa
-                    </Button>{' '}
-                    <Button color="secondary" onClick={() =>toggleNested()}>
-                      Thoát
-                    </Button>
-                  </ModalFooter>
-                </Modal>
+              isOpen={nestedModal}
+              toggle={toggleNested}
+            // size='lg'
+            >
+              <ModalHeader>Delete</ModalHeader>
+              <ModalBody>
+                Bạn có chắc chắn xóa không?
+              </ModalBody>
+              <ModalFooter>
+                <Button type='button' color="primary" onClick={() => { deleteCategory(cateId) }}>
+                  Xóa
+                </Button>{' '}
+                <Button color="secondary" onClick={() => toggleNested()}>
+                  Thoát
+                </Button>
+              </ModalFooter>
+            </Modal>
             {isLoading &&
               <tr>
                 <h3>Loading...</h3>

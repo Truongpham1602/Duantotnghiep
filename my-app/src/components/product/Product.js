@@ -4,6 +4,7 @@ import CreateProduct from "./CreateProduct";
 import UpdateProduct from "./UpdateProduct";
 import { Pagination } from 'react-bootstrap';
 import useCallGetAPI from "../../customHook/CallGetApi";
+import PaginatedItems from "../../customHook/PaginatedItems";
 import {
   Button,
   Modal,
@@ -15,8 +16,8 @@ import {
   Input,
   Row,
   Col,
-  Form, 
-  PaginationLink, 
+  Form,
+  PaginationLink,
   PaginationItem
 } from "reactstrap";
 import ProductDetails from "./ProductDetails";
@@ -36,6 +37,7 @@ import { Table } from "reactstrap";
 
 // class Product extends React.Component {
 const Product = () => {
+  const token = localStorage.getItem('token');
   const [nestedModal, setNestedModal] = useState(false);
   const [proId, setProId] = useState();
   const [product, setProduct] = useState({});
@@ -62,8 +64,11 @@ const Product = () => {
     } else if (id >= totalPage.length - 1) {
       id = totalPage.length - 1
     }
-    const res = await axios.get(`http://localhost:8080/admin/product/select?page=${id}`)
+    const res = await axios.get(`http://localhost:8080/admin/product/select?page=${id}`,
+      { headers: { "Authorization": `Bearer ${token}` } })
+    console.log(res);
     let data = res ? res.data : []
+    console.log(res.data);
     setData(data.content)
     setPageNumber(data.number)
     console.log(data.number);
@@ -229,6 +234,7 @@ const Product = () => {
       });
     });
 
+
     // var task = storageRef.put(imageFile);
     //Update progress bar
     // task.on('state_changed',
@@ -249,6 +255,7 @@ const Product = () => {
 
   return (
     <>
+
       <ProductDetails
         isDetailsModal={isDetailsModal}
         toggleModal={detailsModal}
@@ -311,7 +318,7 @@ const Product = () => {
                   return (
                     <tr key={item.id}>
                       <th scope="row" id="">
-                        {index + 1}
+                        {pageNumber * 7 + index + 1}
                       </th>
                       <td
                         id="category"
@@ -372,7 +379,7 @@ const Product = () => {
             <Modal
               isOpen={nestedModal}
               toggle={toggleNested}
-              // size='lg'
+            // size='lg'
             >
               <ModalHeader>Delete</ModalHeader>
               <ModalBody>Bạn có chắc chắn xóa không?</ModalBody>
@@ -399,43 +406,10 @@ const Product = () => {
             )}
           </tbody>
         </Table>
-        <Pagination>
-          <PaginationItem>
-            <PaginationLink
-              first
-              onClick={() => pageable(0)}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              onClick={() => pageable(pageNumber - 1)}
-              previous
-            />
-          </PaginationItem>
-          {totalPage.map(item => {
-            return (
-              <PaginationItem>
-                <PaginationLink onClick={() => pageable(item - 1)}>
-                  {item}
-                  {console.log(item)}
-                </PaginationLink>
-              </PaginationItem>
-            )
-          })}
-          <PaginationItem>
-            <PaginationLink
-              onClick={() => pageable(pageNumber + 1)}
-              next
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              onClick={() => pageable(totalPage.length - 1)}
-              last
-            />
-          </PaginationItem>
-        </Pagination>
+
       </div>
+      <PaginatedItems itemsPerPage={totalPage.length}
+        pageable={pageable} />
     </>
   );
 };

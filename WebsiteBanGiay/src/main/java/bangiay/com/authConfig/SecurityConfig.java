@@ -21,7 +21,7 @@ public class SecurityConfig{
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    	http.csrf().disable()
+    	http.csrf().disable().cors().and()
         .addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
 		.exceptionHandling()
 		.and()
@@ -38,4 +38,5 @@ public class SecurityConfig{
 	public BCryptPasswordEncoder bCryptPasswordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
+    
 }
