@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const UpdateVoucher = (props) => {
 
+    const token = localStorage.getItem('token');
     const { isupdatevoucherModal, toggleModal, updateData } = props;
     const [voucher, setVoucher] = useState(props.voucher);
     const [lstcate, setLstCate] = useState([]);
@@ -179,14 +180,15 @@ const UpdateVoucher = (props) => {
             else if (
                 check.effectUntil.trim().length > 0
                 || check.effectFrom.trim().length > 0
-                || check.name.trim().length > 0
+                || check.name?.trim().length > 0
                 || check.value.trim().length > 0
                 || check.quantity.trim().length > 0
             ) {
                 return
             }
 
-            const res = await axios.put(`http://localhost:8080/api/voucher/update/${voucher.id}`, voucher)
+            const res = await axios.put(`http://localhost:8080/api/voucher/update/${voucher.id}`, voucher,
+                { headers: { "Authorization": `Bearer ${token}` } })
             let data = (res && res.data) ? res.data : [];
             // data.effectFrom = moment(data.effectFrom).format('DD/MM/YYYY HH:mm:ss');
             // data.effectUntil = moment(data.effectUntil).format('DD/MM/YYYY HH:mm:ss');
