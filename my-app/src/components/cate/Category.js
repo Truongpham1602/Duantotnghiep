@@ -5,6 +5,7 @@ import UpdateCategory from './UpdateCategory';
 import CategoryDetails from './CategoryDetails';
 import { Pagination } from 'react-bootstrap';
 import useCallGetAPI from '../../customHook/CallGetApi';
+import PaginatedItems from "../../customHook/PaginatedItems";
 import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
   Row, Col, Form, PaginationLink, PaginationItem
@@ -196,7 +197,7 @@ const Category = () => {
                 return (
                   <tr key={item.id}>
                     <th scope="row" id="">
-                      {index + 1}
+                      {pageNumber * 7 + index + 1}
                     </th>
                     <td id="category">{item.namecate}</td>
                     <td>
@@ -230,12 +231,12 @@ const Category = () => {
             </Modal>
             {isLoading &&
               <tr>
-                <h3>Loading...</h3>
+                <h3>Vui lòng đợi...</h3>
               </tr>
             }
           </tbody>
         </Table>
-        <Pagination>
+        {/* <Pagination>
           <PaginationItem>
             <PaginationLink
               first
@@ -270,8 +271,10 @@ const Category = () => {
               last
             />
           </PaginationItem>
-        </Pagination>
+        </Pagination> */}
       </div>
+      <PaginatedItems itemsPerPage={totalPage.length}
+        pageable={pageable} />
     </>
   )
 
