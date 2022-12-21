@@ -22,10 +22,11 @@ import {
   getMetadata,
 } from "firebase/storage";
 import { storage } from "../../Firebase";
+import PaginatedItems from "../../customHook/PaginatedItems";
 
 // class User extends React.Component {
 const User = () => {
-
+  const token = localStorage.getItem('token');
   const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/admin/user/get`);
   const [user, setUser] = useState({});
   const [dataUser, setData] = useState([]);
@@ -182,7 +183,8 @@ const User = () => {
     } else if (id >= totalPage.length - 1) {
       id = totalPage.length - 1
     }
-    const res = await axios.get(`http://localhost:8080/admin/user/get?page=${id}`)
+    const res = await axios.get(`http://localhost:8080/admin/user/get?page=${id}`,
+      { headers: { "Authorization": `Bearer ${token}` } })
     let data = res ? res.data : []
     setData(data.content)
     setPageNumber(data.number)
@@ -285,7 +287,7 @@ const User = () => {
                 return (
                   <tr key={item.id}>
                     <th scope="row" id="">
-                      {index + 1}
+                      {pageNumber * 7 + index + 1}
                     </th>
                     <td id="category" onClick={() => { editUser(item.id); detailsModal() }}>{item.fullName}</td>
                     {/* <td id="category">{item.password}</td> */}
@@ -345,12 +347,12 @@ const User = () => {
 
             {isLoading &&
               <tr>
-                <h3>Loading...</h3>
+                <h3>Vui lòng đợi...</h3>
               </tr>
             }
           </tbody>
         </Table>
-        <Pagination>
+        {/* <Pagination>
           <PaginationItem>
             <PaginationLink
               first
@@ -385,8 +387,10 @@ const User = () => {
               last
             />
           </PaginationItem>
-        </Pagination>
+        </Pagination> */}
       </div>
+      <PaginatedItems itemsPerPage={totalPage.length}
+        pageable={pageable} />
     </>
   )
 

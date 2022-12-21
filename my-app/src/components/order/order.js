@@ -152,17 +152,17 @@ const Order = (props) => {
       <Table bordered>
         <thead style={{ verticalAlign: "middle" }}>
           <tr>
-            <th>Code</th>
-            <th>Name Recipient</th>
+            <th>Mã</th>
+            <th>Tên người nhận</th>
             {/* <th>Price</th> */}
-            <th>Telephone</th>
-            <th>Address</th>
-            <th>Created</th>
-            <th>Description</th>
-            <th>Un Payment</th>
-            <th>Payment</th>
-            <th>Delivered</th>
-            <th>Cancel</th>
+            <th>Điện thoại</th>
+            <th>Địa chỉ</th>
+            <th>Ngày tạo</th>
+            <th>Mô tả</th>
+            <th>Chờ thanh toán</th>
+            <th>Đã thanh toán</th>
+            <th>Đã giao hàng</th>
+            <th>ĐÃ hủy</th>
           </tr>
         </thead>
         <tbody style={{ verticalAlign: "middle" }}>
@@ -267,18 +267,18 @@ const Order = (props) => {
             })}
           {isLoading && (
             <tr>
-              <h3>Loading...</h3>
+              <h3>Vui lòng đợi...</h3>
             </tr>
           )}
         </tbody>
       </Table>
       <Modal isOpen={isModal} toggle={() => toggle()} centered>
         <ModalHeader toggle={() => toggle()}>
-          <h2>Update Order</h2>
+          <h2>Cập nhập đơn hàng</h2>
         </ModalHeader>
         <ModalBody>
-          {check.id == 3 && <h4>Delivery Confirmation?</h4>}
-          {check.id == 0 && <h4>Cancellation confirmation?</h4>}
+          {check.id == 3 && <h4>xác nhận giao hàng?</h4>}
+          {check.id == 0 && <h4>xác nhận hủy?</h4>}
         </ModalBody>
         <ModalFooter>
           <Button
