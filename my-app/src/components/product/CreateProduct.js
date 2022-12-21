@@ -524,7 +524,7 @@ const CreateProduct = (props) => {
                               }
                             >
                               <option value="" disabled selected>
-                                Chọn danh mục
+                                Chọn loại sản phẩm
                               </option>
                               {lstCate.map((item, index) => {
                                 return (
@@ -913,7 +913,7 @@ const CreateProduct = (props) => {
           // size='lg'
           centered
         >
-          <ModalHeader>Thêm danh mục</ModalHeader>
+          <ModalHeader>Thêm loại sản phẩm</ModalHeader>
           <ModalBody>
             <Input
               id="namecate"

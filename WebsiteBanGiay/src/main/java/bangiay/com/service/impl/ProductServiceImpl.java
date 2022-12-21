@@ -3,21 +3,25 @@ package bangiay.com.service.impl;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
+import bangiay.com.DTO.CategoryDTO;
 import bangiay.com.DTO.MediaDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.DTO.SizeDTO;
 import bangiay.com.dao.CategoryDao;
 import bangiay.com.dao.MediaDao;
 import bangiay.com.dao.ProductDao;
+import bangiay.com.entity.Category;
 import bangiay.com.entity.Media;
 import bangiay.com.entity.Product;
 import bangiay.com.service.MediaService;
@@ -55,22 +59,22 @@ public class ProductServiceImpl implements ProductService {
 		return result;
 	}
 
-	@Override
-	public Page<ProductDTO> findAll(Pageable pageable) {
-		List<Product> pro = proDAO.findAll();
-		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d, ProductDTO.class))
-				.collect(Collectors.toList());
-
-		for (int i = 0; i < pro.size(); i++) {
-			List<Media> media = mediaDao.findMediaByProduct_Id(pro.get(i).getId());
-			if (media.size() > 0) {
-				result.get(i).setImage(media.get(0).getUrl());
-			}
-			result.get(i).setName_cate(pro.get(i).getCategory().getNamecate());
-
-		}
-		return ObjectMapperUtils.mapEntityPageIntoDtoPage(proDAO.findAll(pageable), ProductDTO.class);
-	}
+//	@Override
+//	public Page<ProductDTO> findAll(Pageable pageable) {
+//		List<Product> pro = proDAO.findAll();
+//		List<ProductDTO> result = pro.stream().map(d -> modelMapper.map(d, ProductDTO.class))
+//				.collect(Collectors.toList());
+//
+//		for (int i = 0; i < pro.size(); i++) {
+//			List<Media> media = mediaDao.findMediaByProduct_Id(pro.get(i).getId());
+//			if (media.size() > 0) {
+//				result.get(i).setImage(media.get(0).getUrl());
+//			}
+//			result.get(i).setName_cate(pro.get(i).getCategory().getNamecate());
+//
+//		}
+//		return ObjectMapperUtils.mapEntityPageIntoDtoPage(proDAO.findAll(pageable), ProductDTO.class);
+//	}
 
 	@Override
 	public ProductDTO finById(Integer id) {
@@ -132,6 +136,22 @@ public class ProductServiceImpl implements ProductService {
 			return proDAO.search(keyword);
 		}
 		return proDAO.findAll();
+	}
+
+	@Override
+	public Page<ProductDTO> findAll(Integer size, Integer page) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Product> entities = proDAO.findAll(pageable);
+		Page<ProductDTO> dtoPage = entities.map(new Function<Product, ProductDTO>() {
+		    @Override
+		    public ProductDTO apply(Product entity) {
+		    	ProductDTO dto = new ProductDTO();
+		        dto = modelMapper.map(entity, ProductDTO.class);
+		        dto.setId(entity.getId());
+		        return dto;
+		    }
+		});
+		return dtoPage;
 	}
 
 }

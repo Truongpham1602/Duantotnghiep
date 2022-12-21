@@ -140,19 +140,19 @@ const UpdateProduct = (props) => {
         return;
       }
       const res = await axios.put(
-        `http://localhost:8080/admin/product/put/${product.id}`,
-        {
-          categoryId: product.categoryId,
-          color: product.color,
-          name: product.name,
-          namecate: product.namecate,
-          sizes: product.sizes,
-          medias: product.medias,
-          description: product.description,
-          code: product.code,
-          price: product.price,
-          quantity: product.quantity,
-        }
+        `http://localhost:8080/admin/product/put/${product.id}`
+        // {
+        //   categoryId: product.categoryId,
+        //   color: product.color,
+        //   name: product.name,
+        //   namecate: product.namecate,
+        //   sizes: product.sizes,
+        //   medias: product.medias,
+        //   description: product.description,
+        //   code: product.code,
+        //   price: product.price,
+        //   quantity: product.quantity,
+        // }
       );
       let data = res && res.data ? res.data : [];
       data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
@@ -223,7 +223,8 @@ const UpdateProduct = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="name">Tên</Label>
+
+                  <Label for="name">Tên sản phẩm</Label>
                   <Input
                     id="name"
                     name="name"
@@ -293,7 +294,7 @@ const UpdateProduct = (props) => {
                 <Row>
                   <Col md={11}>
                     <FormGroup>
-                      <Label for="namecate">Danh mục</Label>
+                      <Label for="namecate">Loại sản phẩm</Label>
                       <div>
                         <select
                           style={{
@@ -302,8 +303,8 @@ const UpdateProduct = (props) => {
                             height: "37px",
                             borderRadius: "5px",
                           }}
-                          id="namecate"
-                          name="namecate"
+                          id="categoryId"
+                          name="categoryId"
                           placeholder=""
                           type="select"
                           //value={product.namecate}
@@ -354,6 +355,9 @@ const UpdateProduct = (props) => {
                       handleOnchangeinput(event, "description")
                     }
                   />
+                  {check.description && check.description.length > 0 && (
+                    <p className="checkError">{check.description}</p>
+                  )}
                 </FormGroup>
               </Col>
             </Row>
