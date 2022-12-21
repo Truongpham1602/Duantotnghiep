@@ -11,14 +11,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
-
 @Repository
 
 public interface UserDao extends JpaRepository<User, Integer> {
 	@Query("SELECT u FROM User u WHERE u.email LIKE :email OR u.telephone LIKE :telephone")
 	List<User> findUserByEmailOrTelePhone(@Param("email") String email, @Param("telephone") String telephone);
-//    User findByEmailOrtelephone(String emailOrtelephone);
+	// User findByEmailOrtelephone(String emailOrtelephone);
 
 	// List<User> getUserByRole(Role role);
 
@@ -28,7 +26,6 @@ public interface UserDao extends JpaRepository<User, Integer> {
 	@Query("SELECT n FROM User n where n.email = :email")
 	List<User> findByname(@Param("email") String email);
 
-//	Optional<User> findByEmail(String email);
-//	Optional<User> findByResetToken(String reset_token);
-
+	@Query(value = "SELECT * FROM `user` n where n.email = :email", nativeQuery = true)
+	User findUsersByUserEmail(@Param("email") String userEmail);
 }

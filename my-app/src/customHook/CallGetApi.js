@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useEffect, useState } from "react";
 
 const useCallGetAPI = (url) => {
+    const token = localStorage.getItem('token');
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -12,7 +13,10 @@ const useCallGetAPI = (url) => {
         let canceled = false;
         async function getData() {
             try {
-                let res = await axios.get(url)
+                let res = await axios.get(url, { headers: { "Authorization": `Bearer ${token}` } })
+                    .catch(
+                        error => { window.location.replace("http://localhost:3000/login"); }
+                    )
                 let data = (res && res.data) ? res.data : []
                 if (data && data.length > 0) {
                     data.map(item => {
