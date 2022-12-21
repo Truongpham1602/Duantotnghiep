@@ -1,0 +1,9 @@
+package bangiay.com.service;
+
+import bangiay.com.dao.UserDao;
+
+
+public interface AccountService{
+	
+
+}
