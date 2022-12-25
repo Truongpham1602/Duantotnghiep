@@ -17,9 +17,8 @@ import useCallGetAPI from "../../customHook/CallGetApi";
 import { async } from '@firebase/util';
 
 const Cart = () => {
+    const token = localStorage.getItem('token');
     const [lstproduct, setLstProduct] = useState([])
-    const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
-
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [source, setSource] = useState()
@@ -95,8 +94,7 @@ const Cart = () => {
             })
             let index = copydata.findIndex((p) => { return p.id == item.size_Id });
             let sizeSelect = copydata.find((p) => { return p.id == item.size_Id });
-            console.log(sizeSelect);
-            // sizeSelect['selected'] = true
+            sizeSelect['selected'] = true
             copydata.fill(sizeSelect, index, index + 1);
             item['size'] = copydata
             setLstCart((prev) => [...prev, item])
@@ -111,11 +109,21 @@ const Cart = () => {
     }
 
     useEffect(() => {
-        const getdata = async () => {
-            const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=`)
-            setDataLstCart(res.data)
+        const getData = async () => {
+            try {
+                let user = await axios.get(`http://localhost:8080/auth/information`,
+                    { headers: { "Authorization": `Bearer ${token}` } }
+                );
+                const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
+                    { headers: { "Authorization": `Bearer ${token}` } })
+                setDataLstCart(res.data)
+            } catch (error) {
+                const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=`,
+                    { headers: { "Authorization": `Bearer ${token}` } })
+                setDataLstCart(res.data)
+            }
         }
-        getdata()
+        getData()
     }, [])
 
     useEffect(() => {
@@ -141,18 +149,58 @@ const Cart = () => {
         theme: "colored",
     }
 
-    const updateSize = async (pro_Id, size_Id) => {
-        const res = await axios.get(`http://localhost:8080/cart/updateSizeNoUser/${pro_Id}?size_Id=${size_Id}`)
-        setDataLstCart(res.data)
+    const updateSize = async (cart_Id, pro_Id, size_Id) => {
+        let user = await axios.get(`http://localhost:8080/auth/information`,
+            { headers: { "Authorization": `Bearer ${token}` } }
+        );
+        if (user?.data) {
+            let quantityCart;
+            lstcart.map(item => {
+                if (item.id == cart_Id) {
+                    quantityCart = item.quantity
+                }
+            })
+            await axios.post(`http://localhost:8080/cart/update?id=${cart_Id}`, {
+                quantity: quantityCart,
+                size_Id: size_Id
+            },
+                { headers: { "Authorization": `Bearer ${token}` } })
+            const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
+                { headers: { "Authorization": `Bearer ${token}` } });
+            setDataLstCart(res.data)
+        } else {
+            const res = await axios.get(`http://localhost:8080/cart/updateSizeNoUser/${pro_Id}?size_Id=${size_Id}`, { headers: { "Authorization": `Bearer ${token}` } })
+            setDataLstCart(res.data)
+        }
     }
 
-    const updateQuantity = async (pro_Id, quantity, totalQuantitySize) => {
+    const updateQuantity = async (cart_Id, pro_Id, quantity, totalQuantitySize) => {
         if (quantity > totalQuantitySize) {
             toast.warning('Lớn hơn số lượng đang có', styleToast)
             return
         }
-        const res = await axios.get(`http://localhost:8080/cart/updateQuantityNoUser/${pro_Id}?quantity=${quantity}`)
-        setDataLstCart(res.data)
+        let user = await axios.get(`http://localhost:8080/auth/information`,
+            { headers: { "Authorization": `Bearer ${token}` } }
+        );
+        if (user?.data) {
+            let size_Id
+            lstcart.map(item => {
+                if (item.id == cart_Id) {
+                    size_Id = item.size_Id
+                }
+            })
+            await axios.post(`http://localhost:8080/cart/update?id=${cart_Id}`, {
+                quantity: quantity,
+                size_Id: size_Id
+            },
+                { headers: { "Authorization": `Bearer ${token}` } })
+            const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
+                { headers: { "Authorization": `Bearer ${token}` } });
+            setDataLstCart(res.data)
+        } else {
+            const res = await axios.get(`http://localhost:8080/cart/updateQuantityNoUser/${pro_Id}?quantity=${quantity}`, { headers: { "Authorization": `Bearer ${token}` } })
+            setDataLstCart(res.data)
+        }
     }
 
     const handleOnchangeInput = (e, id) => {
@@ -206,7 +254,7 @@ const Cart = () => {
                                                 })}
                                             </div>
                                         </div>
-                                        <div className="product-content-right col-lg-7" style={{ textAlign: 'left' }}>
+                                        <div className="product-content-right col-lg-8" style={{ textAlign: 'left' }}>
                                             <div className='row'>
                                                 <div className="col-lg-3">
                                                     <h5>{lstcart.name_Product}</h5>
@@ -228,7 +276,7 @@ const Cart = () => {
                                                         <div className="col-lg-10">
                                                             {lstcart.size.map(item => {
                                                                 if (item.quantity > 0 && item.status == true && item.selected == false) {
-                                                                    return <button value={item.id} onClick={() => updateSize(lstcart.product_ID, item.id)} className="btn">{item.title}</button>
+                                                                    return <button value={item.id} onClick={() => updateSize(lstcart.id, lstcart.product_ID, item.id)} className="btn">{item.title}</button>
                                                                 } else if (item.quantity <= 0 || item.status === false) {
                                                                     return <button className="btn" style={{ borderColor: 'white', color: '#b6b6b6fe' }} disabled >{item.title}</button>
                                                                 }
@@ -240,7 +288,8 @@ const Cart = () => {
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-3">
-                                                    <NumericInput min={1} max={lstcart.quantitySize} value={lstcart.quantity} onChange={(value) => updateQuantity(lstcart.product_ID, value, lstcart.quantitySize)} />
+                                                    <NumericInput min={1} max={lstcart.quantitySize} value={lstcart.quantity} onChange={(value) => updateQuantity(lstcart.id, lstcart.product_ID, value, lstcart.quantitySize)} />
+                                                    <p>Còn {lstcart.quantitySize} sản phẩm</p>
                                                 </div>
                                             </div>
                                         </div>
