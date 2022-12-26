@@ -1,7 +1,15 @@
 import { React, useState, useEffect } from "react";
 
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  list,
+  getMetadata,
+} from "firebase/storage";
+import { storage } from "../../Firebase";
 import Header from "../HOME/header";
 import Footer from "../HOME/Footer";
 import useCallGetAPI from "../../customHook/CallGetApi";
@@ -17,6 +25,8 @@ const Home = () => {
   const [cart, setCart] = useState([]);
   const [product, setProduct] = useState({});
   const navigate = useNavigate();
+  const [imageUrls, setImageUrls] = useState([]);
+  const imagesListRef = ref(storage, "images/");
 
   useEffect(() => {
     const getData = async () => {
@@ -35,6 +45,18 @@ const Home = () => {
     }
     getData()
   }, []);
+
+  useEffect(() => {
+    setImageUrls([])
+    listAll(imagesListRef).then((response) => {
+      response.items.forEach((item) => {
+        let nameImg = item.name;
+        getDownloadURL(item).then((url) => {
+          setImageUrls((prev) => [...prev, { nameImg, url }]);
+        });
+      });
+    });
+  }, [])
 
   const nextProductDetail = async (id) => {
     const res = await axios.get(
@@ -101,7 +123,7 @@ const Home = () => {
   return (
     <>
       <ToastContainer />
-      <Header dataCart={cart} />
+      <Header dataCart={cart} imageUrls={imageUrls} />
       <Outlet context={[nextProductDetail, addToCart, product]} />
       <Footer />
     </>

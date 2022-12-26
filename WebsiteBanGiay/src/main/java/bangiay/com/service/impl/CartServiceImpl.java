@@ -80,19 +80,18 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public List<CartDTO> findAll() {
-		return cartDao.findAll().stream().map(cart -> modelMapper.map(cart, CartDTO.class))
+		return cartDao.findAllStatus1().stream().map(cart -> modelMapper.map(cart, CartDTO.class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public Page<CartDTO> findAll(Pageable pageable) {
-
 		return ObjectMapperUtils.mapEntityPageIntoDtoPage(cartDao.findAll(pageable), CartDTO.class);
 	}
 
 	@Override
 	public List<CartDTO> findByUser_Id(Integer user_Id) {
-		List<Cart> lstCart = this.cartDao.findByUser_Id(user_Id);
+		List<Cart> lstCart = this.cartDao.findByUser_IdAndStatus1(user_Id);
 		List<CartDTO> lstCartDTO = lstCart.stream().map(cart -> modelMapper.map(cart, CartDTO.class))
 				.collect(Collectors.toList());
 		for (int i = 0; i < lstCart.size(); i++) {
@@ -204,5 +203,13 @@ public class CartServiceImpl implements CartService {
 			}
 		}
 		return lstCart;
+	}
+
+	@Override
+	public void setStatusCardOrder(List<Cart> cart) {
+		for (int i = 0; i < cart.size(); i++) {
+			cart.get(i).setStatus(0);
+		}
+		cartDao.saveAll(cart);
 	}
 }

@@ -12,6 +12,13 @@ import {
     getMetadata,
 } from "firebase/storage";
 import { storage } from "../../Firebase";
+import {
+    Button,
+    Modal,
+    ModalFooter,
+    ModalBody,
+    ModalHeader,
+} from "reactstrap";
 import axios from 'axios';
 import useCallGetAPI from "../../customHook/CallGetApi";
 import { async } from '@firebase/util';
@@ -81,6 +88,15 @@ const Cart = () => {
         status: false,
         selected: false
     }]
+    const [cart_Id, setCart_Id] = useState()
+    const [pro_Id, setPro_Id] = useState()
+    const [isModal, setIsModal] = useState(false);
+    const toggle = (cart_id, pro_Id) => {
+        setCart_Id(cart_id)
+        setPro_Id(pro_Id)
+        setIsModal(!isModal);
+    };
+
 
     const setDataLstCart = (data) => {
         let total = 0;
@@ -147,6 +163,22 @@ const Cart = () => {
         draggable: true,
         progress: undefined,
         theme: "colored",
+    }
+
+    const delteCart = async (cart_Id, pro_Id) => {
+        let user = await axios.get(`http://localhost:8080/auth/information`,
+            { headers: { "Authorization": `Bearer ${token}` } }
+        );
+        if (user?.data) {
+            await axios.post(`http://localhost:8080/cart/delete?id=${cart_Id}`,
+                { headers: { "Authorization": `Bearer ${token}` } })
+            const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
+                { headers: { "Authorization": `Bearer ${token}` } });
+            setDataLstCart(res.data)
+        } else {
+            // const res = await axios.get(`http://localhost:8080/cart/updateSizeNoUser/${pro_Id}?size_Id=${size_Id}`, { headers: { "Authorization": `Bearer ${token}` } })
+            // setDataLstCart(res.data)
+        }
     }
 
     const updateSize = async (cart_Id, pro_Id, size_Id) => {
@@ -228,7 +260,10 @@ const Cart = () => {
                             Trang Chủ
                         </Link>
                         <Link className="breadcrumb-item" to={"cart"}>
-                            Giỏ Hàng
+                            Đơn hàng
+                        </Link>
+                        <Link className="breadcrumb-item" to={"cart"}>
+                            Đơn hàng đã nhận
                         </Link>
                     </ul>
                     <p className="count">Có {lstcart.length} Sản Phẩm Trong Giỏ Hàng</p>
@@ -268,9 +303,9 @@ const Cart = () => {
                                                 <div className="col-lg-3">
                                                     <p className="color">{lstcart.price * lstcart.quantity}<sup>đ</sup></p>
                                                 </div>
-                                                <div className="col-lg-8">
+                                                <div className="col-lg-6">
                                                     <div className="row">
-                                                        <div className="col-lg-1">
+                                                        <div className="col-lg-2">
                                                             <p className="SizeOne">Size:</p>
                                                         </div>
                                                         <div className="col-lg-10">
@@ -287,9 +322,12 @@ const Cart = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-lg-3">
+                                                <div className="col-lg-5">
                                                     <NumericInput min={1} max={lstcart.quantitySize} value={lstcart.quantity} onChange={(value) => updateQuantity(lstcart.id, lstcart.product_ID, value, lstcart.quantitySize)} />
                                                     <p>Còn {lstcart.quantitySize} sản phẩm</p>
+                                                </div>
+                                                <div className="col-lg-1">
+                                                    <button onClick={() => toggle(lstcart.id, lstcart.product_ID)}>Xóa</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -317,6 +355,28 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
+            <Modal isOpen={isModal} toggle={() => toggle()} centered>
+                <ModalHeader toggle={() => toggle()}>
+                    <h2>Xác nhận</h2>
+                </ModalHeader>
+                <ModalBody>
+                    Xác nhận xóa sản phẩm khỏi giỏ hàng?
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="primary"
+                        onClick={() => {
+                            delteCart(cart_Id, pro_Id);
+                            toggle();
+                        }}
+                    >
+                        Đồng ý
+                    </Button>
+                    <Button color="secondary" onClick={() => toggle()}>
+                        Hủy
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </>
     );
 };

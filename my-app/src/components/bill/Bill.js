@@ -41,11 +41,10 @@ import { async } from "@firebase/util";
 
 // class Bill extends React.Component {
 const Bill = (props) => {
+  const token = localStorage.getItem('token');
   const { updateData } = props;
   const [lstproduct, setLstProduct] = useState([]);
-  const { data: dataCart } = useCallGetAPI(
-    `http://localhost:8080/cart/getCart?user_Id=`
-  );
+
   const [totalPrice, setTotalPrice] = useState();
   const [lstcart, setLstCart] = useState([]);
   const [source, setSource] = useState();
@@ -57,19 +56,20 @@ const Bill = (props) => {
   const [user, setUser] = useState({});
   const [isModalVoucher, setIsModalVoucher] = useState(false);
   const { data: dataVoucher, isLoading } = useCallGetAPI(
-    `http://localhost:8080/api/voucher/get`
+    `http://localhost:8080/api/voucher/findAll`,
+    { headers: { "Authorization": `Bearer ${token}` } }
   );
-  //const [lstVoucher, setLstVoucher] = useState([]);
+  const [lstVoucher, setLstVoucher] = useState([]);
 
-  //const [voucherSelect, setVoucherSelect] = useState({});
+  const [voucherSelect, setVoucherSelect] = useState({});
   const [sealer, setSealer] = useState();
   const imagesListRef = ref(storage, "images/");
   const [account, setAccount] = useState({
-    Email: "",
-    Name: "",
-    Phone_Number: "",
-    Address: "",
-    Description: "",
+    email: "",
+    nameRecipient: "",
+    telephone: "",
+    address: "",
+    description: "",
   });
   const [check, setCheck] = useState({});
   const vnpay = [
@@ -95,39 +95,39 @@ const Bill = (props) => {
       let vnf_regex = /((09|03|07|08|028|024|05)+([0-9]{8})\b)/g;
       let re = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
 
-      if (id == "Email") {
+      if (id == "email") {
         if (re.test(e.target.value) == false) {
           //ch0["email"] = "This is a valid email address";
-          ch0["Email"] = "Invalid email, please enter correct email format";
+          ch0["email"] = "Invalid email, please enter correct email format";
         } else {
-          ch0["Email"] = "";
+          ch0["email"] = "";
         }
         setCheck({
           ...ch0,
         });
       } else {
-        if (id == "Name") {
+        if (id == "nameRecipient") {
           console.log(copy[id]);
           if (copy[id] == 0) {
-            ch0[id] = "Name not null";
+            ch0[id] = "nameRecipient not null";
           } else {
             ch0[id] = "";
           }
-        } else if (id == "Phone_Number") {
+        } else if (id == "telephone") {
           if (copy[id] == 0) {
-            ch0["Phone_Number"] = "Phone Number not null";
+            ch0["telephone"] = "Phone Number not null";
           } else {
             if (vnf_regex.test(e.target.value) == false) {
-              ch0["Phone_Number"] = "please enter correct phone format";
+              ch0["telephone"] = "please enter correct phone format";
             } else {
-              ch0["Phone_Number"] = "";
+              ch0["telephone"] = "";
             }
           }
-        } else if (id == "Address") {
+        } else if (id == "address") {
           if (copy[id] == 0) {
-            ch0["Address"] = "Address not null";
+            ch0["address"] = "address not null";
           } else {
-            ch0["Address"] = "";
+            ch0["address"] = "";
           }
         } else {
           ch0[id] = "";
@@ -155,24 +155,40 @@ const Bill = (props) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     let total = 0;
-    const setTotal = () => {
-      setLstCart(dataCart);
-      dataCart.map((item) => {
+    const setTotal = (data) => {
+      data.map((item) => {
         total += item.price * item.quantity;
       });
       setTotalPrice(total);
     };
-    dataCart && setTotal();
-    // setLstVoucher(dataVoucher);
-  }, [dataCart /*dataVoucher*/]);
+    try {
+      let user = await axios.get(`http://localhost:8080/auth/information`,
+        { headers: { "Authorization": `Bearer ${token}` } }
+      );
+      const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
+        { headers: { "Authorization": `Bearer ${token}` } })
+      setLstCart(res.data);
+      setTotal(res.data);
+    } catch (error) {
+      const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=`,
+        { headers: { "Authorization": `Bearer ${token}` } })
+      setLstCart(res.data);
+      setTotal(res.data);
+    }
+    setLstVoucher(dataVoucher);
+  }, []);
+
+  useEffect(() => {
+    setLstVoucher(dataVoucher);
+  }, [dataVoucher]);
 
   useEffect(() => {
     setImageUrls([]);
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
-        let nameImg = item.name;
+        let nameImg = item.nameRecipient;
         getDownloadURL(item).then((url) => {
           setImageUrls((prev) => [...prev, { nameImg, url }]);
         });
@@ -182,47 +198,54 @@ const Bill = (props) => {
 
   const createOrder = async () => {
     let ch0 = { ...check };
-    if (account.Email == 0) {
-      ch0["Email"] = "Email not null";
+    if (account.email == 0) {
+      ch0["email"] = "email not null";
       setCheck({ ...ch0 });
-    } else if (check.Email == 0) {
-      ch0["Email"] = "";
-      setCheck({ ...ch0 });
-    }
-    if (account.Name == 0) {
-      ch0["Name"] = "Name not null";
-      setCheck({ ...ch0 });
-    } else if (check.Name == 0) {
-      ch0["Name"] = "";
+    } else if (check.email == 0) {
+      ch0["email"] = "";
       setCheck({ ...ch0 });
     }
-    if (account.Phone_Number == 0) {
-      ch0["Phone_Number"] = "Phone_Number not null";
+    if (account.nameRecipient == 0) {
+      ch0["nameRecipient"] = "nameRecipient not null";
       setCheck({ ...ch0 });
-    } else if (check.Phone_Number == 0) {
-      ch0["Phone_Number"] = "";
+    } else if (check.nameRecipient == 0) {
+      ch0["nameRecipient"] = "";
       setCheck({ ...ch0 });
     }
-    if (account.Address == 0) {
-      ch0["Address"] = "Address not null";
+    if (account.telephone == 0) {
+      ch0["telephone"] = "telephone not null";
       setCheck({ ...ch0 });
-    } else if (check.Address == 0) {
-      ch0["Address"] = "";
+    } else if (check.telephone == 0) {
+      ch0["telephone"] = "";
+      setCheck({ ...ch0 });
+    }
+    if (account.address == 0) {
+      ch0["address"] = "address not null";
+      setCheck({ ...ch0 });
+    } else if (check.address == 0) {
+      ch0["address"] = "";
       setCheck({ ...ch0 });
     }
     if (
-      check.Email == 0 ||
-      check.Name == 0 ||
-      check.Phone_Number == 0 ||
-      check.Address == 0
+      check.email > 0 ||
+      check.nameRecipient > 0 ||
+      check.telephone > 0 ||
+      check.address > 0
     ) {
       return;
     }
-    let res = await axios.post(
-      `http://localhost:8080/order/createNoUser?voucher_Id=`,
-      user
-    );
-    window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
+    try {
+      let user = await axios.get(`http://localhost:8080/auth/information`,
+        { headers: { "Authorization": `Bearer ${token}` } }
+      );
+      let res = await axios.post(
+        `http://localhost:8080/api/order/create?user_Id=${user.data.id}&voucher_Id=${voucherSelect.id ? voucherSelect.id : ""}`,
+        account, { headers: { "Authorization": `Bearer ${token}` } }
+      );
+      window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const toggle = () => {
@@ -234,15 +257,14 @@ const Bill = (props) => {
     for (let i = 0; i < radio.length; i++) {
       if (radio.item(i).checked) {
         let res = await axios.get(
-          `http://localhost:8080/api/voucher/get/${radio.item(i).value}`
+          `http://localhost:8080/api/voucher/get/${radio.item(i).value}`,
+          { headers: { "Authorization": `Bearer ${token}` } }
         );
-        // setVoucherSelect(res.data);
+        setVoucherSelect(res.data);
         let total = 0;
         let totalSealer = 0;
-
-        dataCart.map((item) => {
+        lstcart.map((item) => {
           total += item.price * item.quantity;
-
           if (item.category_Id === res.data.categoryId) {
             totalSealer += item.price;
           }
@@ -251,7 +273,7 @@ const Bill = (props) => {
           total = total - (totalSealer * res.data.value) / 100;
           setSealer((totalSealer * res.data.value) / 100);
         } else {
-          total = totalSealer - res.data.value;
+          total = total - res.data.value;
           setSealer(res.data.value);
         }
         setTotalPrice(total);
@@ -259,12 +281,11 @@ const Bill = (props) => {
         return;
       } else {
         let total = 0;
-
-        dataCart.map((item) => {
+        lstcart.map((item) => {
           total += item.price * item.quantity;
         });
         setTotalPrice(total);
-        //setVoucherSelect(0);
+        setVoucherSelect({});
         setSealer();
       }
       toggle();
@@ -374,31 +395,31 @@ const Bill = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="email">Email</Label>
+                  <Label for="email">email</Label>
                   <Input
                     id="email"
-                    name="email"
+                    nameRecipient="email"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "Email")}
+                    onChange={(event) => handleOnchangeInput(event, "email")}
                   />
-                  {check.Email && check.Email.length > 0 && (
-                    <p className="checkError1">{check.Email}</p>
+                  {check.email && check.email.length > 0 && (
+                    <p className="checkError1">{check.email}</p>
                   )}
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="color">Name</Label>
+                  <Label for="color">nameRecipient</Label>
                   <Input
                     id="nameRecipient"
-                    name="nameRecipient"
+                    nameRecipient="nameRecipient"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "Name")}
+                    onChange={(event) => handleOnchangeInput(event, "nameRecipient")}
                   />
-                  {check.Name && check.Name.length > 0 && (
-                    <p className="checkError1">{check.Name}</p>
+                  {check.nameRecipient && check.nameRecipient.length > 0 && (
+                    <p className="checkError1">{check.nameRecipient}</p>
                   )}
                 </FormGroup>
               </Col>
@@ -409,30 +430,30 @@ const Bill = (props) => {
                   <Label for="number Number phone">Phone Number</Label>
                   <Input
                     id="telephone"
-                    name="telephone"
+                    nameRecipient="telephone"
                     placeholder=""
                     type="text"
                     onChange={(event) =>
-                      handleOnchangeInput(event, "Phone_Number")
+                      handleOnchangeInput(event, "telephone")
                     }
                   />
-                  {check.Phone_Number && check.Phone_Number.length > 0 && (
-                    <p className="checkError1">{check.Phone_Number}</p>
+                  {check.telephone && check.telephone.length > 0 && (
+                    <p className="checkError1">{check.telephone}</p>
                   )}
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="address">Address</Label>
+                  <Label for="address">address</Label>
                   <Input
                     id="address"
-                    name="address"
+                    nameRecipient="address"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "Address")}
+                    onChange={(event) => handleOnchangeInput(event, "address")}
                   />
-                  {check.Address && check.Address.length > 0 && (
-                    <p className="checkError1">{check.Address}</p>
+                  {check.address && check.address.length > 0 && (
+                    <p className="checkError1">{check.address}</p>
                   )}
                 </FormGroup>
               </Col>
@@ -440,18 +461,18 @@ const Bill = (props) => {
             <Row>
               <Col md={12}>
                 <FormGroup>
-                  <Label for="description">Description</Label>
+                  <Label for="description">description</Label>
                   <Input
                     id="description"
-                    name="description"
+                    nameRecipient="description"
                     type="textarea"
                     bssize="lg"
                     onChange={(event) =>
-                      handleOnchangeInput(event, "Description")
+                      handleOnchangeInput(event, "description")
                     }
                   />
-                  {check.Description && check.Description.length > 0 && (
-                    <p className="checkError1">{check.Description}</p>
+                  {check.description && check.description.length > 0 && (
+                    <p className="checkError1">{check.description}</p>
                   )}
                 </FormGroup>
                 <div>Payment methods</div>
@@ -498,9 +519,14 @@ const Bill = (props) => {
                       });
                     })}
                   </Col>
-                  <Col md={6}>
+                  <Col md={3}>
                     <p>
                       {lstcart.name_Product} / {lstcart.sizeName}
+                    </p>
+                  </Col>
+                  <Col md={3}>
+                    <p>
+                      {lstcart.color_Product}
                     </p>
                   </Col>
                   <Col md={3}>
@@ -520,19 +546,21 @@ const Bill = (props) => {
               justifyContent: "space-between",
             }}
           >
-            {/* {lstVoucher.map((item, index) => {
-              if (item.id == voucherSelect) {
-                return (
-                  <>
-                    <div>{item.name}</div>
-                    <div>
-                      {item.type === 1 ? item.value + "%" : item.value + "K"}
-                    </div>
-                    <div>{item.namecate}</div>
-                  </>
-                );
-              }
-            })} */}
+            {voucherSelect?.id > 0 &&
+              lstVoucher.map(item => {
+                if (item.id == voucherSelect.id) {
+                  return (
+                    <>
+                      <div>{item.nameRecipient}</div>
+                      <div>
+                        {item.type === 1 ? item.value + "%" : item.value + "K"}
+                      </div>
+                      <div>{item.namecate}</div>
+                    </>
+                  );
+                }
+              })
+            }
           </div>
           <button
             style={{
@@ -553,15 +581,15 @@ const Bill = (props) => {
           >
             <ModalHeader toggle={() => toggle()}>Voucher</ModalHeader>
             <ModalBody>
-              {/* <Row>
+              <Row>
                 {lstVoucher.map((item, index) => {
                   if (
                     item.status != 0 &&
                     Number(item.status) > 0 &&
                     new Date(new Date(item["effectFrom"]).toDateString()) <=
-                      new Date(new Date().toDateString()) &&
+                    new Date(new Date().toDateString()) &&
                     new Date(new Date(item["effectUntil"]).toDateString()) >=
-                      new Date(new Date().toDateString())
+                    new Date(new Date().toDateString())
                   ) {
                     return (
                       <Col
@@ -573,7 +601,7 @@ const Bill = (props) => {
                       >
                         <Row>
                           <Col md={6}>
-                            <span>{item.name}</span>
+                            <span>{item.nameRecipient}</span>
                             <span
                               style={{
                                 marginLeft: "auto",
@@ -598,7 +626,7 @@ const Bill = (props) => {
                     );
                   }
                 })}
-              </Row> */}
+              </Row>
             </ModalBody>
             <ModalFooter>
               <Button
