@@ -15,6 +15,7 @@ import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.VoucherDao;
 import bangiay.com.entity.Cart;
 import bangiay.com.entity.OrderDetail;
+import bangiay.com.entity.Size;
 import bangiay.com.entity.Voucher;
 import bangiay.com.service.CartService;
 import bangiay.com.service.OrderDetailService;
@@ -52,7 +53,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 	public List<OrderDetailDTO> create(List<Cart> lstCart, Integer order_Id, Integer voucher_Id) {
 		Voucher voucher = this.voucherDao.findById(voucher_Id).orElse(null);
 		List<OrderDetailDTO> lstOrderDTO = new ArrayList<OrderDetailDTO>();
+		List<Size> lstSize = new ArrayList<Size>();
 		for (int i = 0; i < lstCart.size(); i++) {
+			Size size = lstCart.get(i).getSize();
+			size.setQuantity(size.getQuantity() - lstCart.get(i).getQuantity());
+			lstSize.add(size);
 			if (voucher != null) {
 				if (voucher.getType() == 1) {
 					if (voucher.getCategory().getId() == lstCart.get(i).getSize().getProduct().getCategory().getId()) {
@@ -87,6 +92,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		List<OrderDetail> lstOrder = lstOrderDTO.stream().map(d -> modelMapper.map(d, OrderDetail.class))
 				.collect(Collectors.toList());
 		this.orderDetailDao.saveAll(lstOrder);
+		this.sizeDao.saveAll(lstSize);
 		return lstOrderDTO;
 	}
 
