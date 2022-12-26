@@ -10,7 +10,7 @@ import cart2 from '../image/cart/cart-2.jpg'
 import cart3 from '../image/cart/cart-3.jpg'
 const Header = (props) => {
     // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
-    const { dataCart } = props
+    const { dataCart, imageUrls } = props
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [slides, setslides] = useState()
@@ -136,11 +136,20 @@ const Header = (props) => {
             {cart &&
                 <div class="shopping-cart active">
                     <h5 class="total"> Total : <span>{totalPrice}</span> </h5>
-                    {lstcart.map((lstcart, index) => {
+                    {lstcart.map((lstcart) => {
                         return (
                             <div class="box">
                                 <i class="fas fa-times"></i>
-                                <img src={cart1} alt="" />
+                                {imageUrls.map((img) => {
+                                    return (
+                                        lstcart.media.map((item, index2) => {
+                                            return (
+                                                img.nameImg === item.url && index2 === 0 &&
+                                                <img src={img.url} width='150px' height='70px' />
+                                            )
+                                        })
+                                    )
+                                })}
                                 <div class="content">
                                     <h5>{lstcart.name_Product}</h5>
                                     <span class="quantity">{lstcart.quantity}</span>

@@ -157,7 +157,7 @@ const Order = (props) => {
             {/* <th>Price</th> */}
             <th>Điện thoại</th>
             <th>Địa chỉ</th>
-            <th>Ngày tạo</th>
+            <th>Ngày đặt</th>
             <th>Mô tả</th>
             <th>Chờ thanh toán</th>
             <th>Đã thanh toán</th>

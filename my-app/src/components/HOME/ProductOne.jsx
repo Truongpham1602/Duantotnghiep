@@ -18,6 +18,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const ProductOne = () => {
+    const token = localStorage.getItem('token');
     const [nextProductDetail, addToCart, product] = useOutletContext()
     const imagesListRef = ref(storage, "images/");
     const [imageUrls, setImageUrls] = useState([]);
@@ -114,7 +115,9 @@ const ProductOne = () => {
     }
 
     const setActive = async (e) => {
-        const res = await axios.get(`http://localhost:8080/api/size/find/${e.target.value}`)
+        const res = await axios.get(`http://localhost:8080/api/size/find/${e.target.value}`,
+            { headers: { "Authorization": `Bearer ${token}` } }
+        )
         let btnSize = document.getElementsByClassName('btn')
         for (let i = 0; i < btnSize.length; i++) {
             btnSize.item(i).classList.remove('acitve-Size');
@@ -196,6 +199,7 @@ const ProductOne = () => {
                         </div>
                         <div className="product-content-right-product-quantity">
                             <p className="quantityLeft">Số Lượng: <NumericInput key={valueNumberinout} min={1} value={valueNumberinout} max={quantitySize} onChange={(value) => handleNumberInput(value)} /></p>
+                            <p style={{ textAlign: 'left' }}>Còn {quantitySize} sản phẩm</p>
                         </div>
                         <div className="product-content-right-product-button">
                             <button class="fas fa-cart-arrow-down btnGioHang" onClick={() => addToCart(size_Id, valueNumberinout)}> Thêm vào giỏ hàng</button>

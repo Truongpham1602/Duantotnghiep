@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import bangiay.com.utils.ObjectMapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +25,7 @@ import bangiay.com.service.CartService;
 import bangiay.com.service.MediaService;
 import bangiay.com.service.ProductService;
 import bangiay.com.service.SizeService;
+import bangiay.com.utils.ObjectMapperUtils;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -56,9 +56,8 @@ public class CartServiceImpl implements CartService {
 		cart.setCreated(Timestamp.from(Instant.now()));
 		cart.setSize(sizeDao.findById(cartDTO.getSize_Id()).orElse(null));
 		cart.setUser(userDao.findById(cartDTO.getUser_Id()).orElse(null));
+		cart.setCreated(Timestamp.from(Instant.now()));
 		Cart cartSave = cartDao.save(cart);
-//		cartDTO.setCreator(cartSave.getCreator());
-//		cartDTO.setModifier(cartSave.getModifier());
 		cartDTO.setId(cartSave.getId());
 		return cartDTO;
 	}
@@ -67,6 +66,7 @@ public class CartServiceImpl implements CartService {
 	public CartDTO updateCart(CartDTO cartDTO) {
 		Cart cart = cartDao.findById(cartDTO.getId()).orElseThrow(() -> new RuntimeException("Cart isn't existed"));
 		// modelMapper.map(cartDTO,Cart.class);
+		cart.setSize(sizeDao.findById(cartDTO.getSize_Id()).orElseThrow());
 		cart.setQuantity(cartDTO.getQuantity());
 		cart.setModified(Timestamp.from(Instant.now()));
 		cart.setStatus(1);
@@ -80,25 +80,35 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public List<CartDTO> findAll() {
-		return cartDao.findAll().stream().map(cart -> modelMapper.map(cart, CartDTO.class))
+		return cartDao.findAllStatus1().stream().map(cart -> modelMapper.map(cart, CartDTO.class))
 				.collect(Collectors.toList());
 	}
+
 	@Override
 	public Page<CartDTO> findAll(Pageable pageable) {
-
 		return ObjectMapperUtils.mapEntityPageIntoDtoPage(cartDao.findAll(pageable), CartDTO.class);
 	}
+
 	@Override
 	public List<CartDTO> findByUser_Id(Integer user_Id) {
-		List<Cart> lstCart = this.cartDao.findByUser_Id(user_Id);
+		List<Cart> lstCart = this.cartDao.findByUser_IdAndStatus1(user_Id);
 		List<CartDTO> lstCartDTO = lstCart.stream().map(cart -> modelMapper.map(cart, CartDTO.class))
 				.collect(Collectors.toList());
 		for (int i = 0; i < lstCart.size(); i++) {
+			lstCartDTO.get(i).setProduct_ID(lstCart.get(i).getSize().getProduct().getId());
 			lstCartDTO.get(i).setName_Product(lstCart.get(i).getSize().getProduct().getName());
+			lstCartDTO.get(i).setColor_Product(lstCart.get(i).getSize().getProduct().getColor());
 			lstCartDTO.get(i).setPrice(lstCart.get(i).getSize().getProduct().getPrice());
+			lstCartDTO.get(i).setSize_Id(lstCart.get(i).getSize().getId());
+			lstCartDTO.get(i).setSizeName(lstCart.get(i).getSize().getSize());
 			lstCartDTO.get(i).setQuantityTotal(lstCart.get(i).getSize().getProduct().getQuantity());
+			lstCartDTO.get(i).setCategory_Id(lstCart.get(i).getSize().getProduct().getCategory().getId());
+			lstCartDTO.get(i).setQuantitySize(lstCart.get(i).getSize().getQuantity());
+			List<MediaDTO> media = this.mediaService.findAllByPro_Id(lstCart.get(i).getSize().getProduct().getId());
+			byte[] datamedia = SerializationUtils.serialize(media);
 			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(lstCart.get(i).getSize().getProduct().getId());
 			byte[] data = SerializationUtils.serialize(lstSizeDTO);
+			lstCartDTO.get(i).setMedia(SerializationUtils.deserialize(datamedia));
 			lstCartDTO.get(i).setSize(SerializationUtils.deserialize(data));
 		}
 		return lstCartDTO;
@@ -124,12 +134,8 @@ public class CartServiceImpl implements CartService {
 		ProductDTO pro = this.proService.finById(size.getProductId());
 		cartDTO.setProduct_ID(pro.getId());
 		for (CartDTO c : lstCart) {
-			if (c.getProduct_ID().equals(pro.getId())) {
-				c.setQuantity(c.getQuantity() + 1);
-				return lstCart;
-			}
 			if (c.getSize_Id().equals(size.getId())) {
-				c.setSize_Id(cartDTO.getSize_Id());
+				c.setQuantity(c.getQuantity() + cartDTO.getQuantity());
 				return lstCart;
 			}
 		}
@@ -197,5 +203,13 @@ public class CartServiceImpl implements CartService {
 			}
 		}
 		return lstCart;
+	}
+
+	@Override
+	public void setStatusCardOrder(List<Cart> cart) {
+		for (int i = 0; i < cart.size(); i++) {
+			cart.get(i).setStatus(0);
+		}
+		cartDao.saveAll(cart);
 	}
 }

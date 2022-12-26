@@ -2,10 +2,11 @@ package bangiay.com.service;
 
 import java.util.List;
 
-import bangiay.com.DTO.CartDTO;
-import bangiay.com.entity.Cart;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import bangiay.com.DTO.CartDTO;
+import bangiay.com.entity.Cart;
 
 public interface CartService {
 
@@ -34,6 +35,8 @@ public interface CartService {
 	List<CartDTO> updatequantityNoUser(Integer id_pro, Integer quantity);
 
 	List<CartDTO> findByUser_Id(Integer user_Id);
+
+	void setStatusCardOrder(List<Cart> cart);
 //    List<CartDTO> getCartNoUser();
 
 }

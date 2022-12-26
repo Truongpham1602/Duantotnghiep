@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from 'moment'
+// import AxiosInterceptor from './AxiosInterceptor'
 import { useEffect, useState } from "react";
 
 const useCallGetAPI = (url) => {
@@ -14,9 +15,6 @@ const useCallGetAPI = (url) => {
         async function getData() {
             try {
                 let res = await axios.get(url, { headers: { "Authorization": `Bearer ${token}` } })
-                    .catch(
-                        error => { window.location.replace("http://localhost:3000/login"); }
-                    )
                 let data = (res && res.data) ? res.data : []
                 if (data && data.length > 0) {
                     data.map(item => {

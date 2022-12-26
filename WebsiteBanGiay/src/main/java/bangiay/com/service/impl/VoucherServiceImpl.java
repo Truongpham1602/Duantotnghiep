@@ -2,7 +2,9 @@ package bangiay.com.service.impl;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +105,12 @@ public class VoucherServiceImpl implements VoucherService {
 		VoucherDTO vou = modelMapper.map(voucher, VoucherDTO.class);
 		vou.setStatus(0);
 		return vou;
+	}
+
+	@Override
+	public List<VoucherDTO> findAll() {
+		return voucherDAO.findAll().stream().map(voucher -> modelMapper.map(voucher, VoucherDTO.class))
+				.collect(Collectors.toList());
 	}
 
 }

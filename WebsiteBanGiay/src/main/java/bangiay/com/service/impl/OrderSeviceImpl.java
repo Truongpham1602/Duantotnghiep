@@ -69,13 +69,16 @@ public class OrderSeviceImpl implements OrderService {
 	@Override
 	public OrderDTO create(OrderDTO orderDTO, Integer user_Id, Integer voucher_Id) {
 		Order order = modelMapper.map(orderDTO, Order.class);
+		User user = this.userDao.findById(user_Id).orElse(null);
 		order.setCreated(Timestamp.from(Instant.now()));
 		order.setStatus(1);
+		if (user != null) {
+			order.setUser(user);
+		}
 		this.orderDao.save(order);
-		User user = this.userDao.findById(user_Id).orElse(null);
 		List<Cart> lstCart;
 		if (user != null) {
-			lstCart = this.cartDao.findByUser_Id(user_Id);
+			lstCart = this.cartDao.findByUser_IdAndStatus1(user_Id);
 		} else {
 			List<CartDTO> lstCartDTO = this.cartService.getCartNoUser();
 			lstCart = lstCartDTO.stream().map(d -> modelMapper.map(d, Cart.class)).collect(Collectors.toList());
@@ -88,7 +91,7 @@ public class OrderSeviceImpl implements OrderService {
 		}
 		orderDTO.setId(order.getId());
 		this.orderDetailService.create(lstCart, order.getId(), voucher_Id);
-
+		this.cartService.setStatusCardOrder(lstCart);
 		return orderDTO;
 	}
 
