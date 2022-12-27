@@ -34,6 +34,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../../Firebase";
 import { Table } from "reactstrap";
+import { async } from "@firebase/util";
 
 // class Product extends React.Component {
 const Product = () => {
@@ -51,12 +52,44 @@ const Product = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [pageNumber, setPageNumber] = useState()
   const [totalPage, setTotalPage] = useState([])
+  const [keyword, setKeyword] = useState()
+  const imagesListRef = ref(storage, "images/");
+
 
   const toggleNested = (id) => {
     setNestedModal(!nestedModal);
     id && setProId(id);
   };
 
+  const handleInputSearch = async (e) => {
+    if (e.target.value == 0) {
+      const res = await axios.get(`http://localhost:8080/admin/product/select`,
+        { headers: { "Authorization": `Bearer ${token}` } })
+      let data = res ? res.data : []
+      setData(data.content)
+      setPageNumber(data.number)
+      setKeyword(e.target.value)
+    } else {
+      setKeyword(e.target.value)
+    }
+  }
+
+  const searchButton = async () => {
+    axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
+    let config = {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    }
+    let res = await axios.post(
+      `http://localhost:8080/admin/product/search?keyword=${keyword}`,
+      config
+    );
+    let data = res ? res.data : []
+    setData(data.content)
+    setPageNumber(data.number)
+  }
 
   const pageable = async (id) => {
     if (id <= 0) {
@@ -66,16 +99,13 @@ const Product = () => {
     }
     const res = await axios.get(`http://localhost:8080/admin/product/select?page=${id}`,
       { headers: { "Authorization": `Bearer ${token}` } })
-    console.log(res);
     let data = res ? res.data : []
-    console.log(res.data);
     setData(data.content)
     setPageNumber(data.number)
-    console.log(data.number);
   }
 
   const updateTotalPage = async () => {
-    const res = await axios.get(`http://localhost:8080/admin/product/select`)
+    const res = await axios.get(`http://localhost:8080/admin/product/select`, { headers: { "Authorization": `Bearer ${token}` } })
     let data = res ? res.data : []
     if (data.totalPages > totalPage.length) {
       for (let i = 1; i <= dataPro.totalPages; i++) {
@@ -105,17 +135,20 @@ const Product = () => {
     `http://localhost:8080/admin/product/select`
   );
   useEffect(() => {
-    if (dataPro && dataPro.length > 0) {
-      setData(dataPro);
-      const imagesListRef = ref(storage, "images/");
-      listAll(imagesListRef).then((response) => {
-        response.items.forEach((item) => {
-          let nameImg = item.name;
-          getDownloadURL(item).then((url) => {
-            setImageUrls((prev) => [...prev, { nameImg, url }]);
-          });
+    setImageUrls([])
+    listAll(imagesListRef).then((response) => {
+      response.items.forEach((item) => {
+        let nameImg = item.name;
+        getDownloadURL(item).then((url) => {
+          setImageUrls((prev) => [...prev, { nameImg, url }]);
         });
       });
+    });
+  }, [])
+
+  useEffect(() => {
+    if (dataPro && dataPro.length > 0) {
+      setData(dataPro);
     }
 
     if (dataPro.content) {
@@ -156,7 +189,8 @@ const Product = () => {
   const editProduct = async (id) => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/admin/product/find/${id}`
+        `http://localhost:8080/admin/product/find/${id}`,
+        { headers: { "Authorization": `Bearer ${token}` } }
       );
       setProduct(res.data);
     } catch (error) {
@@ -168,7 +202,8 @@ const Product = () => {
     // e.preventDefault();
     try {
       await axios.get(
-        `http://localhost:8080/admin/product/updateStatusFalse/${id}`
+        `http://localhost:8080/admin/product/updateStatusFalse/${id}`,
+        { headers: { "Authorization": `Bearer ${token}` } }
       );
       let copyList = dataProduct;
       copyList = copyList.filter((item) => item.id !== id);
@@ -255,7 +290,6 @@ const Product = () => {
 
   return (
     <>
-
       <ProductDetails
         isDetailsModal={isDetailsModal}
         toggleModal={detailsModal}
@@ -286,6 +320,27 @@ const Product = () => {
           <thead style={{ verticalAlign: "middle" }}>
             <tr>
               <th colSpan='10'><h3>Sản Phẩm</h3></th>
+            </tr>
+            <tr>
+              <th colSpan='7'></th>
+              <th colSpan='3'><div className="input-group">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Search for..."
+                  aria-label="Search for..."
+                  aria-describedby="btnNavbarSearch"
+                  onChange={(e) => handleInputSearch(e)}
+                />
+                <button
+                  className="btn btn-primary"
+                  id="btnNavbarSearch"
+                  type="button"
+                  onClick={() => searchButton()}
+                >
+                  <i className="fas fa-search"></i>
+                </button>
+              </div></th>
             </tr>
             <tr>
               <th>STT</th>
