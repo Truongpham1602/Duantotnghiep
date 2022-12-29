@@ -1,7 +1,5 @@
 package bangiay.com.dao;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,10 +10,9 @@ import bangiay.com.entity.Product;
 
 @Repository
 public interface ProductDao extends JpaRepository<Product, Integer> {
-	@Query("SELECT p FROM Product p WHERE concat(p.category, ' ', p.color, ' ', p.name, ' ', p.description,"
-			+ " ' ' , p.price, ' ', p.quantity, ' ', p.created, ' ', p.creator,"
-			+ " ' ', p.modified, ' ', p.modifier, ' ', p.status) LIKE %?1%")
-	public List<Product> search(String keyword);
+	@Query("SELECT p FROM Product p WHERE concat_ws(p.category.namecate, ' ', p.color, ' ', p.name, ' ', "
+			+ "p.price, ' ', p.quantity, ' ', p.description, ' ', p.created, ' ', p.creator, ' ', p.modified, ' ', p.modifier, '') LIKE %?1% and p.status =1")
+	public Page<Product> search(String keyword, Pageable pageable);
 
 	@Query("SELECT p FROM Product p WHERE p.status =1")
 	Page<Product> findPageWhereStatus(Pageable pageable);

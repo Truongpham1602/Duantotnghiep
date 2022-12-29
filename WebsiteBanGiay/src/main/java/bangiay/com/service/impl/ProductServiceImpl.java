@@ -14,20 +14,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
-import bangiay.com.DTO.CategoryDTO;
 import bangiay.com.DTO.MediaDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.DTO.SizeDTO;
 import bangiay.com.dao.CategoryDao;
 import bangiay.com.dao.MediaDao;
 import bangiay.com.dao.ProductDao;
-import bangiay.com.entity.Category;
 import bangiay.com.entity.Media;
 import bangiay.com.entity.Product;
 import bangiay.com.service.MediaService;
 import bangiay.com.service.ProductService;
 import bangiay.com.service.SizeService;
-import bangiay.com.utils.ObjectMapperUtils;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -131,11 +128,29 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> listAll(String keyword) {
-		if (keyword != null) {
-			return proDAO.search(keyword);
+	public Page<ProductDTO> searchByKeyword(Integer size, Integer page, String keyword) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Product> lstProduct;
+		if (!keyword.equals("")) {
+			lstProduct = proDAO.search(keyword, pageable);
+		} else {
+			lstProduct = proDAO.findAll(pageable);
 		}
-		return proDAO.findAll();
+		Page<ProductDTO> dtoPage = lstProduct.map(new Function<Product, ProductDTO>() {
+			@Override
+			public ProductDTO apply(Product entity) {
+				ProductDTO dto = new ProductDTO();
+				dto = modelMapper.map(entity, ProductDTO.class);
+				List<Media> media = mediaDao.findMediaByProduct_Id(entity.getId());
+				if (media.size() > 0) {
+					dto.setImage(media.get(0).getUrl());
+				}
+				dto.setName_cate(entity.getCategory().getNamecate());
+				dto.setId(entity.getId());
+				return dto;
+			}
+		});
+		return dtoPage;
 	}
 
 	@Override
@@ -143,13 +158,18 @@ public class ProductServiceImpl implements ProductService {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<Product> entities = proDAO.findAll(pageable);
 		Page<ProductDTO> dtoPage = entities.map(new Function<Product, ProductDTO>() {
-		    @Override
-		    public ProductDTO apply(Product entity) {
-		    	ProductDTO dto = new ProductDTO();
-		        dto = modelMapper.map(entity, ProductDTO.class);
-		        dto.setId(entity.getId());
-		        return dto;
-		    }
+			@Override
+			public ProductDTO apply(Product entity) {
+				ProductDTO dto = new ProductDTO();
+				dto = modelMapper.map(entity, ProductDTO.class);
+				List<Media> media = mediaDao.findMediaByProduct_Id(entity.getId());
+				if (media.size() > 0) {
+					dto.setImage(media.get(0).getUrl());
+				}
+				dto.setName_cate(entity.getCategory().getNamecate());
+				dto.setId(entity.getId());
+				return dto;
+			}
 		});
 		return dtoPage;
 	}
