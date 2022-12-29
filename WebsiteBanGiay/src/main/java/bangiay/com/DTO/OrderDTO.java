@@ -17,7 +17,12 @@ public class OrderDTO {
 	private String telephone;
 	private String address;
 	private Timestamp created;
-	private Timestamp modified;
+	private Timestamp paymentAtDate;
+	private Timestamp recaiveAtDate;
+	private Timestamp completedAtDate;
+	private Timestamp cancelledAtDate;
+	private Timestamp returnAtDate;
 	private String description;
 	private Integer status;
+
 }

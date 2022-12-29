@@ -19,9 +19,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
   const token = localStorage.getItem('token');
-  const { data: dataCart } = useCallGetAPI(
-    `http://localhost:8080/cart/getCart?user_Id=`
-  );
   const [cart, setCart] = useState([]);
   const [product, setProduct] = useState({});
   const navigate = useNavigate();
@@ -38,9 +35,7 @@ const Home = () => {
           { headers: { "Authorization": `Bearer ${token}` } })
         setCart(res.data)
       } catch (error) {
-        const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=`,
-          { headers: { "Authorization": `Bearer ${token}` } })
-        setCart(res.data)
+        console.log(error);
       }
     }
     getData()

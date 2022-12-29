@@ -107,7 +107,7 @@ const ProductOne = () => {
     }
 
     const handleNumberInput = (value) => {
-        if (value >= quantitySize) {
+        if (value > quantitySize) {
             toast.warning('Số lượng lớn hơn số lượng đang có!!!')
             return
         }

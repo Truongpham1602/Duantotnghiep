@@ -39,6 +39,7 @@ import { async } from "@firebase/util";
 // class Product extends React.Component {
 const Product = () => {
   const token = localStorage.getItem('token');
+  axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
   const [nestedModal, setNestedModal] = useState(false);
   const [proId, setProId] = useState();
   const [product, setProduct] = useState({});
@@ -75,7 +76,6 @@ const Product = () => {
   }
 
   const searchButton = async () => {
-    axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
     let config = {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -451,47 +451,7 @@ const Product = () => {
               </tr>
             )}
           </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan='10'>
-                <Pagination>
-                  <PaginationItem>
-                    <PaginationLink
-                    // first
-                    // onClick={() => pageable(0)}
-                    />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                    // onClick={() => pageable(pageNumber - 1)}
-                    // previous
-                    />
-                  </PaginationItem>
-                  {/* {totalPage.map(item => {
-                    return (
-                      <PaginationItem>
-                        <PaginationLink onClick={() => pageable(item - 1)}>
-                          {item}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )
-                  })} */}
-                  <PaginationItem>
-                    <PaginationLink
-                    // onClick={() => pageable(pageNumber + 1)}
-                    // next
-                    />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                    // onClick={() => pageable(totalPage.length - 1)}
-                    // last
-                    />
-                  </PaginationItem>
-                </Pagination>
-              </td>
-            </tr>
-          </tfoot>
+
         </Table >
       </div >
       <PaginatedItems itemsPerPage={totalPage.length}
