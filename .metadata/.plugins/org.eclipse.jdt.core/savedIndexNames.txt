@@ -74,7 +74,6 @@ INDEX VERSION 1.131+D:\Du an tot nghiep\git\Duantotnghiep\.metadata\.plugins\org
 3574503731.index
 4089765016.index
 67467958.index
-3565084974.index
 713851350.index
 1717366452.index
 520674426.index
