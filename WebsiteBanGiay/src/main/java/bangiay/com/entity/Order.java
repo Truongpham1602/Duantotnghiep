@@ -39,12 +39,24 @@ public class Order {
 	@Column(name = "CREATED")
 	private java.sql.Timestamp created;
 
-	@Column(name = "MODIFIED")
-	private java.sql.Timestamp modified;
+	@Column(name = "PAYMENTATDATE")
+	private java.sql.Timestamp paymentAtDate;
 
 	@Column(name = "DESCRIPTION")
 	private String description;
 
 	@Column(name = "STATUS")
 	private Integer status;
+
+	@Column(name = "RECAIVEATDATE")
+	private java.sql.Timestamp recaiveAtDate;
+
+	@Column(name = "COMPLETEDATDATE")
+	private java.sql.Timestamp completedAtDate;
+
+	@Column(name = "CANCELLEDATDATE")
+	private java.sql.Timestamp cancelledAtDate;
+
+	@Column(name = "RETURNATDATE")
+	private java.sql.Timestamp returnAtDate;
 }

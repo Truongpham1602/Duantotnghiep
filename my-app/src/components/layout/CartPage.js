@@ -96,10 +96,11 @@ const Cart = () => {
         setPro_Id(pro_Id)
         setIsModal(!isModal);
     };
-
+    const [totalPro, setTotalPro] = useState(0)
 
     const setDataLstCart = (data) => {
         let total = 0;
+        let totalPro = 0;
         setLstCart([])
         data.map(item => {
             let copydata = [...sizes];
@@ -113,8 +114,11 @@ const Cart = () => {
             sizeSelect['selected'] = true
             copydata.fill(sizeSelect, index, index + 1);
             item['size'] = copydata
+
+            totalPro += item.quantity
             setLstCart((prev) => [...prev, item])
         })
+        setTotalPro(totalPro)
         const setTotal = () => {
             data.map(item => {
                 total += item.price * item.quantity
@@ -253,7 +257,7 @@ const Cart = () => {
         <>
             <ToastContainer />
             <div className="container-fluid">
-                <h4 className="py-4">Shopping Cart</h4>
+                <h4 className="py-4">Giỏ hàng</h4>
                 <div className="d-flex justify-content-between align-items-center">
                     <ul className="breadcrumb">
                         <Link className="breadcrumb-item" to={"/"}>
@@ -266,7 +270,7 @@ const Cart = () => {
                             Đơn hàng đã nhận
                         </Link>
                     </ul>
-                    <p className="count">Có {lstcart.length} Sản Phẩm Trong Giỏ Hàng</p>
+                    <p className="count">Có {totalPro} Sản Phẩm Trong Giỏ Hàng</p>
                 </div>
                 <div className="row">
                     {/* Cart-left */}
@@ -291,31 +295,32 @@ const Cart = () => {
                                         </div>
                                         <div className="product-content-right col-lg-8" style={{ textAlign: 'left' }}>
                                             <div className='row'>
-                                                <div className="col-lg-3">
-                                                    <h5>{lstcart.name_Product}</h5>
+                                                <div className="col-lg-4">
+                                                    <h5>Tên giày: {lstcart.name_Product}</h5>
+                                                </div>
+                                                <div className="col-lg-2">
+                                                    <p className="color">Màu: {lstcart.color_Product}</p>
                                                 </div>
                                                 <div className="col-lg-3">
-                                                    <p className="color">{lstcart.color_Product}</p>
+                                                    <p>Giá: {lstcart.price}<sup>đ</sup></p>
                                                 </div>
                                                 <div className="col-lg-3">
-                                                    <p>{lstcart.price}<sup>đ</sup></p>
-                                                </div>
-                                                <div className="col-lg-3">
-                                                    <p className="color">{lstcart.price * lstcart.quantity}<sup>đ</sup></p>
+                                                    <p className="color">Tổng: {lstcart.price * lstcart.quantity}<sup>đ</sup></p>
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="row">
-                                                        <div className="col-lg-2">
-                                                            <p className="SizeOne">Size:</p>
+                                                        <div className="col-lg-3">
+                                                            <p className="SizeOne">Kích cỡ:</p>
                                                         </div>
-                                                        <div className="col-lg-10">
+                                                        <div className="col-lg-9">
                                                             {lstcart.size.map(item => {
-                                                                if (item.quantity > 0 && item.status == true && item.selected == false) {
-                                                                    return <button value={item.id} onClick={() => updateSize(lstcart.id, lstcart.product_ID, item.id)} className="btn">{item.title}</button>
-                                                                } else if (item.quantity <= 0 || item.status === false) {
-                                                                    return <button className="btn" style={{ borderColor: 'white', color: '#b6b6b6fe' }} disabled >{item.title}</button>
-                                                                }
-                                                                else if (item.selected == true) {
+                                                                // if (item.quantity > 0 && item.status == true && item.selected == false) {
+                                                                //     return <button value={item.id} onClick={() => updateSize(lstcart.id, lstcart.product_ID, item.id)} className="btn">{item.title}</button>
+                                                                // } else if (item.quantity <= 0 || item.status === false) {
+                                                                //     return <button className="btn" style={{ borderColor: 'white', color: '#b6b6b6fe' }} disabled >{item.title}</button>
+                                                                // }
+                                                                // else 
+                                                                if (item.selected == true) {
                                                                     return <button className="btn" style={{ borderColor: 'red', color: 'red' }} >{item.title}</button>
                                                                 }
                                                             })}
@@ -344,7 +349,7 @@ const Cart = () => {
                                     Tổng Cộng: <span>{totalPrice}</span>
                                 </li>
                                 <li className="total">
-                                    Tổng: <span>{lstcart.length}</span> Sản Phẩm
+                                    Tổng: <span>{totalPro}</span> Sản Phẩm
                                 </li>
                             </ul>
                         </div>

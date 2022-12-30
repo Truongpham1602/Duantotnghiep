@@ -14,6 +14,14 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 			+ "p.price, ' ', p.quantity, ' ', p.description, ' ', p.created, ' ', p.creator, ' ', p.modified, ' ', p.modifier, '') LIKE %?1% and p.status =1")
 	public Page<Product> search(String keyword, Pageable pageable);
 
+	@Query("SELECT p FROM Product p WHERE concat_ws(p.category.namecate, ' ', p.color, ' ', p.name, ' ', "
+			+ "p.price, ' ', p.quantity, ' ', p.description, ' ') LIKE %?1% and p.category.id = ?2 and p.status =1")
+	public Page<Product> searchClient(String keyword, Integer cate_Id, Pageable pageable);
+
+	@Query("SELECT p FROM Product p WHERE concat_ws(p.category.namecate, ' ', p.color, ' ', p.name, ' ', "
+			+ "p.price, ' ', p.quantity, ' ', p.description, ' ') LIKE %?1% and p.status =1")
+	public Page<Product> searchClient(String keyword, Pageable pageable);
+
 	@Query("SELECT p FROM Product p WHERE p.status =1")
 	Page<Product> findPageWhereStatus(Pageable pageable);
 }

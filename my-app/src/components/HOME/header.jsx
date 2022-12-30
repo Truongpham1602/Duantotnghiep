@@ -10,7 +10,7 @@ import cart2 from '../image/cart/cart-2.jpg'
 import cart3 from '../image/cart/cart-3.jpg'
 const Header = (props) => {
     // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
-    const { dataCart, imageUrls } = props
+    const { dataCart, imageUrls, searchButton, handleInputSearch, keyword } = props
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [slides, setslides] = useState()
@@ -18,6 +18,7 @@ const Header = (props) => {
     const [cart, setcart] = useState(false)
     const [loginForm, setloginForm] = useState(false)
     const [searchForm, setsearchForm] = useState(false)
+
 
     useEffect(() => {
         let total = 0;
@@ -31,6 +32,17 @@ const Header = (props) => {
         dataCart && setTotal();
     }, [dataCart]);
 
+    useEffect(() => {
+        let total = 0;
+        const setTotal = () => {
+            setLstCart(dataCart)
+            dataCart.map(item => {
+                total += item.price
+            })
+            setTotalPrice(total)
+        }
+        dataCart && setTotal();
+    }, [dataCart]);
 
     const searchbtn = () => {
         setsearchForm(!searchForm)
@@ -128,8 +140,11 @@ const Header = (props) => {
 
             {searchForm &&
                 <form action="" class="search-form active">
-                    <input type="search" placeholder="search here..." id="search-box" />
-                    <label for="search-box" class="fas fa-search"></label>
+                    <input type="search" placeholder="search here..." id="search-box"
+                        value={keyword}
+                        onChange={(e) => handleInputSearch(e)}
+                    />
+                    <label onClick={() => searchButton()} for="search-box" class="fas fa-search"></label>
                 </form>
             }
 
