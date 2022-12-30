@@ -13,7 +13,7 @@ import Login from "../components/login/Login";
 import Register from "../components/register/Register";
 
 import Product1 from "../components/layout/Product";
-import HeaderPage from "../components/layout/HeaderPage";
+import HeaderPage from "../components/layout/HeaderPage.js";
 import ProductTest from "../components/HOME/ProductTest";
 import ProductList from "../components/HOME/ProductList";
 import Order from "../components/order/order";

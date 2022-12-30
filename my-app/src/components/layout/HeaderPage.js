@@ -8,35 +8,30 @@ import {
 } from 'reactstrap';
 
 const items = [
+
     {
-        src: 'https://moichaybo.com/uploads/posts/2022-03/1646196155_moi-chay-bo-early-bird-running-adidas-adizero-adios-pro-2-tokyo-marathon-3.jpeg',
+        src: 'https://c1img.onlinefriday.vn/tmp/09_2018/b/47/9/1860523680_1537936493.png',
         altText: '',
         caption: '',
         key: 1,
     },
     {
-        src: 'https://c1img.onlinefriday.vn/tmp/09_2018/b/47/9/1860523680_1537936493.png',
+        src: 'https://sport5.mediacdn.vn/158855217956261888/2021/3/11/converse-x-chinatown-x-nba-11-1-1615448780095340646179.jpg',
         altText: '',
         caption: '',
         key: 2,
     },
     {
-        src: 'https://sport5.mediacdn.vn/158855217956261888/2021/3/11/converse-x-chinatown-x-nba-11-1-1615448780095340646179.jpg',
+        src: 'https://cdn.tgdd.vn/2022/10/banner/1200x400-1200x400-1.jpg',
         altText: '',
         caption: '',
         key: 3,
     },
     {
-        src: 'https://cdn.tgdd.vn/2022/10/banner/1200x400-1200x400-1.jpg',
-        altText: '',
-        caption: '',
-        key: 4,
-    },
-    {
         src: 'https://sport5.mediacdn.vn/158855217956261888/2021/3/11/converse-x-chinatown-x-nba-11-1-1615448780095340646179.jpg',
         altText: '',
         caption: '',
-        key: 5,
+        key: 4,
     },
 ];
 
