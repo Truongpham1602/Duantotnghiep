@@ -4,12 +4,15 @@ import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
 import ProductShear from "../HOME/Productshear";
 import '../css/productTest.css';
+import useCallGetAPI from "../../customHook/CallGetApi";
 import Voucher from "../voucher/voucher";
 import { create } from "@mui/material/styles/createTransitions";
 // class Home extends React.Component {
 const Product1 = () => {
-    const [addToCart] = useOutletContext()
+    const [nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate] = useOutletContext()
     const navigate = useNavigate()
+    const { data: dataCate, isLoading } = useCallGetAPI(`http://localhost:8080/api/category/select`);
+    let copyCate = dataCate.content;
 
     return (
         <>
@@ -22,19 +25,18 @@ const Product1 = () => {
                 <h1 class="headingTest">latest <span>Products</span></h1>
                 <Row>
                     <Col className="bg-light" lg="10">
-                        <Outlet context={[addToCart]} />
+                        <Outlet context={[nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate]} />
                     </Col>
                     <Col className="bg-light product-right" lg="2">
                         <div className="col-12 mini-card product-categori">
                             <h4 className="text-danger fw-bolder product-right-text-top">Loại sản phẩm</h4>
                             <ul className="list-group-product">
-                                <li><CgSlack className="icon-product" /><a href="#">Giày Nam</a></li>
-                                <li><CgSlack className="icon-product" /><a href="#">Giày Nữ</a></li>
-                                <li><CgSlack className="icon-product" /><a href="#">Giày Trẻ Em</a></li>
-                                <li><CgSlack className="icon-product" /><a href="#">Giày Đá Bóng</a></li>
-                                <li><CgSlack className="icon-product" /><a href="#">Giày Thời Trang</a></li>
-                                <li><CgSlack className="icon-product" /><a href="#">Giày Bóng Rổ</a></li>
-                                <li><CgSlack className="icon-product" /><a href="#">Giày Chạy Bộ</a></li>
+                                <li onClick={() => handleCate(0)}><CgSlack className="icon-product" /><a href="#">Tất cả</a></li>
+                                {copyCate?.map(item => {
+                                    return (
+                                        <li onClick={() => handleCate(item.id)}><CgSlack className="icon-product" /><a href="#">{item.namecate}</a></li>
+                                    )
+                                })}
                             </ul>
                         </div>
 

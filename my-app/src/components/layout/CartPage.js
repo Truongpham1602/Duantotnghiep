@@ -314,6 +314,12 @@ const Cart = () => {
                                                         </div>
                                                         <div className="col-lg-9">
                                                             {lstcart.size.map(item => {
+                                                                // if (item.quantity > 0 && item.status == true && item.selected == false) {
+                                                                //     return <button value={item.id} onClick={() => updateSize(lstcart.id, lstcart.product_ID, item.id)} className="btn">{item.title}</button>
+                                                                // } else if (item.quantity <= 0 || item.status === false) {
+                                                                //     return <button className="btn" style={{ borderColor: 'white', color: '#b6b6b6fe' }} disabled >{item.title}</button>
+                                                                // }
+                                                                // else 
                                                                 if (item.selected == true) {
                                                                     return <button className="btn" style={{ borderColor: 'red', color: 'red' }} >{item.title}</button>
                                                                 }

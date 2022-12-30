@@ -23,4 +23,6 @@ public interface ProductService {
 	public Page<ProductDTO> searchByKeyword(Integer size, Integer page, String keyword);
 
 	public void updateStatusFalse(Integer id);
+
+	public Page<ProductDTO> searchByKeywordAndCate_Id(Integer size, Integer page, String keyword, Integer cate_Id);
 }

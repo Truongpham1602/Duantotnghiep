@@ -87,6 +87,11 @@ const Product = () => {
       config
     );
     let data = res ? res.data : []
+    if (data.totalPages > totalPage.length) {
+      for (let i = 1; i <= dataPro.totalPages; i++) {
+        setTotalPage((prev) => [...prev, i])
+      }
+    }
     setData(data.content)
     setPageNumber(data.number)
   }
