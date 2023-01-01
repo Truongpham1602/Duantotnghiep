@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Admin from "../components/layout/Admin";
 import Home from "../components/layout/Home";
 import Product from "../components/product/Product";
+import Role from "../components/role/Role";
 import Voucher from "../components/voucher/voucher";
 
 import User from "../components/user/User";
@@ -96,6 +97,15 @@ function App() {
                 <>
                   {" "}
                   <Product />
+                </>
+              }
+            />
+            <Route
+              path="role"
+              element={
+                <>
+                  {" "}
+                  <Role />
                 </>
               }
             />

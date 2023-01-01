@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface RoleService {
 
-	Role create(Role role);
+	Role create(RoleDTO role);
 
-	Role update(Role role, Integer id);
+	void update(RoleDTO role) throws Exception;
 
 	void delete(Integer id);
 
@@ -23,5 +23,7 @@ public interface RoleService {
 	Role findByName(String name);
 
 	List<Role> createAll(List<Role> role);
-
+	void addPermission(Integer roleId , Integer permissionId) throws Exception;
+	
+	void deletePermission(Integer roleId , Integer permissionId) throws Exception;
 }

@@ -1,15 +1,20 @@
 package bangiay.com.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import bangiay.com.DTO.RoleDTO;
 import bangiay.com.utils.ObjectMapperUtils;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import bangiay.com.dao.PermissionDao;
 import bangiay.com.dao.RoleDao;
+import bangiay.com.entity.Premission;
 import bangiay.com.entity.Role;
 import bangiay.com.service.RoleService;
 
@@ -17,17 +22,28 @@ import bangiay.com.service.RoleService;
 public class RoleServiceImpl implements RoleService {
 	@Autowired
 	RoleDao roleDAO;
+	
+	@Autowired
+	PermissionDao permissionDAO;
+	
+	@Autowired
+	ModelMapper modelMapper;
 
 	@Override
-	public Role create(Role role) {
-		return roleDAO.save(role);
+	public Role create(RoleDTO role) {
+		return roleDAO.save(modelMapper.map(role, Role.class));
 	}
 
 	@Override
-	public Role update(Role role, Integer id) {
-		Role r = roleDAO.findById(id).get();
-		r.setRoleName(role.getRoleName());
-		return roleDAO.save(r);
+	public void update(RoleDTO roleDTO) throws Exception {
+		Optional<Role> role = roleDAO.findById(roleDTO.getId());
+		if(role.isEmpty()) {
+			throw new Exception("Role id không tồn tại");
+		}else {
+			role.get().setDescription(roleDTO.getDescription());
+			roleDAO.save(role.get());
+		}
+		
 	}
 
 	@Override
@@ -42,7 +58,9 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public List<Role> findAll() {
-		return roleDAO.findAll();
+		List<Role> roles = roleDAO.findAll();
+		
+		return roles;
 	}
 	@Override
 	public Page<RoleDTO> findAll(Pageable pageable) {
@@ -65,4 +83,41 @@ public class RoleServiceImpl implements RoleService {
 
 		return roleDAO.saveAll(role);
 	}
+
+	@Override
+	public void addPermission(Integer roleId, Integer permissionId) throws Exception {
+		Optional<Role> role = roleDAO.findById(roleId);
+		Optional<Premission> permis = permissionDAO.findById(permissionId);
+		if(role.isEmpty()) {
+			throw new Exception("Role id không tồn tại");
+		}else if(permis.isEmpty()){
+			throw new Exception("Permission id không tồn tại");
+		}else {
+			if(role.get().getPremission().contains(permis.get())) {
+				throw new Exception("Permission đã tồn tại");
+			}
+			role.get().getPremission().add(permis.get());
+			roleDAO.save(role.get());
+		}
+	}
+
+	@Override
+	public void deletePermission(Integer roleId, Integer permissionId) throws Exception {
+		Optional<Role> role = roleDAO.findById(roleId);
+		Optional<Premission> permis = permissionDAO.findById(permissionId);
+		if(role.isEmpty()) {
+			throw new Exception("Role id không tồn tại");
+		}else if(permis.isEmpty()){
+			throw new Exception("Permission id không tồn tại");
+		}else {
+			if(!role.get().getPremission().contains(permis.get())) {
+				throw new Exception("Permission không tồn tại trong role");
+			}
+			role.get().getPremission().remove(permis.get());
+			roleDAO.save(role.get());
+		}
+		
+	}
+	
+	
 }
