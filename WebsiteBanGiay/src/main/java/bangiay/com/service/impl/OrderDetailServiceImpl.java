@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.OrderDetailDTO;
 import bangiay.com.dao.CartDao;
+import bangiay.com.dao.MediaDao;
 import bangiay.com.dao.OrderDetailDao;
 import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.VoucherDao;
 import bangiay.com.entity.Cart;
+import bangiay.com.entity.Media;
 import bangiay.com.entity.OrderDetail;
 import bangiay.com.entity.Size;
 import bangiay.com.entity.Voucher;
@@ -31,6 +33,9 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
 	@Autowired
 	private SizeDao sizeDao;
+
+	@Autowired
+	private MediaDao mediaDao;
 
 	@Autowired
 	private VoucherDao voucherDao;
@@ -61,32 +66,33 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 			if (voucher != null) {
 				if (voucher.getType() == 1) {
 					if (voucher.getCategory().getId() == lstCart.get(i).getSize().getProduct().getCategory().getId()) {
-						lstOrderDTO.add(new OrderDetailDTO(null, order_Id, voucher.getId(), "code",
+						lstOrderDTO.add(new OrderDetailDTO(null, order_Id, voucher.getId(),
 								lstCart.get(i).getSize().getId(), lstCart.get(i).getQuantity(),
 								lstCart.get(i).getSize().getProduct().getPrice()
-										- (lstCart.get(i).getSize().getProduct().getPrice() * voucher.getValue()
-												/ 100)));
+										- (lstCart.get(i).getSize().getProduct().getPrice() * voucher.getValue() / 100),
+								"", "", "", ""));
 					} else {
-						lstOrderDTO.add(new OrderDetailDTO(null, order_Id, voucher.getId(), "code",
-								lstCart.get(i).getSize().getId(), lstCart.get(i).getQuantity(),
-								lstCart.get(i).getSize().getProduct().getPrice()));
+						lstOrderDTO.add(new OrderDetailDTO(null, order_Id, null, lstCart.get(i).getSize().getId(),
+								lstCart.get(i).getQuantity(), lstCart.get(i).getSize().getProduct().getPrice(), "", "",
+								"", ""));
 					}
 				} else {
 					if (voucher.getCategory().getId() == lstCart.get(i).getSize().getProduct().getCategory().getId()) {
-						lstOrderDTO.add(new OrderDetailDTO(null, order_Id, voucher.getId(), "code",
+						lstOrderDTO.add(new OrderDetailDTO(null, order_Id, voucher.getId(),
 								lstCart.get(i).getSize().getId(), lstCart.get(i).getQuantity(),
-								lstCart.get(i).getSize().getProduct().getPrice() - voucher.getValue()));
+								lstCart.get(i).getSize().getProduct().getPrice() - voucher.getValue(), "", "", "", ""));
 					} else {
 
-						lstOrderDTO.add(new OrderDetailDTO(null, order_Id, voucher.getId(), "code",
-								lstCart.get(i).getSize().getId(), lstCart.get(i).getQuantity(),
-								lstCart.get(i).getSize().getProduct().getPrice()));
+						lstOrderDTO.add(new OrderDetailDTO(null, order_Id, null, lstCart.get(i).getSize().getId(),
+								lstCart.get(i).getQuantity(), lstCart.get(i).getSize().getProduct().getPrice(), "", "",
+								"", ""));
 					}
 				}
 
 			} else {
-				lstOrderDTO.add(new OrderDetailDTO(null, order_Id, null, "code", lstCart.get(i).getSize().getId(),
-						lstCart.get(i).getQuantity(), lstCart.get(i).getSize().getProduct().getPrice()));
+				lstOrderDTO.add(new OrderDetailDTO(null, order_Id, null, lstCart.get(i).getSize().getId(),
+						lstCart.get(i).getQuantity(), lstCart.get(i).getSize().getProduct().getPrice(), "", "", "",
+						""));
 			}
 		}
 		List<OrderDetail> lstOrder = lstOrderDTO.stream().map(d -> modelMapper.map(d, OrderDetail.class))
@@ -103,8 +109,19 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
 	@Override
 	public List<OrderDetailDTO> findByOrder_Id(Integer id) {
-		return this.orderDetailDao.findByOrder_Id(id).stream().map(o -> modelMapper.map(o, OrderDetailDTO.class))
-				.collect(Collectors.toList());
+		List<OrderDetail> lstOrderDetatil = orderDetailDao.findByOrder_Id(id);
+		List<OrderDetailDTO> lstOrderDetail = lstOrderDetatil.stream()
+				.map(o -> modelMapper.map(o, OrderDetailDTO.class)).collect(Collectors.toList());
+		for (int i = 0; i < lstOrderDetatil.size(); i++) {
+			lstOrderDetail.get(i).setName_Product(lstOrderDetatil.get(i).getSize().getProduct().getName());
+			lstOrderDetail.get(i).setColor_Product(lstOrderDetatil.get(i).getSize().getProduct().getColor());
+			lstOrderDetail.get(i).setSizeName(lstOrderDetatil.get(i).getSize().getSize());
+			List<Media> media = mediaDao.findMediaByProduct_Id(lstOrderDetatil.get(i).getSize().getProduct().getId());
+			if (media.size() > 0) {
+				lstOrderDetail.get(i).setImage(media.get(0).getUrl());
+			}
+		}
+		return lstOrderDetail;
 	}
 
 }

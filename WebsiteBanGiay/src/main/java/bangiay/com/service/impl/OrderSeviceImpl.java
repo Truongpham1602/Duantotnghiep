@@ -98,6 +98,7 @@ public class OrderSeviceImpl implements OrderService {
 	@Override
 	public OrderDTO updatePaymentOrder(Integer id) {
 		Order order = this.orderDao.findById(id).orElse(null);
+		order.setPaymentAtDate(Timestamp.from(Instant.now()));
 		order.setStatus(2);
 		this.orderDao.save(order);
 		return modelMapper.map(order, OrderDTO.class);
@@ -106,6 +107,7 @@ public class OrderSeviceImpl implements OrderService {
 	@Override
 	public OrderDTO updateCancelOrder(Integer id) {
 		Order order = this.orderDao.findById(id).orElse(null);
+		order.setCancelledAtDate(Timestamp.from(Instant.now()));
 		order.setStatus(0);
 		this.orderDao.save(order);
 		return modelMapper.map(order, OrderDTO.class);
@@ -114,7 +116,17 @@ public class OrderSeviceImpl implements OrderService {
 	@Override
 	public OrderDTO updateDeliveredOrder(Integer id) {
 		Order order = this.orderDao.findById(id).orElse(null);
+		order.setRecaiveAtDate(Timestamp.from(Instant.now()));
 		order.setStatus(3);
+		this.orderDao.save(order);
+		return modelMapper.map(order, OrderDTO.class);
+	}
+
+	@Override
+	public OrderDTO updateCompletedOrder(Integer id) {
+		Order order = this.orderDao.findById(id).orElse(null);
+		order.setCompletedAtDate(Timestamp.from(Instant.now()));
+		order.setStatus(4);
 		this.orderDao.save(order);
 		return modelMapper.map(order, OrderDTO.class);
 	}

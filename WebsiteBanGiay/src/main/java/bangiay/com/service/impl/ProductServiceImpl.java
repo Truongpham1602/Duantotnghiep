@@ -20,6 +20,7 @@ import bangiay.com.DTO.SizeDTO;
 import bangiay.com.dao.CategoryDao;
 import bangiay.com.dao.MediaDao;
 import bangiay.com.dao.ProductDao;
+import bangiay.com.entity.Category;
 import bangiay.com.entity.Media;
 import bangiay.com.entity.Product;
 import bangiay.com.service.MediaService;
@@ -158,6 +159,33 @@ public class ProductServiceImpl implements ProductService {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<Product> entities = proDAO.findAll(pageable);
 		Page<ProductDTO> dtoPage = entities.map(new Function<Product, ProductDTO>() {
+			@Override
+			public ProductDTO apply(Product entity) {
+				ProductDTO dto = new ProductDTO();
+				dto = modelMapper.map(entity, ProductDTO.class);
+				List<Media> media = mediaDao.findMediaByProduct_Id(entity.getId());
+				if (media.size() > 0) {
+					dto.setImage(media.get(0).getUrl());
+				}
+				dto.setName_cate(entity.getCategory().getNamecate());
+				dto.setId(entity.getId());
+				return dto;
+			}
+		});
+		return dtoPage;
+	}
+
+	@Override
+	public Page<ProductDTO> searchByKeywordAndCate_Id(Integer size, Integer page, String keyword, Integer cate_Id) {
+		Category cate = this.cateDao.findById(cate_Id).orElse(null);
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Product> lstProduct;
+		if (cate != null) {
+			lstProduct = proDAO.searchClient(keyword, cate_Id, pageable);
+		} else {
+			lstProduct = proDAO.searchClient(keyword, pageable);
+		}
+		Page<ProductDTO> dtoPage = lstProduct.map(new Function<Product, ProductDTO>() {
 			@Override
 			public ProductDTO apply(Product entity) {
 				ProductDTO dto = new ProductDTO();

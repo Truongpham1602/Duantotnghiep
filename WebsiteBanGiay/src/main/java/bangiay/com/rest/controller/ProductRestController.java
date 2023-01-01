@@ -69,4 +69,12 @@ public class ProductRestController {
 	public void updateStatusFalse(@PathVariable("id") int id) {
 		productService.updateStatusFalse(id);
 	}
+
+	@PostMapping("/searchClient")
+	public Page<ProductDTO> searchClient(@RequestParam(name = "size", defaultValue = "11") Integer size,
+			@RequestParam(name = "page", defaultValue = "0") Integer page,
+			@RequestParam(name = "cate_Id", defaultValue = "0") Integer cate_Id,
+			@RequestParam(name = "keyword", defaultValue = "") String keyword) {
+		return productService.searchByKeywordAndCate_Id(size, page, keyword, cate_Id);
+	}
 }

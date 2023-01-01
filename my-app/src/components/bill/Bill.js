@@ -155,11 +155,13 @@ const Bill = (props) => {
     }
   };
 
+  let totalPro = 0
   useEffect(async () => {
     let total = 0;
     const setTotal = (data) => {
       data.map((item) => {
         total += item.price * item.quantity;
+        totalPro += item.quantity
       });
       setTotalPrice(total);
     };
@@ -188,7 +190,7 @@ const Bill = (props) => {
     setImageUrls([]);
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
-        let nameImg = item.nameRecipient;
+        let nameImg = item.name;
         getDownloadURL(item).then((url) => {
           setImageUrls((prev) => [...prev, { nameImg, url }]);
         });
@@ -646,13 +648,13 @@ const Bill = (props) => {
             <div className="summary">
               <ul>
                 <li>
-                  Total: <span>{totalPrice}</span>
+                  Tồng tiền: <span>{totalPrice}</span>
                 </li>
                 <li>
-                  Sale: <span>{sealer}</span>
+                  Giảm: <span>{sealer}</span>
                 </li>
                 <li className="total">
-                  Total: <span>{lstcart.length}</span> Products
+                  Tổng: <span>{totalPro}</span> Sản phẩm
                 </li>
               </ul>
             </div>

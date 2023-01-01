@@ -140,19 +140,20 @@ const UpdateProduct = (props) => {
         return;
       }
       const res = await axios.put(
-        `http://localhost:8080/admin/product/put/${product.id}`
-        // {
-        //   categoryId: product.categoryId,
-        //   color: product.color,
-        //   name: product.name,
-        //   namecate: product.namecate,
-        //   sizes: product.sizes,
-        //   medias: product.medias,
-        //   description: product.description,
-        //   code: product.code,
-        //   price: product.price,
-        //   quantity: product.quantity,
-        // }
+        `http://localhost:8080/admin/product/put/${product.id}`,
+        {
+          categoryId: product.categoryId,
+          color: product.color,
+          name: product.name,
+          namecate: product.namecate,
+          sizes: product.sizes,
+          medias: product.medias,
+          description: product.description,
+          code: product.code,
+          price: product.price,
+          quantity: product.quantity,
+        },
+
       );
       let data = res && res.data ? res.data : [];
       data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
