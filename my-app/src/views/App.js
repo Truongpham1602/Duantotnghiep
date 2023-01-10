@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Admin from "../components/layout/Admin";
 import Home from "../components/layout/Home";
 import Product from "../components/product/Product";
+import Role from "../components/role/Role";
 import Voucher from "../components/voucher/voucher";
 
 import User from "../components/user/User";
@@ -13,7 +14,7 @@ import Login from "../components/login/Login";
 import Register from "../components/register/Register";
 
 import Product1 from "../components/layout/Product";
-import HeaderPage from "../components/layout/HeaderPage";
+import HeaderPage from "../components/layout/HeaderPage.js";
 import ProductTest from "../components/HOME/ProductTest";
 import ProductList from "../components/HOME/ProductList";
 import Order from "../components/order/order";
@@ -96,6 +97,15 @@ function App() {
                 <>
                   {" "}
                   <Product />
+                </>
+              }
+            />
+            <Route
+              path="role"
+              element={
+                <>
+                  {" "}
+                  <Role />
                 </>
               }
             />

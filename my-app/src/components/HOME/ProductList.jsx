@@ -30,7 +30,7 @@ const ProductList = () => {
     return (
         <div>
             <section class="product" id="product">
-                <h1 class="heading">latest <span>Products</span></h1>
+                <h1 class="heading">sản phẩm <span>mới nhất</span></h1>
                 <div class="box-container">
                     {/* <div class="box">
                         <div class="content">
@@ -154,96 +154,96 @@ const ProductList = () => {
                     </div>
                 </div>
             </section>
-        <section class="featured" id="fearured">
-            <h1 class="heading">New <span>Product</span></h1>
-            <div class="row">
-                <div class="image-container">
-                    <div class="small-image">
-                        <img src={jordan1} alt="" class="featured-image-1" />
-                        <img src={jordan2} alt="" class="featured-image-1" />
-                        <img src={jordan3} alt="" class="featured-image-1" />
-                        <img src={jordan4} alt="" class="featured-image-1" />
+            <section class="featured" id="fearured">
+                <h1 class="heading">sản phẩm <span>bán chạy</span></h1>
+                <div class="row">
+                    <div class="image-container">
+                        <div class="small-image">
+                            <img src={jordan1} alt="" class="featured-image-1" />
+                            <img src={jordan2} alt="" class="featured-image-1" />
+                            <img src={jordan3} alt="" class="featured-image-1" />
+                            <img src={jordan4} alt="" class="featured-image-1" />
+                        </div>
+                        <div class="big-image">
+                            <img src={jordan5} alt="" class="big-image-1" />
+                        </div>
                     </div>
-                    <div class="big-image">
-                        <img src={jordan5} alt="" class="big-image-1" />
-                    </div>
-                </div>
-                <div class="content">
-                    <h3>new nike airmac shoes</h3>
-                    <div class="stars">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                    </div>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
-                    </p>
-                    <div class="price">$90 <span>$120</span></div>
-                    <a href="#" class="btn">add to cart</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="image-container">
-                    <div class="small-image">
-                        <img src={adidas1} alt="" class="featured-image-2" />
-                        <img src={adidas2} alt="" class="featured-image-2" />
-                        <img src={adidas3} alt="" class="featured-image-2" />
-                        <img src={adidas4} alt="" class="featured-image-2" />
-                    </div>
-                    <div class="big-image">
-                        <img src={adidas5} alt="" class="big-image-2" />
+                    <div class="content">
+                        <h3>new nike airmac shoes</h3>
+                        <div class="stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
+                        </p>
+                        <div class="price">$90 <span>$120</span></div>
+                        <a href="#" class="btn">add to cart</a>
                     </div>
                 </div>
-                <div class="content">
-                    <h3>new nike airmac shoes</h3>
-                    <div class="stars">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
+                <div class="row">
+                    <div class="image-container">
+                        <div class="small-image">
+                            <img src={adidas1} alt="" class="featured-image-2" />
+                            <img src={adidas2} alt="" class="featured-image-2" />
+                            <img src={adidas3} alt="" class="featured-image-2" />
+                            <img src={adidas4} alt="" class="featured-image-2" />
+                        </div>
+                        <div class="big-image">
+                            <img src={adidas5} alt="" class="big-image-2" />
+                        </div>
                     </div>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
-                    </p>
-                    <div class="price">$90 <span>$120</span></div>
-                    <a href="#" class="btn">add to cart</a>
+                    <div class="content">
+                        <h3>new nike airmac shoes</h3>
+                        <div class="stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
+                        </p>
+                        <div class="price">$90 <span>$120</span></div>
+                        <a href="#" class="btn">add to cart</a>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="image-container">
-                    <div class="small-image">
-                        <img src={sn1991} alt="" class="featured-image-3" />
-                        <img src={sn1992} alt="" class="featured-image-3" />
-                        <img src={sn1993} alt="" class="featured-image-3" />
-                        <img src={sn1994} alt="" class="featured-image-3" />
+                <div class="row">
+                    <div class="image-container">
+                        <div class="small-image">
+                            <img src={sn1991} alt="" class="featured-image-3" />
+                            <img src={sn1992} alt="" class="featured-image-3" />
+                            <img src={sn1993} alt="" class="featured-image-3" />
+                            <img src={sn1994} alt="" class="featured-image-3" />
+                        </div>
+                        <div class="big-image">
+                            <img src={sn1995} alt="" class="big-image-3" />
+                        </div>
                     </div>
-                    <div class="big-image">
-                        <img src={sn1995} alt="" class="big-image-3" />
+                    <div class="content">
+                        <h3>new nike airmac shoes</h3>
+                        <div class="stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
+                        </p>
+                        <div class="price">$90 <span>$120</span></div>
+                        <a href="#" class="btn">add to cart</a>
                     </div>
                 </div>
-                <div class="content">
-                    <h3>new nike airmac shoes</h3>
-                    <div class="stars">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                    </div>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Fugit officiis omnis quo laboriosam velit culpa ex illo, error enim nostrum?
-                    </p>
-                    <div class="price">$90 <span>$120</span></div>
-                    <a href="#" class="btn">add to cart</a>
-                </div>
-            </div>
-        </section>
+            </section>
         </div>
     );
 }

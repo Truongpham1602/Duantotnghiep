@@ -6,6 +6,7 @@ import CategoryDetails from './CategoryDetails';
 import { Pagination } from 'react-bootstrap';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import PaginatedItems from "../../customHook/PaginatedItems";
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,
   Row, Col, Form, PaginationLink, PaginationItem
@@ -26,7 +27,8 @@ import { storage } from "../../Firebase";
 // class Category extends React.Component {
 const Category = () => {
   const token = localStorage.getItem('token');
-  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/category/select`);
+  const { data: dataPro, isLoading } = useCallGetAPI(`http://localhost:8080/api/category/select`,
+    { headers: { "Authorization": `Bearer ${token}` } });
   const [category, setCategory] = useState({});
   const [dataCategory, setData] = useState([]);
   const [nestedModal, setNestedModal] = useState(false);
@@ -118,19 +120,38 @@ const Category = () => {
       const res = await axios.get(`http://localhost:8080/api/category/get/${id}`,
         { headers: { "Authorization": `Bearer ${token}` } })
       setCategory(res.data)
+      // notifySuccess("Cập nhập thành công")
     } catch (error) {
       console.log(error.message)
     }
   }
 
+  const notifySuccess = (text) => {
+    toast.success(text, styleToast)
+  };
+  const notifyWarning = (text) => {
+    toast.warning(text, styleToast);
+  };
+  const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  }
+
   const deleteCategory = async (id) => {
     // e.preventDefault();
     try {
-      await axios.delete(`http://localhost:8080/api/category/delete/${id}`)
+      await axios.delete(`http://localhost:8080/api/category/delete/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
       let copyList = dataCategory;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
       toggleNested()
+      notifySuccess("Xóa thành công")
       // updateData(res.data)
     } catch (error) {
       console.log(error.message)

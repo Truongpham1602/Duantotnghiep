@@ -12,7 +12,7 @@ const UpdateVoucher = (props) => {
     const { isupdatevoucherModal, toggleModal, updateData } = props;
     const [voucher, setVoucher] = useState(props.voucher);
     const [lstcate, setLstCate] = useState([]);
-    const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`);
+    const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`, { headers: { "Authorization": `Bearer ${token}` } });
 
     // console.log("Timestamp:" + voucher.effectUntil);
     const Day = new Date(voucher.effectFrom).getDate();
