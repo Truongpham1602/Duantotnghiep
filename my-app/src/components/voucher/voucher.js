@@ -52,7 +52,7 @@ const Voucher = () => {
     }, [dataPro])
 
     const updateTotalPage = async () => {
-        const res = await axios.get(`http://localhost:8080/api/category/get`)
+        const res = await axios.get(`http://localhost:8080/api/category/get`, { headers: { "Authorization": `Bearer ${token}` } })
         let data = res ? res.data : []
         if (data.totalPages > totalPage.length) {
             for (let i = 1; i <= dataPro.totalPages; i++) {
@@ -97,7 +97,8 @@ const Voucher = () => {
             }
             console.log(token);
             const updateStatusFalse = async () => {
-                const res = await axios.put(`http://localhost:8080/api/voucher/setStatusFalse/${id}`, config)
+                const res = await axios.put(`http://localhost:8080/api/voucher/setStatusFalse/${id}`, config,
+                    { headers: { "Authorization": `Bearer ${token}` } })
                 let copyList = [...dataVoucher]
                 let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
                 copyList.fill(res.data, getIndex, getIndex + 1);

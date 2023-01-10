@@ -113,6 +113,16 @@ const Admin = () => {
                   </NavLink>
                   <NavLink
                     className="nav-link"
+                    to="role"
+                    activeClassName="active"
+                  >
+                    <div className="sb-nav-link-icon">
+                      <i className="fas fa-store-alt-slash"></i>
+                    </div>
+                    Quyền
+                  </NavLink>
+                  <NavLink
+                    className="nav-link"
                     to="product"
                     activeClassName="active"
                   >

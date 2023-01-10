@@ -107,21 +107,21 @@ const Header = (props) => {
             <NavLink to="/" class="logo"><img src={logo} alt="" width="50px" height="50px" /> laTra shoes </NavLink>
 
             <nav class="navbar">
-                <NavLink className="navbar-brand ps-3" to="/" end >Home</NavLink>
-                <NavLink className="navbar-brand ps-3" to="/shop" >Shop</NavLink>
-                <a href="about.html">about</a>
+                <NavLink className="navbar-brand ps-3" to="/" end >Mẫu Mới</NavLink>
+                <NavLink className="navbar-brand ps-3" to="/shop" >danh mục</NavLink>
+                {/* <a href="about.html">about</a>
                 <a href="review.html">review</a>
-                <a href="blog.html">blog</a>
-                <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Administrator</NavLink>
+                <a href="blog.html">blog</a> */}
+                <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Quản lý</NavLink>
             </nav>
             {navbar &&
                 <nav class="navbar active">
-                    <NavLink className="navbar-brand ps-3" to="/" end >Home</NavLink>
-                    <NavLink className="navbar-brand ps-3" to="/shop" >Shop</NavLink>
-                    <a href="about.html">about</a>
+                    <NavLink className="navbar-brand ps-3" to="/" end >Mẫu Mới</NavLink>
+                    <NavLink className="navbar-brand ps-3" to="/shop" >danh mục</NavLink>
+                    {/* <a href="about.html">about</a>
                     <a href="review.html">review</a>
-                    <a href="blog.html">blog</a>
-                    <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Administrator</NavLink>
+                    <a href="blog.html">blog</a> */}
+                    <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Quản lý</NavLink>
                 </nav>
             }
 
