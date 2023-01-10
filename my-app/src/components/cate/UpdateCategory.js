@@ -17,7 +17,7 @@ import {
 // class UpdateCategory extends Component {
 const UpdateCategory = (props) => {
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
-
+    const token = localStorage.getItem('token');
     const { isUpdateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload, urlImg } = props;
     const [category, setCategory] = useState(props.category);
 
@@ -66,7 +66,7 @@ const UpdateCategory = (props) => {
                 creator: category.creator,
                 modified: category.modified,
                 modifier: category.modifier,
-            })
+            }, { headers: { "Authorization": `Bearer ${token}` } })
             let data = (res && res.data) ? res.data : [];
             data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
             data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
@@ -78,7 +78,7 @@ const UpdateCategory = (props) => {
         }
     }
 
-    
+
 
     const toggle = () => {
         toggleModal()
@@ -87,7 +87,7 @@ const UpdateCategory = (props) => {
 
     return (
         <div>
-             <ToastContainer />
+            <ToastContainer />
             <Modal isOpen={isUpdateModal} toggle={() => toggle()}
                 size='lg'
                 centered

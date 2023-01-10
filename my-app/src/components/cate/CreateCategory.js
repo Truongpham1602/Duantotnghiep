@@ -13,7 +13,7 @@ const Category_Rest_API_URL = 'http://localhost:8080/api/category';
 
 // class CreateCategory extends Component {
 const CreateCategory = (props) => {
-
+    const token = localStorage.getItem('token');
     const { isCreateModal, toggleModal, updateData, uploadFile, setImageUpload, imageUpload } = props;
     // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
     // const [updateData, setUpdateData] = useState(props);
@@ -60,10 +60,10 @@ const CreateCategory = (props) => {
     const createCategory = () => {
         try {
 
-            if (category.namecate.trim().length <= 0 ) {
+            if (category.namecate.trim().length <= 0) {
                 notifyWarning("Cần nhập thông tin!")
                 return
-            } 
+            }
 
             const create = async () => {
                 let res = await axios.post(Category_Rest_API_URL + '/create', {
@@ -73,7 +73,7 @@ const CreateCategory = (props) => {
                     creator: category.creator,
                     modified: category.modified,
                     modifier: category.modifier
-                })
+                }, { headers: { "Authorization": `Bearer ${token}` } })
                 let data = (res && res.data) ? res.data : []
                 data.created = moment(data.created).format('DD/MM/YYYY HH:mm:ss');
                 if (data.modified > 0) {
@@ -124,7 +124,7 @@ const CreateCategory = (props) => {
                                         onChange={(event) => handleOnchangeInput(event, 'namecate')}
                                     />
                                 </FormGroup>
-                           </Col>
+                            </Col>
                         </Row>
                     </Form>
                 </ModalBody>

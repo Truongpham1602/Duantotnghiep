@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
 import '../voucher/voucher.css';
 // import UpdateVoucher from './UpdateVoucher';
-// import NewVoucher from './NewVoucher';
+import NewRole from './NewRole';
 import axios from 'axios';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,27 +13,33 @@ import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, PaginationLi
 const Voucher = () => {
 
     const token = localStorage.getItem('token');
-    const [voucher, setVoucher] = useState({});
-    const [isNewVoucherModal, setIsNewVoucherModal] = useState(false)
+    const [role, setRole] = useState({});
+    const [isNewRoleModal, setIsNewRoleModal] = useState(false)
     const [isupdatevoucherModal, setIsupdatevoucherModal] = useState(false)
     const [nestedModal, setNestedModal] = useState(false);
     const [dataRoles, setData] = useState([]);
+    console.log(dataRoles);
     const [page, setPage] = useState(0);
     const [voucherId, setVoucherId] = useState()
     const [pageNumber, setPageNumber] = useState()
     const [totalPage, setTotalPage] = useState([])
     const { data: dataRole, isLoading } = useCallGetAPI(`http://localhost:8080/role/get`);
 
-    useEffect(() => {
-        if (dataRole.content) {
-            setData(dataRole.content)
-            setPageNumber(dataRole.number)
-            for (let i = 1; i <= dataRole.totalPages; i++) {
-                setTotalPage((prev) => [...prev, i])
 
-            }
+
+    useEffect(() => {
+        if (dataRole && dataRole.length > 0) {
+            setData(dataRole)
         }
     }, [dataRole])
+
+    const updateData = (res, type) => {
+        if (type == 'create') {
+            let copydata = dataRole;
+            copydata.unshift(res);
+            setData(copydata);
+        }
+    }
 
     const editVoucher = async (id) => {
         // try {
@@ -98,11 +104,17 @@ const Voucher = () => {
     const updatevoucherModal = () => {
         setIsupdatevoucherModal(!isupdatevoucherModal)
     }
-    const newVoucherModal = () => {
-        setIsNewVoucherModal(!isNewVoucherModal)
+    const newRoleModal = () => {
+        setIsNewRoleModal(!isNewRoleModal)
     }
     return (
         <>
+            <NewRole
+                isNewRoleModal={isNewRoleModal}
+                toggleModal={newRoleModal}
+                updateData={updateData}
+                role={role}
+            />
             <div>
                 <Table bordered>
                     <thead style={{ verticalAlign: 'middle' }}>
@@ -119,7 +131,7 @@ const Voucher = () => {
                             <th scope="col">Quyền truy cập</th>
                             <th scope="col" colspan="2">
                                 <NavLink className="btn btn-primary" style={{ borderRadius: 50 }}
-                                    onClick={() => newVoucherModal()}>
+                                    onClick={() => newRoleModal()}>
                                     Thêm mới
                                 </NavLink>
                             </th>
@@ -129,17 +141,22 @@ const Voucher = () => {
                         {
                             !isLoading && dataRoles && dataRoles.length > 0 && dataRoles.map((item, index) => {
                                 { console.log(dataRoles.length) }
+                                let premission = ""
+                                item.premission.map(item2 => {
+                                    premission = premission + " -" + item2.description
+                                })
                                 // if (item.status != 0)
                                 return (
                                     <tr key={item.id}>
-                                        <th scope="row" id="">{pageNumber * 7 + index + 1}</th>
+                                        <th scope="row" id="">{index + 1}</th>
                                         <td id="name">{item.roleName}</td>
                                         <td id="description">{item.description}</td>
+                                        <td id="description">{premission}</td>
                                         <td>
                                             <button className="btn btn-primary update update-voucher"
                                                 type='buttom' id="update" style={{ borderRadius: 50 }}
                                                 onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
-                                                Cập nhập
+                                                sửa đổi
                                             </button>
                                         </td>
                                         <td>
@@ -147,7 +164,7 @@ const Voucher = () => {
                                             <button className="btn btn-danger delete delete-voucher"
                                                 id="delete" style={{ borderRadius: 50 }}
                                                 onClick={() => toggleNested(item.id)}>
-                                                Tạm dừng
+                                                Xóa Quyền
                                             </button>
 
                                         </td>
@@ -163,11 +180,11 @@ const Voucher = () => {
                         >
                             <ModalHeader>Tạm dừng</ModalHeader>
                             <ModalBody>
-                                Bạn muốn dừng voucher chứ?
+                                Bạn muốn xóa quyền này chứ?
                             </ModalBody>
                             <ModalFooter>
                                 <Button type='button' color="primary" onClick={() => { deleteVoucher(voucherId) }}>
-                                    Tạm dừng
+                                    Xóa Quyền
                                 </Button>{' '}
                                 <Button color="secondary" onClick={() => toggleNested()}>
                                     Hủy bỏ

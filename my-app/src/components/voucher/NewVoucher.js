@@ -12,10 +12,11 @@ import { ToastContainer, toast } from 'react-toastify';
 const VouCher_Rest_API_URL = 'http://localhost:8080/api/voucher';
 
 const NewVoucher = (props) => {
+    const token = localStorage.getItem('token');
     const { isNewVoucherModal, toggleModal, updateData } = props;
     const [voucher, setVoucher] = useState({ name: '', value: '', quantity: '', type: 1, categoryId: '', effectFrom: '', effectUntil: '', status: 1 });
     const [lstcate, setLstCate] = useState([]);
-    const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`);
+    const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`, { headers: { "Authorization": `Bearer ${token}` } });
     const [check, setCheck] = useState({ name: '' });
     const today = new Date();
 

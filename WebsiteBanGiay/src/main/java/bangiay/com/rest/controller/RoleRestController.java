@@ -3,6 +3,7 @@ package bangiay.com.rest.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bangiay.com.DTO.PremissionDTO;
 import bangiay.com.DTO.RoleDTO;
 import bangiay.com.DTO.SizeDTO;
 import bangiay.com.doMain.constant;
@@ -66,6 +67,11 @@ public class RoleRestController {
 	@PostMapping("/delete/{id}")
 	public void deleteById(@PathVariable Integer id) {
 		roleService.delete(id);
+	}
+	
+	@GetMapping("/getPermission")
+	public List<PremissionDTO> getAllPermission() {
+		return roleService.findAllPremission().stream().map(c -> modelMapper.map(c, PremissionDTO.class)).collect(Collectors.toList());
 	}
 	
 	@PostMapping("/add/permission")

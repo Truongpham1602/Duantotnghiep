@@ -118,6 +118,13 @@ public class RoleServiceImpl implements RoleService {
 		}
 		
 	}
+
+	@Override
+	public List<Premission> findAllPremission() {
+		List<Premission> premiss = permissionDAO.findAll();
+		
+		return premiss;
+	}
 	
 	
 }
