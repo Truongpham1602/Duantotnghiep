@@ -38,6 +38,7 @@ import {
 import { width } from "@mui/system";
 import { CgFormatJustify } from "react-icons/cg";
 import { async } from "@firebase/util";
+import { ToastContainer, toast } from "react-toastify";
 
 // class Bill extends React.Component {
 const Bill = (props) => {
@@ -201,28 +202,28 @@ const Bill = (props) => {
   const createOrder = async () => {
     let ch0 = { ...check };
     if (account.email == 0) {
-      ch0["email"] = "email not null";
+      ch0["email"] = "Cần nhập Email";
       setCheck({ ...ch0 });
     } else if (check.email == 0) {
       ch0["email"] = "";
       setCheck({ ...ch0 });
     }
     if (account.nameRecipient == 0) {
-      ch0["nameRecipient"] = "nameRecipient not null";
+      ch0["nameRecipient"] = "Cần nhập họ tên người nhận";
       setCheck({ ...ch0 });
     } else if (check.nameRecipient == 0) {
       ch0["nameRecipient"] = "";
       setCheck({ ...ch0 });
     }
     if (account.telephone == 0) {
-      ch0["telephone"] = "telephone not null";
+      ch0["telephone"] = "Cần nhập số điện thoại";
       setCheck({ ...ch0 });
     } else if (check.telephone == 0) {
       ch0["telephone"] = "";
       setCheck({ ...ch0 });
     }
     if (account.address == 0) {
-      ch0["address"] = "address not null";
+      ch0["address"] = "Cần nhập địa chỉ";
       setCheck({ ...ch0 });
     } else if (check.address == 0) {
       ch0["address"] = "";
@@ -250,6 +251,17 @@ const Bill = (props) => {
     }
   };
 
+  const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  };
+
   const toggle = () => {
     setIsModalVoucher(!isModalVoucher);
   };
@@ -262,6 +274,17 @@ const Bill = (props) => {
           `http://localhost:8080/api/voucher/get/${radio.item(i).value}`,
           { headers: { "Authorization": `Bearer ${token}` } }
         );
+        let x = true;
+        lstcart.map(item => {
+          console.log(res.data.categoryId);
+          console.log(item.category_Id);
+          if (res.data.categoryId == item.category_Id) x = false;
+        })
+        if (x) {
+          toast.warning('Mã giảm giá không phù hợp!', styleToast)
+          toggle();
+          return
+        }
         setVoucherSelect(res.data);
         let total = 0;
         let totalSealer = 0;
@@ -297,6 +320,7 @@ const Bill = (props) => {
   return (
     <>
       <section>
+        <ToastContainer />
         <MDBContainer>
           <MDBRow className="justify-content-center align-items-center">
             <MDBCol>
@@ -549,19 +573,13 @@ const Bill = (props) => {
             }}
           >
             {voucherSelect?.id > 0 &&
-              lstVoucher.map(item => {
-                if (item.id == voucherSelect.id) {
-                  return (
-                    <>
-                      <div>{item.nameRecipient}</div>
-                      <div>
-                        {item.type === 1 ? item.value + "%" : item.value + "K"}
-                      </div>
-                      <div>{item.namecate}</div>
-                    </>
-                  );
-                }
-              })
+              <>
+                <div>{voucherSelect.name}</div>
+                <div>
+                  {voucherSelect.type === 1 ? voucherSelect.value + "%" : voucherSelect.value + "K"}
+                </div>
+                <div>{voucherSelect.namecate}</div>
+              </>
             }
           </div>
           <button

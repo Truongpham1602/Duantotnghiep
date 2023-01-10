@@ -65,10 +65,11 @@ public class BillServiceImpl implements BillService {
 				if (lstOrderDetail.get(i).getVoucher() != null) {
 					lstBillDetailDTO.add(new BillDetailDTO(null, bill.getId(), lstOrderDetail.get(i).getSize().getId(),
 							lstOrderDetail.get(i).getVoucher().getId(), lstOrderDetail.get(i).getQuantity(),
-							lstOrderDetail.get(i).getPrice()));
+							lstOrderDetail.get(i).getPrice(), null, null, null, null));
 				} else {
 					lstBillDetailDTO.add(new BillDetailDTO(null, bill.getId(), lstOrderDetail.get(i).getSize().getId(),
-							null, lstOrderDetail.get(i).getQuantity(), lstOrderDetail.get(i).getPrice()));
+							null, lstOrderDetail.get(i).getQuantity(), lstOrderDetail.get(i).getPrice(), null, null,
+							null, null));
 				}
 			}
 			this.bill_DetailService.createAll(lstBillDetailDTO);

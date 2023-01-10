@@ -2,6 +2,7 @@ package bangiay.com.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,18 +14,18 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "bill_detail")
+@Table(name = "billdetail")
 public class BillDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Integer id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "BILL_ID")
 	private Bill bill;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SIZE_ID")
 	private Size size;
 
