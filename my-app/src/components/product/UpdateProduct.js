@@ -33,9 +33,48 @@ const UpdateProduct = (props) => {
     `http://localhost:8080/api/category/get`
   );
   const [lstCate, setLstCate] = useState([]);
-  const [cate, setCate] = useState();
+  const [cate, setCate] = useState("");
   const [nestedModal, setNestedModal] = useState(false);
   const [closeAll, setCloseAll] = useState(false);
+
+  const colors = [
+    {
+      id: 'Trắng',
+      tital: 'Trắng'
+    },
+    {
+      id: 'Đỏ',
+      tital: 'Đỏ'
+    },
+    {
+      id: 'Xanh dương',
+      tital: 'Xanh dương'
+    },
+    {
+      id: 'Cam',
+      tital: 'Cam'
+    },
+    {
+      id: 'Đen',
+      tital: 'Đen'
+    },
+    {
+      id: 'Hồng',
+      tital: 'Hồng'
+    },
+    {
+      id: 'Nâu',
+      tital: 'Nâu'
+    },
+    {
+      id: 'Tím',
+      tital: 'Tím'
+    },
+    {
+      id: 'Xanh lá',
+      tital: 'Xanh lá'
+    },
+  ]
 
   useEffect(() => {
     setProduct(props.product);
@@ -45,8 +84,8 @@ const UpdateProduct = (props) => {
     setLstCate(cates);
   }, [cates]);
   const handleOnchangeinput = (event, id) => {
-    let gia = /(([0-9]{4})\b)/g;
-    let soluong = /(([0-9]{1})\b)/g;
+    let gia = /^\d*(\.\d+)?$/
+    let soluong = /^\d+$/;
     let chu = /[a-zA-Z]/g;
     let copyProduct = { ...product };
     copyProduct[id] = event.target.value;
@@ -65,24 +104,18 @@ const UpdateProduct = (props) => {
         });
       } else {
         if (id == "color") {
-          if (copyProduct[id].trim().length > 0 && chu.test(event.target.value) == false) {
-            ch0["color"] = "Sai định dạng";
-          } else if (copyProduct[id].trim().length == 0) {
-            ch0["color"] = "Màu không được để trống";
-          } else {
-            ch0[id] = "";
-          }
+
         } else if (id == "price") {
-          if (copyProduct[id].trim().length > 0 && gia.test(event.target.value) == false) {
-            ch0["price"] = "Giá sản phẩm phải là số";
+          if (copyProduct[id].trim().length > 0 && gia.test(event.target.value) == false || Number(copyProduct[id]) < 1000) {
+            ch0["price"] = "Giá phải trên 1k VNĐ và phải là số";
           } else if (copyProduct[id].trim().length == 0) {
             ch0["price"] = "Giá không được để trống";
           } else {
             ch0["price"] = "";
           }
         } else if (id == "quantity") {
-          if (copyProduct[id].trim().length > 0 && soluong.test(event.target.value) == false) {
-            ch0["quantity"] = "Số lượng phải là số";
+          if (copyProduct[id].trim().length > 0 && soluong.test(event.target.value) == false || Number(copyProduct[id]) <= 0) {
+            ch0["quantity"] = "Số lượng phải là số và lớn hơn 0";
           } else if (copyProduct[id].trim().length == 0) {
             ch0["quantity"] = "Số lượng không được để trống";
           } else {
@@ -173,6 +206,10 @@ const UpdateProduct = (props) => {
 
   const createCate = async () => {
     try {
+      if (cate.trim().length == 0) {
+        notifyWarning("Cần nhập tên loại sản phẩm");
+        return
+      }
       let res = await axios.post("http://localhost:8080/api/category/create", {
         namecate: cate,
       });
@@ -193,7 +230,7 @@ const UpdateProduct = (props) => {
   const toggleNested = () => {
     setNestedModal(!nestedModal);
     setCloseAll(false);
-    setCate();
+    setCate("");
   };
   const notifySuccess = (text) => {
     toast.success(text, styleToast);
@@ -242,14 +279,36 @@ const UpdateProduct = (props) => {
               <Col md={6}>
                 <FormGroup>
                   <Label for="color">Màu</Label>
-                  <Input
-                    id="color"
-                    name="color"
+                  <select
+                    style={{
+                      border: "1px solid",
+                      width: "100%",
+                      borderRadius: "5px",
+                    }}
+                    id="namecate"
+                    name="namecate"
                     placeholder=""
-                    type="text"
-                    value={product.color}
-                    onChange={(event) => handleOnchangeinput(event, "color")}
-                  />
+                    type="select"
+                    onChange={(event) =>
+                      handleOnchangeinput(event, "color")
+                    }
+                  >
+                    {colors.map((item, index) => {
+                      if (item.id == product.color) {
+                        return (
+                          <option key={item.id} selected value={item.id}>
+                            {item.tital}
+                          </option>
+                        );
+                      } else {
+                        return (
+                          <option key={item.id} value={item.id}>
+                            {item.tital}
+                          </option>
+                        );
+                      }
+                    })}
+                  </select>
                   {check.color && check.color.length > 0 && (
                     <p className="checkError">{check.color}</p>
                   )}

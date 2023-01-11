@@ -87,10 +87,9 @@ const Home = () => {
       `http://localhost:8080/admin/product/searchClient?keyword=${keyword}&cate_Id=${cate_Id}`,
       { headers: { "Authorization": `Bearer ${token}` } })
     let data = res ? res.data : []
-    if (data.totalPages > totalPage.length) {
-      for (let i = 1; i <= data.totalPages; i++) {
-        setTotalPage((prev) => [...prev, i])
-      }
+    setTotalPage([])
+    for (let i = 1; i <= data.totalPages; i++) {
+      setTotalPage((prev) => [...prev, i])
     }
     setDataProduct(data.content)
     setPageNumber(data.number)
