@@ -260,7 +260,10 @@ const CreateProduct = (props) => {
       let totalQuantitySize = 0;
       for (let i = 0; i < newQuantt.length; i++) {
         totalQuantitySize += Number(newQuantt[i])
-
+        if (isNaN(newQuantt[i])) {
+          notifyWarning("Số lượng size phải là số");
+          return;
+        }
       }
       if (hasDuplicate) {
         notifyWarning("Size bị trùng, vui lòng chọn lại!");
