@@ -83,12 +83,12 @@ const NewRole = (props) => {
                     setCheck({ ...ch0 })
                     return
                 }
-                else if (role.roleName.trim().length <= 0) {
+                else if (role.roleName?.trim().length <= 0) {
                     ch0["roleName"] = "Tên không để trống"
                     setCheck({ ...ch0 })
                     return
                 }
-                else if (role.value.trim().length <= 0) {
+                else if (role.description.trim().length <= 0) {
                     ch0["description"] = "Mô tả không để trống"
                     setCheck({ ...ch0 })
                     return

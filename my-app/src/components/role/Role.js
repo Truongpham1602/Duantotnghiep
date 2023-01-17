@@ -4,6 +4,7 @@ import { Pagination } from 'react-bootstrap';
 import '../voucher/voucher.css';
 // import UpdateVoucher from './UpdateVoucher';
 import NewRole from './NewRole';
+import UpdateRole from './UpdateRole';
 import axios from 'axios';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,7 +16,7 @@ const Voucher = () => {
     const token = localStorage.getItem('token');
     const [role, setRole] = useState({});
     const [isNewRoleModal, setIsNewRoleModal] = useState(false)
-    const [isupdatevoucherModal, setIsupdatevoucherModal] = useState(false)
+    const [isupdateRolleModal, setIsupdateRoleModal] = useState(false)
     const [nestedModal, setNestedModal] = useState(false);
     const [dataRoles, setData] = useState([]);
     console.log(dataRoles);
@@ -41,14 +42,15 @@ const Voucher = () => {
         }
     }
 
-    const editVoucher = async (id) => {
-        // try {
-        //     const res = await axios.get(`http://localhost:8080/api/voucher/get/${id}`,
-        //         { headers: { "Authorization": `Bearer ${token}` } })
-        //     setVoucher(res.data)
-        // } catch (error) {
-        //     console.log(error.message)
-        // }
+    const editRole = async (id) => {
+        try {
+            const res = await axios.get(`http://localhost:8080/role/update/${id}`,
+                { headers: { "Authorization": `Bearer ${token}` } })
+            setRole(res.data)
+            console.log(res.data);
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     const deleteVoucher = (id) => {
@@ -101,8 +103,8 @@ const Voucher = () => {
         id && setVoucherId(id)
     };
 
-    const updatevoucherModal = () => {
-        setIsupdatevoucherModal(!isupdatevoucherModal)
+    const updateRoleModal = () => {
+        setIsupdateRoleModal(!isupdateRolleModal)
     }
     const newRoleModal = () => {
         setIsNewRoleModal(!isNewRoleModal)
@@ -112,6 +114,13 @@ const Voucher = () => {
             <NewRole
                 isNewRoleModal={isNewRoleModal}
                 toggleModal={newRoleModal}
+                updateData={updateData}
+                role={role}
+            />
+
+            <UpdateRole
+                isupdateRolleModal={isupdateRolleModal}
+                toggleModal={isupdateRolleModal}
                 updateData={updateData}
                 role={role}
             />
@@ -155,7 +164,7 @@ const Voucher = () => {
                                         <td>
                                             <button className="btn btn-primary update update-voucher"
                                                 type='buttom' id="update" style={{ borderRadius: 50 }}
-                                                onClick={() => { editVoucher(item.id); updatevoucherModal() }}>
+                                                onClick={() => { editRole(item.id); updateRoleModal() }}>
                                                 sửa đổi
                                             </button>
                                         </td>
