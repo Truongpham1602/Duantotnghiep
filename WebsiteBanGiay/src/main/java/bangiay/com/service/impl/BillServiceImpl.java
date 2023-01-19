@@ -1,6 +1,7 @@
 package bangiay.com.service.impl;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,5 +117,21 @@ public class BillServiceImpl implements BillService {
 		Bill bill = billDao.findById(id).orElseThrow(() -> new RuntimeException("Bill isn't existed"));
 		BillDTO billDTO = modelMapper.map(bill, BillDTO.class);
 		return billDTO;
+	}
+
+	@Override
+	public List<BillDTO> statisticsByYear() {
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy");
+		List<Bill> bills = this.billDao.findAll();
+		List<BillDTO> billsa = bills.stream().map(bill -> modelMapper.map(bill, BillDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < bills.size(); i++) {
+			System.out.println(formater.format(bills.get(i).getCreated()));
+			// tìm bill_detail theo id bill
+			// for
+			// +=tiền billDetail
+			// ngoài for: set tiền v
+		}
+		return null;
 	}
 }

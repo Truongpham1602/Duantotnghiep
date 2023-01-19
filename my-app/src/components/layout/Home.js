@@ -1,5 +1,4 @@
 import { React, useState, useEffect } from "react";
-
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   ref,
@@ -139,7 +138,7 @@ const Home = () => {
       { headers: { "Authorization": `Bearer ${token}` } }
     );
     setProduct(res.data);
-    navigate("/productOne");
+    navigate(`/productOne/${id}`);
   };
   const addToCart = async (size_Id, quantity) => {
     if (size_Id == null) {

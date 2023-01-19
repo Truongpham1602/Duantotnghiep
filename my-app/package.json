@@ -21,6 +21,7 @@
     "moment": "^2.29.4",
     "multiselect-react-dropdown": "^2.0.25",
     "react": "latest",
+    "react-apexcharts": "^1.4.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "latest",
     "react-hook-form": "^7.39.3",

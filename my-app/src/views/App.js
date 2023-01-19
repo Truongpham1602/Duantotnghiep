@@ -1,10 +1,11 @@
-import "./App.scss";
+// import "./App.scss";
 import { ToastContainer, toast } from 'react-toastify';
 import Admin from "../components/layout/Admin";
 import Home from "../components/layout/Home";
 import Product from "../components/product/Product";
 import Role from "../components/role/Role";
 import Voucher from "../components/voucher/voucher";
+import Dashboard from "../components/dashboard/Dashboard";
 
 import User from "../components/user/User";
 import Category from "../components/cate/Category";
@@ -62,7 +63,7 @@ function App() {
             </Route>
 
             <Route
-              path="productOne"
+              path="productOne/:id"
               element={
                 <>
                   {" "}
@@ -86,8 +87,7 @@ function App() {
               element={
                 <>
                   {" "}
-                  <Product />
-                  <User />
+                  <Dashboard />
                 </>
               }
             />

@@ -11,6 +11,6 @@ import bangiay.com.entity.BillDetail;
 @Repository
 public interface Bill_Detail_Dao extends JpaRepository<BillDetail, Integer> {
 
-	@Query("SELECT b FROM BillDetail b WHERE quantity = 1")
+	@Query("SELECT b FROM BillDetail b WHERE b.quantity = 1")
 	List<BillDetail> findTop5();
 }

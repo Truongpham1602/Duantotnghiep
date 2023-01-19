@@ -1,6 +1,14 @@
-
+import { React, useState, useEffect } from 'react';
+import statusCards from "../../assets/JsonData/status-card-data.json";
+import StatusCard from "../status-card/StatusCard";
+import Chart from "react-apexcharts";
+import { Link, NavLink } from "react-router-dom";
+import PaginatedItems from "../../customHook/PaginatedItems";
+import axios from 'axios';
 
 const Dashboard = () => {
+    const token = localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
     const [product, setProduct] = useState([]);
     const [year, setYear] = useState([]);
     const [countOr, setCountOr] = useState();
@@ -10,73 +18,94 @@ const Dashboard = () => {
     const [seri, setSeri] = useState([]);
     const [option, setOption] = useState({});
 
+
+    const findAllPro = async () => {
+        const res = await axios.get(`http://localhost:8080/billDetail/findAll`,
+            { headers: { "Authorization": `Bearer ${token}` } })
+        let data = res ? res.data : []
+        setProduct(data)
+    }
+
     useEffect(() => {
-        reportByProduct(1, 8)
-            .then((resp) => {
-                setProduct(resp.data.content);
-            })
-            .catch((error) => console.log(error));
+        findAllPro()
+    }, [])
 
-        reportAmountYear()
-            .then((resp) => {
-                setYear(resp.data);
-                const result = resp.data.reduce((price, item) => price + item.total, 0);
-                setTotal(result);
-            })
-            .catch((error) => console.log(error));
+    useEffect(() => {
+        // reportByProduct(1, 8)
+        //     .then((resp) => {
+        //         setProduct(resp.data.content);
+        //     })
+        //     .catch((error) => console.log(error));
 
-        countOrder()
-            .then((resp) => setCountOr(resp.data))
-            .catch((error) => console.log(error));
+        // reportAmountYear()
+        //     .then((resp) => {
+        //         setYear(resp.data);
+        //         const result = resp.data.reduce((price, item) => price + item.total, 0);
+        //         setTotal(result);
+        //     })
+        //     .catch((error) => console.log(error));
 
-        countAccount()
-            .then((resp) => setCountAcc(resp.data))
-            .catch((error) => console.log(error));
+        // countOrder()
+        //     .then((resp) => setCountOr(resp.data))
+        //     .catch((error) => console.log(error));
 
-        countProduct()
-            .then((resp) => setCountPro(resp.data))
-            .catch((error) => console.log(error));
+        // countAccount()
+        //     .then((resp) => setCountAcc(resp.data))
+        //     .catch((error) => console.log(error));
 
-        countOrderByName()
-            .then((resp) => {
-                const x = resp.data.map((item) => item.name);
-                setOption({
-                    labels: x,
-                });
-                const y = resp.data.map((item) => item.count);
-                setSeri(y);
-            })
-            .catch((error) => console.log(error));
+        // countProduct()
+        //     .then((resp) => setCountPro(resp.data))
+        //     .catch((error) => console.log(error));
+
+        // countOrderByName()
+        //     .then((resp) => {
+        //         const x = resp.data.map((item) => item.name);
+        //         setOption({
+        //             labels: x,
+        //         });
+        //         const y = resp.data.map((item) => item.count);
+        //         setSeri(y);
+        //     })
+        //     .catch((error) => console.log(error));
+        setOption(
+            {
+                labels: ['Chưa thanh toán', 'Đã thanh toán', 'Đang Giao', 'Giao Thành Công', 'Đã Hủy']
+            }
+        );
+        setSeri([12, 21, 56, 23, 32]);
     }, []);
+
+    const pageable = () => {
+
+    }
 
     return (
         <div>
             <h2 className="page-header">Thống kê</h2>
             <div className="row">
-                <div className="col-6">
-                    <div className="row container-fluid">
-                        <div className="col">
-                            <StatusCard
-                                icon={statusCards[0].icon}
-                                count={countAcc}
-                                title={`Khách hàng`}
-                            />
-                            <StatusCard
-                                icon={statusCards[1].icon}
-                                count={countPro}
-                                title={`Sản phẩm`}
-                            />
-                            <StatusCard
-                                icon={statusCards[3].icon}
-                                count={countOr}
-                                title={`Đơn hàng`}
-                            />
-                            <StatusCard
-                                icon={statusCards[2].icon}
-                                count={total && total.toLocaleString()}
-                                title={`Tổng doanh thu`}
-                            />
-                        </div>
+                <div className="col-6 ">
+                    <div className="card">
+                        <StatusCard
+                            icon={statusCards[0].icon}
+                            // count={countAcc}
+                            count='10'
+                            title={`Khách hàng`}
+                        />
+                        <StatusCard
+                            icon={statusCards[1].icon}
+                            count={'30'}
+                            title={`Sản phẩm`}
+                        />
+                        <StatusCard
+                            icon={statusCards[3].icon}
+                            count={'40'}
+                            title={`Đơn hàng`}
+                        />
+                        <StatusCard
+                            icon={statusCards[2].icon}
+                            count={'200'}
+                            title={`Tổng doanh thu`}
+                        />
                     </div>
                 </div>
                 <div className="col-6">
@@ -93,7 +122,7 @@ const Dashboard = () => {
                             <table className="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Mã sản phẩm</th>
+                                        <th scope="col">Mã</th>
                                         <th scope="col">Tên sản phẩm</th>
                                         <th scope="col">Số lượng bán</th>
                                         <th scope="col">Doanh thu</th>
@@ -102,20 +131,22 @@ const Dashboard = () => {
                                 <tbody>
                                     {product &&
                                         product.map((item, index) => (
-                                            <tr key={index}>
+                                            <tr key={item.id_Pro}>
                                                 <th scope="row">
-                                                    <NavLink to={`/order-product/${item.id}`} exact>
+                                                    <NavLink to={`/productOne/${item.id_Pro}`} exact>
                                                         {" "}
-                                                        {item.id}
+                                                        {item.id_Pro}
                                                     </NavLink>
                                                 </th>
-                                                <td>{item.name}</td>
-                                                <td>{item.count}</td>
-                                                <td>{item.amount.toLocaleString()} đ</td>
+                                                <td>{item.name_Pro}</td>
+                                                <td>{item.totalQuantityPro}</td>
+                                                <td>{item.totalPricePro.toLocaleString()} đ</td>
                                             </tr>
                                         ))}
                                 </tbody>
                             </table>
+                            <PaginatedItems itemsPerPage={30}
+                                pageable={pageable} />
                         </div>
                         <div className="card__footer">
                             <Link to="/report-product">Xem chi tiết</Link>
@@ -153,6 +184,8 @@ const Dashboard = () => {
                                         ))}
                                 </tbody>
                             </table>
+                            <PaginatedItems itemsPerPage={30}
+                                pageable={pageable} />
                         </div>
                         <div className="card__footer">
                             <NavLink exact to={`/report-month/2022`}>
