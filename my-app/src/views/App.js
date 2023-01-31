@@ -1,11 +1,10 @@
-// import "./App.scss";
+import "./App.scss";
 import { ToastContainer, toast } from 'react-toastify';
 import Admin from "../components/layout/Admin";
 import Home from "../components/layout/Home";
 import Product from "../components/product/Product";
 import Role from "../components/role/Role";
 import Voucher from "../components/voucher/voucher";
-import Dashboard from "../components/dashboard/Dashboard";
 
 import User from "../components/user/User";
 import Category from "../components/cate/Category";
@@ -22,6 +21,9 @@ import Order from "../components/order/order";
 import ProductOne from "../components/HOME/ProductOne";
 
 import { Routes, Route } from "react-router-dom";
+import OrderComponent from "../components/order-typescript/order.component";
+import Dashboard from "../components/dashboard/Dashboard";
+import DashboardComponent from "../components/dashboard-typescript/dashboard.component";
 
 function App() {
   return (
@@ -63,7 +65,7 @@ function App() {
             </Route>
 
             <Route
-              path="productOne/:id"
+              path="productOne"
               element={
                 <>
                   {" "}
@@ -87,7 +89,7 @@ function App() {
               element={
                 <>
                   {" "}
-                  <Dashboard />
+                  <DashboardComponent />
                 </>
               }
             />
@@ -119,11 +121,29 @@ function App() {
               }
             />
             <Route
-              path="order"
+              path="order-old"
               element={
                 <>
                   {" "}
                   <Order />
+                </>
+              }
+            />
+            <Route
+              path="order"
+              element={
+                <>
+                  {" "}
+                  <OrderComponent />
+                </>
+              }
+            />
+            <Route
+              path="dashboard"
+              element={
+                <>
+                  {" "}
+                  <DashboardComponent />
                 </>
               }
             />

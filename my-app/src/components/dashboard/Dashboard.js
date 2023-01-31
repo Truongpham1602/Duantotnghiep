@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import statusCards from "../../assets/JsonData/status-card-data.json";
 import StatusCard from "../status-card/StatusCard";
-import Chart from "react-apexcharts";
+// import Chart from "react-apexcharts";
 import { Link, NavLink } from "react-router-dom";
 import PaginatedItems from "../../customHook/PaginatedItems";
 import axios from 'axios';
@@ -110,7 +110,7 @@ const Dashboard = () => {
                 </div>
                 <div className="col-6">
                     <div className="card full-height">
-                        <Chart options={option} series={seri} type="donut" height="100%" />
+                        {/* <Chart options={option} series={seri} type="donut" height="100%" /> */}
                     </div>
                 </div>
                 <div className="col-6">
