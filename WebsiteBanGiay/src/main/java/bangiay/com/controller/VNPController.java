@@ -24,9 +24,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import bangiay.com.ConfigVNP;
+import bangiay.com.service.OrderService;
 
 @Controller
 public class VNPController {
+	@Autowired
+	OrderService orderService;
 
 	@Autowired
 	HttpServletRequest req;
@@ -137,6 +140,8 @@ public class VNPController {
 	@GetMapping("success")
 	public ResponseEntity<?> success(HttpServletResponse response) {
 		HttpHeaders headers = new HttpHeaders();
+		String order_Id = req.getParameter("vnp_OrderInfo");
+		orderService.updatePaymentOrder(Integer.parseInt(order_Id));
 		headers.add("Location", "localhost:3000/success");
 		return new ResponseEntity(headers, HttpStatus.FOUND);
 	}

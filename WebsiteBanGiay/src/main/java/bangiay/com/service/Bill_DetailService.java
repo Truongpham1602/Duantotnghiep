@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import bangiay.com.DTO.BillDetailDTO;
-import bangiay.com.entity.BillDetail;
 
 public interface Bill_DetailService {
 	public List<BillDetailDTO> findAll();
@@ -21,5 +20,5 @@ public interface Bill_DetailService {
 
 	public void delete(int id);
 
-	List<BillDetail> top5();
+	List<BillDetailDTO> top5();
 }

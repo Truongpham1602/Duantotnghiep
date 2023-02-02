@@ -65,7 +65,7 @@ function App() {
             </Route>
 
             <Route
-              path="productOne"
+              path="productOne/:id"
               element={
                 <>
                   {" "}

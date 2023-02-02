@@ -114,7 +114,7 @@ const ProductOne = () => {
             copydata.fill(size, getIndex, getIndex + 1);
             setSizes(copydata)
         })
-    }, [])
+    }, [product])
     // const bigImgClick = () => {
     //     document.querySelector(".product-content-left-big-img").style.display = "none"
     // }

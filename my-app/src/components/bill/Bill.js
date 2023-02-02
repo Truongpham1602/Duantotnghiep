@@ -108,7 +108,6 @@ const Bill = (props) => {
         });
       } else {
         if (id == "nameRecipient") {
-          console.log(copy[id]);
           if (copy[id] == 0) {
             ch0[id] = "nameRecipient not null";
           } else {
@@ -238,14 +237,14 @@ const Bill = (props) => {
       return;
     }
     try {
-      let user = await axios.get(`http://localhost:8080/auth/information`,
+      let userLogin = await axios.get(`http://localhost:8080/auth/information`,
         { headers: { "Authorization": `Bearer ${token}` } }
       );
       let res = await axios.post(
-        `http://localhost:8080/api/order/create?user_Id=${user.data.id}&voucher_Id=${voucherSelect.id ? voucherSelect.id : ""}`,
+        `http://localhost:8080/api/order/create?user_Id=${userLogin.data.id}&voucher_Id=${voucherSelect.id ? voucherSelect.id : ""}`,
         account, { headers: { "Authorization": `Bearer ${token}` } }
       );
-      window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
+      window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${account.telephone}&txt_billing_email=${account.email}&txt_billing_fullname=${account.nameRecipient}&txt_inv_addr1=${account.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=${res.data.id}`;
     } catch (error) {
       console.log(error);
     }
@@ -321,7 +320,7 @@ const Bill = (props) => {
     <>
       <section>
         <ToastContainer />
-        <MDBContainer>
+        {/* <MDBContainer>
           <MDBRow className="justify-content-center align-items-center">
             <MDBCol>
               <MDBCard className="card-stepper text-black">
@@ -407,7 +406,7 @@ const Bill = (props) => {
               </MDBCard>
             </MDBCol>
           </MDBRow>
-        </MDBContainer>
+        </MDBContainer> */}
       </section>
       <Row
         className="row-cart"

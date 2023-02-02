@@ -90,6 +90,8 @@ export default class OrderComponent extends React.Component {
             `${process.env.REACT_APP_API_KEY}/order/findAll`, this.config
         );
 
+        console.log(res);
+
         // Map lstOrder
         const lstOrder = res.data && res.data.map((item: OrderItem) => {
             let statusName = ''

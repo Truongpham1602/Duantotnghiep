@@ -9,7 +9,7 @@ import bangiay.com.DTO.BillDTO;
 
 public interface BillService {
 
-	public BillDTO createBill(BillDTO billDTO, Integer user_Id);
+	public BillDTO createBill(Integer user_Id);
 
 	public List<BillDTO> findAll();
 

@@ -87,9 +87,10 @@ public class Bill_DetailServiceImpl implements Bill_DetailService {
 	}
 
 	@Override
-	public List<BillDetail> top5() {
-
-		return billDetailDao.findTop5();
+	public List<BillDetailDTO> top5() {
+		List<BillDetailDTO> billDetails = billDetailDao.findTop5().stream()
+				.map(d -> modelMapper.map(d, BillDetailDTO.class)).collect(Collectors.toList());
+		return billDetails;
 	}
 
 }

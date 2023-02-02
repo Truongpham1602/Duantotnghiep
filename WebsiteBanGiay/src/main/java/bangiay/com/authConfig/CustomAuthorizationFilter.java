@@ -34,7 +34,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		if (request.getServletPath().equals("/auth/login") || request.getServletPath().equals("/api/category/get")
 				|| request.getServletPath().equals("/admin/product/index")
-				|| request.getServletPath().equals("/admin/product/find/{**}")) {
+				|| request.getServletPath().equals("/admin/product/find/**")) {
 			filterChain.doFilter(request, response);
 		} else {
 			String auth = request.getHeader(AUTHORIZATION);
@@ -61,6 +61,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				filterChain.doFilter(request, response);
 			}
+
 		}
 
 	}

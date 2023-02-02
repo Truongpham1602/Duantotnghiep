@@ -2,8 +2,6 @@ package bangiay.com.rest.controller;
 
 import java.util.List;
 
-import bangiay.com.DTO.MediaDTO;
-import bangiay.com.doMain.constant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.BillDTO;
+import bangiay.com.doMain.constant;
 import bangiay.com.service.BillService;
 
 @CrossOrigin(origins = "*")
@@ -37,12 +36,12 @@ public class BillRestController {
 	public ResponseEntity<List<BillDTO>> getAll() {
 		return ResponseEntity.ok().body(billService.findAll());
 	}
+
 	@GetMapping("/select")
 	public ResponseEntity<Page<BillDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
-			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size
-	) {
-		Pageable pageable = PageRequest.of(page - 1 , size);
+			@RequestParam(name = constant.SIZE, defaultValue = constant.DEFAULT_SIZE) int size) {
+		Pageable pageable = PageRequest.of(page - 1, size);
 		return ResponseEntity.ok(billService.findAll(pageable));
 	}
 
@@ -61,9 +60,8 @@ public class BillRestController {
 	}
 
 	@PostMapping(value = "/create/{user_IdOrTelephone}")
-	public ResponseEntity<BillDTO> create(@RequestBody BillDTO billDTO,
-			@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
-		return ResponseEntity.ok().body(billService.createBill(billDTO, user_IdOrTelephone));
+	public ResponseEntity<BillDTO> create(@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
+		return ResponseEntity.ok().body(billService.createBill(user_IdOrTelephone));
 	}
 
 	@PostMapping(value = "/delete")

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.BillDetailDTO;
-import bangiay.com.entity.BillDetail;
 import bangiay.com.service.Bill_DetailService;
 
 @CrossOrigin(origins = "*")
@@ -22,8 +21,8 @@ public class BillDetailRestController {
 	private Bill_DetailService billdBill_DetailService;
 
 	@GetMapping("/getAll")
-	public ResponseEntity<List<BillDetail>> getAll() {
-		return ResponseEntity.ok().body(billdBill_DetailService.top5());
+	public List<BillDetailDTO> getAll() {
+		return billdBill_DetailService.top5();
 	}
 
 	@GetMapping("/findAll")

@@ -47,7 +47,7 @@ public class BillServiceImpl implements BillService {
 	private Bill_DetailService bill_DetailService;
 
 	@Override
-	public BillDTO createBill(BillDTO billDTO, Integer id) {
+	public BillDTO createBill(Integer id) {
 		Order order = this.orderDao.findById(id).orElse(null);
 		if (order.getStatus() == 3) {
 			List<OrderDetail> lstOrderDetail = this.orderDetailDao.findByOrder_Id(id);
@@ -56,11 +56,11 @@ public class BillServiceImpl implements BillService {
 			bill.setNameRecipient(order.getNameRecipient());
 			bill.setTelephone(order.getTelephone());
 			bill.setAddress(order.getAddress());
-			bill.setCreator(billDTO.getCreator());
+//			bill.setCreator(billDTO.getCreator());
 			bill.setCreated(Timestamp.from(Instant.now()));
 			// Insert Bill to DB
 			this.billDao.save(bill);
-			billDTO = modelMapper.map(bill, BillDTO.class);
+			BillDTO billDTO = modelMapper.map(bill, BillDTO.class);
 			List<BillDetailDTO> lstBillDetailDTO = new ArrayList<BillDetailDTO>();
 			for (int i = 0; i < lstOrderDetail.size(); i++) {
 				if (lstOrderDetail.get(i).getVoucher() != null) {
