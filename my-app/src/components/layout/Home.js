@@ -1,5 +1,4 @@
 import { React, useState, useEffect } from "react";
-
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   ref,
@@ -87,10 +86,9 @@ const Home = () => {
       `http://localhost:8080/admin/product/searchClient?keyword=${keyword}&cate_Id=${cate_Id}`,
       { headers: { "Authorization": `Bearer ${token}` } })
     let data = res ? res.data : []
-    if (data.totalPages > totalPage.length) {
-      for (let i = 1; i <= data.totalPages; i++) {
-        setTotalPage((prev) => [...prev, i])
-      }
+    setTotalPage([])
+    for (let i = 1; i <= data.totalPages; i++) {
+      setTotalPage((prev) => [...prev, i])
     }
     setDataProduct(data.content)
     setPageNumber(data.number)
@@ -140,7 +138,7 @@ const Home = () => {
       { headers: { "Authorization": `Bearer ${token}` } }
     );
     setProduct(res.data);
-    navigate("/productOne");
+    navigate(`/productOne/${id}`);
   };
   const addToCart = async (size_Id, quantity) => {
     if (size_Id == null) {

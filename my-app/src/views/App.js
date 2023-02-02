@@ -21,6 +21,9 @@ import Order from "../components/order/order";
 import ProductOne from "../components/HOME/ProductOne";
 
 import { Routes, Route } from "react-router-dom";
+import OrderComponent from "../components/order-typescript/order.component";
+import Dashboard from "../components/dashboard/Dashboard";
+import DashboardComponent from "../components/dashboard-typescript/dashboard.component";
 
 function App() {
   return (
@@ -62,7 +65,7 @@ function App() {
             </Route>
 
             <Route
-              path="productOne"
+              path="productOne/:id"
               element={
                 <>
                   {" "}
@@ -86,8 +89,7 @@ function App() {
               element={
                 <>
                   {" "}
-                  <Product />
-                  <User />
+                  <DashboardComponent />
                 </>
               }
             />
@@ -119,11 +121,29 @@ function App() {
               }
             />
             <Route
-              path="order"
+              path="order-old"
               element={
                 <>
                   {" "}
                   <Order />
+                </>
+              }
+            />
+            <Route
+              path="order"
+              element={
+                <>
+                  {" "}
+                  <OrderComponent />
+                </>
+              }
+            />
+            <Route
+              path="dashboard"
+              element={
+                <>
+                  {" "}
+                  <DashboardComponent />
                 </>
               }
             />

@@ -157,7 +157,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Page<ProductDTO> findAll(Integer size, Integer page) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Product> entities = proDAO.findAll(pageable);
+		Page<Product> entities = proDAO.findPageWhereStatus(pageable);
 		Page<ProductDTO> dtoPage = entities.map(new Function<Product, ProductDTO>() {
 			@Override
 			public ProductDTO apply(Product entity) {

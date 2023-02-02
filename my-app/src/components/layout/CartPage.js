@@ -114,7 +114,6 @@ const Cart = () => {
             sizeSelect['selected'] = true
             copydata.fill(sizeSelect, index, index + 1);
             item['size'] = copydata
-
             totalPro += item.quantity
             setLstCart((prev) => [...prev, item])
         })
@@ -138,6 +137,7 @@ const Cart = () => {
                     { headers: { "Authorization": `Bearer ${token}` } })
                 setDataLstCart(res.data)
             } catch (error) {
+                console.log(error);
                 const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=`,
                     { headers: { "Authorization": `Bearer ${token}` } })
                 setDataLstCart(res.data)

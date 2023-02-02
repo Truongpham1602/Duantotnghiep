@@ -1,6 +1,7 @@
 package bangiay.com.service.impl;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class BillServiceImpl implements BillService {
 	private Bill_DetailService bill_DetailService;
 
 	@Override
-	public BillDTO createBill(BillDTO billDTO, Integer id) {
+	public BillDTO createBill(Integer id) {
 		Order order = this.orderDao.findById(id).orElse(null);
 		if (order.getStatus() == 3) {
 			List<OrderDetail> lstOrderDetail = this.orderDetailDao.findByOrder_Id(id);
@@ -55,20 +56,21 @@ public class BillServiceImpl implements BillService {
 			bill.setNameRecipient(order.getNameRecipient());
 			bill.setTelephone(order.getTelephone());
 			bill.setAddress(order.getAddress());
-			bill.setCreator(billDTO.getCreator());
+//			bill.setCreator(billDTO.getCreator());
 			bill.setCreated(Timestamp.from(Instant.now()));
 			// Insert Bill to DB
 			this.billDao.save(bill);
-			billDTO = modelMapper.map(bill, BillDTO.class);
+			BillDTO billDTO = modelMapper.map(bill, BillDTO.class);
 			List<BillDetailDTO> lstBillDetailDTO = new ArrayList<BillDetailDTO>();
 			for (int i = 0; i < lstOrderDetail.size(); i++) {
 				if (lstOrderDetail.get(i).getVoucher() != null) {
 					lstBillDetailDTO.add(new BillDetailDTO(null, bill.getId(), lstOrderDetail.get(i).getSize().getId(),
 							lstOrderDetail.get(i).getVoucher().getId(), lstOrderDetail.get(i).getQuantity(),
-							lstOrderDetail.get(i).getPrice()));
+							lstOrderDetail.get(i).getPrice(), null, null, null, null));
 				} else {
 					lstBillDetailDTO.add(new BillDetailDTO(null, bill.getId(), lstOrderDetail.get(i).getSize().getId(),
-							null, lstOrderDetail.get(i).getQuantity(), lstOrderDetail.get(i).getPrice()));
+							null, lstOrderDetail.get(i).getQuantity(), lstOrderDetail.get(i).getPrice(), null, null,
+							null, null));
 				}
 			}
 			this.bill_DetailService.createAll(lstBillDetailDTO);
@@ -115,5 +117,21 @@ public class BillServiceImpl implements BillService {
 		Bill bill = billDao.findById(id).orElseThrow(() -> new RuntimeException("Bill isn't existed"));
 		BillDTO billDTO = modelMapper.map(bill, BillDTO.class);
 		return billDTO;
+	}
+
+	@Override
+	public List<BillDTO> statisticsByYear() {
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy");
+		List<Bill> bills = this.billDao.findAll();
+		List<BillDTO> billsa = bills.stream().map(bill -> modelMapper.map(bill, BillDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < bills.size(); i++) {
+			System.out.println(formater.format(bills.get(i).getCreated()));
+			// tìm bill_detail theo id bill
+			// for
+			// +=tiền billDetail
+			// ngoài for: set tiền v
+		}
+		return null;
 	}
 }

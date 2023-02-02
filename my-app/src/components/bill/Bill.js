@@ -38,6 +38,7 @@ import {
 import { width } from "@mui/system";
 import { CgFormatJustify } from "react-icons/cg";
 import { async } from "@firebase/util";
+import { ToastContainer, toast } from "react-toastify";
 
 // class Bill extends React.Component {
 const Bill = (props) => {
@@ -107,7 +108,6 @@ const Bill = (props) => {
         });
       } else {
         if (id == "nameRecipient") {
-          console.log(copy[id]);
           if (copy[id] == 0) {
             ch0[id] = "nameRecipient not null";
           } else {
@@ -201,28 +201,28 @@ const Bill = (props) => {
   const createOrder = async () => {
     let ch0 = { ...check };
     if (account.email == 0) {
-      ch0["email"] = "email not null";
+      ch0["email"] = "Cần nhập Email";
       setCheck({ ...ch0 });
     } else if (check.email == 0) {
       ch0["email"] = "";
       setCheck({ ...ch0 });
     }
     if (account.nameRecipient == 0) {
-      ch0["nameRecipient"] = "nameRecipient not null";
+      ch0["nameRecipient"] = "Cần nhập họ tên người nhận";
       setCheck({ ...ch0 });
     } else if (check.nameRecipient == 0) {
       ch0["nameRecipient"] = "";
       setCheck({ ...ch0 });
     }
     if (account.telephone == 0) {
-      ch0["telephone"] = "telephone not null";
+      ch0["telephone"] = "Cần nhập số điện thoại";
       setCheck({ ...ch0 });
     } else if (check.telephone == 0) {
       ch0["telephone"] = "";
       setCheck({ ...ch0 });
     }
     if (account.address == 0) {
-      ch0["address"] = "address not null";
+      ch0["address"] = "Cần nhập địa chỉ";
       setCheck({ ...ch0 });
     } else if (check.address == 0) {
       ch0["address"] = "";
@@ -237,17 +237,28 @@ const Bill = (props) => {
       return;
     }
     try {
-      let user = await axios.get(`http://localhost:8080/auth/information`,
+      let userLogin = await axios.get(`http://localhost:8080/auth/information`,
         { headers: { "Authorization": `Bearer ${token}` } }
       );
       let res = await axios.post(
-        `http://localhost:8080/api/order/create?user_Id=${user.data.id}&voucher_Id=${voucherSelect.id ? voucherSelect.id : ""}`,
+        `http://localhost:8080/api/order/create?user_Id=${userLogin.data.id}&voucher_Id=${voucherSelect.id ? voucherSelect.id : ""}`,
         account, { headers: { "Authorization": `Bearer ${token}` } }
       );
-      window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${user.telephone}&txt_billing_email=${user.email}&txt_billing_fullname=${user.nameRecipient}&txt_inv_addr1=${user.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=order%20info%20test`;
+      window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${account.telephone}&txt_billing_email=${account.email}&txt_billing_fullname=${account.nameRecipient}&txt_inv_addr1=${account.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=${res.data.id}`;
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
   };
 
   const toggle = () => {
@@ -262,6 +273,17 @@ const Bill = (props) => {
           `http://localhost:8080/api/voucher/get/${radio.item(i).value}`,
           { headers: { "Authorization": `Bearer ${token}` } }
         );
+        let x = true;
+        lstcart.map(item => {
+          console.log(res.data.categoryId);
+          console.log(item.category_Id);
+          if (res.data.categoryId == item.category_Id) x = false;
+        })
+        if (x) {
+          toast.warning('Mã giảm giá không phù hợp!', styleToast)
+          toggle();
+          return
+        }
         setVoucherSelect(res.data);
         let total = 0;
         let totalSealer = 0;
@@ -297,7 +319,8 @@ const Bill = (props) => {
   return (
     <>
       <section>
-        <MDBContainer>
+        <ToastContainer />
+        {/* <MDBContainer>
           <MDBRow className="justify-content-center align-items-center">
             <MDBCol>
               <MDBCard className="card-stepper text-black">
@@ -383,7 +406,7 @@ const Bill = (props) => {
               </MDBCard>
             </MDBCol>
           </MDBRow>
-        </MDBContainer>
+        </MDBContainer> */}
       </section>
       <Row
         className="row-cart"
@@ -549,19 +572,13 @@ const Bill = (props) => {
             }}
           >
             {voucherSelect?.id > 0 &&
-              lstVoucher.map(item => {
-                if (item.id == voucherSelect.id) {
-                  return (
-                    <>
-                      <div>{item.nameRecipient}</div>
-                      <div>
-                        {item.type === 1 ? item.value + "%" : item.value + "K"}
-                      </div>
-                      <div>{item.namecate}</div>
-                    </>
-                  );
-                }
-              })
+              <>
+                <div>{voucherSelect.name}</div>
+                <div>
+                  {voucherSelect.type === 1 ? voucherSelect.value + "%" : voucherSelect.value + "K"}
+                </div>
+                <div>{voucherSelect.namecate}</div>
+              </>
             }
           </div>
           <button

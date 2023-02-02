@@ -139,6 +139,7 @@ public class OrderSeviceImpl implements OrderService {
 
 	@Override
 	public List<OrderDTO> findByUser_IdOrTelephone(String user_idOrTelephone) {
+		List<Order> orders = this.orderDao.findOrderByUser_IdOrTelephone(user_idOrTelephone);
 
 		return null;
 	}

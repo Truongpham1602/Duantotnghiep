@@ -55,6 +55,8 @@ const Product = () => {
   const [totalPage, setTotalPage] = useState([])
   const [keyword, setKeyword] = useState()
   const imagesListRef = ref(storage, "images/");
+  const [checkPage, setCheckPage] = useState(true)
+
 
 
   const toggleNested = (id) => {
@@ -67,6 +69,12 @@ const Product = () => {
       const res = await axios.get(`http://localhost:8080/admin/product/select`,
         { headers: { "Authorization": `Bearer ${token}` } })
       let data = res ? res.data : []
+      setTotalPage([])
+      for (let i = 1; i <= data.totalPages; i++) {
+        setTotalPage((prev) => [...prev, i])
+      }
+      setCheckPage(!checkPage)
+      console.log(checkPage);
       setData(data.content)
       setPageNumber(data.number)
       setKeyword(e.target.value)
@@ -76,6 +84,9 @@ const Product = () => {
   }
 
   const searchButton = async () => {
+    if (keyword == '') {
+      return
+    }
     let config = {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -87,11 +98,11 @@ const Product = () => {
       config
     );
     let data = res ? res.data : []
-    if (data.totalPages > totalPage.length) {
-      for (let i = 1; i <= dataPro.totalPages; i++) {
-        setTotalPage((prev) => [...prev, i])
-      }
+    setTotalPage([])
+    for (let i = 1; i <= data.totalPages; i++) {
+      setTotalPage((prev) => [...prev, i])
     }
+    setCheckPage(!checkPage)
     setData(data.content)
     setPageNumber(data.number)
   }
@@ -459,8 +470,14 @@ const Product = () => {
 
         </Table >
       </div >
-      <PaginatedItems itemsPerPage={totalPage.length}
-        pageable={pageable} />
+      {checkPage == true &&
+        <PaginatedItems itemsPerPage={totalPage.length}
+          pageable={pageable} />
+      }
+      {checkPage == false &&
+        <PaginatedItems itemsPerPage={totalPage.length}
+          pageable={pageable} />
+      }
     </>
   );
 };

@@ -16,10 +16,15 @@ import { storage } from "../../Firebase";
 import { padding } from "@mui/system";
 import axios from "axios";
 import { toast } from "react-toastify";
+import {
+    useParams
+} from "react-router-dom";
 
 const ProductOne = () => {
+    let { id } = useParams();
     const token = localStorage.getItem('token');
-    const [nextProductDetail, addToCart, product] = useOutletContext()
+    axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
+    const [nextProductDetail, addToCart] = useOutletContext()
     const imagesListRef = ref(storage, "images/");
     const [imageUrls, setImageUrls] = useState([]);
     const [size_Id, setSize_Id] = useState()
@@ -71,6 +76,23 @@ const ProductOne = () => {
     ])
     const [quantitySize, setQuantitySize] = useState()
     const [valueNumberinout, setValueNumberInout] = useState(1)
+    const [product, setProduct] = useState({})
+
+    const findPro = async () => {
+        try {
+            const res = await axios.get(
+                `http://localhost:8080/admin/product/find/${id}`,
+                { headers: { "Authorization": `Bearer ${token}` } }
+            );
+            setProduct(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        findPro()
+    }, [])
 
     useEffect(() => {
         setImageUrls([])
@@ -82,6 +104,9 @@ const ProductOne = () => {
                 });
             });
         });
+    }, [])
+
+    useEffect(() => {
         product.sizes?.map(item => {
             let copydata = sizes;
             let getIndex = copydata.findIndex((p) => { return p.title == item.size });
@@ -89,7 +114,7 @@ const ProductOne = () => {
             copydata.fill(size, getIndex, getIndex + 1);
             setSizes(copydata)
         })
-    }, [])
+    }, [product])
     // const bigImgClick = () => {
     //     document.querySelector(".product-content-left-big-img").style.display = "none"
     // }
@@ -157,20 +182,22 @@ const ProductOne = () => {
                             })}
                         </div>
                         <div className="product-content-left-small-img">
-                            {imageUrls.map((img, index1) => {
-                                return (
-                                    product.medias.map((item, index2) => {
-                                        return (
-                                            <>
-                                                {index2 > 0 &&
-                                                    img.nameImg === item.url &&
-                                                    <img src={img.url} style={{ height: '115px', width: '115px', padding: '3px 0px 3px 0px' }} />
-                                                }
-                                            </>
-                                        )
-                                    })
-                                )
-                            })}
+                            {product?.medias &&
+                                imageUrls.map((img, index1) => {
+                                    return (
+                                        product?.medias?.map((item, index2) => {
+                                            return (
+                                                <>
+                                                    {index2 > 0 &&
+                                                        img.nameImg === item.url &&
+                                                        <img src={img.url} style={{ height: '115px', width: '115px', padding: '3px 0px 3px 0px' }} />
+                                                    }
+                                                </>
+                                            )
+                                        })
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                     <div className="product-content-right col-lg-5">

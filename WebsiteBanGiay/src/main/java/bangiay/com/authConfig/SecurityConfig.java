@@ -23,8 +23,9 @@ public class SecurityConfig {
 		http.csrf().disable().cors().and()
 				.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().and().authorizeRequests().antMatchers("/auth/login").permitAll()
-				.antMatchers("/api/category/get", "/admin/product/index", "/admin/product/find/{**}").permitAll()
-				.anyRequest().authenticated().and().sessionManagement()
+				.antMatchers("/api/category/get", "/admin/product/index", "/admin/product/find/**", "/thanh-toan-vnpay",
+						"/success")
+				.permitAll().anyRequest().authenticated().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		return http.build();
 	}

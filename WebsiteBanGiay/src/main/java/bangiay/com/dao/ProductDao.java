@@ -1,5 +1,7 @@
 package bangiay.com.dao;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +26,7 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 
 	@Query("SELECT p FROM Product p WHERE p.status =1")
 	Page<Product> findPageWhereStatus(Pageable pageable);
+
+	@Query("SELECT p FROM Product p WHERE p.status =1 order by CREATED desc")
+	List<Product> findTop3New();
 }

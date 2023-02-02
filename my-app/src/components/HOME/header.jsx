@@ -37,7 +37,7 @@ const Header = (props) => {
         const setTotal = () => {
             setLstCart(dataCart)
             dataCart.map(item => {
-                total += item.price
+                total += item.price * item.quantity
             })
             setTotalPrice(total)
         }
@@ -150,8 +150,9 @@ const Header = (props) => {
 
             {cart &&
                 <div class="shopping-cart active">
-                    <h5 class="total"> Total : <span>{totalPrice}</span> </h5>
+                    <h5 class="total"> Tổng : <span>{totalPrice.toLocaleString()} vnđ</span> </h5>
                     {lstcart.map((lstcart) => {
+                        let totalPrice = lstcart.price * lstcart.quantity
                         return (
                             <div class="box">
                                 <i class="fas fa-times"></i>
@@ -166,9 +167,9 @@ const Header = (props) => {
                                     )
                                 })}
                                 <div class="content">
-                                    <h5>{lstcart.name_Product}</h5>
-                                    <span class="quantity">{lstcart.quantity}</span>
-                                    <span class="price">{lstcart.price * lstcart.quantity}</span>
+                                    <h5 style={{ textAlign: 'left' }}>{lstcart.name_Product}</h5>
+                                    <p style={{ float: 'left' }} class="">Số lượng: {lstcart.quantity}</p>
+                                    <p style={{ float: 'left' }} class="">Giá: {totalPrice.toLocaleString()} VNĐ</p>
                                 </div>
                             </div>
                         )
