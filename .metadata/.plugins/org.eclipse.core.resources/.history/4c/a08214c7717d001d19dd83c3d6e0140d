@@ -1,6 +1,0 @@
-package bangiay.com.service;
-
-public interface AccountService{
-	
-
-}

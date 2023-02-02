@@ -4,6 +4,7 @@ import '../voucher/voucher.css';
 import axios from 'axios';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import moment from "moment";
+import Multiselect from "multiselect-react-dropdown";
 import { ToastContainer, toast } from 'react-toastify';
 
 const UpdateRole = (props) => {
@@ -14,6 +15,8 @@ const UpdateRole = (props) => {
     const [lstcate, setLstCate] = useState([]);
     const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`, { headers: { "Authorization": `Bearer ${token}` } });
     const [check, setCheck] = useState({ name: '', value: '', quantity: '', type: 1, categoryId: '' });
+    const [options, setOptions] = useState([]);
+
     const status = [{
         id: 1,
         title: "Hoạt động",
@@ -66,7 +69,6 @@ const UpdateRole = (props) => {
                 ...ch1
             })
         }
-        // console.log(event.target[event.target.selectedIndex].value)
         setRole({
             ...copyVoucher
         })
@@ -139,9 +141,9 @@ const UpdateRole = (props) => {
 
 
     const toggle = () => {
-        toggleModal()
-        setRole({})
-        setCheck({})
+        toggleModal();
+        setRole({});
+        setCheck({});
     }
     return (
         <div>
@@ -166,80 +168,35 @@ const UpdateRole = (props) => {
                                         {check.roleName && check.roleName.length > 0 && <p className="checkError">{check.roleName}</p>}
                                     </div>
                                     <div className="col-sm-6">
-                                        <label className="form-label">Phần giá chiết khấu</label>
+                                        <label className="form-label">Mô Tả</label>
                                         <input
-                                            type="number"
+                                            type="text"
                                             placeholder=""
                                             className="form-control"
-                                            min={0}
-                                            max={100}
-                                            id="value"
-                                            name="value"
-                                            value={role.value}
-                                            onChange={(event) => handleOnchangeInput(event, 'value')}
+                                            id="description"
+                                            name="description"
+                                            value={role.description}
+                                            onChange={(event) => handleOnchangeInput(event, 'description')}
                                         />
-                                        {check.value && check.value.length > 0 && <p className="checkError">{check.value}</p>}
-                                        {/* {errors.discount && (
-                                        <div className="alert alert-danger" role="alert">
-                                            Giảm giá không hợp lệ!
-                                        </div>
-                                    )} */}
+                                        {check.description && check.description.length > 0 && <p className="checkError">{check.description}</p>}
                                     </div>
                                     <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Lượt sử dụng</label>
-                                        <input
+                                        <label className="form-label">Quyền truy cập</label>
+                                        <Multiselect
+                                            isObject={false}
+                                            options={options}
+                                            showCheckbox
+                                        />
+                                        {/* <input
                                             type="number"
                                             className="form-control"
-                                            min={0}
                                             placeholder=""
                                             id="quantity"
                                             name="quantity"
                                             value={role.quantity}
                                             onChange={(event) => handleOnchangeInput(event, 'quantity')}
-                                        // {...register("count", {
-                                        //     required: true,
-                                        //     min: 0,
-                                        // })}
                                         />
-                                        {check.quantity && check.quantity.length > 0 && <p className="checkError">{check.quantity}</p>}
-                                        {/* {errors.count && (
-                                        <div className="alert alert-danger" role="alert">
-                                            Lượt sử dụng không hợp lệ!
-                                        </div>
-                                    )} */}
-                                    </div>
-                                    <div className="col-sm-6 mt-5">
-                                        <label className="form-label">Trạng thái</label>
-                                        <select
-                                            className="form-control"
-                                            id="status"
-                                            name="status"
-                                            placeholder=""
-                                            value={role.status}
-                                            onChange={(event) => handleOnchangeInput(event, 'status')}
-                                        // {...register("isActive", { required: false })}
-                                        >
-                                            {/* {voucher.status === 1 &&
-                                                <>
-                                                    <option selected value={1}>Hoạt động</option>
-                                                    <option value={0}>Không hoạt động</option>
-                                                </>
-                                            }
-                                            <option value='1'>Hoạt động</option>
-                                            <option value='0'>Không hoạt động</option>
-                                            {voucher.status === 0 &&
-                                                <>
-                                                    <option value={1}>Hoạt động</option>
-                                                    <option selected value={0}>Không hoạt động</option>
-                                                </>
-                                            } */}
-                                            {status.map(item => {
-                                                if (role.status === item.id) {
-                                                    return <option selected value={item.id}>{item.title}</option>
-                                                }
-                                                return <option value={item.id}>{item.title}</option>
-                                            })}
-                                        </select>
+                                        {check.quantity && check.quantity.length > 0 && <p className="checkError">{check.quantity}</p>} */}
                                     </div>
                                     <div className="col-sm-12 mt-5">
                                         <label className="form-label">Danh mục</label>
@@ -267,30 +224,7 @@ const UpdateRole = (props) => {
                                             })}
                                         </select>
                                     </div>
-                                    <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Mô tả</label>
-                                        <textarea
-                                            type="description"
-                                            // min="2022-01-01"
-                                            // max="2023-01-01"
-                                            className="form-control"
-                                            id="description"
-                                            value={role.description}
-                                            onChange={(event) => handleOnchangeInput(event, 'description')}
-                                        // {...register("expireDate", {
-                                        //     required: true,
-                                        // })}
-                                        />
-                                    </div>
-
                                 </div>
-                                {/* <button
-                                    className="btn btn-primary btn-lg mt-5 mb-5"
-                                    type="submit"
-                                    style={{ marginLeft: 80, borderRadius: 50 }}
-                                >
-                                    Cập nhật
-                                </button> */}
                             </form>
                         </div>
                     </div>

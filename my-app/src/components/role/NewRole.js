@@ -150,11 +150,6 @@ const NewRole = (props) => {
                                     </div>
                                     <div className="col-sm-6">
                                         <label className="form-label">Mô tả</label>
-                                        {/* <Multiselect
-                                            isObject={false}
-                                            options={options}
-                                            showCheckbox
-                                        /> */}
                                         <input
                                             type="text"
                                             className="form-control"
