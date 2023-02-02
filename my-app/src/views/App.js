@@ -25,6 +25,7 @@ import OrderComponent from "../components/order-typescript/order.component";
 import Dashboard from "../components/dashboard/Dashboard";
 import DashboardComponent from "../components/dashboard-typescript/dashboard.component";
 
+import Success from "../components/vnpSuccess/Success"
 function App() {
   return (
     <>
@@ -170,6 +171,7 @@ function App() {
           <Route path="checkout" element={<Bill />}></Route>
           <Route path="login" element={<Login />}></Route>
           <Route path="register" element={<Register />}></Route>
+          <Route path="success" element={<Success />}></Route>
         </Routes>
         {/* </header> */}
       </div>

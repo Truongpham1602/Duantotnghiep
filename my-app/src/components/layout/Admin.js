@@ -89,7 +89,11 @@ const Admin = () => {
               <div className="sb-sidenav-menu">
                 <div className="nav">
                   <div className="sb-sidenav-menu-heading">Core</div>
-                  <NavLink className="nav-link" href="#">
+                  <NavLink className="nav-link" to="" end
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseLayouts"
+                    aria-expanded="false"
+                    aria-controls="collapseLayouts">
                     <div className="sb-nav-link-icon">
                       <i className="fas fa-tachometer-alt"></i>
                     </div>
