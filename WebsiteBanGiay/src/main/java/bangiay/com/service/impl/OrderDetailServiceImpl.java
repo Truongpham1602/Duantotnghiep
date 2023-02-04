@@ -64,6 +64,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		Voucher voucher = this.voucherDao.findById(voucher_Id).orElse(null);
 		List<OrderDetailDTO> lstOrderDTO = new ArrayList<OrderDetailDTO>();
 		List<Size> lstSize = new ArrayList<Size>();
+		List<Product> lstPro = new ArrayList<Product>();
 		for (int i = 0; i < lstCart.size(); i++) {
 			Product pro = this.productDao.findById(lstCart.get(i).getSize().getProduct().getId()).get();
 			if (pro.getStatus() == 0 && pro.getId() == lstCart.get(i).getSize().getProduct().getId()) {
@@ -72,9 +73,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 			if (lstCart.get(i).getStatus() != 1) {
 				continue;
 			}
+			pro.setQuantity(pro.getQuantity() - lstCart.get(i).getQuantity());
 			Size size = lstCart.get(i).getSize();
 			size.setQuantity(size.getQuantity() - lstCart.get(i).getQuantity());
 			lstSize.add(size);
+			lstPro.add(pro);
 			if (voucher != null) {
 				if (voucher.getType() == 1) {
 					if (voucher.getCategory().getId() == lstCart.get(i).getSize().getProduct().getCategory().getId()) {
@@ -111,6 +114,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 				.collect(Collectors.toList());
 		this.orderDetailDao.saveAll(lstOrder);
 		this.sizeDao.saveAll(lstSize);
+		this.productDao.saveAll(lstPro);
 		return lstOrderDTO;
 	}
 

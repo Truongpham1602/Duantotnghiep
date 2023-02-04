@@ -14,6 +14,7 @@ import Footer from "../HOME/Footer";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useCallGetAPI from "../../customHook/CallGetApi";
 
 const Home = () => {
   const token = localStorage.getItem('token');
@@ -28,7 +29,14 @@ const Home = () => {
   const [totalPage, setTotalPage] = useState([])
   const [pageNumber, setPageNumber] = useState()
   const [dataProduct, setDataProduct] = useState([]);
-
+  const { data: top3ProBill } = useCallGetAPI(
+    `http://localhost:8080/admin/product/findTop3Bill`,
+    { headers: { "Authorization": `Bearer ${token}` } }
+  );
+  const { data: top5ProNew } = useCallGetAPI(
+    `http://localhost:8080/admin/product/findTop5New`,
+    { headers: { "Authorization": `Bearer ${token}` } }
+  );
   useEffect(() => {
     const getData = async () => {
       try {
@@ -200,7 +208,7 @@ const Home = () => {
       <Header dataCart={cart} imageUrls={imageUrls} searchButton={searchButton}
         handleInputSearch={handleInputSearch} keyword={keyword}
       />
-      <Outlet context={[nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate]} />
+      <Outlet context={[nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate, top3ProBill, top5ProNew]} />
       <Footer />
     </>
   );
