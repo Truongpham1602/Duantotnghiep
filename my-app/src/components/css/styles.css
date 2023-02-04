@@ -188,4 +188,30 @@
     text-decoration: line-through;
 }
 
+.main-page {
+    margin-top: 50px;
+}
+
+.main-page table button {
+    height: 30px;
+    width: 30px;
+    color: #000;
+    background-color: #fff;
+    border-radius: 100%;
+    margin: 0 3px;
+    line-height: 1;
+}
+
+.table-detail td {
+    border-width: 0;
+}
+
+.table-page th {
+    text-align: center;
+}
+
+.table-page td {
+    text-align: left;
+}
+
 /* end featured  */

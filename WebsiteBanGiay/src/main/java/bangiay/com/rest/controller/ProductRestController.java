@@ -76,4 +76,14 @@ public class ProductRestController {
 			@RequestParam(name = "keyword", defaultValue = "") String keyword) {
 		return productService.searchByKeywordAndCate_Id(size, page, keyword, cate_Id);
 	}
+
+	@GetMapping("/findTop5New")
+	public List<ProductDTO> findTop5New() {
+		return this.productService.top5NewProduct();
+	}
+
+	@GetMapping("/findTop3Bill")
+	public List<ProductDTO> findTop3Bill() {
+		return this.productService.top3BillProduct();
+	}
 }

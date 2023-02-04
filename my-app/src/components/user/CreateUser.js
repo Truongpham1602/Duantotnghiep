@@ -68,6 +68,7 @@ const CreateUser = (props) => {
   } = props;
   // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
   // const [updateData, setUpdateData] = useState(props);
+  const { data: lstUser } = useCallGetAPI(`http://localhost:8080/admin/user/findAll`);
 
   const [user, setUser] = useState({
     fullName: "",
@@ -174,6 +175,15 @@ const CreateUser = (props) => {
           setCheck({ ...ch0 });
           validForm = false;
         }
+        lstUser.map(item => {
+          if (item.telephone == user.telephone) {
+            notifyWarning('Số điện thoại đã tồn tại!')
+            return
+          } else if (item.email == user.email) {
+            notifyWarning('Email đã tồn tại!')
+            return
+          }
+        })
         if (validForm) {
 
           let res = await axios.post(User_Rest_API_URL + "/post", {

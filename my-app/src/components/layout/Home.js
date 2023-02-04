@@ -14,6 +14,7 @@ import Footer from "../HOME/Footer";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useCallGetAPI from "../../customHook/CallGetApi";
 
 const Home = () => {
   const token = localStorage.getItem('token');
@@ -29,6 +30,7 @@ const Home = () => {
   const [pageNumber, setPageNumber] = useState()
   const [dataProduct, setDataProduct] = useState([]);
   const [dataUser, setDataUser] = useState({ fullName: "" });
+
 
   useEffect(() => {
     const getData = async () => {
@@ -208,7 +210,7 @@ const Home = () => {
         dataUser={dataUser}
       // clearUser={clearUser}
       />
-      <Outlet context={[nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate]} />
+      <Outlet context={[nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate, top3ProBill, top5ProNew]} />
       <Footer />
     </>
   );

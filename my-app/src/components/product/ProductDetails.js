@@ -7,7 +7,7 @@ import {
 } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import NumericInput from 'react-numeric-input';
-import '../css/detailsProduct.css';
+import '../css/detailsProduct.scss';
 import useCallGetAPI from '../../customHook/CallGetApi';
 import moment from 'moment'
 import {

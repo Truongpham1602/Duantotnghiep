@@ -212,11 +212,9 @@ export default function OrederTemplate({ self }: OrederTemplate) {
                     <Button variant="secondary" onClick={self.closeModalDetail}>
                         Đóng
                     </Button>
-                    {/* {state.orderDetailItem &&
-                        <Button variant="primary" onClick={handleClose}>
-                            Giao hàng
-                        </Button>
-                    } */}
+                    {/* <Button variant="primary" onClick={handleClose}>
+                        Save Changes
+                    </Button> */}
                 </Modal.Footer>
             </Modal>
         </div >

@@ -8,11 +8,11 @@ const Admin = () => {
   return (
     <>
       <div className="sb-nav-fixed">
-        <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        {/* <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
           <NavLink className="navbar-brand ps-3" to="/">
             LuTra Store
           </NavLink>
-          {/* <NavLink className="navbar-brand ps-3" to="/" activeClassName="active" >Home</NavLink> */}
+          <NavLink className="navbar-brand ps-3" to="/" activeClassName="active" >Home</NavLink>
 
           <button
             className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
@@ -79,7 +79,7 @@ const Admin = () => {
               </ul>
             </li>
           </ul>
-        </nav>
+        </nav> */}
         <div id="layoutSidenav">
           <div id="layoutSidenav_nav">
             <nav
@@ -88,7 +88,9 @@ const Admin = () => {
             >
               <div className="sb-sidenav-menu">
                 <div className="nav">
-                  <div className="sb-sidenav-menu-heading">Core</div>
+                  <div className=""><NavLink className="navbar-brand ps-3" to="/" style={{ color: 'orange' }}>
+                    <h3>LuTra Store</h3>
+                  </NavLink></div>
                   <NavLink className="nav-link" to="" end
                     data-bs-toggle="collapse"
                     data-bs-target="#collapseLayouts"
@@ -153,7 +155,7 @@ const Admin = () => {
                     </div>
                     Khuyến mãi
                   </NavLink>
-                  <div className="sb-sidenav-menu-heading">Interface</div>
+                  {/* <div className="sb-sidenav-menu-heading">Interface</div>
                   <div
                     className="collapse"
                     id="collapseLayouts"
@@ -271,7 +273,7 @@ const Admin = () => {
                       <i className="fas fa-table"></i>
                     </div>
                     Tables
-                  </NavLink>
+                  </NavLink> */}
                 </div>
               </div>
               <div className="sb-sidenav-footer">
