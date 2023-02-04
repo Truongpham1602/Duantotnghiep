@@ -28,8 +28,8 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 	@Query("SELECT p FROM Product p WHERE p.status =1")
 	Page<Product> findPageWhereStatus(Pageable pageable);
 
-	@Query(value = "SELECT top 3 * FROM Product p WHERE p.status =1 order by CREATED desc ", nativeQuery = true)
-	List<Product> findTop3New();
+	@Query(value = "SELECT top 5 * FROM Product p WHERE p.status =1 order by CREATED desc ", nativeQuery = true)
+	List<Product> findTop5New();
 
 	// Count all product
 	@Query("SELECT COUNT(p) FROM Product p")
