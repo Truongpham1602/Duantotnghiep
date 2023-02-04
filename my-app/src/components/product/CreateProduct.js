@@ -197,9 +197,6 @@ const CreateProduct = (props) => {
       if (product.name.trim().length == 0) {
         ch0["name"] = "Tên không được để trống";
         setCheck({ ...ch0 });
-      } if (product.color.trim().length == 0) {
-        ch0["color"] = "Màu sắc không được để trống";
-        setCheck({ ...ch0 });
       } if (product.price.trim().length == 0) {
         ch0["price"] = "Giá không được để trống";
         setCheck({ ...ch0 });
@@ -218,7 +215,6 @@ const CreateProduct = (props) => {
       }
       if (
         check.name.trim().length > 0 ||
-        check.color.trim().length > 0 ||
         check.price.trim().length > 0 ||
         check.quantity.trim().length > 0 ||
         check.sizes.trim().length > 0 ||

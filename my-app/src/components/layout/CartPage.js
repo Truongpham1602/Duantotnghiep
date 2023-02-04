@@ -22,11 +22,12 @@ import {
 import axios from 'axios';
 import useCallGetAPI from "../../customHook/CallGetApi";
 import { async } from '@firebase/util';
+import { alpha } from '@mui/material';
 
 const Cart = () => {
     const token = localStorage.getItem('token');
     const [lstproduct, setLstProduct] = useState([])
-    const [totalPrice, setTotalPrice] = useState()
+    const [totalPrice, setTotalPrice] = useState(0)
     const [lstcart, setLstCart] = useState([])
     const [source, setSource] = useState()
     const [number, setNumber] = useState({})
@@ -114,13 +115,15 @@ const Cart = () => {
             sizeSelect['selected'] = true
             copydata.fill(sizeSelect, index, index + 1);
             item['size'] = copydata
-            totalPro += item.quantity
             setLstCart((prev) => [...prev, item])
+            if (item.status == 1) totalPro += item.quantity
         })
         setTotalPro(totalPro)
         const setTotal = () => {
             data.map(item => {
-                total += item.price * item.quantity
+                if (item.status == 1) {
+                    total += item.price * item.quantity
+                }
             })
             setTotalPrice(total)
         }
@@ -253,6 +256,137 @@ const Cart = () => {
         navigate('/checkout')
     }
 
+    const statusFalse = (lstcart) => {
+        let toltal = lstcart.price * lstcart.quantity
+        return <>
+            <div className="product-content row" style={{ marginBottom: '3%', borderBottom: '1px solid' }}>
+                <div className='col-lg-12'><h5 style={{ color: 'red' }}>Sản phẩm hết hàng</h5></div>
+                <div className="product-content-left row col-lg-4">
+                    <div className="product-content-left-big-img">
+                        {imageUrls.map((img, index1) => {
+                            return (
+                                lstcart.media.map((item, index2) => {
+                                    return (
+                                        img.nameImg === item.url && index2 === 0 &&
+                                        <img src={img.url} width='170px' height='150px' style={{ paddingBottom: '5px', opacity: 0.5 }} />
+                                    )
+                                })
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className="product-content-right col-lg-8" style={{ textAlign: 'left' }}>
+                    <div className='row'>
+                        <div className="col-lg-4">
+                            <h5>Tên giày: {lstcart.name_Product}</h5>
+                        </div>
+                        <div className="col-lg-2">
+                            <p className="color">Màu: {lstcart.color_Product}</p>
+                        </div>
+                        <div className="col-lg-3">
+                            <p>Giá: {lstcart.price.toLocaleString()}<sup>đ</sup></p>
+                        </div>
+                        <div className="col-lg-3">
+                            <p className="color">Tổng: {toltal.toLocaleString()}<sup>đ</sup></p>
+                        </div>
+                        <div className="col-lg-6">
+                            <div className="row">
+                                <div className="col-lg-3">
+                                    <p className="SizeOne">Kích cỡ:</p>
+                                </div>
+                                <div className="col-lg-9">
+                                    {lstcart.size.map(item => {
+                                        // if (item.quantity > 0 && item.status == true && item.selected == false) {
+                                        //     return <button value={item.id} onClick={() => updateSize(lstcart.id, lstcart.product_ID, item.id)} className="btn">{item.title}</button>
+                                        // } else if (item.quantity <= 0 || item.status === false) {
+                                        //     return <button className="btn" style={{ borderColor: 'white', color: '#b6b6b6fe' }} disabled >{item.title}</button>
+                                        // }
+                                        // else 
+                                        if (item.selected == true) {
+                                            return <button className="btn" style={{ borderColor: 'red', color: 'red' }} >{item.title}</button>
+                                        }
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-5" style={{ pointerEvents: 'none' }}>
+                            <NumericInput min={1} max={lstcart.quantitySize} value={lstcart.quantity} onChange={(value) => updateQuantity(lstcart.id, lstcart.product_ID, value, lstcart.quantitySize)} />
+                            <p>Còn {lstcart.quantitySize} sản phẩm</p>
+                        </div>
+                        <div className="col-lg-1">
+                            <button onClick={() => toggle(lstcart.id, lstcart.product_ID)}>Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    }
+    const statusTrue = (lstcart) => {
+        let toltal = lstcart.price * lstcart.quantity
+        return <>
+            <div className="product-content row" style={{ marginBottom: '3%', borderBottom: '1px solid' }}>
+                <div className="product-content-left row col-lg-4">
+                    <div className="product-content-left-big-img">
+                        {imageUrls.map((img, index1) => {
+                            return (
+                                lstcart.media.map((item, index2) => {
+                                    return (
+                                        img.nameImg === item.url && index2 === 0 &&
+                                        <img src={img.url} width='170px' height='150px' style={{ paddingBottom: '5px' }} />
+                                    )
+                                })
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className="product-content-right col-lg-8" style={{ textAlign: 'left' }}>
+                    <div className='row'>
+                        <div className="col-lg-4">
+                            <h5>Tên giày: {lstcart.name_Product}</h5>
+                        </div>
+                        <div className="col-lg-2">
+                            <p className="color">Màu: {lstcart.color_Product}</p>
+                        </div>
+                        <div className="col-lg-3">
+                            <p>Giá: {lstcart.price.toLocaleString()}<sup>đ</sup></p>
+                        </div>
+                        <div className="col-lg-3">
+                            <p className="color">Tổng: {toltal.toLocaleString()}<sup>đ</sup></p>
+                        </div>
+                        <div className="col-lg-6">
+                            <div className="row">
+                                <div className="col-lg-3">
+                                    <p className="SizeOne">Kích cỡ:</p>
+                                </div>
+                                <div className="col-lg-9">
+                                    {lstcart.size.map(item => {
+                                        // if (item.quantity > 0 && item.status == true && item.selected == false) {
+                                        //     return <button value={item.id} onClick={() => updateSize(lstcart.id, lstcart.product_ID, item.id)} className="btn">{item.title}</button>
+                                        // } else if (item.quantity <= 0 || item.status === false) {
+                                        //     return <button className="btn" style={{ borderColor: 'white', color: '#b6b6b6fe' }} disabled >{item.title}</button>
+                                        // }
+                                        // else 
+                                        if (item.selected == true) {
+                                            return <button className="btn" style={{ borderColor: 'red', color: 'red' }} >{item.title}</button>
+                                        }
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-5">
+                            <NumericInput min={1} max={lstcart.quantitySize} value={lstcart.quantity} onChange={(value) => updateQuantity(lstcart.id, lstcart.product_ID, value, lstcart.quantitySize)} />
+                            <p>Còn {lstcart.quantitySize} sản phẩm</p>
+                        </div>
+                        <div className="col-lg-1">
+                            <button onClick={() => toggle(lstcart.id, lstcart.product_ID)}>Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    }
+
+
     return (
         <>
             <ToastContainer />
@@ -276,69 +410,15 @@ const Cart = () => {
                     {/* Cart-left */}
                     <section className="cart-left col-9">
                         {lstcart.map((lstcart, index) => {
-                            return (
-                                <>
-                                    <div className="product-content row" style={{ marginBottom: '3%', borderBottom: '1px solid' }}>
-                                        <div className="product-content-left row col-lg-4">
-                                            <div className="product-content-left-big-img">
-                                                {imageUrls.map((img, index1) => {
-                                                    return (
-                                                        lstcart.media.map((item, index2) => {
-                                                            return (
-                                                                img.nameImg === item.url && index2 === 0 &&
-                                                                <img src={img.url} width='170px' height='150px' style={{ paddingBottom: '5px' }} />
-                                                            )
-                                                        })
-                                                    )
-                                                })}
-                                            </div>
-                                        </div>
-                                        <div className="product-content-right col-lg-8" style={{ textAlign: 'left' }}>
-                                            <div className='row'>
-                                                <div className="col-lg-4">
-                                                    <h5>Tên giày: {lstcart.name_Product}</h5>
-                                                </div>
-                                                <div className="col-lg-2">
-                                                    <p className="color">Màu: {lstcart.color_Product}</p>
-                                                </div>
-                                                <div className="col-lg-3">
-                                                    <p>Giá: {lstcart.price}<sup>đ</sup></p>
-                                                </div>
-                                                <div className="col-lg-3">
-                                                    <p className="color">Tổng: {lstcart.price * lstcart.quantity}<sup>đ</sup></p>
-                                                </div>
-                                                <div className="col-lg-6">
-                                                    <div className="row">
-                                                        <div className="col-lg-3">
-                                                            <p className="SizeOne">Kích cỡ:</p>
-                                                        </div>
-                                                        <div className="col-lg-9">
-                                                            {lstcart.size.map(item => {
-                                                                // if (item.quantity > 0 && item.status == true && item.selected == false) {
-                                                                //     return <button value={item.id} onClick={() => updateSize(lstcart.id, lstcart.product_ID, item.id)} className="btn">{item.title}</button>
-                                                                // } else if (item.quantity <= 0 || item.status === false) {
-                                                                //     return <button className="btn" style={{ borderColor: 'white', color: '#b6b6b6fe' }} disabled >{item.title}</button>
-                                                                // }
-                                                                // else 
-                                                                if (item.selected == true) {
-                                                                    return <button className="btn" style={{ borderColor: 'red', color: 'red' }} >{item.title}</button>
-                                                                }
-                                                            })}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-5">
-                                                    <NumericInput min={1} max={lstcart.quantitySize} value={lstcart.quantity} onChange={(value) => updateQuantity(lstcart.id, lstcart.product_ID, value, lstcart.quantitySize)} />
-                                                    <p>Còn {lstcart.quantitySize} sản phẩm</p>
-                                                </div>
-                                                <div className="col-lg-1">
-                                                    <button onClick={() => toggle(lstcart.id, lstcart.product_ID)}>Xóa</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </>
-                            );
+                            if (lstcart.status == 2) {
+                                return (
+                                    statusFalse(lstcart)
+                                )
+                            } else {
+                                return (
+                                    statusTrue(lstcart)
+                                )
+                            }
                         })}
                     </section>
                     {/* Cart-right */}
@@ -346,10 +426,10 @@ const Cart = () => {
                         <div className="summary">
                             <ul>
                                 <li>
-                                    Tổng Cộng: <span>{totalPrice}</span>
+                                    Tổng Cộng: <span>{totalPrice.toLocaleString()}</span>
                                 </li>
                                 <li className="total">
-                                    Tổng: <span>{totalPro}</span> Sản Phẩm
+                                    Tổng: <span>{totalPro.toLocaleString()}</span> Sản Phẩm
                                 </li>
                             </ul>
                         </div>

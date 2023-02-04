@@ -1,6 +1,7 @@
 package bangiay.com.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,15 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 	@Query("SELECT p FROM Product p WHERE p.status =1")
 	Page<Product> findPageWhereStatus(Pageable pageable);
 
-	@Query("SELECT p FROM Product p WHERE p.status =1 order by CREATED desc")
+	@Query(value = "SELECT top 3 * FROM Product p WHERE p.status =1 order by CREATED desc ", nativeQuery = true)
 	List<Product> findTop3New();
+
+	// Count all product
+	@Query("SELECT COUNT(p) FROM Product p")
+	long countAllProduct();
+
+	@Query(value = "SELECT p.ID, p.NAME, d.ORDER_QUANTITY, d.TOTAL FROM product p LEFT JOIN size s ON p.ID = s.PRODUCT_ID LEFT JOIN ("
+			+ "SELECT od.SIZE_ID,SUM(od.QUANTITY) as ORDER_QUANTITY, SUM(od.QUANTITY*od.PRICE) as TOTAL FROM order_detail od, orders o WHERE o.status = 4 AND od.ORDER_ID = o.id "
+			+ ") as d ON s.ID = d.SIZE_ID" + " ORDER BY d.TOTAL DESC", nativeQuery = true)
+	List<Map<String, Object>> getListProductOrderByRevenue();
 }
