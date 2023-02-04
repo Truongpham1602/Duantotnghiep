@@ -22,8 +22,8 @@ public class Premission {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "ROLE_NAME")
-	private String roleName;
+	@Column(name = "PREMISSION_NAME")
+	private String premission_name;
 	
 	@Column(name = "DESCRIPTION")
 	private String description;

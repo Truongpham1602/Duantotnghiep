@@ -20,7 +20,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
 	// List<User> getUserByRole(Role role);
 
-	@Query("SELECT u FROM User u WHERE u.status =1")
+	@Query("SELECT u FROM User u WHERE u.status = 1 order by created DESC")
 	Page<User> getPageWhereStatus(Pageable pageable);
 
 	@Query("SELECT n FROM User n where n.email = :email")

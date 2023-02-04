@@ -32,9 +32,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		if (request.getServletPath().equals("/auth/login") || request.getServletPath().equals("/api/category/get")
-				|| request.getServletPath().equals("/admin/product/index")
-				|| request.getServletPath().equals("/admin/product/find/**")) {
+		if (request.getServletPath().equals("/auth/login") 
+//				|| request.getServletPath().equals("/api/category/get")
+//				|| request.getServletPath().equals("/admin/product/index")
+//				|| request.getServletPath().equals("/admin/product/find/**")
+				) {
 			filterChain.doFilter(request, response);
 		} else {
 			String auth = request.getHeader(AUTHORIZATION);
@@ -45,9 +47,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 					JWTVerifier verifier = JWT.require(algorithm).build();
 					DecodedJWT decodedJWT = verifier.verify(token);
 					String username = decodedJWT.getSubject();
-					String role = decodedJWT.getClaim("role").asString();
+					String[] permission = decodedJWT.getClaim("permission").asArray(String.class);
 					Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-					authorities.add(new SimpleGrantedAuthority(role));
+					for (String p : permission) {
+						authorities.add(new SimpleGrantedAuthority(p));
+					}
 					UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 							username, null, authorities);
 					SecurityContextHolder.getContext().setAuthentication(authenticationToken);

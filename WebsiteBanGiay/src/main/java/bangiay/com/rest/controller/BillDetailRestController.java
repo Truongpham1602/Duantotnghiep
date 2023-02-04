@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import bangiay.com.DTO.BillDetailDTO;
 import bangiay.com.service.Bill_DetailService;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "billDetail")
 public class BillDetailRestController {

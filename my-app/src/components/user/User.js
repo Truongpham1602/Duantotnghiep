@@ -112,7 +112,7 @@ const User = () => {
 
   };
   const updateTotalPage = async () => {
-    const res = await axios.get(`http://localhost:8080/admin/user/get`)
+    const res = await axios.get(`http://localhost:8080/admin/user/get`, { headers: { "Authorization": `Bearer ${token}` } })
     let data = res ? res.data : []
     if (data.totalPages > totalPage.length) {
       for (let i = 1; i <= dataPro.totalPages; i++) {
@@ -158,7 +158,7 @@ const User = () => {
 
   const editUser = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`)
+      const res = await axios.get(`http://localhost:8080/admin/user/find/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
       setUser(res.data)
       console.log(res.data.image)
       if (res.data.image?.length > 0) {
@@ -194,7 +194,7 @@ const User = () => {
   const deleteUser = async (id) => {
 
     try {
-      const res = await axios.put(`http://localhost:8080/admin/user/setStatusFalse/${id}`)
+      const res = await axios.put(`http://localhost:8080/admin/user/setStatusFalse/${id}`, { headers: { "Authorization": `Bearer ${token}` } })
       let copyList = dataUser;
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
@@ -270,7 +270,7 @@ const User = () => {
               <th>Email</th>
               <th>Số điện thoại</th>
               <th>Địa chỉ</th>
-              <th>Vai trò</th>
+              <th>Quyền</th>
               {/* <th>Trạng thái</th> */}
               <th>Hình ảnh</th>
               <th colspan="1">Action</th>
@@ -296,7 +296,7 @@ const User = () => {
                     <td id="category">{item.address}</td>
                     {/* <td id="created">{item.created}</td> */}
                     {/* <td id="created">{item.modified}</td> */}
-                    <td id="modified">{item.nameRole}</td>
+                    <td id="modified">{item.role.description}</td>
                     {/* <td id="status">{Number(item.status) ? "Hoạt động" : "Không hoạt động"}</td> */}
                     <td id="image" >
                       {imageUrls.map((img) => {

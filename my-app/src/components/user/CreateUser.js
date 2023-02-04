@@ -1,10 +1,12 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "../user/User.css";
 import moment from "moment";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase";
+import Multiselect from "multiselect-react-dropdown";
+import useCallGetAPI from "../../customHook/CallGetApi";
 
 import {
   Button,
@@ -45,6 +47,17 @@ const styleToast = {
 
 // class CreateUser extends Component {
 const CreateUser = (props) => {
+  const token = localStorage.getItem('token');
+  const { data: roles } = useCallGetAPI(
+    `http://localhost:8080/role/get`
+  );
+  const [lstRole, setLstRole] = useState([]);
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    setLstRole(roles);
+  }, [roles]);
+
   const {
     isCreateModal,
     toggleModal,
@@ -68,16 +81,16 @@ const CreateUser = (props) => {
   });
   const [check, setCheck] = useState({ fullName: "" });
 
-  const arrRole = [
-    {
-      id: 2,
-      title: "Nhân viên",
-    },
-    {
-      id: 3,
-      title: "Khách hàng",
-    },
-  ];
+  // const arrRole = [
+  //   {
+  //     id: 2,
+  //     title: "Nhân viên",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Khách hàng",
+  //   },
+  // ];
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
@@ -162,8 +175,11 @@ const CreateUser = (props) => {
           validForm = false;
         }
         if (validForm) {
+
           let res = await axios.post(User_Rest_API_URL + "/post", {
-            roleId: user.roleId,
+            role: {
+              id: user.roleId
+            },
             fullName: user.fullName,
             password: user.password,
             email: user.email,
@@ -175,7 +191,13 @@ const CreateUser = (props) => {
             modified: user.modified,
             modifier: user.modifier,
             status: user.status,
-          });
+          },
+            { headers: { "Authorization": `Bearer ${token}` } })
+            .catch((error) => {
+              if (error.response.status == 403) {
+                alert("Bạn không có quyền thêm mới !!");
+              }
+            });
           let data = res && res.data ? res.data : [];
           data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
           if (data.modified > 0) {
@@ -326,27 +348,38 @@ const CreateUser = (props) => {
                   </Col>
                   <Col md={12}>
                     <FormGroup>
-                      <Label for="roleId">Vai trò</Label>
-                      <Input
-                        id="roleId"
-                        name="roleId"
-                        placeholder=""
-                        type="select"
-                        onChange={(event) =>
-                          handleOnchangeInput(event, "roleId")
-                        }
-                      >
-                        {arrRole.map((item) => {
-                          if (user.roleId === item.id) {
+                      <Label for="roleId">Quyền</Label>
+                      <div>
+                        <select
+                          style={{
+                            border: "1px solid",
+                            width: "100%",
+                            borderRadius: "5px",
+                          }}
+                          id="description"
+                          name="description"
+                          placeholder=""
+                          type="select"
+                          onChange={(event) =>
+                            handleOnchangeInput(event, "roleId")
+                          }
+                        >
+                          <option value="" disabled selected>
+                            Chọn quyền
+                          </option>
+                          {lstRole.map((item, index) => {
                             return (
-                              <option selected value={item.id}>
-                                {item.title}
+                              <option key={item.id} value={item.id}>
+                                {item.description}
                               </option>
                             );
-                          }
-                          return <option value={item.id}>{item.title}</option>;
-                        })}
-                      </Input>
+                          })}
+                        </select>
+                        {check.roleId &&
+                          check.roleId.length > 0 && (
+                            <p className="checkError">{check.roleId}</p>
+                          )}
+                      </div>
                     </FormGroup>
                   </Col>
                 </Row>

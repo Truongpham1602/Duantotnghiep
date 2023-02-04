@@ -5,6 +5,7 @@ import java.util.List;
 import bangiay.com.doMain.constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +22,14 @@ import bangiay.com.DTO.UserDTO;
 import bangiay.com.DTO.VoucherDTO;
 import bangiay.com.service.UserService;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin/user")
 public class UserRestController {
 	@Autowired
 	UserService userService;
 
-	
-	
 	@GetMapping("/get")
+	@PreAuthorize("hasPermission(#req, 'USER_VIEW')")
 	public Page<UserDTO> findAll(@RequestParam(name="size" , defaultValue ="7")Integer size, 
 			@RequestParam(name="page", defaultValue = "0")Integer page){
 		return userService.findAll(size , page);
@@ -42,11 +41,13 @@ public class UserRestController {
 //	}
 	
 
+	@PreAuthorize("hasPermission('USER_EDIT')")
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") int id) {
 		userService.delete(id);
 	}
 	
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT')")
 	@PostMapping("/post")
 	public UserDTO post(@RequestBody UserDTO userDTO) {
 		return userService.create(userDTO);
@@ -55,7 +56,7 @@ public class UserRestController {
 	@PutMapping("/put/{id}")
 	public UserDTO put(@PathVariable("id") Integer id, @RequestBody UserDTO userDTO) {
 		userDTO.setId(id);
-		System.out.println("thành" + userDTO.getRoleId());
+		System.out.println("thành" + userDTO.getRole().getId());
 		return userService.update(userDTO);
 	}
 	

@@ -55,7 +55,7 @@ public class UserServicelmpl implements UserService {
 	public UserDTO create(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
 
-//		user.setRole(this.roleDao.findById(userDTO.getRoleId()).get());
+		user.setRole(this.roleDao.findById(userDTO.getRole().getId()).get());
 
 		user.setCreated(Timestamp.from(Instant.now()));
 //		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -101,8 +101,7 @@ public class UserServicelmpl implements UserService {
 		    public UserDTO apply(User entity) {
 		    	UserDTO dto = new UserDTO();
 		        dto = modelMapper.map(entity, UserDTO.class);
-		        dto.setId(entity.getId());
-//		        dto.setNameRole(entity.getRole().getRoleName());
+		        dto.setPassword("");
 		        return dto;
 		    }
 		});
