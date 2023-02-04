@@ -25,4 +25,8 @@ public interface ProductService {
 	public void updateStatusFalse(Integer id);
 
 	public Page<ProductDTO> searchByKeywordAndCate_Id(Integer size, Integer page, String keyword, Integer cate_Id);
+
+	public List<ProductDTO> top5NewProduct();
+
+	public List<ProductDTO> top3BillProduct();
 }

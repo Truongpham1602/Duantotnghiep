@@ -43,18 +43,18 @@ import { ToastContainer, toast } from "react-toastify";
 // class Bill extends React.Component {
 const Bill = (props) => {
   const token = localStorage.getItem('token');
-  const { updateData } = props;
-  const [lstproduct, setLstProduct] = useState([]);
-
-  const [totalPrice, setTotalPrice] = useState();
+  // const { updateData } = props;
+  // const [lstproduct, setLstProduct] = useState([]);
+  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [lstcart, setLstCart] = useState([]);
-  const [source, setSource] = useState();
-  const [number, setNumber] = useState({});
+  // const [source, setSource] = useState();
+  // const [number, setNumber] = useState({});
 
   const [imageUrls, setImageUrls] = useState([]);
 
-  const [Products, setProducts] = useState("null");
-  const [user, setUser] = useState({});
+  // const [Products, setProducts] = useState("null");
+  // const [user, setUser] = useState({});
   const [isModalVoucher, setIsModalVoucher] = useState(false);
   const { data: dataVoucher, isLoading } = useCallGetAPI(
     `http://localhost:8080/api/voucher/findAll`,
@@ -148,38 +148,45 @@ const Bill = (props) => {
       ...copy,
     });
   };
-  const thanhToan = () => {
-    try {
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const thanhToan = () => {
+  //   try {
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
-  let totalPro = 0
-  useEffect(async () => {
+  useEffect(() => {
+    let totalPro = 0
     let total = 0;
     const setTotal = (data) => {
       data.map((item) => {
-        total += item.price * item.quantity;
-        totalPro += item.quantity
+        if (item.status == 1) {
+          total += item.price * item.quantity;
+          totalPro += item.quantity
+        }
       });
+      setTotalQuantity(totalPro)
       setTotalPrice(total);
     };
-    try {
-      let user = await axios.get(`http://localhost:8080/auth/information`,
-        { headers: { "Authorization": `Bearer ${token}` } }
-      );
-      const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
-        { headers: { "Authorization": `Bearer ${token}` } })
-      setLstCart(res.data);
-      setTotal(res.data);
-    } catch (error) {
-      const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=`,
-        { headers: { "Authorization": `Bearer ${token}` } })
-      setLstCart(res.data);
-      setTotal(res.data);
+
+    const callAPI = async () => {
+      try {
+        let user = await axios.get(`http://localhost:8080/auth/information`,
+          { headers: { "Authorization": `Bearer ${token}` } }
+        );
+        const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
+          { headers: { "Authorization": `Bearer ${token}` } })
+        setLstCart(res.data);
+        setTotal(res.data);
+      } catch (error) {
+        const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=`,
+          { headers: { "Authorization": `Bearer ${token}` } })
+        setLstCart(res.data);
+        setTotal(res.data);
+      }
     }
-    setLstVoucher(dataVoucher);
+
+    callAPI()
   }, []);
 
   useEffect(() => {
@@ -275,9 +282,7 @@ const Bill = (props) => {
         );
         let x = true;
         lstcart.map(item => {
-          console.log(res.data.categoryId);
-          console.log(item.category_Id);
-          if (res.data.categoryId == item.category_Id) x = false;
+          if (res.data.categoryId == item.category_Id && item.status == 1) x = false;
         })
         if (x) {
           toast.warning('Mã giảm giá không phù hợp!', styleToast)
@@ -414,13 +419,13 @@ const Bill = (props) => {
       >
         <Col md={7} style={{ padding: "1%", marginTop: "2%" }}>
           <div>
-            <h3>Receiver's information</h3>
+            <h3>Thông tin người nhận</h3>
           </div>
           <Form style={{ padding: "0% 0% 0% 5%" }}>
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="email">email</Label>
+                  <Label for="email">Email</Label>
                   <Input
                     id="email"
                     nameRecipient="email"
@@ -435,7 +440,7 @@ const Bill = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="color">nameRecipient</Label>
+                  <Label for="color">Họ tên</Label>
                   <Input
                     id="nameRecipient"
                     nameRecipient="nameRecipient"
@@ -452,7 +457,7 @@ const Bill = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="number Number phone">Phone Number</Label>
+                  <Label for="number Number phone">Số điện thoại</Label>
                   <Input
                     id="telephone"
                     nameRecipient="telephone"
@@ -469,7 +474,7 @@ const Bill = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="address">address</Label>
+                  <Label for="address">Địa chỉ</Label>
                   <Input
                     id="address"
                     nameRecipient="address"
@@ -485,22 +490,7 @@ const Bill = (props) => {
             </Row>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label for="description">description</Label>
-                  <Input
-                    id="description"
-                    nameRecipient="description"
-                    type="textarea"
-                    bssize="lg"
-                    onChange={(event) =>
-                      handleOnchangeInput(event, "description")
-                    }
-                  />
-                  {check.description && check.description.length > 0 && (
-                    <p className="checkError1">{check.description}</p>
-                  )}
-                </FormGroup>
-                <div>Payment methods</div>
+                <div>Phương thức thanh toán</div>
                 <Input type="select">
                   {vnpay.map((item) => {
                     return (
@@ -522,44 +512,47 @@ const Bill = (props) => {
             padding: "1%",
           }}
         >
-          <h3>ORDERS</h3>
+          <h3>Đơn hàng</h3>
           {lstcart.map((lstcart, index) => {
-            return (
-              <>
-                <Row style={{ marginBottom: "5px" }}>
-                  <Col md={3}>
-                    {imageUrls.map((img, index1) => {
-                      return lstcart.media.map((item, index2) => {
-                        return (
-                          img.nameImg === item.url &&
-                          index2 === 0 && (
-                            <Badge
-                              badgeContent={lstcart.quantity}
-                              color="primary"
-                            >
-                              <img src={img.url} width="150px" height="100px" />
-                            </Badge>
-                          )
-                        );
-                      });
-                    })}
-                  </Col>
-                  <Col md={3}>
-                    <p>
-                      {lstcart.name_Product} / {lstcart.sizeName}
-                    </p>
-                  </Col>
-                  <Col md={3}>
-                    <p>
-                      {lstcart.color_Product}
-                    </p>
-                  </Col>
-                  <Col md={3}>
-                    <p>{lstcart.price * lstcart.quantity}</p>
-                  </Col>
-                </Row>
-              </>
-            );
+            if (lstcart.status == 1) {
+              let toltal = lstcart.price * lstcart.quantity
+              return (
+                <>
+                  <Row style={{ marginBottom: "5px" }}>
+                    <Col md={3}>
+                      {imageUrls.map((img, index1) => {
+                        return lstcart.media.map((item, index2) => {
+                          return (
+                            img.nameImg === item.url &&
+                            index2 === 0 && (
+                              <Badge
+                                badgeContent={lstcart.quantity}
+                                color="primary"
+                              >
+                                <img src={img.url} width="150px" height="100px" />
+                              </Badge>
+                            )
+                          );
+                        });
+                      })}
+                    </Col>
+                    <Col md={3}>
+                      <p>
+                        {lstcart.name_Product} / {lstcart.sizeName}
+                      </p>
+                    </Col>
+                    <Col md={3}>
+                      <p>
+                        {lstcart.color_Product}
+                      </p>
+                    </Col>
+                    <Col md={3}>
+                      <p>{toltal.toLocaleString()} VNĐ</p>
+                    </Col>
+                  </Row>
+                </>
+              );
+            }
           })}
 
           <div
@@ -590,7 +583,7 @@ const Bill = (props) => {
             type="button"
             onClick={() => toggle()}
           >
-            Select Voucher
+            Mã giảm giá
           </button>
           <Modal
             isOpen={isModalVoucher}
@@ -598,7 +591,7 @@ const Bill = (props) => {
             bssize="lg"
             centered
           >
-            <ModalHeader toggle={() => toggle()}>Voucher</ModalHeader>
+            <ModalHeader toggle={() => toggle()}>Mã giảm giá</ModalHeader>
             <ModalBody>
               <Row>
                 {lstVoucher.map((item, index) => {
@@ -628,7 +621,7 @@ const Bill = (props) => {
                                 float: "right",
                               }}
                             >
-                              Còn {item.quantity} voucher
+                              Còn {item.quantity} mã
                             </span>
                             <p>{item.namecate}</p>
                           </Col>
@@ -654,24 +647,24 @@ const Bill = (props) => {
                   addVoucher();
                 }}
               >
-                Ok
+                Đồng ý
               </Button>
               <Button color="secondary" onClick={() => toggle()}>
-                Cancel
+                Hủy
               </Button>
             </ModalFooter>
           </Modal>
-          <div className="cart-right col-4 bg-light">
-            <div className="summary">
+          <div className="cart-right col-5 bg-light">
+            <div className="summary" style={{ textAlign: 'left' }}>
               <ul>
                 <li>
-                  Tồng tiền: <span>{totalPrice}</span>
+                  Tồng tiền: <span>{totalPrice.toLocaleString()} VNĐ</span>
                 </li>
                 <li>
                   Giảm: <span>{sealer}</span>
                 </li>
                 <li className="total">
-                  Tổng: <span>{totalPro}</span> Sản phẩm
+                  Tổng: <span>{totalQuantity.toLocaleString()}</span> Sản phẩm
                 </li>
               </ul>
             </div>
@@ -683,7 +676,7 @@ const Bill = (props) => {
                   createOrder(e);
                 }}
               >
-                ORDER
+                Đặt hàng
               </button>
             </div>
           </div>

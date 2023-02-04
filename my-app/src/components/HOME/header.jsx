@@ -134,7 +134,7 @@ const Header = (props) => {
                     </Badge>
                 </NavLink>
                 <NavLink className="navbar-brand" to="/login" style={{ marginRight: '0rem', fontSize: '1rem' }}>
-                    <div id="login-btn" class="fas fa-user"></div>
+                    <div id="login-btn" class="fas fa-user"> Tài khoản</div>
                 </NavLink>
             </div>
 

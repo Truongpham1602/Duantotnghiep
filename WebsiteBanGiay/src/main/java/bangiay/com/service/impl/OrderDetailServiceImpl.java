@@ -12,11 +12,13 @@ import bangiay.com.DTO.OrderDetailDTO;
 import bangiay.com.dao.CartDao;
 import bangiay.com.dao.MediaDao;
 import bangiay.com.dao.OrderDetailDao;
+import bangiay.com.dao.ProductDao;
 import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.VoucherDao;
 import bangiay.com.entity.Cart;
 import bangiay.com.entity.Media;
 import bangiay.com.entity.OrderDetail;
+import bangiay.com.entity.Product;
 import bangiay.com.entity.Size;
 import bangiay.com.entity.Voucher;
 import bangiay.com.service.CartService;
@@ -30,6 +32,9 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
 	@Autowired
 	private CartDao cartDao;
+
+	@Autowired
+	private ProductDao productDao;
 
 	@Autowired
 	private SizeDao sizeDao;
@@ -59,10 +64,20 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		Voucher voucher = this.voucherDao.findById(voucher_Id).orElse(null);
 		List<OrderDetailDTO> lstOrderDTO = new ArrayList<OrderDetailDTO>();
 		List<Size> lstSize = new ArrayList<Size>();
+		List<Product> lstPro = new ArrayList<Product>();
 		for (int i = 0; i < lstCart.size(); i++) {
+			Product pro = this.productDao.findById(lstCart.get(i).getSize().getProduct().getId()).get();
+			if (pro.getStatus() == 0 && pro.getId() == lstCart.get(i).getSize().getProduct().getId()) {
+				lstCart.get(i).setStatus(2);
+			}
+			if (lstCart.get(i).getStatus() != 1) {
+				continue;
+			}
+			pro.setQuantity(pro.getQuantity() - lstCart.get(i).getQuantity());
 			Size size = lstCart.get(i).getSize();
 			size.setQuantity(size.getQuantity() - lstCart.get(i).getQuantity());
 			lstSize.add(size);
+			lstPro.add(pro);
 			if (voucher != null) {
 				if (voucher.getType() == 1) {
 					if (voucher.getCategory().getId() == lstCart.get(i).getSize().getProduct().getCategory().getId()) {
@@ -99,6 +114,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 				.collect(Collectors.toList());
 		this.orderDetailDao.saveAll(lstOrder);
 		this.sizeDao.saveAll(lstSize);
+		this.productDao.saveAll(lstPro);
 		return lstOrderDTO;
 	}
 

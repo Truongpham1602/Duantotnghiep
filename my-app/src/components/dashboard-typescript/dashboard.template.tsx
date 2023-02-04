@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 import { Col, Container } from 'reactstrap';
 import '../css/styles.css';
@@ -28,6 +28,11 @@ import StorageIcon from '@mui/icons-material/Storage';
 import EmailIcon from '@mui/icons-material/Email';
 import EnhancedTable from '../common/table/table';
 
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -46,21 +51,85 @@ interface DashboardTemplate {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export default function DashboardTemplate({ self }: DashboardTemplate) {
     const { state } = self;
-
-    const labels = ["25/1", "26/1", "27/1", "28/1", "29/1", "30/1"];
-    const labels2 = ["01/2023", "02/2023", "03/2023", "04/2023", "05/2023", "06/2023"];
-
-    const data = {
-        labels: labels,
+    const [dataChartOrder, setDataChartOrder] = useState<any>({
+        labels: [],
         datasets: [
             {
                 label: "Số đơn hàng",
                 backgroundColor: "#0d6efd",
                 borderColor: "#0d6efd",
-                data: [0, 10, 5, 2, 20, 30, 45],
+                data: [],
             },
         ],
-    };
+    });
+
+    const [dataChartRevenueByDay, setDataChartRevenueByDay] = useState<any>({
+        labels: [],
+        datasets: [
+            {
+                label: "Doanh thu",
+                backgroundColor: "#0d6efd",
+                borderColor: "#0d6efd",
+                data: [],
+            },
+        ],
+    });
+
+    const [dataChartRevenueByMonth, setDataChartRevenueByMonth] = useState<any>({
+        labels: [],
+        datasets: [
+            {
+                label: "Doanh thu",
+                backgroundColor: "#0d6efd",
+                borderColor: "#0d6efd",
+                data: [],
+            },
+        ],
+    });
+
+    useEffect(() => {
+        setDataChartOrder({
+            labels: state.dataChartOrder && state.dataChartOrder.map(item => { return item.key }),
+            datasets: [
+                {
+                    label: "Số đơn hàng",
+                    backgroundColor: "#0d6efd",
+                    borderColor: "#0d6efd",
+                    data: state.dataChartOrder && state.dataChartOrder.map(item => {
+                        return item.value
+                    }),
+                },
+            ],
+        })
+
+        setDataChartRevenueByDay({
+            labels: state.dataChartRevenueByDay && state.dataChartRevenueByDay.map(item => { return item.key }),
+            datasets: [
+                {
+                    label: "Doanh thu",
+                    backgroundColor: "#0d6efd",
+                    borderColor: "#0d6efd",
+                    data: state.dataChartRevenueByDay && state.dataChartRevenueByDay.map(item => {
+                        return item.value
+                    }),
+                },
+            ],
+        })
+
+        setDataChartRevenueByMonth({
+            labels: state.dataChartRevenueByMonth && state.dataChartRevenueByMonth.map(item => { return item.key }),
+            datasets: [
+                {
+                    label: "Doanh thu",
+                    backgroundColor: "#0d6efd",
+                    borderColor: "#0d6efd",
+                    data: state.dataChartRevenueByMonth && state.dataChartRevenueByMonth.map(item => {
+                        return item.value
+                    }),
+                },
+            ],
+        })
+    }, [state.dataChartOrder, state.dataChartRevenueByDay, state.dataChartRevenueByMonth])
 
     const options = {
         responsive: true,
@@ -74,18 +143,6 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                 text: '',
             },
         },
-    };
-
-    const data1 = {
-        labels: labels,
-        datasets: [
-            {
-                label: "Doanh thu",
-                backgroundColor: "#0d6efd",
-                borderColor: "#0d6efd",
-                data: [0, 10, 5, 2, 20, 30, 45],
-            },
-        ],
     };
 
     const options1 = {
@@ -114,18 +171,6 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                 text: 'Doanh thu theo tháng',
             },
         },
-    };
-
-    const data2 = {
-        labels: labels2,
-        datasets: [
-            {
-                label: "Doanh thu",
-                backgroundColor: "#0d6efd",
-                borderColor: "#0d6efd",
-                data: [0, 10, 5, 2, 20, 30, 45],
-            },
-        ],
     };
 
 
@@ -159,25 +204,25 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
 
     const headCells = [
         {
-            id: 'name',
+            id: 'id',
             align: 'center',
             disablePadding: true,
             label: 'Mã sản phẩm',
         },
         {
-            id: 'calories',
+            id: 'name',
             align: 'left',
             disablePadding: false,
             label: 'Tên sản phẩm',
         },
         {
-            id: 'fat',
+            id: 'quantity',
             align: 'right',
             disablePadding: false,
             label: 'Số lượng bán',
         },
         {
-            id: 'carbs',
+            id: 'revenue',
             align: 'right',
             disablePadding: false,
             label: 'Doanh thu',
@@ -200,25 +245,25 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                                     setValue(newValue);
                                 }}
                             >
-                                <BottomNavigationAction label="Khách hàng (30)" icon={<PeopleIcon />} />
-                                <BottomNavigationAction label="Sản phẩm(670)" icon={<StorageIcon />} />
-                                <BottomNavigationAction label="Đơn hàng(13)" icon={<EmailIcon />} />
+                                <BottomNavigationAction label={`${state.count[0] && state.count[0].name}(${state.count[0] && state.count[0].count})`} icon={<PeopleIcon />} />
+                                <BottomNavigationAction label={`${state.count[1] && state.count[1].name}(${state.count[1] && state.count[1].count})`} icon={<StorageIcon />} />
+                                <BottomNavigationAction label={`${state.count[2] && state.count[2].name}(${state.count[2] && state.count[2].count})`} icon={<EmailIcon />} />
                             </BottomNavigation>
                         </Box>
                     </Col>
                 </Row>
                 <Row className='dashboard-row'>
                     <Col md={3}>
-                        <BoxInfo color='green' title='Trong 1 ngày' content='1000000 VND' percen={10} />
+                        <BoxInfo color='green' title='Trong 1 ngày' content={`${state.revenue[0]?.money} VND`} percen={state.revenue[0]?.percen} />
                     </Col>
                     <Col md={3}>
-                        <BoxInfo color='red' title='Trong 1 tuần' content='1000000 VND' percen={-10} />
+                        <BoxInfo color='red' title='Trong 1 tuần' content={`${state.revenue[1]?.money} VND`} percen={state.revenue[1]?.percen} />
                     </Col>
                     <Col md={3}>
-                        <BoxInfo color='yellow' title='Trong 1 tháng' content='1000000 VND' percen={40} />
+                        <BoxInfo color='yellow' title='Trong 1 tháng' content={`${state.revenue[2]?.money} VND`} percen={state.revenue[2]?.percen} />
                     </Col>
                     <Col md={3}>
-                        <BoxInfo color='blue' title='Trong 1 năm' content='1000000 VND' percen={50} />
+                        <BoxInfo color='blue' title='Trong 1 năm' content={`${state.revenue[3]?.money} VND`} percen={state.revenue[3]?.percen} />
                     </Col>
                 </Row>
 
@@ -230,51 +275,61 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                     </Col>
 
                     <Col md={6}>
-                        <Line data={data} options={options} />
+                        <Line data={dataChartOrder} options={options} />
                     </Col>
 
                     <Col md={6} className='dashboadr-order'>
                         <Row>
-                            <Col md={6} className='order-box'>
+                            <Col md={6} className='order-box br-r-2'>
                                 <Link to={'#'}>
+                                    <div className='order-icon'><PlaylistAddIcon /></div>
                                     <div className='order-number'>
-                                        3
+                                        {state.countOrder[0]?.value}
                                     </div>
                                     <div className='order-title'>
-                                        Đơn hàng mới
+                                        {state.countOrder[0]?.key}
                                     </div>
                                 </Link>
                             </Col>
 
                             <Col md={6} className='order-box'>
                                 <Link to={'#'}>
+                                    <div className='order-icon'>
+                                        <LocalShippingIcon />
+                                    </div>
                                     <div className='order-number'>
-                                        3
+                                        {state.countOrder[1]?.value}
                                     </div>
                                     <div className='order-title'>
-                                        Chờ giao hàng
+                                        {state.countOrder[1]?.key}
                                     </div>
                                 </Link>
                             </Col>
 
-                            <Col md={6} className='order-box'>
+                            <Col md={6} className='order-box br-r-2 br-t-2'>
                                 <Link to={'#'}>
+                                    <div className='order-icon'>
+                                        <CheckCircleOutlineIcon />
+                                    </div>
                                     <div className='order-number'>
-                                        3
+                                        {state.countOrder[2]?.value}
                                     </div>
                                     <div className='order-title'>
-                                        Đã giao hàng
+                                        {state.countOrder[2]?.key}
                                     </div>
                                 </Link>
                             </Col>
 
-                            <Col md={6} className='order-box'>
+                            <Col md={6} className='order-box br-t-2'>
                                 <Link to={'#'}>
+                                    <div className='order-icon'>
+                                        <CancelIcon />
+                                    </div>
                                     <div className='order-number'>
-                                        3
+                                        {state.countOrder[3]?.value}
                                     </div>
                                     <div className='order-title'>
-                                        Đơn hủy
+                                        {state.countOrder[3]?.key}
                                     </div>
                                 </Link>
                             </Col>
@@ -290,23 +345,23 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                     </Col>
 
                     <Col md={6}>
-                        <Bar data={data1} options={options1} />
+                        <Bar data={dataChartRevenueByDay} options={options1} />
                     </Col>
 
                     <Col md={6} className='dashboadr-order'>
-                        <Bar data={data2} options={options2} />
+                        <Bar data={dataChartRevenueByMonth} options={options2} />
                     </Col>
                 </Row>
 
                 <Row className='dashboard-row'>
                     <Col md={12}>
-                        <div className='dashboard-title'>
+                        <div className='dashboard-title mb-20'>
                             Sản phẩm
                         </div>
                     </Col>
 
                     <Col md={12}>
-                        <EnhancedTable headCells={headCells} rows={rows} />
+                        <EnhancedTable headCells={headCells} rows={state.listProduct} />
                     </Col>
 
                 </Row>

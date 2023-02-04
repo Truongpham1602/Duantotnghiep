@@ -202,4 +202,39 @@ public class ProductServiceImpl implements ProductService {
 		return dtoPage;
 	}
 
+	@Override
+	public List<ProductDTO> top5NewProduct() {
+		List<Product> pros = this.proDAO.findTop5New();
+		List<ProductDTO> proDTO = pros.stream().map(p -> modelMapper.map(p, ProductDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < pros.size(); i++) {
+			List<MediaDTO> media = this.mediaService.findAllByPro_Id(pros.get(i).getId());
+			byte[] datamedia = SerializationUtils.serialize(media);
+			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(pros.get(i).getId());
+			byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
+			if (media.size() > 0) {
+				proDTO.get(i).setImage(media.get(0).getUrl());
+			}
+			proDTO.get(i).setMedias(SerializationUtils.deserialize(datamedia));
+			proDTO.get(i).setSizes(SerializationUtils.deserialize(datalstSizeDTO));
+		}
+		return proDTO;
+	}
+
+	@Override
+	public List<ProductDTO> top3BillProduct() {
+		List<Product> pros = this.proDAO.findTop3Bill();
+		List<ProductDTO> proDTO = pros.stream().map(p -> modelMapper.map(p, ProductDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < pros.size(); i++) {
+			List<MediaDTO> media = this.mediaService.findAllByPro_Id(pros.get(i).getId());
+			byte[] datamedia = SerializationUtils.serialize(media);
+			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(pros.get(i).getId());
+			byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
+			proDTO.get(i).setMedias(SerializationUtils.deserialize(datamedia));
+			proDTO.get(i).setSizes(SerializationUtils.deserialize(datalstSizeDTO));
+		}
+		return proDTO;
+	}
+
 }
