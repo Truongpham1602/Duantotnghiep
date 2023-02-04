@@ -32,10 +32,9 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-//	@JoinColumn(name = "ROLER_ID")
-//	private Role role;
-	@ManyToMany(fetch = FetchType.EAGER)
-	private Collection<Role> roles = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ROLER_ID")
+	private Role role;
 
 	@Column(name = "FullNAME")
 	private String fullName;

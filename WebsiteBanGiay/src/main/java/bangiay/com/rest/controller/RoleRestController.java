@@ -60,8 +60,9 @@ public class RoleRestController {
 	}
 
 	@PutMapping("/update/{id}")
-	public void update(@RequestBody RoleDTO role) throws Exception {
-		 roleService.update(role);
+	public RoleDTO update(@RequestBody RoleDTO role , @PathVariable Integer id) throws Exception {
+		role.setId(id); 
+		return roleService.update(role);
 	}
 
 	@PostMapping("/delete/{id}")

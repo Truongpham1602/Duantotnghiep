@@ -12,23 +12,15 @@ const UpdateRole = (props) => {
     const token = localStorage.getItem('token');
     const { isupdateRolleModal, toggleModal, updateData } = props;
     const [role, setRole] = useState(props.role);
+    console.log(role);
     const [lstcate, setLstCate] = useState([]);
-    const { data: cates } = useCallGetAPI(`http://localhost:8080/api/category/get`, { headers: { "Authorization": `Bearer ${token}` } });
-    const [check, setCheck] = useState({ name: '', value: '', quantity: '', type: 1, categoryId: '' });
+    const { data: roles } = useCallGetAPI(`http://localhost:8080/role/getPermission`, { headers: { "Authorization": `Bearer ${token}` } });
+    const [check, setCheck] = useState({ name: '', description: '' });
     const [options, setOptions] = useState([]);
 
-    const status = [{
-        id: 1,
-        title: "Hoạt động",
-    }, {
-        id: 0,
-        title: "Không hoạt động",
-    },
-    ];
-
     useEffect(() => {
-        setLstCate(cates)
-    }, [cates])
+        setLstCate(roles)
+    }, [roles])
 
     useEffect(() => {
         setRole(props.role)
@@ -36,26 +28,15 @@ const UpdateRole = (props) => {
     }, [props.role])
 
     const handleOnchangeInput = (event, id) => {
-        let copyVoucher = { ...role };
-        copyVoucher[id] = event.target.value;
+        let copyRole = { ...role };
+        copyRole[id] = event.target.value;
         try {
 
             let ch1 = { ...check };
-            if (copyVoucher[id].trim().length <= 0) {
+            if (copyRole[id].trim().length <= 0) {
                 ch1[id] = `${id} không được để trống !!`
-                if (id == "value") {
-                    ch1[id] = "Giảm giá không được để trống !!"
-                }
-                setCheck({
-                    ...ch1
-                })
-            } else {
-                if (id == "value" || id == "quantity") {
-                    if (Number(copyVoucher[id]) <= 0) {
-                        ch1[id] = id == "value" ? "Giảm giá phải lớn hơn 0 !!" : "Lượt sử dụng phải lớn hơn 0 !!"
-                    } else {
-                        ch1[id] = ""
-                    }
+                if (id == "name") {
+                    ch1[id] = "Tên không được để trống !!"
                 }
                 setCheck({
                     ...ch1
@@ -70,7 +51,7 @@ const UpdateRole = (props) => {
             })
         }
         setRole({
-            ...copyVoucher
+            ...copyRole
         })
     }
 
@@ -95,15 +76,11 @@ const UpdateRole = (props) => {
     const updateVoucher = async () => {
         try {
             let ch1 = { ...check };
-            let value = "" + role.value
-            let quantity = "" + role.quantity
             if (role.name?.trim().length <= 0
-                && value.trim().length <= 0
-                && quantity.trim().length <= 0
+                && role.description?.trim().length <= 0
             ) {
                 ch1["name"] = "Tên không để trống"
-                ch1["value"] = "Giảm giá không để trống"
-                ch1["quantity"] = "Lượt sử dụng không để trống"
+                ch1["description"] = "Mô tả không để trống"
                 setCheck({ ...ch1 })
                 return
             } else if (role.name?.trim().length <= 0) {
@@ -111,24 +88,18 @@ const UpdateRole = (props) => {
                 setCheck({ ...ch1 })
                 return
             }
-            else if (value.trim().length <= 0) {
-                ch1["value"] = "Giảm giá không để trống"
-                setCheck({ ...ch1 })
-                return
-            }
-            else if (quantity.trim().length <= 0) {
-                ch1["quantity"] = "Lượt sử dụng không để trống"
+            else if (role.description.trim().length <= 0) {
+                ch1["value"] = "Mô tả không để trống"
                 setCheck({ ...ch1 })
                 return
             }
             else if (
                 check.name?.trim().length > 0
-                || check.value.trim().length > 0
-                || check.quantity.trim().length > 0
+                || check.description.trim().length > 0
             ) {
                 return
             }
-            const res = await axios.put(`http://localhost:8080/api/voucher/update/${role.id}`, role,
+            const res = await axios.put(`http://localhost:8080/role/update/${role.id}`, role,
                 { headers: { "Authorization": `Bearer ${token}` } })
             let data = (res && res.data) ? res.data : [];
             toggle()
@@ -160,12 +131,12 @@ const UpdateRole = (props) => {
                                         <input type="text"
                                             className="form-control"
                                             placeholder=""
-                                            id="roleName"
-                                            name="roleName"
+                                            id="name"
+                                            name="name"
                                             required
-                                            value={role.roleName}
-                                            onChange={(event) => handleOnchangeInput(event, 'roleName')} />
-                                        {check.roleName && check.roleName.length > 0 && <p className="checkError">{check.roleName}</p>}
+                                            value={role.name}
+                                            onChange={(event) => handleOnchangeInput(event, 'name')} />
+                                        {check.name && check.name.length > 0 && <p className="checkError">{check.name}</p>}
                                     </div>
                                     <div className="col-sm-6">
                                         <label className="form-label">Mô Tả</label>

@@ -31,6 +31,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import bangiay.com.DTO.AuthenticationDto;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.Role;
 import bangiay.com.entity.User;
@@ -71,7 +72,7 @@ public class AuthenticationService implements UserDetailsService{
 				.withSubject(user.getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
 //				.withIssuer(request.getRequestURL().toString())
-				.withClaim("roles", user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toList()))
+				.withClaim("role", user.getRole().getRoleName())
 				.sign(algorithm);
 		String refresh_token = JWT.create()
 				.withSubject(user.getEmail())
@@ -84,7 +85,7 @@ public class AuthenticationService implements UserDetailsService{
 //		tokens.put("name", user.getFullName());
 //		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 //		new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-		return ResponseEntity.ok().body(access_token);
+		return ResponseEntity.ok().body(new AuthenticationDto(access_token, user.getFullName(), userEmail, user.getRole().getRoleName(), user.getImage()));
 	}
 	
 	@Override
@@ -94,9 +95,7 @@ public class AuthenticationService implements UserDetailsService{
 			throw new UsernameNotFoundException("User not found");
 		}
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		user.getRoles().forEach(role ->{
-			authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-		});
+		authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
 		org.springframework.security.core.userdetails.User user1 = new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
 		return user1;
 	}
