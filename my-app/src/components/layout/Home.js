@@ -31,7 +31,14 @@ const Home = () => {
   const [dataProduct, setDataProduct] = useState([]);
   const [dataUser, setDataUser] = useState({ fullName: "" });
 
-
+  const { data: top3ProBill } = useCallGetAPI(
+    `http://localhost:8080/admin/product/findTop3Bill`,
+    { headers: { "Authorization": `Bearer ${token}` } }
+  );
+  const { data: top5ProNew } = useCallGetAPI(
+    `http://localhost:8080/admin/product/findTop5New`,
+    { headers: { "Authorization": `Bearer ${token}` } }
+  );
   useEffect(() => {
     const getData = async () => {
       try {
