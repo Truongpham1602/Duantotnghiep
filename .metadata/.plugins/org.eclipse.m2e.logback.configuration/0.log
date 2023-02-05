@@ -2081,3 +2081,10 @@ java.io.FileNotFoundException: D:\Du an tot nghiep\git\Duantotnghiep\.metadata\.
 2023-02-05 02:26:51,022 [Worker-73: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2023-02-05 02:26:51,023 [Worker-73: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
 2023-02-05 02:26:51,023 [Worker-73: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\Du an tot nghiep\git\Duantotnghiep\WebsiteBanGiay\src\test\resources
+2023-02-05 09:46:30,152 [Worker-84: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2023-02-05 09:46:30,908 [Worker-84: Updating Maven Project] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: bangiay.com:WebsiteBanGiay:1 @ D:\Du an tot nghiep\git\Duantotnghiep\WebsiteBanGiay\pom.xml.
+2023-02-05 09:46:32,564 [Worker-84: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /WebsiteBanGiay/src/main/java
+2023-02-05 09:46:32,565 [Worker-84: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /WebsiteBanGiay/src/main/resources
+2023-02-05 09:46:32,565 [Worker-84: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /WebsiteBanGiay/src/main/resources
+2023-02-05 09:46:32,565 [Worker-84: Updating Maven Project] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /WebsiteBanGiay/src/test/java
+2023-02-05 09:46:33,729 [Worker-84: Updating Maven Project] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 3 sec
