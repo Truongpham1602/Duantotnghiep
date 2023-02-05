@@ -129,10 +129,19 @@ section {
   color: #bac34e;
 }
 
+.header .icons{
+  display: flex;
+  align-items: center;
+}
 .header .icons div {
-  margin-left: 1.7rem;
   cursor: pointer;
   color: #666;
+}
+.header .icons .navbar-brand {
+  margin-left: 1.7rem;
+}
+.header .dropdown {
+  left: auto;
 }
 
 .header .icons div:hover {

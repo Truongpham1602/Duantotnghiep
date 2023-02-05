@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from 'moment'
+import { Await, useNavigate } from "react-router-dom";
 // import AxiosInterceptor from './AxiosInterceptor'
 import { useEffect, useState } from "react";
 
@@ -8,6 +9,7 @@ const useCallGetAPI = (url) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
+    const navigate = useNavigate();
     // const ourRequest = axios.CancelToken.source()
 
     useEffect(() => {
@@ -39,6 +41,10 @@ const useCallGetAPI = (url) => {
                     setData(data);
                 }
             } catch (e) {
+                if (e.response.status == 403) {
+                    alert("Bạn không có quyền truy cập !!");
+                    navigate("/");
+                }
                 if (axios.isCancel(e)) {
                     console.log(e.message);
                 } else {

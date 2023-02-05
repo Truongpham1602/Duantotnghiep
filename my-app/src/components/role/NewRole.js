@@ -13,8 +13,10 @@ import { Prev } from "react-bootstrap/esm/PageItem";
 const Role_Rest_API_URL = 'http://localhost:8080/role';
 
 const NewRole = (props) => {
+    const token = localStorage.getItem('token');
     const { isNewRoleModal, toggleModal, updateData } = props;
-    const [role, setRole] = useState({ roleName: '', description: '' });
+    const [lstPreSelected, setLstPreSelected] = useState([]);
+    const [role, setRole] = useState({ roleName: '', description: '', premission: lstPreSelected });
     const [lstPremis, setLstPre] = useState([]);
     const { data: premissions } = useCallGetAPI(`http://localhost:8080/role/getPermission`);
     const [check, setCheck] = useState({ name: '' });
@@ -83,12 +85,12 @@ const NewRole = (props) => {
                     setCheck({ ...ch0 })
                     return
                 }
-                else if (role.roleName.trim().length <= 0) {
+                else if (role.roleName?.trim().length <= 0) {
                     ch0["roleName"] = "Tên không để trống"
                     setCheck({ ...ch0 })
                     return
                 }
-                else if (role.value.trim().length <= 0) {
+                else if (role.description.trim().length <= 0) {
                     ch0["description"] = "Mô tả không để trống"
                     setCheck({ ...ch0 })
                     return
@@ -99,7 +101,8 @@ const NewRole = (props) => {
                     return
                 }
 
-                let res = await axios.post(Role_Rest_API_URL + '/create', role)
+                let res = await axios.post(Role_Rest_API_URL + '/create', role,
+                    { headers: { "Authorization": `Bearer ${token}` } })
                 let datares = (res && res.data) ? res.data : []
                 updateData(datares, `create`)
                 console.log(datares);
@@ -115,13 +118,34 @@ const NewRole = (props) => {
     useEffect(() => {
         setLstPre(premissions)
         setOptions([]);
-        premissions.map(item => { setOptions((Prev) => [...Prev, item.description]) })
+        premissions.map(item => { setOptions((Prev) => [...Prev, item.id + ' ' + item.description]) })
     }, [premissions])
 
     const toggle = () => {
         toggleModal()
         setRole({ roleName: '', description: '' })
         setCheck({})
+    }
+
+    const perSelected = (items) => {
+        for (let i in items) {
+            let item = items[i];
+            let id = item.substring(0, 2).trim();
+            if (!lstPreSelected.map((p) => p.id).includes(id)) {
+                lstPreSelected.push({ id: id });
+            }
+        }
+
+    }
+    const perRemove = (items) => {
+        for (let i in items) {
+            let item = items[i];
+            let id = item.substring(0, 2).trim();
+            let index = lstPreSelected.map((p) => p.id).indexOf(id)
+            if (index !== -1) {
+                lstPreSelected.splice(index, 1);
+            }
+        }
     }
 
     return (
@@ -150,11 +174,6 @@ const NewRole = (props) => {
                                     </div>
                                     <div className="col-sm-6">
                                         <label className="form-label">Mô tả</label>
-                                        {/* <Multiselect
-                                            isObject={false}
-                                            options={options}
-                                            showCheckbox
-                                        /> */}
                                         <input
                                             type="text"
                                             className="form-control"
@@ -172,6 +191,8 @@ const NewRole = (props) => {
                                             isObject={false}
                                             options={options}
                                             showCheckbox
+                                            onRemove={(event) => perRemove(event)}
+                                            onSelect={(event) => perSelected(event)}
                                         />
                                         {/* <input
                                             type="number"

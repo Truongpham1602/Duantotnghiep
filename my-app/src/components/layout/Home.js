@@ -29,6 +29,8 @@ const Home = () => {
   const [totalPage, setTotalPage] = useState([])
   const [pageNumber, setPageNumber] = useState()
   const [dataProduct, setDataProduct] = useState([]);
+  const [dataUser, setDataUser] = useState({ fullName: "" });
+
   const { data: top3ProBill } = useCallGetAPI(
     `http://localhost:8080/admin/product/findTop3Bill`,
     { headers: { "Authorization": `Bearer ${token}` } }
@@ -43,6 +45,7 @@ const Home = () => {
         let user = await axios.get(`http://localhost:8080/auth/information`,
           { headers: { "Authorization": `Bearer ${token}` } }
         );
+        setDataUser(user.data);
         const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
           { headers: { "Authorization": `Bearer ${token}` } })
         setCart(res.data)
@@ -52,6 +55,10 @@ const Home = () => {
     }
     getData()
   }, []);
+
+  // clearUser(() => {
+  //   setDataUser(null);
+  // });
 
   useEffect(() => {
     setImageUrls([])
@@ -207,6 +214,8 @@ const Home = () => {
       <ToastContainer />
       <Header dataCart={cart} imageUrls={imageUrls} searchButton={searchButton}
         handleInputSearch={handleInputSearch} keyword={keyword}
+        dataUser={dataUser}
+      // clearUser={clearUser}
       />
       <Outlet context={[nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate, top3ProBill, top5ProNew]} />
       <Footer />

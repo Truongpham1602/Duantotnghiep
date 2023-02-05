@@ -104,7 +104,7 @@ function App() {
               }
             />
             <Route
-              path="role"
+              path="Role"
               element={
                 <>
                   {" "}

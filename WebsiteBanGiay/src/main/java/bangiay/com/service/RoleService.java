@@ -12,7 +12,7 @@ public interface RoleService {
 
 	Role create(RoleDTO role);
 
-	void update(RoleDTO role) throws Exception;
+	RoleDTO update(RoleDTO role) throws Exception;
 
 	void delete(Integer id);
 

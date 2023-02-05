@@ -35,13 +35,14 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public void update(RoleDTO roleDTO) throws Exception {
+	public RoleDTO update(RoleDTO roleDTO) throws Exception {
 		Optional<Role> role = roleDAO.findById(roleDTO.getId());
 		if(role.isEmpty()) {
 			throw new Exception("Role id không tồn tại");
 		}else {
 			role.get().setDescription(roleDTO.getDescription());
-			roleDAO.save(role.get());
+			Role r = roleDAO.save(role.get());
+			return modelMapper.map(r, RoleDTO.class);
 		}
 		
 	}
