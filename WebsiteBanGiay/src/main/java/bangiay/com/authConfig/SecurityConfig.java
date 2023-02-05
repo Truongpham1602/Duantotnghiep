@@ -30,11 +30,14 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration{
 				.authorizeRequests()
 				.antMatchers("/admin/**").hasAnyAuthority("ADMIN")
 				.antMatchers("/auth/login").permitAll()
-				.antMatchers("/api/category/get", 
-						"/admin/product/index", 
-						"/admin/product/find/**", 
-						"/thanh-toan-vnpay",
-						"/success").permitAll()
+				.antMatchers("/nofilter/**").permitAll()
+//				.antMatchers("/api/category/get", 
+//						"/api/category/select",
+//						"/admin/product/index",
+//						"/admin/product/select",
+//						"/admin/product/find/**", 
+//						"/thanh-toan-vnpay",
+//						"/success").permitAll()
 				.anyRequest().authenticated()
 				.and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

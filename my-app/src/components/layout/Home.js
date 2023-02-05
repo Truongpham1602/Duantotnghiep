@@ -30,25 +30,31 @@ const Home = () => {
   const [pageNumber, setPageNumber] = useState()
   const [dataProduct, setDataProduct] = useState([]);
   const [dataUser, setDataUser] = useState({ fullName: "" });
+  const [top3ProBill, setTop3ProBill] = useState([]);
+  const [top5ProNew, setTop5ProNew] = useState([]);
 
-  const { data: top3ProBill } = useCallGetAPI(
-    `http://localhost:8080/admin/product/findTop3Bill`,
-    { headers: { "Authorization": `Bearer ${token}` } }
-  );
-  const { data: top5ProNew } = useCallGetAPI(
-    `http://localhost:8080/admin/product/findTop5New`,
-    { headers: { "Authorization": `Bearer ${token}` } }
-  );
   useEffect(() => {
     const getData = async () => {
       try {
-        let user = await axios.get(`http://localhost:8080/auth/information`,
-          { headers: { "Authorization": `Bearer ${token}` } }
+        let d3 = await axios.get(
+          `http://localhost:8080/nofilter/product/findTop3Bill`
         );
-        setDataUser(user.data);
-        const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
-          { headers: { "Authorization": `Bearer ${token}` } })
-        setCart(res.data)
+        setTop3ProBill(d3.data);
+
+        let d5 = await axios.get(
+          `http://localhost:8080/nofilter/product/findTop5New`
+        );
+        setTop5ProNew(d5.data);
+        if (token) {
+          let user = await axios.get(`http://localhost:8080/auth/information`,
+            { headers: { "Authorization": `Bearer ${token}` } }
+          );
+          setDataUser(user.data);
+          const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
+            { headers: { "Authorization": `Bearer ${token}` } })
+          setCart(res.data)
+        }
+
       } catch (error) {
         console.log(error);
       }
@@ -97,9 +103,7 @@ const Home = () => {
 
   const handleCate = async (cate_Id) => {
     setCate_Id(cate_Id)
-    let res = await axios.post(
-      `http://localhost:8080/admin/product/searchClient?keyword=${keyword}&cate_Id=${cate_Id}`,
-      { headers: { "Authorization": `Bearer ${token}` } })
+    let res = await axios.post(`http://localhost:8080/nofilter/searchClient?keyword=${keyword}&cate_Id=${cate_Id}`)
     let data = res ? res.data : []
     setTotalPage([])
     for (let i = 1; i <= data.totalPages; i++) {
@@ -110,16 +114,8 @@ const Home = () => {
   }
 
   const searchButton = async () => {
-    let config = {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      }
-    }
-    let res = await axios.post(
-      `http://localhost:8080/admin/product/searchClient?keyword=${keyword}&cate_Id=${cate_Id}`,
-      config
-    );
+
+    let res = await axios.post(`http://localhost:8080/nofilter/searchClient?keyword=${keyword}&cate_Id=${cate_Id}`);
     let data = res ? res.data : []
     if (data.totalPages > totalPage.length) {
       for (let i = 1; i <= data.totalPages; i++) {
@@ -148,21 +144,29 @@ const Home = () => {
 
 
   const nextProductDetail = async (id) => {
-    const res = await axios.get(
-      `http://localhost:8080/admin/product/find/${id}`,
-      { headers: { "Authorization": `Bearer ${token}` } }
-    );
-    setProduct(res.data);
-    navigate(`/productOne/${id}`);
+    if (token) {
+      const res = await axios.get(
+        `http://localhost:8080/admin/product/find/${id}`,
+        { headers: { "Authorization": `Bearer ${token}` } }
+      );
+      setProduct(res.data);
+      navigate(`/productOne/${id}`);
+    } else {
+      navigate("/login");
+    }
   };
   const addToCart = async (size_Id, quantity) => {
     if (size_Id == null) {
       toast.warning("Chưa chọn size!")
       return
     }
-    let user = await axios.get(`http://localhost:8080/auth/information`,
-      { headers: { "Authorization": `Bearer ${token}` } }
-    );
+    let user = null;
+    if (token) {
+      user = await axios.get(`http://localhost:8080/auth/information`,
+        { headers: { "Authorization": `Bearer ${token}` } }
+      );
+    }
+
     if (user?.data) {
       let cart_Id;
       let size_Cart;

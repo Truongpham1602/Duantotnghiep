@@ -7,12 +7,29 @@ import '../css/productTest.css';
 import useCallGetAPI from "../../customHook/CallGetApi";
 import Voucher from "../voucher/voucher";
 import { create } from "@mui/material/styles/createTransitions";
+import { useEffect, useState } from "react";
+import axios from "axios";
 // class Home extends React.Component {
 const Product1 = () => {
     const [nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate] = useOutletContext()
     const navigate = useNavigate()
-    const { data: dataCate, isLoading } = useCallGetAPI(`http://localhost:8080/api/category/select`);
+    const [dataCate, setdataCate] = useState([]);
     let copyCate = dataCate.content;
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                let d3 = await axios.get(
+                    `http://localhost:8080/nofilter/category/select`
+                );
+                setdataCate(d3.data);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getData();
+    }, []);
 
     return (
         <>

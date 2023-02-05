@@ -1,5 +1,6 @@
 import React from "react";
 // import '../css/stylees1.css';
+import img1 from '../image/payment-item.png'
 
 const Footer = () => {
     return (
@@ -39,12 +40,12 @@ const Footer = () => {
                     <h3>newsletter</h3>
                     <p>subscribe for latest updates</p>
                     <form action="">
-                        <input type="email" placeholder="enter your email"/>
-                        <input type="submit" value="subscribe" class="btn"/>
+                        <input type="email" placeholder="enter your email" />
+                        <input type="submit" value="subscribe" class="btn" />
                     </form>
-                        <img src="image/payment.png" class="payment" alt=""/>
+                    <img src={img1} class="payment1" alt="" />
                 </div>
-                
+
             </div>
 
         </section>

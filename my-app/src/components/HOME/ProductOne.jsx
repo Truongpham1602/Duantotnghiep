@@ -77,17 +77,24 @@ const ProductOne = () => {
     const [quantitySize, setQuantitySize] = useState()
     const [valueNumberinout, setValueNumberInout] = useState(1)
     const [product, setProduct] = useState({})
+    const navigate = useNavigate();
 
     const findPro = async () => {
-        try {
-            const res = await axios.get(
-                `http://localhost:8080/admin/product/find/${id}`,
-                { headers: { "Authorization": `Bearer ${token}` } }
-            );
-            setProduct(res.data);
-        } catch (error) {
-            console.log(error);
+        if (token) {
+            try {
+                const res = await axios.get(
+                    `http://localhost:8080/admin/product/find/${id}`,
+                    { headers: { "Authorization": `Bearer ${token}` } }
+                );
+                setProduct(res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            navigate("/login");
         }
+
+
     }
 
     useEffect(() => {
@@ -233,18 +240,12 @@ const ProductOne = () => {
                         </div>
                     </div>
                 </div>
-                <div className="product-buttom-right">
+                {/* <div className="product-buttom-right">
                     <div className="product-buttom-right-top button1" onClick={() => button1Click()}>
                         &#8744;
                     </div>
                     <div className="product-buttom-right-content-big">
                         <div className="product-buttom-right-content-title row">
-                            {/* <div className="product-buttom-right-content-title-item chitiet col-lg-2" onClick={() => chitietClick()}>
-                                <p>Thông tin sản phẩm</p>
-                            </div>
-                            <div className="product-buttom-right-content-title-item-bl binhluan col-lg-2" onClick={() => binhluanClick()}>
-                                <p>Bình luận</p>
-                            </div> */}
                             <ul class="nav nav-tabs">
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="#" onClick={() => chitietClick()}>Thông tin sản phẩm</a>
@@ -338,7 +339,7 @@ const ProductOne = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </section >
     );
