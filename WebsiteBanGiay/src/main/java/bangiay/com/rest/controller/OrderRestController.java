@@ -73,9 +73,11 @@ public class OrderRestController {
 		return this.orderService.findById(id);
 	}
 
-	@GetMapping("/findOrderBySize_ID/{user_IdOrTelephone}")
-	public List<OrderDTO> findOrderBySize_ID(@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
-		return null;
+	@GetMapping("/findOrderBySize_ID")
+	public List<OrderDTO> findOrderBySize_ID(
+			@RequestParam(value = "user_Id", required = false, defaultValue = "0") Integer user_Id,
+			@RequestParam(value = "telephone", required = false, defaultValue = "0") String telephone) {
+		return this.orderService.findByUser_IdOrTelephone(user_Id, telephone);
 	}
 
 	@PostMapping("updateStatus")
