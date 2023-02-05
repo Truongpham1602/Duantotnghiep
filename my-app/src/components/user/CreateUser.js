@@ -175,15 +175,22 @@ const CreateUser = (props) => {
           setCheck({ ...ch0 });
           validForm = false;
         }
+        let checkEmail = true
+        let checkPhone = true
         lstUser.map(item => {
           if (item.telephone == user.telephone) {
-            notifyWarning('Số điện thoại đã tồn tại!')
-            return
+            checkPhone = false
           } else if (item.email == user.email) {
-            notifyWarning('Email đã tồn tại!')
-            return
+            checkEmail = false
           }
         })
+        if (!checkEmail) {
+          notifyWarning('Email đã tồn tại!')
+          return
+        } if (!checkPhone) {
+          notifyWarning('Số điện thoại đã tồn tại!')
+          return
+        }
         if (validForm) {
 
           let res = await axios.post(User_Rest_API_URL + "/post", {
