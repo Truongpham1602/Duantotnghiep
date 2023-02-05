@@ -30,6 +30,8 @@ public interface OrderService {
 	// Tìm danh sách đơn hàng theo user_Id hoặc SĐT
 	public List<OrderDTO> findByUser_IdOrTelephone(Integer user_Id, String telephone);
 
+	public List<OrderDTO> findByUser_Id(Integer user_Id);
+
 	List<OrderDTO> updateDelivered(Integer user_IdOrTelephone);
 
 	// List<OrdersDTO> getOrderStatus(Integer status);

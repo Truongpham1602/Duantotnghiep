@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,6 +76,12 @@ public class OrderRestController {
 			@RequestParam(value = "user_Id", required = false, defaultValue = "0") Integer user_Id,
 			@RequestParam(value = "telephone", required = false, defaultValue = "0") String telephone) {
 		return this.orderService.findByUser_IdOrTelephone(user_Id, telephone);
+	}
+
+	@GetMapping("/findOrderByUser_Id")
+	public List<OrderDTO> findOrderByUser_ID(
+			@RequestParam(value = "user_Id", required = false, defaultValue = "0") Integer user_Id) {
+		return this.orderService.findByUser_Id(user_Id);
 	}
 
 	@PostMapping("updateStatus")

@@ -154,4 +154,12 @@ public class OrderSeviceImpl implements OrderService {
 		return null;
 	}
 
+	@Override
+	public List<OrderDTO> findByUser_Id(Integer user_Id) {
+		List<Order> orders = this.orderDao.findOrderByUser_Id(user_Id);
+
+		return orders.stream().map(o -> modelMapper.map(o, OrderDTO.class)).collect(Collectors.toList());
+
+	}
+
 }
