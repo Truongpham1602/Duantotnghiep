@@ -23,6 +23,7 @@ import { Navbar } from "react-bootstrap";
 const Header = (props) => {
     // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
     const { dataCart, imageUrls, searchButton, handleInputSearch, keyword, dataUser } = props
+    const [dataUser1, setDataUser1] = useState()
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [slides, setslides] = useState()
@@ -38,6 +39,7 @@ const Header = (props) => {
     const toggle = () => setIsOpen(!isOpen);
 
     useEffect(() => {
+        setDataUser1(dataUser);
         let total = 0;
         const setTotal = () => {
             setLstCart(dataCart)
@@ -85,6 +87,7 @@ const Header = (props) => {
         localStorage.removeItem('name');
         localStorage.removeItem('token');
         localStorage.removeItem('role');
+        setDataUser1(null);
         // clearUser();
         navigate("/");
     }

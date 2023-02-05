@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends GlobalMethodSecurityConfiguration{
+public class SecurityConfig extends GlobalMethodSecurityConfiguration {
 	@Autowired
 	private CustomAuthorizationFilter customAuthorizationFilter;
 
@@ -30,11 +30,14 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration{
 				.authorizeRequests()
 				.antMatchers("/admin/**").hasAnyAuthority("ADMIN")
 				.antMatchers("/auth/login").permitAll()
-				.antMatchers("/api/category/get", 
-						"/admin/product/index", 
-						"/admin/product/find/**", 
-						"/thanh-toan-vnpay",
-						"/success").permitAll()
+				.antMatchers("/nofilter/**").permitAll()
+				// .antMatchers("/api/category/get",
+				// "/api/category/select",
+				// "/admin/product/index",
+				// "/admin/product/select",
+				// "/admin/product/find/**",
+				// "/thanh-toan-vnpay",
+				// "/success").permitAll()
 				.anyRequest().authenticated()
 				.and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -45,13 +48,12 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration{
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        DefaultMethodSecurityExpressionHandler expressionHandler = 
-          new DefaultMethodSecurityExpressionHandler();
-        expressionHandler.setPermissionEvaluator(new CustomPermissionEvaluator());
-        return expressionHandler;
-    }
+	protected MethodSecurityExpressionHandler createExpressionHandler() {
+		DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
+		expressionHandler.setPermissionEvaluator(new CustomPermissionEvaluator());
+		return expressionHandler;
+	}
 
 }
