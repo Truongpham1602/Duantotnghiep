@@ -32,7 +32,6 @@ import bangiay.com.service.AccountService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

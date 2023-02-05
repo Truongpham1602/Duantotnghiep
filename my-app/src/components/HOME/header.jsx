@@ -1,5 +1,16 @@
 import { React, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import {
+    Collapse,
+    Nav,
+    NavItem,
+    NavbarToggler,
+    Dropdown,
+    DropdownItem,
+    DropdownToggle,
+    DropdownMenu,
+    UncontrolledDropdown
+} from 'reactstrap';
+import { NavLink, useNavigate } from "react-router-dom";
 import useCallGetAPI from "../../customHook/CallGetApi";
 import '../css/stylees1.css';
 import Badge from '@mui/material/Badge';
@@ -8,9 +19,10 @@ import logo from '../image/logo.png';
 import cart1 from '../image/cart/cart-1.jpg'
 import cart2 from '../image/cart/cart-2.jpg'
 import cart3 from '../image/cart/cart-3.jpg'
+import { Navbar } from "react-bootstrap";
 const Header = (props) => {
     // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
-    const { dataCart, imageUrls, searchButton, handleInputSearch, keyword } = props
+    const { dataCart, imageUrls, searchButton, handleInputSearch, keyword, dataUser } = props
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [slides, setslides] = useState()
@@ -18,7 +30,12 @@ const Header = (props) => {
     const [cart, setcart] = useState(false)
     const [loginForm, setloginForm] = useState(false)
     const [searchForm, setsearchForm] = useState(false)
+    // const [dropdownOpen, setDropdownOpen] = useState(false);
 
+    // const toggle = () => setDropdownOpen(!dropdownOpen);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggle = () => setIsOpen(!isOpen);
 
     useEffect(() => {
         let total = 0;
@@ -63,7 +80,14 @@ const Header = (props) => {
         setcart(false)
         setnavbar(false)
     }
-
+    const navigate = useNavigate();
+    const logout = () => {
+        localStorage.removeItem('name');
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        // clearUser();
+        navigate("/");
+    }
     // document.querySelector('#login-btn').onclick = () =>{
     //     loginForm.classList?.toggle('active');
     //     searchForm?.classList?.remove('active');
@@ -105,13 +129,12 @@ const Header = (props) => {
 
             {/* <a href="home.html" class="logo"> <i class="fas fa-shopping-basket"></i> laTra shoes </a> */}
             <NavLink to="/" class="logo"><img src={logo} alt="" width="50px" height="50px" /> laTra shoes </NavLink>
-
             <nav class="navbar">
                 <NavLink className="navbar-brand ps-3" to="/" end >Mẫu Mới</NavLink>
                 <NavLink className="navbar-brand ps-3" to="/shop" >danh mục</NavLink>
                 {/* <a href="about.html">about</a>
-                <a href="review.html">review</a>
-                <a href="blog.html">blog</a> */}
+                            <a href="review.html">review</a>
+                            <a href="blog.html">blog</a> */}
                 <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Quản lý</NavLink>
             </nav>
             {navbar &&
@@ -119,8 +142,8 @@ const Header = (props) => {
                     <NavLink className="navbar-brand ps-3" to="/" end >Mẫu Mới</NavLink>
                     <NavLink className="navbar-brand ps-3" to="/shop" >danh mục</NavLink>
                     {/* <a href="about.html">about</a>
-                    <a href="review.html">review</a>
-                    <a href="blog.html">blog</a> */}
+                                <a href="review.html">review</a>
+                                <a href="blog.html">blog</a> */}
                     <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Quản lý</NavLink>
                 </nav>
             }
@@ -128,14 +151,40 @@ const Header = (props) => {
             <div class="icons">
                 <div id="menu-btn" onClick={() => { menubtn() }} class="fas fa-bars"></div>
                 <div id="search-btn" onClick={() => { searchbtn() }} class="fas fa-search"></div>
-                <NavLink className="navbar-brand" to="/cart" activeClassName="active" style={{ marginRight: '0rem', fontSize: '1rem' }}>
+                <NavLink className="navbar-brand" to="/cart">
                     <Badge badgeContent={dataCart.length} color="primary">
                         <div id="cart-btn" onMouseOver={() => { cartHover() }} onMouseLeave={() => { cartOutHover() }} class="fas fa-shopping-cart"></div>
                     </Badge>
                 </NavLink>
-                <NavLink className="navbar-brand" to="/login" style={{ marginRight: '0rem', fontSize: '1rem' }}>
-                    <div id="login-btn" class="fas fa-user"> Tài khoản</div>
-                </NavLink>
+                {/* <NavLink className="navbar-brand" to="/login" style={{ marginRight: '0rem', fontSize: '1rem' }}>
+                                <div id="login-btn" class="fas fa-user"></div>
+                            </NavLink> */}
+                <UncontrolledDropdown inNavbar>
+                    <DropdownToggle nav caret>
+                        <div id="login-btn" class="fas fa-user">  {dataUser.fullName}</div>
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                        {dataUser.fullName &&
+                            <>
+                                {/* <DropdownItem>Tài </DropdownItem>
+                                <DropdownItem>Option 2</DropdownItem>
+                                <DropdownItem divider /> */}
+                                <DropdownItem onClick={() => { logout() }}> <NavLink to="/login" >Đăng xuất</NavLink></DropdownItem>
+                            </>
+                        }
+                        {!dataUser.fullName &&
+                            <>
+                                <DropdownItem>
+                                    <NavLink to="/login" >Login</NavLink>
+                                </DropdownItem>
+                            </>
+                        }
+                        {/* <DropdownItem>Option 1</DropdownItem>
+                        <DropdownItem>Option 2</DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>Đăng xuất</DropdownItem> */}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
             </div>
 
             {searchForm &&
@@ -176,19 +225,6 @@ const Header = (props) => {
                     })}
                 </div>
             }
-
-            <form action="" class="login-form ">
-                <h5>login form</h5>
-                <input type="email" placeholder="enter your email" class="box" />
-                <input type="password" placeholder="enter your password" class="box" />
-                <div class="remember">
-                    <input type="checkbox" name="" id="remember-me" />
-                    <label for="remember-me">remember me</label>
-                </div>
-                <input type="submit" value="login now" class="btn" />
-                <p>forget password? <a href="#">click here</a></p>
-                <p>don't have an account? <a href="#">create one</a></p>
-            </form>
 
         </header>
     );

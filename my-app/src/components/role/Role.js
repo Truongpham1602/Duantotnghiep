@@ -120,7 +120,7 @@ const Voucher = () => {
 
             <UpdateRole
                 isupdateRolleModal={isupdateRolleModal}
-                toggleModal={isupdateRolleModal}
+                toggleModal={updateRoleModal}
                 updateData={updateData}
                 role={role}
             />

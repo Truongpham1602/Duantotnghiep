@@ -44,7 +44,7 @@ public class UserServicelmpl implements UserService {
 	public UserDTO create(UserDTO userDTO) {
 		User user = modelMapper.map(userDTO, User.class);
 
-//		user.setRole(this.roleDao.findById(userDTO.getRoleId()).get());
+		user.setRole(this.roleDao.findById(userDTO.getRole().getId()).get());
 
 		user.setCreated(Timestamp.from(Instant.now()));
 //		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -85,6 +85,7 @@ public class UserServicelmpl implements UserService {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<User> entities = userDao.getPageWhereStatus(pageable);
 		Page<UserDTO> dtoPage = entities.map(new Function<User, UserDTO>() {
+
 			@Override
 			public UserDTO apply(User entity) {
 				UserDTO dto = new UserDTO();

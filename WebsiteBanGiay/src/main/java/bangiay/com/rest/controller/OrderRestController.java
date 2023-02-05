@@ -21,7 +21,6 @@ import bangiay.com.DTO.OrderDTO;
 import bangiay.com.doMain.constant;
 import bangiay.com.service.OrderService;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/order")
 public class OrderRestController {

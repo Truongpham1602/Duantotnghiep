@@ -32,13 +32,12 @@ public class AccountServicelmpl implements AccountService{
 		if(user == null) {
 			return;
 		}
-		List<String> roles = user.getRoles().stream().map(c->c.getRoleName()).collect(Collectors.toList());
-		if(roles.contains(roleName)) {
+		if(user.getRole().getRoleName().equals(roleName)) {
 			return;
 		}
 		Role role = roleDao.findByNameRole(roleName);
 		if(role != null) {
-			user.getRoles().add(role);
+			user.setRole(role);
 			userDao.save(user);
 		}
 	}
