@@ -27,12 +27,13 @@ public class UserRestController {
 	UserService userService;
 
 	@GetMapping("/get")
-	@PreAuthorize("hasPermission(#req, 'USER_VIEW')")
+	@PreAuthorize("hasPermission(#req, 'USER_VIEW') or hasPermission(#req, 'ADMIN')")
 	public Page<UserDTO> findAll(@RequestParam(name = "size", defaultValue = "7") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page) {
 		return userService.findAll(size, page);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_VIEW') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/findAll")
 	public List<UserDTO> findAll() {
 		return userService.findAll();
@@ -58,11 +59,13 @@ public class UserRestController {
 		return userService.update(userDTO);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_VIEW')")
 	@GetMapping("/find/{id}")
 	public UserDTO finByID(@RequestBody @PathVariable("id") int id, UserDTO userDTO) {
 		return userService.finById(id);
 	}
-
+	
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT')")
 	@PutMapping("/setStatusFalse/{id}")
 	public UserDTO setStatusFalse(@PathVariable Integer id) {
 		return userService.setStatusFalse(id);

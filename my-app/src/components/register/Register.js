@@ -10,7 +10,7 @@ import {
   MDBInput,
 }
   from 'mdb-react-ui-kit';
-import { NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import '../css/login.css';
 import { Button } from "reactstrap";
 import { ToastContainer, toast } from 'react-toastify';
@@ -42,6 +42,7 @@ const Register = (props) => {
     theme: "colored",
   }
 
+  const [check, setCheck] = useState({ fullName: '' });
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
@@ -59,7 +60,22 @@ const Register = (props) => {
 
   const createUser = () => {
     try {
+      let validForm = true;
+      let checkr = { ...check };
       const create = async () => {
+        if (
+          user.fullName?.trim().length <= 0 &&
+          user.password?.trim().length <= 0 &&
+          user.email?.trim().length <= 0 &&
+          user.telephone?.trim().length <= 0 &&
+          user.address?.trim().length <= 0
+        ) {
+          return;
+        }
+
+
+
+
         let res = await axios.post(User_Rest_API_URL + '/post', {
           roleId: user.roleId,
           fullName: user.fullName,
@@ -100,7 +116,7 @@ const Register = (props) => {
             <MDBCard className='bg-white my-5 mx-auto' style={{ borderRadius: '1rem', maxWidth: '500px' }}>
               <MDBCardBody className='p-5 w-100 d-flex flex-column'>
 
-                <h2 className="fw-bold mb-2 text-center">Sign up</h2>
+                <h2 className="fw-bold mb-2 text-center">Đăng ký</h2>
 
                 <MDBInput wrapperClass='mb-4 w-100' placeholder="Fullname" id='formControlLg' type='fullname' size="lg"
                   value={user.fullName}
@@ -123,10 +139,10 @@ const Register = (props) => {
                   onChange={(event) => handleOnchangeInput(event, 'address')}
                 />
                 <hr className="my-2" />
-                <NavLink className="navbar-brand ps-2" to="/login" >Đã có tài khoản?</NavLink>
+                <NavLink className="navbar-brand ps-2" to="/login" >Đăng nhập</NavLink>
                 <hr className="my-2" />
                 <Button color="primary" onClick={(e) => { createUser(e) }}>
-                  Sign up
+                  Đăng ký
                 </Button>
               </MDBCardBody>
             </MDBCard>

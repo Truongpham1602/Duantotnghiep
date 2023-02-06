@@ -33,8 +33,6 @@ const Login = () => {
       localStorage.setItem("name", res.data.name);
       localStorage.setItem("role", res.data.role);
       console.log(res.data);
-      // console.log(localStorage.getItem('token'));
-      // console.log(await axios.post("http://localhost:8080/auth/getLoginUser", localStorage.getItem('token')));
       if (res.data.role === "CUSTOMER") {
         navigate("/");
       } else {
@@ -55,7 +53,7 @@ const Login = () => {
               style={{ borderRadius: "1rem", maxWidth: "500px" }}
             >
               <MDBCardBody className="p-5 w-500 d-flex flex-column">
-                <h2 className="fw-bold mb-2 text-center">Sign in</h2>
+                <h2 className="fw-bold mb-2 text-center">Đăng nhập</h2>
 
                 <MDBInput
                   wrapperClass="mb-4 w-100"
@@ -78,12 +76,12 @@ const Login = () => {
 
                 <hr className="my-2" />
                 <NavLink className="navbar-brand ps-2" to="/register">
-                  register
+                  Đăng ký tài khoản
                 </NavLink>
                 <hr className="my-2" />
 
                 <Button color="primary" onClick={() => handleButton()}>
-                  Sign in
+                  Đăng nhập
                 </Button>
               </MDBCardBody>
             </MDBCard>
