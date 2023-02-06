@@ -3,6 +3,7 @@ package bangiay.com.service.impl;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -57,6 +58,14 @@ public class OrderSeviceImpl implements OrderService {
 	}
 
 	@Override
+	public List<Order> findByStatus(Integer status) {
+		if (status == 99)
+			return orderDao.findAll();
+		else
+			return orderDao.findByStatus(status);
+	}
+
+	@Override
 	public Page<OrderDTO> findAll(Pageable pageable) {
 		return null;
 	}
@@ -72,6 +81,15 @@ public class OrderSeviceImpl implements OrderService {
 		User user = this.userDao.findById(user_Id).orElse(null);
 		order.setCreated(Timestamp.from(Instant.now()));
 		order.setStatus(1);
+		String characters = "abcdefghijklmnopqrstuvwxyz1234567890";
+		Random rng = new Random();
+		String a = "";
+		char[] text = new char[16];
+		for (int i = 0; i < 16; i++) {
+			text[i] = characters.charAt(rng.nextInt(characters.length()));
+			a = text[i] + a;
+		}
+		order.setCode(a);
 		if (user != null) {
 			order.setUser(user);
 		}

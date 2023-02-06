@@ -95,7 +95,6 @@ export default class BillClientComponent extends React.Component {
             `${process.env.REACT_APP_API_KEY}/order/findOrderByUser_Id/?user_Id=${user.data.id}`, this.config
         );
 
-        console.log(res.data)
 
         // Map lstOrder
         const lstOrder = res.data && res.data.map((item: OrderItem) => {

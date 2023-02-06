@@ -214,8 +214,14 @@ const Cart = () => {
     }
 
     const updateQuantity = async (cart_Id, pro_Id, quantity, totalQuantitySize) => {
+        console.log(quantity);
+        let qtt = 0;
         if (quantity > totalQuantitySize) {
             toast.warning('Lớn hơn số lượng đang có', styleToast)
+            return
+        }
+        else if (quantity <= 0) {
+            toast.warning('Tối thiểu cần 1 sản phẩm', styleToast)
             return
         }
         let user = await axios.get(`http://localhost:8080/auth/information`,
@@ -236,6 +242,7 @@ const Cart = () => {
             const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
                 { headers: { "Authorization": `Bearer ${token}` } });
             setDataLstCart(res.data)
+            qtt = res.data.quantity
         } else {
             const res = await axios.get(`http://localhost:8080/cart/updateQuantityNoUser/${pro_Id}?quantity=${quantity}`, { headers: { "Authorization": `Bearer ${token}` } })
             setDataLstCart(res.data)

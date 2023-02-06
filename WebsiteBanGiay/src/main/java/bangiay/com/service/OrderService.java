@@ -25,6 +25,8 @@ public interface OrderService {
 	// Cập nhật đơn hàng đã giao
 	public OrderDTO updateDeliveredOrder(Integer id);
 
+	public List<Order> findByStatus(Integer status);
+
 	public OrderDTO findById(Integer id);
 
 	// Tìm danh sách đơn hàng theo user_Id hoặc SĐT

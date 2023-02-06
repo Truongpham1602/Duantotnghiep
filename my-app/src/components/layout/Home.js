@@ -13,6 +13,7 @@ import Header from "../HOME/header";
 import Footer from "../HOME/Footer";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { styleToast } from '../common/const';
 import "react-toastify/dist/ReactToastify.css";
 import useCallGetAPI from "../../customHook/CallGetApi";
 
@@ -156,7 +157,10 @@ const Home = () => {
   };
   const addToCart = async (size_Id, quantity) => {
     if (size_Id == null) {
-      toast.warning("Chưa chọn size!")
+      toast.warning("Bạn chưa chọn size!", styleToast)
+      return
+    } else if (quantity <= 0) {
+      toast.warning("Cần tối thiểu 1 sản phẩm để thêm vào giỏ hàng", styleToast)
       return
     }
     let user = null;
@@ -185,7 +189,7 @@ const Home = () => {
           size_Id: size_Cart
         },
           { headers: { "Authorization": `Bearer ${token}` } })
-        if (res?.data) toast.success("Cập nhật giỏ hàng thành công");
+        if (res?.data) toast.success("Cập nhật giỏ hàng thành công", styleToast);
       } else {
         let res = await axios.post(`http://localhost:8080/cart/create`, {
           user_Id: user.data.id,
@@ -194,7 +198,7 @@ const Home = () => {
           status: 1
         },
           { headers: { "Authorization": `Bearer ${token}` } })
-        if (res?.data) toast.success("Thêm vào giỏ hàng thành công");
+        if (res?.data) toast.success("Thêm vào giỏ hàng thành công", styleToast);
       }
       const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
         { headers: { "Authorization": `Bearer ${token}` } });
