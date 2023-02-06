@@ -40,45 +40,63 @@ const Voucher = () => {
             copydata.unshift(res);
             setData(copydata);
         }
+        else if (type === 'update') {
+            let copydata = dataRole;
+            let getIndex = copydata.findIndex((p) => { return p.id === res.id });
+            copydata.fill(res, getIndex, getIndex + 1);
+            setData(copydata)
+        }
     }
 
     const editRole = async (id) => {
         try {
-            const res = await axios.get(`http://localhost:8080/role/update/${id}`,
+            const res = await axios.get(`http://localhost:8080/role/get/${id}`,
                 { headers: { "Authorization": `Bearer ${token}` } })
             setRole(res.data)
-            console.log(res.data);
         } catch (error) {
             console.log(error.message)
         }
     }
 
     const deleteVoucher = (id) => {
-        // try {
-        //     axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
-        //     let config = {
-        //         headers: {
-        //             'Authorization': `Bearer ${token}`,
-        //             'Content-Type': 'application/json',
-        //         }
-        //     }
-        //     console.log(token);
-        //     const updateStatusFalse = async () => {
-        //         const res = await axios.put(`http://localhost:8080/api/voucher/setStatusFalse/${id}`, config)
-        //         let copyList = [...dataVoucher]
-        //         let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
-        //         copyList.fill(res.data, getIndex, getIndex + 1);
-        //         setData(copyList)
-        //         console.log(copyList);
-        //         notifySuccess("Bạn đã tạm dừng thành công !!")
-        //         toggleNested()
-        //         // notifyWarning("Thay đổi trạng thái thành công !!")
-        //     }
-        //     updateStatusFalse()
-        // } catch (error) {
-        //     console.log(error.message)
-        // }
+        try {
+            axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
+            let config = {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            }
+            console.log(token);
+            const updateStatusFalse = async () => {
+                const res = await axios.post(`http://localhost:8080/role/delete/${id}`, config)
+                let copyList = [...dataRoles]
+                let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
+                copyList.fill(res.data, getIndex, getIndex + 1);
+                setData(copyList)
+                notifySuccess("Bạn đã xóa thành công !!")
+                toggleNested()
+            }
+            updateStatusFalse()
+        } catch (error) {
+            console.log(error.message)
+        }
     }
+
+    const pageable = async (id) => {
+        if (id <= 0) {
+            id = 0
+        } else if (id >= totalPage.length - 1) {
+            id = totalPage.length - 1
+        }
+        const res = await axios.get(`http://localhost:8080/admin/user/get?page=${id}`,
+            { headers: { "Authorization": `Bearer ${token}` } })
+        let data = res ? res.data : []
+        setData(data.content)
+        setPageNumber(data.number)
+        console.log(data.number);
+    }
+
 
     const notifySuccess = (text) => {
         toast.success(text, styleToast)
@@ -208,8 +226,8 @@ const Voucher = () => {
                     </tbody>
                 </Table>
             </div>
-            {/* <PaginatedItems itemsPerPage={totalPage.length}
-                pageable={pageable} /> */}
+            <PaginatedItems itemsPerPage={totalPage.length}
+                pageable={pageable} />
         </>
     );
 }

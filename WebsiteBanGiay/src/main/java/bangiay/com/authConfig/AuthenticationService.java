@@ -68,7 +68,7 @@ public class AuthenticationService implements UserDetailsService{
 			throw new Exception("Password is correct");
 		}
 		
-		List<String> permission = user.getRole().getPremission().stream().map(c->c.getPremission_name()).collect(Collectors.toList());
+		List<String> permission = user.getRole().getPremission().stream().map(c->c.getPremissionName()).collect(Collectors.toList());
 		
 		Algorithm algorithm = Algorithm.HMAC256(secset.getBytes());
 		String access_token = JWT.create()

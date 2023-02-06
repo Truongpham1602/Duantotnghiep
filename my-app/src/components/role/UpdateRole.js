@@ -6,26 +6,36 @@ import useCallGetAPI from '../../customHook/CallGetApi';
 import moment from "moment";
 import Multiselect from "multiselect-react-dropdown";
 import { ToastContainer, toast } from 'react-toastify';
+import Select from 'react-select';
 
 const UpdateRole = (props) => {
-
     const token = localStorage.getItem('token');
+    const { data: premissions } = useCallGetAPI(`http://localhost:8080/role/getPermission`, { headers: { "Authorization": `Bearer ${token}` } });
     const { isupdateRolleModal, toggleModal, updateData } = props;
     const [role, setRole] = useState(props.role);
-    console.log(role);
-    const [lstcate, setLstCate] = useState([]);
-    const { data: roles } = useCallGetAPI(`http://localhost:8080/role/getPermission`, { headers: { "Authorization": `Bearer ${token}` } });
-    const [check, setCheck] = useState({ name: '', description: '' });
+    const [lstRole, setLstRole] = useState([]);
+    const [check, setCheck] = useState({ roleName: '', description: '' });
     const [options, setOptions] = useState([]);
-
-    useEffect(() => {
-        setLstCate(roles)
-    }, [roles])
+    const [lstPreSelected, setLstPreSelected] = useState([]);
+    const [selectedOption, setSelectedOption] = useState([]);
 
     useEffect(() => {
         setRole(props.role)
+    }, [props.role]);
 
+    useEffect(() => {
+        let selectedId = [];
+        if (props.role.premission) {
+            selectedId = props.role.premission.map(c => c.id);
+        }
+        let f = options.filter(item => selectedId.includes(item.value));
+        setSelectedOption(f);
     }, [props.role])
+
+    useEffect(() => {
+        setOptions(premissions.map(item => { return { value: item.id, label: item.description } }));
+    }, [premissions])
+    console.log(options);
 
     const handleOnchangeInput = (event, id) => {
         let copyRole = { ...role };
@@ -35,7 +45,7 @@ const UpdateRole = (props) => {
             let ch1 = { ...check };
             if (copyRole[id].trim().length <= 0) {
                 ch1[id] = `${id} không được để trống !!`
-                if (id == "name") {
+                if (id == "roleName") {
                     ch1[id] = "Tên không được để trống !!"
                 }
                 setCheck({
@@ -54,6 +64,7 @@ const UpdateRole = (props) => {
             ...copyRole
         })
     }
+
 
     const notifySuccess = (text) => {
         toast.success(text, styleToast)
@@ -76,35 +87,43 @@ const UpdateRole = (props) => {
     const updateVoucher = async () => {
         try {
             let ch1 = { ...check };
-            if (role.name?.trim().length <= 0
+            if (role.roleName?.trim().length <= 0
                 && role.description?.trim().length <= 0
             ) {
-                ch1["name"] = "Tên không để trống"
+                ch1["roleName"] = "Tên không để trống"
                 ch1["description"] = "Mô tả không để trống"
                 setCheck({ ...ch1 })
                 return
-            } else if (role.name?.trim().length <= 0) {
-                ch1["name"] = "Tên không để trống"
+            } else if (role.roleName?.trim().length <= 0) {
+                ch1["roleName"] = "Tên không để trống"
                 setCheck({ ...ch1 })
                 return
             }
             else if (role.description.trim().length <= 0) {
-                ch1["value"] = "Mô tả không để trống"
+                ch1["description"] = "Mô tả không để trống"
                 setCheck({ ...ch1 })
                 return
             }
             else if (
-                check.name?.trim().length > 0
+                check.roleName?.trim().length > 0
                 || check.description.trim().length > 0
             ) {
                 return
             }
-            const res = await axios.put(`http://localhost:8080/role/update/${role.id}`, role,
+            let selectedId = selectedOption.map(c => c.value);
+            let premissionsSelected = premissions.filter(i => selectedId.includes(i.id));
+            let dataNew = {
+                id: role.id,
+                roleName: role.roleName,
+                description: role.description,
+                premission: premissionsSelected
+            }
+            const res = await axios.put(`http://localhost:8080/role/update/${role.id}`, dataNew,
                 { headers: { "Authorization": `Bearer ${token}` } })
             let data = (res && res.data) ? res.data : [];
             toggle()
-            updateData(data, 'update')
             notifySuccess("Cập nhập thành công")
+            updateData(data, 'update')
         } catch (error) {
             console.log(error.message);
         }
@@ -131,12 +150,12 @@ const UpdateRole = (props) => {
                                         <input type="text"
                                             className="form-control"
                                             placeholder=""
-                                            id="name"
-                                            name="name"
+                                            id="roleName"
+                                            name="roleName"
                                             required
-                                            value={role.name}
-                                            onChange={(event) => handleOnchangeInput(event, 'name')} />
-                                        {check.name && check.name.length > 0 && <p className="checkError">{check.name}</p>}
+                                            value={role.roleName}
+                                            onChange={(event) => handleOnchangeInput(event, 'roleName')} />
+                                        {check.roleName && check.roleName.length > 0 && <p className="checkError">{check.roleName}</p>}
                                     </div>
                                     <div className="col-sm-6">
                                         <label className="form-label">Mô Tả</label>
@@ -153,47 +172,13 @@ const UpdateRole = (props) => {
                                     </div>
                                     <div className="col-sm-6 mt-5">
                                         <label className="form-label">Quyền truy cập</label>
-                                        <Multiselect
-                                            isObject={false}
-                                            options={options}
-                                            showCheckbox
-                                        />
-                                        {/* <input
-                                            type="number"
-                                            className="form-control"
-                                            placeholder=""
-                                            id="quantity"
-                                            name="quantity"
-                                            value={role.quantity}
-                                            onChange={(event) => handleOnchangeInput(event, 'quantity')}
-                                        />
-                                        {check.quantity && check.quantity.length > 0 && <p className="checkError">{check.quantity}</p>} */}
-                                    </div>
-                                    <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Danh mục</label>
-                                        <select
-                                            className="form-control"
-                                            id="categoryId"
-                                            name="categoryId"
-                                            placeholder=""
-                                            onChange={(event) => handleOnchangeInput(event, 'categoryId')}
-                                        >
-                                            {lstcate.map((item, index) => {
-                                                if (item.id === role.categoryId) {
-                                                    return (
-                                                        <option key={index} value={item.id} selected>
-                                                            {item.namecate}
-                                                        </option>
-                                                    )
-                                                }
-                                                return (
-                                                    <option key={index} value={item.id} >
-                                                        {item.namecate}
-                                                    </option>
-                                                )
 
-                                            })}
-                                        </select>
+                                        <Select
+                                            onChange={setSelectedOption}
+                                            value={selectedOption}
+                                            options={options}
+                                            isMulti
+                                        />
                                     </div>
                                 </div>
                             </form>

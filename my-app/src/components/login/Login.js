@@ -14,8 +14,29 @@ import {
 import { NavLink } from "react-router-dom";
 import "../css/login.css";
 import { Button } from "reactstrap";
+import { ToastContainer, toast } from 'react-toastify';
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
+
+  const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  }
+  const notifySuccess = (text) => {
+    toast.success(text, styleToast)
+  };
+  const notifyWarning = (text) => {
+    toast.warning(text, styleToast);
+  };
+  const notifyError = (text) => {
+    toast.error(text, styleToast);
+  };
 
   const handleOnchangeInput = (e, id) => {
     let copyUser = { ...user };
@@ -33,20 +54,22 @@ const Login = () => {
       localStorage.setItem("name", res.data.name);
       localStorage.setItem("role", res.data.role);
       console.log(res.data);
-      // console.log(localStorage.getItem('token'));
-      // console.log(await axios.post("http://localhost:8080/auth/getLoginUser", localStorage.getItem('token')));
       if (res.data.role === "CUSTOMER") {
+        notifySuccess("Đăng nhập thành công")
         navigate("/");
       } else {
+        notifySuccess("Đăng nhập thành công")
         navigate("/admin");
       }
     } catch (error) {
+      notifyError("Đăng nhập thất bại")
       console.log(error);
     }
   };
 
   return (
     <div className="login">
+      <ToastContainer />
       <MDBContainer fluid style={{ height: "40rem" }}>
         <MDBRow className="d-flex justify-content-center align-items-center h-100">
           <MDBCol col="12">
@@ -55,7 +78,7 @@ const Login = () => {
               style={{ borderRadius: "1rem", maxWidth: "500px" }}
             >
               <MDBCardBody className="p-5 w-500 d-flex flex-column">
-                <h2 className="fw-bold mb-2 text-center">Sign in</h2>
+                <h2 className="fw-bold mb-2 text-center">Đăng nhập</h2>
 
                 <MDBInput
                   wrapperClass="mb-4 w-100"
@@ -78,12 +101,12 @@ const Login = () => {
 
                 <hr className="my-2" />
                 <NavLink className="navbar-brand ps-2" to="/register">
-                  register
+                  Đăng ký tài khoản
                 </NavLink>
                 <hr className="my-2" />
 
                 <Button color="primary" onClick={() => handleButton()}>
-                  Sign in
+                  Đăng nhập
                 </Button>
               </MDBCardBody>
             </MDBCard>

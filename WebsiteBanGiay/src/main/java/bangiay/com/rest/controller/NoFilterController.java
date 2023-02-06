@@ -17,13 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.CategoryDTO;
 import bangiay.com.DTO.ProductDTO;
+import bangiay.com.DTO.UserDTO;
 import bangiay.com.service.ProductService;
+import bangiay.com.service.UserService;
 import bangiay.com.service.impl.CategoryServiceImpl;
 
 @RestController
 @RequestMapping("/nofilter")
 public class NoFilterController {
 
+	@Autowired
+	UserService userService;
 	@Autowired
 	ProductService productService;
 	@Autowired
@@ -40,6 +44,15 @@ public class NoFilterController {
 	public Page<ProductDTO> findAll(@RequestParam(name = "size", defaultValue = "7") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page) {
 		return productService.findAll(size, page);
+	}
+	
+	@GetMapping("/findAll")
+	public List<UserDTO> findAll() {
+		return userService.findAll();
+	}
+	@PostMapping("/post")
+	public UserDTO post(@RequestBody UserDTO userDTO) {
+		return userService.create(userDTO);
 	}
 
 	@PostMapping("/searchClient")

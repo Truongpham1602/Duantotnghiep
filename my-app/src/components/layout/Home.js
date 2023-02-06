@@ -152,9 +152,16 @@ const Home = () => {
 
   const nextProductDetail = async (id) => {
     if (token) {
+      axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
+      let config = {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      }
       const res = await axios.get(
         `http://localhost:8080/admin/product/find/${id}`,
-        { headers: { "Authorization": `Bearer ${token}` } }
+        config
       );
       setProduct(res.data);
       navigate(`/productOne/${id}`);

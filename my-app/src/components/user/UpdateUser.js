@@ -5,6 +5,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase";
+import useCallGetAPI from '../../customHook/CallGetApi';
 import {
   Button,
   Modal,
@@ -22,7 +23,7 @@ import {
 // class UpdateUser extends Component {
 const UpdateUser = (props) => {
   // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
-
+  const token = localStorage.getItem('token');
   const {
     isUpdateModal,
     toggleModal,
@@ -48,6 +49,14 @@ const UpdateUser = (props) => {
   useEffect(() => {
     setUser(props.user);
   }, [props.user]);
+
+  const [lstRole, setlstRole] = useState([]);
+  const { data: roles } = useCallGetAPI(
+    `http://localhost:8080/role/get`, { headers: { "Authorization": `Bearer ${token}` } }
+  );
+  useEffect(() => {
+    setlstRole(roles);
+  }, [roles]);
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
@@ -112,20 +121,20 @@ const UpdateUser = (props) => {
     theme: "colored",
   };
 
-  const arrRole = [
-    {
-      id: 1,
-      title: "Quản lý",
-    },
-    {
-      id: 2,
-      title: "Nhân viên",
-    },
-    {
-      id: 3,
-      title: "Khách hàng",
-    },
-  ];
+  // const arrRole = [
+  //   {
+  //     id: 1,
+  //     title: "Quản lý",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Nhân viên",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Khách hàng",
+  //   },
+  // ];
 
   const status = [
     {
@@ -184,17 +193,22 @@ const UpdateUser = (props) => {
       }
 
       if (validForm) {
-
-        const res = await axios.put(
-          `http://localhost:8080/admin/user/put/${user.id}`,
-          user
+        axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
+        let config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        }
+        const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`,
+          user, config
         );
         let data = res && res.data ? res.data : [];
         data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
         data.modified = moment(data.modified).format("DD/MM/YYYY HH:mm:ss");
         toggle();
-        updateData(data, "update");
         notifySuccess("Cập nhật thành công");
+        updateData(data, "update");
       }
     } catch (error) {
       console.log(error.message);
@@ -306,26 +320,27 @@ const UpdateUser = (props) => {
                   </Col>
                   <Col md={12}>
                     <FormGroup>
-                      <Label for="roleId">Vai trò</Label>
+                      <Label for="roleId">Quyền</Label>
                       <Input
                         id="roleId"
                         name="roleId"
                         placeholder=""
                         type="select"
-                        value={user.roleId}
+                        // value={user.roleId}
                         onChange={(event) =>
                           handleOnchangeInput(event, "roleId")
                         }
                       >
-                        {arrRole.map((item) => {
-                          if (user.roleId === item.id) {
+                        {lstRole.map((item, index) => {
+                          let roleID = { ...user.role }
+                          if (item.id === roleID.id) {
                             return (
-                              <option selected value={item.id}>
-                                {item.title}
+                              <option selected key={index} value={item.id}>
+                                {item.description}
                               </option>
                             );
                           }
-                          return <option value={item.id}>{item.title}</option>;
+                          return <option key={index} value={item.id}>{item.description}</option>;
                         })}
                       </Input>
                     </FormGroup>
