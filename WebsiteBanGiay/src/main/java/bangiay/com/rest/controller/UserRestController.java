@@ -50,10 +50,11 @@ public class UserRestController {
 		return userService.create(userDTO);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT')")
 	@PutMapping("/put/{id}")
 	public UserDTO put(@PathVariable("id") Integer id, @RequestBody UserDTO userDTO) {
 		userDTO.setId(id);
-		System.out.println("thành" + userDTO.getRole().getId());
+//		System.out.println("thành" + userDTO.getRole().getId());
 		return userService.update(userDTO);
 	}
 

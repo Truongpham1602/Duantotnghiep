@@ -6,26 +6,37 @@ import useCallGetAPI from '../../customHook/CallGetApi';
 import moment from "moment";
 import Multiselect from "multiselect-react-dropdown";
 import { ToastContainer, toast } from 'react-toastify';
+import Select from 'react-select';
 
 const UpdateRole = (props) => {
-
     const token = localStorage.getItem('token');
+    const { data: premissions } = useCallGetAPI(`http://localhost:8080/role/getPermission`, { headers: { "Authorization": `Bearer ${token}` } });
     const { isupdateRolleModal, toggleModal, updateData } = props;
     const [role, setRole] = useState(props.role);
-    console.log(role);
-    const [lstcate, setLstCate] = useState([]);
-    const { data: roles } = useCallGetAPI(`http://localhost:8080/role/getPermission`, { headers: { "Authorization": `Bearer ${token}` } });
-    const [check, setCheck] = useState({ name: '', description: '' });
+    const [lstRole, setLstRole] = useState([]);
+    const [check, setCheck] = useState({ roleName: '', description: '' });
     const [options, setOptions] = useState([]);
+    const [lstPreSelected, setLstPreSelected] = useState([]);
+    const [selectOption, setselectOption] = useState([]);
 
-    useEffect(() => {
-        setLstCate(roles)
-    }, [roles])
+
 
     useEffect(() => {
         setRole(props.role)
+        // props.role.premission.map(item => { lstPreSelected.push({ id: item.id }) })
 
     }, [props.role])
+
+    useEffect(() => {
+        // setLstRole(premissions)
+
+        setOptions(premissions.map(item => { return { value: item.id, label: item.description } }));
+        // let f = options.map(item => item.id);
+        setselectOption(options.filter(item => role.premission.includes(item.value)))
+        // premissions.map(item => { setOptions((Prev) => [...Prev, item.id + ' ' + item.description]) })
+
+    }, [premissions])
+    console.log(options);
 
     const handleOnchangeInput = (event, id) => {
         let copyRole = { ...role };
@@ -35,7 +46,7 @@ const UpdateRole = (props) => {
             let ch1 = { ...check };
             if (copyRole[id].trim().length <= 0) {
                 ch1[id] = `${id} không được để trống !!`
-                if (id == "name") {
+                if (id == "roleName") {
                     ch1[id] = "Tên không được để trống !!"
                 }
                 setCheck({
@@ -53,6 +64,27 @@ const UpdateRole = (props) => {
         setRole({
             ...copyRole
         })
+    }
+
+    const perSelected = (items) => {
+        for (let i in items) {
+            let item = items[i];
+            let id = item.substring(0, 2).trim();
+            if (!lstPreSelected.map((p) => p.id).includes(id)) {
+                lstPreSelected.push({ id: id });
+            }
+        }
+
+    }
+    const perRemove = (items) => {
+        for (let i in items) {
+            let item = items[i];
+            let id = item.substring(0, 2).trim();
+            let index = lstPreSelected.map((p) => p.id).indexOf(id)
+            if (index !== -1) {
+                lstPreSelected.splice(index, 1);
+            }
+        }
     }
 
     const notifySuccess = (text) => {
@@ -76,25 +108,25 @@ const UpdateRole = (props) => {
     const updateVoucher = async () => {
         try {
             let ch1 = { ...check };
-            if (role.name?.trim().length <= 0
+            if (role.roleName?.trim().length <= 0
                 && role.description?.trim().length <= 0
             ) {
-                ch1["name"] = "Tên không để trống"
+                ch1["roleName"] = "Tên không để trống"
                 ch1["description"] = "Mô tả không để trống"
                 setCheck({ ...ch1 })
                 return
-            } else if (role.name?.trim().length <= 0) {
-                ch1["name"] = "Tên không để trống"
+            } else if (role.roleName?.trim().length <= 0) {
+                ch1["roleName"] = "Tên không để trống"
                 setCheck({ ...ch1 })
                 return
             }
             else if (role.description.trim().length <= 0) {
-                ch1["value"] = "Mô tả không để trống"
+                ch1["description"] = "Mô tả không để trống"
                 setCheck({ ...ch1 })
                 return
             }
             else if (
-                check.name?.trim().length > 0
+                check.roleName?.trim().length > 0
                 || check.description.trim().length > 0
             ) {
                 return
@@ -131,12 +163,12 @@ const UpdateRole = (props) => {
                                         <input type="text"
                                             className="form-control"
                                             placeholder=""
-                                            id="name"
-                                            name="name"
+                                            id="roleName"
+                                            name="roleName"
                                             required
-                                            value={role.name}
-                                            onChange={(event) => handleOnchangeInput(event, 'name')} />
-                                        {check.name && check.name.length > 0 && <p className="checkError">{check.name}</p>}
+                                            value={role.roleName}
+                                            onChange={(event) => handleOnchangeInput(event, 'roleName')} />
+                                        {check.roleName && check.roleName.length > 0 && <p className="checkError">{check.roleName}</p>}
                                     </div>
                                     <div className="col-sm-6">
                                         <label className="form-label">Mô Tả</label>
@@ -153,11 +185,32 @@ const UpdateRole = (props) => {
                                     </div>
                                     <div className="col-sm-6 mt-5">
                                         <label className="form-label">Quyền truy cập</label>
-                                        <Multiselect
+                                        {/* <Multiselect
                                             isObject={false}
                                             options={options}
                                             showCheckbox
+                                            defaultValue={options}
+                                            onChange={setOptions}
+                                        onRemove={(event) => perRemove(event)}
+                                        onSelect={(event) => perSelected(event)}
+                                        /> */}
+                                        <Select
+                                            defaultValue={selectOption}
+                                            onChange={setselectOption}
+                                            options={options}
+                                            isMulti
                                         />
+                                        {/* <Multiselect
+                                            dataKey="id"
+                                            textField="color"
+                                            defaultValue={[1]}
+                                            data={[
+                                                { id: 1, color: "Red" },
+                                                { id: 2, color: "Yellow" },
+                                                { id: 3, color: "Blue" },
+                                                { id: 4, color: "Orange" },
+                                            ]}
+                                        /> */}
                                         {/* <input
                                             type="number"
                                             className="form-control"
@@ -168,32 +221,6 @@ const UpdateRole = (props) => {
                                             onChange={(event) => handleOnchangeInput(event, 'quantity')}
                                         />
                                         {check.quantity && check.quantity.length > 0 && <p className="checkError">{check.quantity}</p>} */}
-                                    </div>
-                                    <div className="col-sm-12 mt-5">
-                                        <label className="form-label">Danh mục</label>
-                                        <select
-                                            className="form-control"
-                                            id="categoryId"
-                                            name="categoryId"
-                                            placeholder=""
-                                            onChange={(event) => handleOnchangeInput(event, 'categoryId')}
-                                        >
-                                            {lstcate.map((item, index) => {
-                                                if (item.id === role.categoryId) {
-                                                    return (
-                                                        <option key={index} value={item.id} selected>
-                                                            {item.namecate}
-                                                        </option>
-                                                    )
-                                                }
-                                                return (
-                                                    <option key={index} value={item.id} >
-                                                        {item.namecate}
-                                                    </option>
-                                                )
-
-                                            })}
-                                        </select>
                                     </div>
                                 </div>
                             </form>
