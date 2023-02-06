@@ -13,8 +13,11 @@ import bangiay.com.entity.Order;
 @Repository
 
 public interface OrderDao extends JpaRepository<Order, Integer> {
-	@Query("SELECT o FROM Order o WHERE o.user.id=?1 or o.telephone=?1")
-	List<Order> findOrderByUser_IdOrTelephone(String user_IdOrTelephone);
+	@Query("SELECT o FROM Order o WHERE o.user.id=?1 or o.telephone=?2 AND o.status = 1 or o.status = 2")
+	List<Order> findOrderByUser_IdOrTelephone(Integer user_Id, String telephone);
+
+	@Query("SELECT o FROM Order o WHERE o.user.id=?1 AND o.status = 3 or o.status = 0")
+	List<Order> findOrderByUser_Id(Integer user_Id);
 
 	// lấy danh sách order có trạng thái theo yêu cầu
 //	@Query("select o from orders o where o.STATUS=?")

@@ -22,7 +22,8 @@ import ProductOne from "../components/HOME/ProductOne";
 
 import { Routes, Route } from "react-router-dom";
 import OrderComponent from "../components/order-typescript/order.component";
-import Dashboard from "../components/dashboard/Dashboard";
+import OrderClientComponent from "../components/order-typescript/orderClient.component";
+import BillClientComponent from "../components/order-typescript/billClient.component ";
 import DashboardComponent from "../components/dashboard-typescript/dashboard.component";
 
 import Success from "../components/vnpSuccess/Success"
@@ -172,6 +173,8 @@ function App() {
           <Route path="login" element={<Login />}></Route>
           <Route path="register" element={<Register />}></Route>
           <Route path="success" element={<Success />}></Route>
+          <Route path="order" element={<OrderClientComponent />}></Route>
+          <Route path="order/type3" element={<BillClientComponent />}></Route>
         </Routes>
         {/* </header> */}
       </div>

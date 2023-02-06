@@ -199,7 +199,7 @@ const User = () => {
       copyList = copyList.filter(item => item.id !== id)
       setData(copyList)
       toggleNested()
-      notifySuccess("Success Delete ")
+      notifySuccess("Xóa thành công")
     } catch (error) {
 
     }
@@ -319,7 +319,7 @@ const User = () => {
                       <button class="btn btn-primary update" type='buttom' id="update" onClick={() => { editUser(item.id); updateModal() }}>Cập nhật</button>
                     </td>
                     <td>
-                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Chuyển trạng thái</button>
+                      <button class="btn btn-danger delete" id="delete" onClick={() => toggleNested(item.id)} >Xóa</button>
                     </td>
                   </tr>
                 )
@@ -331,9 +331,9 @@ const User = () => {
               toggle={toggleNested}
             // size='lg'
             >
-              <ModalHeader>Tạm dừng</ModalHeader>
+              <ModalHeader>Xóa</ModalHeader>
               <ModalBody>
-                Bạn có chắc chắn chuyển sang không hoạt động không ?
+                Bạn có chắc chắn xóa không ?
               </ModalBody>
               <ModalFooter>
                 <Button type='button' color="primary" onClick={() => { deleteUser(userId) }}>

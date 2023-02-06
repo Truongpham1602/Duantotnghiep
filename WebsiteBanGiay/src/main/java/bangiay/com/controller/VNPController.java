@@ -149,6 +149,10 @@ public class VNPController {
 
 	@RequestMapping("/success")
 	public String success(HttpServletResponse response) throws IOException {
+		String vnp_BankTranNo = req.getParameter("vnp_BankTranNo");
+		if (vnp_BankTranNo == null || vnp_BankTranNo.equalsIgnoreCase("")) {
+			return "redirect:" + "http://localhost:3000/order";
+		}
 		String order_Id = req.getParameter("vnp_OrderInfo");
 		orderService.updatePaymentOrder(Integer.parseInt(order_Id));
 //		response.sendRedirect("localhost:3000/success");

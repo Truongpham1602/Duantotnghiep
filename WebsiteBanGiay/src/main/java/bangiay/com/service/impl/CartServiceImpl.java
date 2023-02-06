@@ -18,9 +18,11 @@ import bangiay.com.DTO.MediaDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.DTO.SizeDTO;
 import bangiay.com.dao.CartDao;
+import bangiay.com.dao.ProductDao;
 import bangiay.com.dao.SizeDao;
 import bangiay.com.dao.UserDao;
 import bangiay.com.entity.Cart;
+import bangiay.com.entity.Product;
 import bangiay.com.service.CartService;
 import bangiay.com.service.MediaService;
 import bangiay.com.service.ProductService;
@@ -41,6 +43,9 @@ public class CartServiceImpl implements CartService {
 
 	@Autowired
 	private ProductService proService;
+
+	@Autowired
+	private ProductDao productDao;
 
 	@Autowired
 	private MediaService mediaService;
@@ -95,6 +100,13 @@ public class CartServiceImpl implements CartService {
 		List<CartDTO> lstCartDTO = lstCart.stream().map(cart -> modelMapper.map(cart, CartDTO.class))
 				.collect(Collectors.toList());
 		for (int i = 0; i < lstCart.size(); i++) {
+			Product pro = this.productDao.findById(lstCart.get(i).getSize().getProduct().getId()).get();
+			if (pro.getStatus() == 0 && pro.getId() == lstCart.get(i).getSize().getProduct().getId()
+					&& lstCart.get(i).getStatus() != 2) {
+				lstCart.get(i).setStatus(2);
+				this.cartDao.save(lstCart.get(i));
+				lstCartDTO.get(i).setStatus(2);
+			}
 			lstCartDTO.get(i).setProduct_ID(lstCart.get(i).getSize().getProduct().getId());
 			lstCartDTO.get(i).setName_Product(lstCart.get(i).getSize().getProduct().getName());
 			lstCartDTO.get(i).setColor_Product(lstCart.get(i).getSize().getProduct().getColor());

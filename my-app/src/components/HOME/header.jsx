@@ -169,9 +169,9 @@ const Header = (props) => {
                     <DropdownMenu right>
                         {dataUser.fullName &&
                             <>
-                                {/* <DropdownItem>Tài </DropdownItem>
-                                <DropdownItem>Option 2</DropdownItem>
-                                <DropdownItem divider /> */}
+                                <DropdownItem><NavLink to="/order" >Đơn hàng</NavLink></DropdownItem>
+                                <DropdownItem><NavLink to="/order/type3" >Lịch sử đặt hàng</NavLink></DropdownItem>
+                                <DropdownItem divider />
                                 <DropdownItem onClick={() => { logout() }}> <NavLink to="/login" >Đăng xuất</NavLink></DropdownItem>
                             </>
                         }

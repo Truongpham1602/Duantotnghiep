@@ -3,10 +3,11 @@ import { getDownloadURL, listAll, ref } from 'firebase/storage';
 import moment from 'moment';
 import React from 'react'
 import { confirmAlert } from 'react-confirm-alert';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { storage } from '../../Firebase';
 import { STATUS_ORDER, styleToast } from '../common/const';
-import OrederTemplate from './order.template'
+import BillClientTemplate from './billClient.template'
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export interface OrderItem {
@@ -44,7 +45,7 @@ export interface OrderState {
     totalPrice: number,
 }
 
-export default class OrderComponent extends React.Component {
+export default class BillClientComponent extends React.Component {
     // create state
     state = {
         isLoading: false,
@@ -55,6 +56,7 @@ export default class OrderComponent extends React.Component {
         images: [],
         totalPrice: 0,
     } as OrderState
+
 
     // Get token
     token = localStorage.getItem('token');
@@ -69,14 +71,14 @@ export default class OrderComponent extends React.Component {
     /**
      * componentDidMount
      * call init
-     */
+    */
     componentDidMount(): void {
         this.init()
     }
 
     /**
      * function call api init
-     */
+    */
     init = async () => {
 
         // Set Loadding
@@ -85,11 +87,15 @@ export default class OrderComponent extends React.Component {
             isLoading: true
         })
 
+        // Call Api userLogin
+        const user = await axios.get(`http://localhost:8080/auth/information`, this.config
+        );
         // Call Api order/findAll
         const res = await axios.get(
-            `${process.env.REACT_APP_API_KEY}/order/findAll`, this.config
+            `${process.env.REACT_APP_API_KEY}/order/findOrderByUser_Id/?user_Id=${user.data.id}`, this.config
         );
 
+        console.log(res.data)
 
         // Map lstOrder
         const lstOrder = res.data && res.data.map((item: OrderItem) => {
@@ -149,7 +155,7 @@ export default class OrderComponent extends React.Component {
     render() {
         return (
             <>
-                <OrederTemplate self={this} />
+                <BillClientTemplate self={this} />
             </>
         )
     }
@@ -244,6 +250,7 @@ export default class OrderComponent extends React.Component {
      * @param id 
      * Delivered order
      */
+
     handDeliveredOrder = (id: number) => {
         confirmAlert({
             title: '',
@@ -269,6 +276,5 @@ export default class OrderComponent extends React.Component {
                 },
             ]
         });
-
     }
 }

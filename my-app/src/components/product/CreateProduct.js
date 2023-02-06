@@ -116,7 +116,7 @@ const CreateProduct = (props) => {
       } else {
         if (id == "color") {
         } else if (id == "price") {
-          if (copyProduct[id].trim().length > 0 && gia.test(event.target.value) == false || Number(copyProduct[id]) < 1000) {
+          if (copyProduct[id].trim().length > 0 && gia.test(event.target.value) == false || Number(copyProduct[id]) < 5000) {
             ch0["price"] = "Giá phải trên 1k VNĐ và phải là số";
           } else if (copyProduct[id].trim().length == 0) {
             ch0["price"] = "Giá không được để trống";
