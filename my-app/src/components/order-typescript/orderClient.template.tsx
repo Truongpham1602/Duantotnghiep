@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 import { Container, Table } from 'reactstrap';
-import OrderClientComponent, { OrderDetailItem, OrderItem } from './orderClient.component';
+import OrderClientComponent, { OrderDetailItem } from './orderClient.component';
 import '../css/styles.css';
 import { Button, Modal, Row } from 'react-bootstrap';
-import { BsBagCheck, BsCheck, BsCheckCircle, BsFillEyeFill, BsTruck, BsXCircle } from "react-icons/bs";
+import { BsBagCheck, BsCheck, BsCheckCircle, BsFillEyeFill, BsTruck, BsXCircle, BsBank2 } from "react-icons/bs";
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 import { STATUS_ORDER } from '../common/const';
 import EnhancedTable from '../common/table/table';
@@ -60,15 +60,14 @@ export default function OrederClientTemplate({ self }: OrederClientTemplate) {
             disablePadding: false,
             label: 'Hành động',
             component: (item: any) => {
-                console.log(item);
 
                 return <>
                     <button onClick={() => self.openModalDetail(item.id)}>
                         <BsFillEyeFill title='Xem chi tiết' />
                     </button>
-                    {/* {item.status === 2 && <button onClick={() => self.handDeliveredOrder(item.id)}>
-                        <BsTruck title='Xác nhận đang giao hàng' />
-                    </button>} */}
+                    {item.status === 1 && <button onClick={() => self.paymentOrder(item.id)}>
+                        <BsBank2 title='Thanh toán đơn hàng' />
+                    </button>}
                     {/* {item.status === 3 && <button onClick={() => self.handDeliveredOrder(item.id)}>
                                                 <BsCheckCircle title='Xác nhận đã giao hàng' />
                                             </button>} */}

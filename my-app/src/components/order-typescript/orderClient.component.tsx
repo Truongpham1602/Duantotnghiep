@@ -207,6 +207,28 @@ export default class OrderClientComponent extends React.Component {
         })
     }
 
+    paymentOrder = async (id: number,) => {
+        const res = await axios.get(
+            `${process.env.REACT_APP_API_KEY}/order/find/${id}`, this.config
+        ) as any;
+
+        // Call Api order/find/id
+        const resDetail = await axios.get(
+            `${process.env.REACT_APP_API_KEY}/orderDetail/findByOrder_Id/${id}`, this.config
+        );
+
+        let totalPrice = 0
+        const orderDetailList = resDetail.data.map((item: any) => {
+            totalPrice += item.price * item.quantity
+            return {
+                ...item,
+                imageUrl: this.getUrlImage(item.image)
+            }
+        })
+
+        window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${res.data.telephone}&txt_billing_email=${res.data.email}&txt_billing_fullname=${res.data.nameRecipient}&txt_inv_addr1=${res.data.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=${id}`;
+    }
+
     getUrlImage = (image: string) => {
         const item = this.state.images.find(e => e.nameImg === image);
         return item ? item.url : ''
