@@ -44,10 +44,9 @@ const Voucher = () => {
 
     const editRole = async (id) => {
         try {
-            const res = await axios.get(`http://localhost:8080/role/update/${id}`,
+            const res = await axios.get(`http://localhost:8080/role/get/${id}`,
                 { headers: { "Authorization": `Bearer ${token}` } })
             setRole(res.data)
-            console.log(res.data);
         } catch (error) {
             console.log(error.message)
         }

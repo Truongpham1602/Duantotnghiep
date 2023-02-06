@@ -23,7 +23,7 @@ import {
 // class UpdateUser extends Component {
 const UpdateUser = (props) => {
   // const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
-
+  const token = localStorage.getItem('token');
   const {
     isUpdateModal,
     toggleModal,
@@ -50,7 +50,6 @@ const UpdateUser = (props) => {
     setUser(props.user);
   }, [props.user]);
 
-  const token = localStorage.getItem('token');
   const [lstRole, setlstRole] = useState([]);
   const { data: roles } = useCallGetAPI(
     `http://localhost:8080/role/get`, { headers: { "Authorization": `Bearer ${token}` } }
@@ -194,10 +193,15 @@ const UpdateUser = (props) => {
       }
 
       if (validForm) {
-
-        const res = await axios.put(
-          `http://localhost:8080/admin/user/put/${user.id}`,
-          user
+        axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
+        let config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        }
+        const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`,
+          config, user
         );
         let data = res && res.data ? res.data : [];
         data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
@@ -328,7 +332,8 @@ const UpdateUser = (props) => {
                         }
                       >
                         {lstRole.map((item, index) => {
-                          if (item.id === user.roleId) {
+                          let roleID = { ...user.role }
+                          if (item.id === roleID.id) {
                             return (
                               <option selected key={index} value={item.id}>
                                 {item.description}
