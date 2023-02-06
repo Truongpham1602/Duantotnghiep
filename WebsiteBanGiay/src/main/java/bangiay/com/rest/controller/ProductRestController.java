@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,39 +27,45 @@ public class ProductRestController {
 	@Autowired
 	ProductService productService;
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/index")
 	public List<ProductDTO> findAll() {
 		return productService.findAll();
 	}
 
-	
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/select")
 	public Page<ProductDTO> findAll(@RequestParam(name = "size", defaultValue = "7") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page) {
 		return productService.findAll(size, page);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_EDIT') or hasPermission(#req, 'ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") int id) {
 		productService.delete(id);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PostMapping("/post")
 	public ProductDTO post(@RequestBody ProductDTO productDTO) {
 		return productService.create(productDTO);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PutMapping("/put/{id}")
 	public ProductDTO put(@PathVariable("id") Integer id, @RequestBody ProductDTO productDTO) {
 		productDTO.setId(id);
 		return productService.update(productDTO);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/find/{id}")
 	public ProductDTO finByID(@RequestBody @PathVariable("id") int id, ProductDTO productDTO) {
 		return productService.finById(id);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PostMapping("/search")
 	public Page<ProductDTO> search(@RequestParam(name = "size", defaultValue = "7") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -66,11 +73,13 @@ public class ProductRestController {
 		return productService.searchByKeyword(size, page, keyword);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/updateStatusFalse/{id}")
 	public void updateStatusFalse(@PathVariable("id") int id) {
 		productService.updateStatusFalse(id);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PostMapping("/searchClient")
 	public Page<ProductDTO> searchClient(@RequestParam(name = "size", defaultValue = "11") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -79,11 +88,13 @@ public class ProductRestController {
 		return productService.searchByKeywordAndCate_Id(size, page, keyword, cate_Id);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/findTop5New")
 	public List<ProductDTO> findTop5New() {
 		return this.productService.top5NewProduct();
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/findTop3Bill")
 	public List<ProductDTO> findTop3Bill() {
 		return this.productService.top3BillProduct();

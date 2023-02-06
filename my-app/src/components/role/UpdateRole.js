@@ -122,8 +122,8 @@ const UpdateRole = (props) => {
                 { headers: { "Authorization": `Bearer ${token}` } })
             let data = (res && res.data) ? res.data : [];
             toggle()
-            updateData(data, 'update')
             notifySuccess("Cập nhập thành công")
+            updateData(data, 'update')
         } catch (error) {
             console.log(error.message);
         }

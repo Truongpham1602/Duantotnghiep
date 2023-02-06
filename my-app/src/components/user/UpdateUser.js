@@ -207,8 +207,8 @@ const UpdateUser = (props) => {
         data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");
         data.modified = moment(data.modified).format("DD/MM/YYYY HH:mm:ss");
         toggle();
-        updateData(data, "update");
         notifySuccess("Cập nhật thành công");
+        updateData(data, "update");
       }
     } catch (error) {
       console.log(error.message);
