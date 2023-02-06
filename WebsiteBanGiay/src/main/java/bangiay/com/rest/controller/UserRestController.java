@@ -39,19 +39,19 @@ public class UserRestController {
 		return userService.findAll();
 	}
 
-	@PreAuthorize("hasPermission('USER_EDIT')")
+	@PreAuthorize("hasPermission('USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable("id") int id) {
 		userService.delete(id);
 	}
 
-	@PreAuthorize("hasPermission(#req, 'USER_EDIT')")
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PostMapping("/post")
 	public UserDTO post(@RequestBody UserDTO userDTO) {
 		return userService.create(userDTO);
 	}
 
-	@PreAuthorize("hasPermission(#req, 'USER_EDIT')")
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PutMapping("/put/{id}")
 	public UserDTO put(@PathVariable("id") Integer id, @RequestBody UserDTO userDTO) {
 		userDTO.setId(id);
@@ -59,13 +59,13 @@ public class UserRestController {
 		return userService.update(userDTO);
 	}
 
-	@PreAuthorize("hasPermission(#req, 'USER_VIEW')")
+	@PreAuthorize("hasPermission(#req, 'USER_VIEW') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/find/{id}")
 	public UserDTO finByID(@RequestBody @PathVariable("id") int id, UserDTO userDTO) {
 		return userService.finById(id);
 	}
 	
-	@PreAuthorize("hasPermission(#req, 'USER_EDIT')")
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PutMapping("/setStatusFalse/{id}")
 	public UserDTO setStatusFalse(@PathVariable Integer id) {
 		return userService.setStatusFalse(id);

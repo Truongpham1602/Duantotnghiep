@@ -45,7 +45,7 @@ const Home = () => {
         let d5 = await axios.get(
           `http://localhost:8080/nofilter/product/findTop5New`
         );
-        setTop5ProNew(d5.data);
+        setTop5ProNew(d5.data.reverse());
         if (token) {
           let user = await axios.get(`http://localhost:8080/auth/information`,
             { headers: { "Authorization": `Bearer ${token}` } }
@@ -81,6 +81,13 @@ const Home = () => {
   useEffect(() => {
     searchButton()
   }, [])
+
+  const logOut = () => {
+    localStorage.removeItem('token');
+    setDataUser({})
+    setCart([])
+    navigate("/");
+  }
 
   const handleInputSearch = async (e) => {
     if (e.target.value == 0) {
@@ -145,9 +152,16 @@ const Home = () => {
 
   const nextProductDetail = async (id) => {
     if (token) {
+      axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
+      let config = {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      }
       const res = await axios.get(
         `http://localhost:8080/admin/product/find/${id}`,
-        { headers: { "Authorization": `Bearer ${token}` } }
+        config
       );
       setProduct(res.data);
       navigate(`/productOne/${id}`);
@@ -221,7 +235,7 @@ const Home = () => {
       <ToastContainer />
       <Header dataCart={cart} imageUrls={imageUrls} searchButton={searchButton}
         handleInputSearch={handleInputSearch} keyword={keyword}
-        dataUser={dataUser}
+        dataUser={dataUser} logOut={logOut}
       // clearUser={clearUser}
       />
       <Outlet context={[nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate, top3ProBill, top5ProNew]} />

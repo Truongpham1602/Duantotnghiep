@@ -22,6 +22,8 @@ import "react-toastify/dist/ReactToastify.css";
 const Product_Rest_API_URL = "http://localhost:8080/admin/product";
 
 const CreateProduct = (props) => {
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
   const {
     isCreateModal,
     toggleModal,
@@ -37,7 +39,7 @@ const CreateProduct = (props) => {
   const [lstsizeSelect, setLstSizeSelect] = useState([]);
   const [product, setProduct] = useState({
     name: "",
-    color: "Trắng",
+    color: "",
     price: "",
     quantity: "",
     categoryId: "",
@@ -55,44 +57,7 @@ const CreateProduct = (props) => {
   const [lstCate, setLstCate] = useState([]);
   const [cate, setCate] = useState("");
 
-  const colors = [
-    {
-      id: 'Trắng',
-      tital: 'Trắng'
-    },
-    {
-      id: 'Đỏ',
-      tital: 'Đỏ'
-    },
-    {
-      id: 'Xanh dương',
-      tital: 'Xanh dương'
-    },
-    {
-      id: 'Cam',
-      tital: 'Cam'
-    },
-    {
-      id: 'Đen',
-      tital: 'Đen'
-    },
-    {
-      id: 'Hồng',
-      tital: 'Hồng'
-    },
-    {
-      id: 'Nâu',
-      tital: 'Nâu'
-    },
-    {
-      id: 'Tím',
-      tital: 'Tím'
-    },
-    {
-      id: 'Xanh lá',
-      tital: 'Xanh lá'
-    },
-  ]
+
 
   const handleOnchangeinput = (event, id) => {
     let soluong = /^\d+$/;
@@ -180,6 +145,20 @@ const CreateProduct = (props) => {
     toast.error(text, styleToast);
   };
 
+  const checkAddPro = async () => {
+
+    console.log(product.name);
+    const res = await axios.post(
+      `http://localhost:8080/admin/product/findByName`, { name: product.name },
+      { headers: { "Authorization": `Bearer ${token}` } }
+    );
+    if (res.data) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   const styleToast = {
     position: "top-right",
     autoClose: 5000,
@@ -222,6 +201,11 @@ const CreateProduct = (props) => {
       ) {
         return;
       }
+      if (checkAddPro()) {
+        notifyWarning("Sản phẩm đã tồn tại");
+        return
+      }
+
       const nums = [
         data.size1,
         data.size2,
@@ -390,7 +374,7 @@ const CreateProduct = (props) => {
     toggleModal();
     setProduct({
       name: "",
-      color: "Trắng",
+      color: "",
       price: "",
       quantity: "",
       categoryId: "",
@@ -486,28 +470,21 @@ const CreateProduct = (props) => {
                     <FormGroup>
                       <Label for="color">Màu</Label>
                       <div>
-                        <select
+                        <input
                           style={{
                             border: "1px solid",
                             width: "100%",
                             borderRadius: "5px",
                           }}
-                          id="namecate"
-                          name="namecate"
+                          id="name"
+                          name="name"
                           placeholder=""
-                          type="select"
+                          type="text"
+                          value={product.color}
                           onChange={(event) =>
                             handleOnchangeinput(event, "color")
                           }
-                        >
-                          {colors.map((item, index) => {
-                            return (
-                              <option key={item.id} value={item.id}>
-                                {item.tital}
-                              </option>
-                            );
-                          })}
-                        </select>
+                        />
                         {check.color && check.color.length > 0 && (
                           <p className="checkError">{check.color}</p>
                         )}
@@ -961,7 +938,7 @@ const CreateProduct = (props) => {
               color="primary"
               type="submit"
               onClick={() => {
-                createProduct();
+                // createProduct();
               }}
             >
               Thêm Mới

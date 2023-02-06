@@ -40,6 +40,12 @@ const Voucher = () => {
             copydata.unshift(res);
             setData(copydata);
         }
+        else if (type === 'update') {
+            let copydata = dataRole;
+            let getIndex = copydata.findIndex((p) => { return p.id === res.id });
+            copydata.fill(res, getIndex, getIndex + 1);
+            setData(copydata)
+        }
     }
 
     const editRole = async (id) => {
@@ -67,11 +73,8 @@ const Voucher = () => {
                 let copyList = [...dataRoles]
                 let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
                 copyList.fill(res.data, getIndex, getIndex + 1);
-                // let copyList = dataRoles;
-                // copyList = copyList.filter(item => item.id !== id)
                 setData(copyList)
-                console.log(copyList);
-                notifySuccess("Bạn đã tạm dừng thành công !!")
+                notifySuccess("Bạn đã xóa thành công !!")
                 toggleNested()
             }
             updateStatusFalse()

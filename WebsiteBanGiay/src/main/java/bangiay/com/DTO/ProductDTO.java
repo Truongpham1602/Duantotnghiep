@@ -1,6 +1,7 @@
 package bangiay.com.DTO;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.Data;
 
@@ -23,4 +24,5 @@ public class ProductDTO {
 	private String image;
 	private Object sizes;
 	private Object medias;
+	private List<ColorDTO> colors;
 }

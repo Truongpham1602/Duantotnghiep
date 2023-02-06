@@ -14,8 +14,29 @@ import {
 import { NavLink } from "react-router-dom";
 import "../css/login.css";
 import { Button } from "reactstrap";
+import { ToastContainer, toast } from 'react-toastify';
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
+
+  const styleToast = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  }
+  const notifySuccess = (text) => {
+    toast.success(text, styleToast)
+  };
+  const notifyWarning = (text) => {
+    toast.warning(text, styleToast);
+  };
+  const notifyError = (text) => {
+    toast.error(text, styleToast);
+  };
 
   const handleOnchangeInput = (e, id) => {
     let copyUser = { ...user };
@@ -34,17 +55,21 @@ const Login = () => {
       localStorage.setItem("role", res.data.role);
       console.log(res.data);
       if (res.data.role === "CUSTOMER") {
+        notifySuccess("Đăng nhập thành công")
         navigate("/");
       } else {
+        notifySuccess("Đăng nhập thành công")
         navigate("/admin");
       }
     } catch (error) {
+      notifyError("Đăng nhập thất bại")
       console.log(error);
     }
   };
 
   return (
     <div className="login">
+      <ToastContainer />
       <MDBContainer fluid style={{ height: "40rem" }}>
         <MDBRow className="d-flex justify-content-center align-items-center h-100">
           <MDBCol col="12">

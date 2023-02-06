@@ -20,9 +20,10 @@ import cart1 from '../image/cart/cart-1.jpg'
 import cart2 from '../image/cart/cart-2.jpg'
 import cart3 from '../image/cart/cart-3.jpg'
 import { Navbar } from "react-bootstrap";
+import { ToastContainer, toast } from 'react-toastify';
 const Header = (props) => {
     // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
-    const { dataCart, imageUrls, searchButton, handleInputSearch, keyword, dataUser } = props
+    const { dataCart, imageUrls, searchButton, handleInputSearch, keyword, dataUser, logOut } = props
     const [dataUser1, setDataUser1] = useState()
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
@@ -37,6 +38,27 @@ const Header = (props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
+
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    }
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast)
+    };
+    // const notifyWarning = (text) => {
+    //     toast.warning(text, styleToast);
+    // };
+    // const notifyError = (text) => {
+    //     toast.error(text, styleToast);
+    // };
+
 
     useEffect(() => {
         setDataUser1(dataUser);
@@ -82,6 +104,7 @@ const Header = (props) => {
         setcart(false)
         setnavbar(false)
     }
+
     const navigate = useNavigate();
     const logout = () => {
         localStorage.removeItem('name');
@@ -89,6 +112,7 @@ const Header = (props) => {
         localStorage.removeItem('role');
         setDataUser1(null);
         // clearUser();
+        notifySuccess("Đăng xuất thành công")
         navigate("/");
     }
     // document.querySelector('#login-btn').onclick = () =>{
@@ -129,7 +153,7 @@ const Header = (props) => {
 
     return (
         <header class="header">
-
+            <ToastContainer />
             {/* <a href="home.html" class="logo"> <i class="fas fa-shopping-basket"></i> laTra shoes </a> */}
             <NavLink to="/" class="logo"><img src={logo} alt="" width="50px" height="50px" /> laTra shoes </NavLink>
             <nav class="navbar">
@@ -172,7 +196,7 @@ const Header = (props) => {
                                 <DropdownItem><NavLink to="/order" >Đơn hàng</NavLink></DropdownItem>
                                 <DropdownItem><NavLink to="/order/type3" >Lịch sử đặt hàng</NavLink></DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem onClick={() => { logout() }}> <NavLink to="/login" >Đăng xuất</NavLink></DropdownItem>
+                                <DropdownItem onClick={() => { logOut() }}>Đăng xuất</DropdownItem>
                             </>
                         }
                         {!dataUser.fullName &&

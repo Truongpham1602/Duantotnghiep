@@ -33,37 +33,39 @@ const ProductList = () => {
             <section class="product" id="product">
                 <h1 class="heading">sản phẩm <span>mới nhất</span></h1>
                 <div class="box-container">
-                    {top5ProNew.map(item => {
-                        return (
-                            <div class="box">
-                                <div class="content">
-                                    {imageUrls.map((img) => {
-                                        return (
-                                            <>
-                                                {img.nameImg === item.image &&
-                                                    <img src={img.url} style={{ width: "300px", height: "250px" }} />
-                                                }
-                                            </>
-                                        )
-                                    })}
-                                    <h3>{item.name}</h3>
-                                    <div class="price">{item.price}</div>
-                                    <div class="stars">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                    {top5ProNew.map((item, index) => {
+                        if (index <= 5) {
+                            return (
+                                <div class="box">
+                                    <div class="content">
+                                        {imageUrls.map((img) => {
+                                            return (
+                                                <>
+                                                    {img.nameImg === item.image &&
+                                                        <img src={img.url} style={{ width: "300px", height: "250px" }} />
+                                                    }
+                                                </>
+                                            )
+                                        })}
+                                        <h3>{item.name}</h3>
+                                        <div class="price">{item.price}</div>
+                                        <div class="stars">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
                                     </div>
+                                    <div class="icons">
+                                        <a href="#" class="fa fa-heart"></a>
+                                        <a href="#" class="fa fa-cart-plus"></a>
+                                        <a href="#" class="fa fa-eye"></a>
+                                    </div>
+                                    <a class="btn" onClick={() => nextProductDetail(item.id)}>Add To Cart</a>
                                 </div>
-                                <div class="icons">
-                                    <a href="#" class="fa fa-heart"></a>
-                                    <a href="#" class="fa fa-cart-plus"></a>
-                                    <a href="#" class="fa fa-eye"></a>
-                                </div>
-                                <a class="btn" onClick={() => nextProductDetail(item.id)}>Add To Cart</a>
-                            </div>
-                        )
+                            )
+                        }
                     })}
                 </div>
             </section>
