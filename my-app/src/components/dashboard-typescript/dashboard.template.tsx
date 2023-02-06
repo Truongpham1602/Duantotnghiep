@@ -176,32 +176,6 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
 
     const [value, setValue] = React.useState(0);
 
-    function createData(name: any, calories: any, fat: any, carbs: any) {
-        return {
-            name,
-            calories,
-            fat,
-            carbs,
-        };
-    }
-
-    const rows = [
-        createData('Cupcake', 305, 3.7, 67),
-        createData('Donut', 452, 25.0, 51),
-        createData('Eclair', 262, 16.0, 24),
-        createData('Frozen yoghurt', 159, 6.0, 24),
-        createData('Gingerbread', 356, 16.0, 49),
-        createData('Honeycomb', 408, 3.2, 87),
-        createData('Ice cream sandwich', 237, 9.0, 37),
-        createData('Jelly Bean', 375, 0.0, 94),
-        createData('KitKat', 518, 26.0, 65),
-        createData('Lollipop', 392, 0.2, 98),
-        createData('Marshmallow', 318, 0, 81),
-        createData('Nougat', 360, 19.0, 9),
-        createData('Oreo', 437, 18.0, 63),
-    ];
-
-
     const headCells = [
         {
             id: 'id',
@@ -214,6 +188,17 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
             align: 'left',
             disablePadding: false,
             label: 'Tên sản phẩm',
+        },
+        {
+            id: 'imageUrl',
+            align: 'center',
+            disablePadding: false,
+            label: 'Ảnh sản phẩm',
+            component: (item: any) => {
+                return <>
+                    <img src={item.imageUrl} width="150px" height="auto" />
+                </>
+            }
         },
         {
             id: 'quantity',
@@ -236,34 +221,40 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
 
             <Container>
                 <Row className='dashboard-row'>
-                    <Col md={12}>
-                        <Box sx={{ width: 500 }}>
-                            <BottomNavigation
-                                showLabels
-                                value={value}
-                                onChange={(event, newValue) => {
-                                    setValue(newValue);
-                                }}
-                            >
-                                <BottomNavigationAction label={`${state.count[0] && state.count[0].name}(${state.count[0] && state.count[0].count})`} icon={<PeopleIcon />} />
-                                <BottomNavigationAction label={`${state.count[1] && state.count[1].name}(${state.count[1] && state.count[1].count})`} icon={<StorageIcon />} />
-                                <BottomNavigationAction label={`${state.count[2] && state.count[2].name}(${state.count[2] && state.count[2].count})`} icon={<EmailIcon />} />
-                            </BottomNavigation>
+                    <Col md={12} className='d-flex'>
+                        <Box sx={{ width: 200 }}>
+                            <Link to={'#'} >
+                                <div className='box-icon'><PeopleIcon /></div>
+                                <div className='box-content'>{`${state.count[0]?.name || ''}(${state.count[0]?.count || ''})`}</div>
+                            </Link>
+                        </Box>
+                        <Box sx={{ width: 200 }}>
+                            <Link to={'/admin/product'} >
+                                <div className='box-icon'><StorageIcon /></div>
+                                <div className='box-content'>{`${state.count[1]?.name || ''}(${state.count[1]?.count || ''})`}</div>
+                            </Link>
+                        </Box>
+
+                        <Box sx={{ width: 200 }}>
+                            <Link to={'/admin/order'} >
+                                <div className='box-icon'><EmailIcon /></div>
+                                <div className='box-content'>{`${state.count[2]?.name || ''}(${state.count[2]?.count || ''})`}</div>
+                            </Link>
                         </Box>
                     </Col>
                 </Row>
                 <Row className='dashboard-row'>
                     <Col md={3}>
-                        <BoxInfo color='green' title='Trong 1 ngày' content={`${state.revenue[0]?.money} VND`} percen={state.revenue[0]?.percen} />
+                        <BoxInfo color='green' title='Trong 1 ngày' content={`${state.revenue[0]?.money || ''} VND`} percen={state.revenue[0]?.percen || 0} />
                     </Col>
                     <Col md={3}>
-                        <BoxInfo color='red' title='Trong 1 tuần' content={`${state.revenue[1]?.money} VND`} percen={state.revenue[1]?.percen} />
+                        <BoxInfo color='red' title='Trong 1 tuần' content={`${state.revenue[1]?.money || ''} VND`} percen={state.revenue[1]?.percen || 0} />
                     </Col>
                     <Col md={3}>
-                        <BoxInfo color='yellow' title='Trong 1 tháng' content={`${state.revenue[2]?.money} VND`} percen={state.revenue[2]?.percen} />
+                        <BoxInfo color='yellow' title='Trong 1 tháng' content={`${state.revenue[2]?.money || ''} VND`} percen={state.revenue[2]?.percen || 0} />
                     </Col>
                     <Col md={3}>
-                        <BoxInfo color='blue' title='Trong 1 năm' content={`${state.revenue[3]?.money} VND`} percen={state.revenue[3]?.percen} />
+                        <BoxInfo color='blue' title='Trong 1 năm' content={`${state.revenue[3]?.money || ''} VND`} percen={state.revenue[3]?.percen || 0} />
                     </Col>
                 </Row>
 
@@ -281,7 +272,7 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                     <Col md={6} className='dashboadr-order'>
                         <Row>
                             <Col md={6} className='order-box br-r-2'>
-                                <Link to={'#'}>
+                                <Link to={'/admin/order?status=1'}>
                                     <div className='order-icon'><PlaylistAddIcon /></div>
                                     <div className='order-number'>
                                         {state.countOrder[0]?.value}
@@ -293,7 +284,7 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                             </Col>
 
                             <Col md={6} className='order-box'>
-                                <Link to={'#'}>
+                                <Link to={'/admin/order?status=2'}>
                                     <div className='order-icon'>
                                         <LocalShippingIcon />
                                     </div>
@@ -307,7 +298,7 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                             </Col>
 
                             <Col md={6} className='order-box br-r-2 br-t-2'>
-                                <Link to={'#'}>
+                                <Link to={'/admin/order?status=3'}>
                                     <div className='order-icon'>
                                         <CheckCircleOutlineIcon />
                                     </div>
@@ -321,7 +312,7 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                             </Col>
 
                             <Col md={6} className='order-box br-t-2'>
-                                <Link to={'#'}>
+                                <Link to={'/admin/order?status=0'}>
                                     <div className='order-icon'>
                                         <CancelIcon />
                                     </div>

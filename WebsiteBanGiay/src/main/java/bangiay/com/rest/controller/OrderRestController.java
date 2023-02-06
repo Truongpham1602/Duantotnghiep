@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.OrderDTO;
 import bangiay.com.doMain.constant;
+import bangiay.com.entity.Order;
 import bangiay.com.service.OrderService;
 
 @RestController
@@ -40,6 +41,10 @@ public class OrderRestController {
 		return ResponseEntity.ok(orderService.findAll(pageable));
 	}
 
+	@GetMapping("/search")
+	public List<Order> findByStatus(@RequestParam Integer status) {
+		return this.orderService.findByStatus(status);
+	}
 //	@DeleteMapping("/delete/{id}")
 //		public void delete(@PathVariable("id") Integer id) {
 //	}

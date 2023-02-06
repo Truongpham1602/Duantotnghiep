@@ -58,6 +58,14 @@ public class OrderSeviceImpl implements OrderService {
 	}
 
 	@Override
+	public List<Order> findByStatus(Integer status) {
+		if (status == 99)
+			return orderDao.findAll();
+		else
+			return orderDao.findByStatus(status);
+	}
+
+	@Override
 	public Page<OrderDTO> findAll(Pageable pageable) {
 		return null;
 	}
