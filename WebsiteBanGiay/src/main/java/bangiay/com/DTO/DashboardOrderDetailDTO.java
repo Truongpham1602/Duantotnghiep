@@ -12,4 +12,5 @@ public class DashboardOrderDetailDTO {
 	private String name;
 	private Integer quantity = 0;
 	private Double revenue;
+	private String image = "";
 }

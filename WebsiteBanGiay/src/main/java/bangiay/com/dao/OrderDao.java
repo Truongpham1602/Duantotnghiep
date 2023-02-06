@@ -23,6 +23,9 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
 //	@Query("select o from orders o where o.STATUS=?")
 //	List<Orders> getOrderStatus(Integer status);
 
+	@Query("SELECT o FROM Order o WHERE o.status=?1")
+	List<Order> findByStatus(Integer status);
+
 	// Count all order
 	@Query("SELECT COUNT(o) FROM Order o")
 	long countAllOrder();
