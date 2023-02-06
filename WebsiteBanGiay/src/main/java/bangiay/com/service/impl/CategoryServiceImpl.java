@@ -32,8 +32,10 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void deleteById(Integer id) {
-		categoryDAO.deleteById(id);
-
+		Category cate = new Category();
+		cate.setId(id);
+		cate.setStatus(0);
+		this.categoryDAO.save(cate);
 	}
 
 	@Override

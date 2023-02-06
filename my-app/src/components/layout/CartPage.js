@@ -397,12 +397,6 @@ const Cart = () => {
                         <Link className="breadcrumb-item" to={"/"}>
                             Trang Chủ
                         </Link>
-                        <Link className="breadcrumb-item" to={"cart"}>
-                            Đơn hàng
-                        </Link>
-                        <Link className="breadcrumb-item" to={"cart"}>
-                            Đơn hàng đã nhận
-                        </Link>
                     </ul>
                     <p className="count">Có {totalPro} Sản Phẩm Trong Giỏ Hàng</p>
                 </div>

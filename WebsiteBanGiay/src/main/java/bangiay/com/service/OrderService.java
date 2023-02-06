@@ -28,7 +28,9 @@ public interface OrderService {
 	public OrderDTO findById(Integer id);
 
 	// Tìm danh sách đơn hàng theo user_Id hoặc SĐT
-	public List<OrderDTO> findByUser_IdOrTelephone(String user_idOrTelephone);
+	public List<OrderDTO> findByUser_IdOrTelephone(Integer user_Id, String telephone);
+
+	public List<OrderDTO> findByUser_Id(Integer user_Id);
 
 	List<OrderDTO> updateDelivered(Integer user_IdOrTelephone);
 

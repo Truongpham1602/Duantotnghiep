@@ -138,10 +138,10 @@ public class OrderSeviceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderDTO> findByUser_IdOrTelephone(String user_idOrTelephone) {
-		List<Order> orders = this.orderDao.findOrderByUser_IdOrTelephone(user_idOrTelephone);
+	public List<OrderDTO> findByUser_IdOrTelephone(Integer user_Id, String telephone) {
+		List<Order> orders = this.orderDao.findOrderByUser_IdOrTelephone(user_Id, telephone);
 
-		return null;
+		return orders.stream().map(o -> modelMapper.map(o, OrderDTO.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -152,6 +152,14 @@ public class OrderSeviceImpl implements OrderService {
 	@Override
 	public Order updateOrderWithStatus(Integer id, Integer status) {
 		return null;
+	}
+
+	@Override
+	public List<OrderDTO> findByUser_Id(Integer user_Id) {
+		List<Order> orders = this.orderDao.findOrderByUser_Id(user_Id);
+
+		return orders.stream().map(o -> modelMapper.map(o, OrderDTO.class)).collect(Collectors.toList());
+
 	}
 
 }

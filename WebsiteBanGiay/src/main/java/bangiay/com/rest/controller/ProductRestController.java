@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.service.ProductService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("admin/product")
 public class ProductRestController {
