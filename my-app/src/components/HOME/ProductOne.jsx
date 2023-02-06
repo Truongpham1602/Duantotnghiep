@@ -29,6 +29,8 @@ const ProductOne = () => {
     const [imageUrls, setImageUrls] = useState([]);
     const [size_Id, setSize_Id] = useState()
     const [sizes, setSizes] = useState([
+    ])
+    const sizeList = [
         {
             title: 36,
             status: false
@@ -72,12 +74,23 @@ const ProductOne = () => {
         {
             title: 46,
             status: false
-        }
-    ])
+        }]
+
     const [quantitySize, setQuantitySize] = useState()
     const [valueNumberinout, setValueNumberInout] = useState(1)
     const [product, setProduct] = useState({})
     const navigate = useNavigate();
+
+    const setShowSize = (product) => {
+        product.sizes?.map(item => {
+            let copydata = sizeList;
+            let getIndex = copydata.findIndex((p) => { return p.title == item.size });
+            let size = { id: item.id, title: item.size, quantity: item.quantity, status: true }
+            copydata.fill(size, getIndex, getIndex + 1);
+            setSizes(copydata)
+        })
+    }
+
 
     const findPro = async () => {
         if (token) {
@@ -86,7 +99,13 @@ const ProductOne = () => {
                     `http://localhost:8080/admin/product/find/${id}`,
                     { headers: { "Authorization": `Bearer ${token}` } }
                 );
-                setProduct(res.data);
+                const resp = await axios.post(
+                    `http://localhost:8080/admin/product/findByName`, { name: res.data.name },
+                    { headers: { "Authorization": `Bearer ${token}` } }
+                );
+                setProduct(resp.data);
+                setShowSize(resp.data)
+                setQuantitySize(resp.data.quantity)
             } catch (error) {
                 console.log(error);
             }
@@ -113,18 +132,24 @@ const ProductOne = () => {
         });
     }, [])
 
-    useEffect(() => {
-        product.sizes?.map(item => {
-            let copydata = sizes;
-            let getIndex = copydata.findIndex((p) => { return p.title == item.size });
-            let size = { id: item.id, title: item.size, quantity: item.quantity, status: true }
-            copydata.fill(size, getIndex, getIndex + 1);
-            setSizes(copydata)
-        })
-    }, [product])
+
     // const bigImgClick = () => {
     //     document.querySelector(".product-content-left-big-img").style.display = "none"
     // }
+
+    const findByNameAndColor = async (event) => {
+        const res = await axios.post(`http://localhost:8080/admin/product/findByNameAndColor`, { name: product.name, color: event.target.value })
+        setProduct(res.data ? res.data : [])
+        setShowSize(res.data ? res.data : [])
+        setSize_Id()
+        setValueNumberInout(1)
+        setQuantitySize(res.data.quantity)
+        let btnSize = document.getElementsByClassName('btn')
+        for (let i = 0; i < btnSize.length; i++) {
+            btnSize.item(i).classList.remove('acitve-Size');
+        }
+        // setShowColor(res.data ? res.data : [])
+    }
 
     const binhluanClick = () => {
         document.querySelector(".product-buttom-right-content-chiTiet").style.display = "none"
@@ -214,8 +239,42 @@ const ProductOne = () => {
                         <div className="product-content-right-product-name">
                             <h1>{product.name}</h1>
                         </div>
+                        <div className="product-content-right-product-name">
+                            Màu:
+                            <select
+                                style={{
+                                    border: "1px solid",
+                                    width: "70%",
+                                    borderRadius: "5px",
+                                }}
+                                id="namecate"
+                                name="namecate"
+                                placeholder=""
+                                type="select"
+                                onChange={(event) =>
+                                    findByNameAndColor(event)
+                                }
+                            >
+                                {product?.colors?.map((item) => {
+                                    if (item.color === product.color) {
+                                        return (
+                                            <option key={item.color} selected value={item.color}>
+                                                {item.color}
+                                            </option>
+                                        );
+                                    } else {
+                                        return (
+                                            <option key={item.color} value={item.color} >
+                                                {item.color}
+                                            </option>
+                                        );
+                                    }
+                                })}
+                            </select>
+                            <p>Loại: {product.name_cate}</p>
+                        </div>
                         <div className="product-content-right-product-price">
-                            <p>{product.price} VND<sup></sup></p>
+                            <p>Giá: {product.price} VND<sup></sup></p>
                         </div>
                         {/* <div className="product-content-right-product-color">
                             <p className="color"><span className="colorOne">Màu Sắc: </span>Xanh cổ vịt nhạt <span style={{ color: 'red' }}>*</span></p>

@@ -2,6 +2,7 @@ package bangiay.com.service.impl;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -9,11 +10,13 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.SerializationUtils;
 
+import bangiay.com.DTO.ColorDTO;
 import bangiay.com.DTO.MediaDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.DTO.SizeDTO;
@@ -122,22 +125,45 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void updateStatusFalse(Integer id) {
-		Product product = this.proDAO.findById(id).orElse(null);
-		product.setStatus(0);
-		this.proDAO.save(product);
+	public void updateStatusFalse(ColorDTO color) {
+		List<Product> product = this.proDAO.findByName(color.getName());
+		for (Product p : product) {
+			p.setStatus(0);
+		}
+		this.proDAO.saveAll(product);
 	}
 
 	@Override
 	public Page<ProductDTO> searchByKeyword(Integer size, Integer page, String keyword) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Product> lstProduct;
+		List<Product> lstProduct;
 		if (!keyword.equals("")) {
 			lstProduct = proDAO.search(keyword, pageable);
 		} else {
-			lstProduct = proDAO.findAll(pageable);
+			lstProduct = proDAO.findByStatus();
 		}
-		Page<ProductDTO> dtoPage = lstProduct.map(new Function<Product, ProductDTO>() {
+		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
+		for (int i = 0; i < lstProduct.size(); i++) {
+			ProductDTO pro = new ProductDTO();
+			boolean x = true;
+			for (int j = 0; j < lstProDTO.size(); j++) {
+				if (lstProduct.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+					x = false;
+					break;
+				}
+			}
+			if (x) {
+				pro = modelMapper.map(lstProduct.get(i), ProductDTO.class);
+				lstProDTO.add(pro);
+			}
+		}
+
+		List<Product> lstPro = lstProDTO.stream().map(d -> modelMapper.map(d, Product.class))
+				.collect(Collectors.toList());
+		int start = (int) pageable.getOffset();
+		int end = Math.min((start + pageable.getPageSize()), lstPro.size());
+		Page<Product> pagePro = new PageImpl<>(lstPro.subList(start, end), pageable, lstPro.size());
+		Page<ProductDTO> dtoPage = pagePro.map(new Function<Product, ProductDTO>() {
 			@Override
 			public ProductDTO apply(Product entity) {
 				ProductDTO dto = new ProductDTO();
@@ -157,8 +183,30 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Page<ProductDTO> findAll(Integer size, Integer page) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Product> entities = proDAO.findPageWhereStatus(pageable);
-		Page<ProductDTO> dtoPage = entities.map(new Function<Product, ProductDTO>() {
+//		Page<Product> entities = proDAO.findPageWhereStatus(pageable);
+		List<Product> lst = this.proDAO.findByStatus();
+		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
+		for (int i = 0; i < lst.size(); i++) {
+			ProductDTO pro = new ProductDTO();
+			boolean x = true;
+			for (int j = 0; j < lstProDTO.size(); j++) {
+				if (lst.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+					x = false;
+					break;
+				}
+			}
+			if (x) {
+				pro = modelMapper.map(lst.get(i), ProductDTO.class);
+				lstProDTO.add(pro);
+			}
+		}
+
+		List<Product> lstPro = lstProDTO.stream().map(d -> modelMapper.map(d, Product.class))
+				.collect(Collectors.toList());
+		int start = (int) pageable.getOffset();
+		int end = Math.min((start + pageable.getPageSize()), lstPro.size());
+		Page<Product> pagePro = new PageImpl<>(lstPro.subList(start, end), pageable, lstPro.size());
+		Page<ProductDTO> dtoPage = pagePro.map(new Function<Product, ProductDTO>() {
 			@Override
 			public ProductDTO apply(Product entity) {
 				ProductDTO dto = new ProductDTO();
@@ -179,13 +227,35 @@ public class ProductServiceImpl implements ProductService {
 	public Page<ProductDTO> searchByKeywordAndCate_Id(Integer size, Integer page, String keyword, Integer cate_Id) {
 		Category cate = this.cateDao.findById(cate_Id).orElse(null);
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Product> lstProduct;
+		List<Product> lstProduct;
 		if (cate != null) {
 			lstProduct = proDAO.searchClient(keyword, cate_Id, pageable);
 		} else {
 			lstProduct = proDAO.searchClient(keyword, pageable);
 		}
-		Page<ProductDTO> dtoPage = lstProduct.map(new Function<Product, ProductDTO>() {
+		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
+		for (int i = 0; i < lstProduct.size(); i++) {
+			ProductDTO pro = new ProductDTO();
+			boolean x = true;
+			for (int j = 0; j < lstProDTO.size(); j++) {
+				if (lstProduct.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+					x = false;
+					break;
+				}
+			}
+			if (x) {
+				pro = modelMapper.map(lstProduct.get(i), ProductDTO.class);
+				lstProDTO.add(pro);
+			}
+		}
+
+		List<Product> lstPro = lstProDTO.stream().map(d -> modelMapper.map(d, Product.class))
+				.collect(Collectors.toList());
+		int start = (int) pageable.getOffset();
+		int end = Math.min((start + pageable.getPageSize()), lstPro.size());
+		Page<Product> pagePro = new PageImpl<>(lstPro.subList(start, end), pageable, lstPro.size());
+
+		Page<ProductDTO> dtoPage = pagePro.map(new Function<Product, ProductDTO>() {
 			@Override
 			public ProductDTO apply(Product entity) {
 				ProductDTO dto = new ProductDTO();
@@ -204,13 +274,74 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductDTO> top5NewProduct() {
-		List<Product> pros = this.proDAO.findTop5New();
-		List<ProductDTO> proDTO = pros.stream().map(p -> modelMapper.map(p, ProductDTO.class))
-				.collect(Collectors.toList());
+		List<Product> pros = this.proDAO.findByStatus();
+		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
 		for (int i = 0; i < pros.size(); i++) {
-			List<MediaDTO> media = this.mediaService.findAllByPro_Id(pros.get(i).getId());
+			ProductDTO pro = new ProductDTO();
+			boolean x = true;
+			for (int j = 0; j < lstProDTO.size(); j++) {
+				if (pros.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+					x = false;
+					break;
+				}
+			}
+			if (x) {
+				pro = modelMapper.map(pros.get(i), ProductDTO.class);
+				lstProDTO.add(pro);
+			}
+		}
+
+		List<Product> lstPro = lstProDTO.stream().map(d -> modelMapper.map(d, Product.class))
+				.collect(Collectors.toList());
+		List<ProductDTO> proDTO = lstPro.stream().map(p -> modelMapper.map(p, ProductDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < proDTO.size(); i++) {
+			List<MediaDTO> media = this.mediaService.findAllByPro_Id(lstPro.get(i).getId());
 			byte[] datamedia = SerializationUtils.serialize(media);
-			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(pros.get(i).getId());
+			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(lstPro.get(i).getId());
+			byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
+			if (media.size() > 0) {
+				proDTO.get(i).setImage(media.get(0).getUrl());
+			}
+			proDTO.get(i).setMedias(SerializationUtils.deserialize(datamedia));
+			proDTO.get(i).setSizes(SerializationUtils.deserialize(datalstSizeDTO));
+		}
+		return proDTO;
+
+//		List<Product> pros = this.proDAO.findTop5New();
+//		List<ProductDTO> proDTO = pros.stream().map(p -> modelMapper.map(p, ProductDTO.class))
+//				.collect(Collectors.toList());
+
+//		return proDTO;
+	}
+
+	@Override
+	public List<ProductDTO> top3BillProduct() {
+		List<Product> pros = this.proDAO.findTop3Bill();
+		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
+		for (int i = 0; i < pros.size(); i++) {
+			ProductDTO pro = new ProductDTO();
+			boolean x = true;
+			for (int j = 0; j < lstProDTO.size(); j++) {
+				if (pros.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+					x = false;
+					break;
+				}
+			}
+			if (x) {
+				pro = modelMapper.map(pros.get(i), ProductDTO.class);
+				lstProDTO.add(pro);
+			}
+		}
+
+		List<Product> lstPro = lstProDTO.stream().map(d -> modelMapper.map(d, Product.class))
+				.collect(Collectors.toList());
+		List<ProductDTO> proDTO = lstPro.stream().map(p -> modelMapper.map(p, ProductDTO.class))
+				.collect(Collectors.toList());
+		for (int i = 0; i < proDTO.size(); i++) {
+			List<MediaDTO> media = this.mediaService.findAllByPro_Id(lstPro.get(i).getId());
+			byte[] datamedia = SerializationUtils.serialize(media);
+			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(lstPro.get(i).getId());
 			byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
 			if (media.size() > 0) {
 				proDTO.get(i).setImage(media.get(0).getUrl());
@@ -222,19 +353,49 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductDTO> top3BillProduct() {
-		List<Product> pros = this.proDAO.findTop3Bill();
-		List<ProductDTO> proDTO = pros.stream().map(p -> modelMapper.map(p, ProductDTO.class))
-				.collect(Collectors.toList());
-		for (int i = 0; i < pros.size(); i++) {
-			List<MediaDTO> media = this.mediaService.findAllByPro_Id(pros.get(i).getId());
-			byte[] datamedia = SerializationUtils.serialize(media);
-			List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(pros.get(i).getId());
-			byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
-			proDTO.get(i).setMedias(SerializationUtils.deserialize(datamedia));
-			proDTO.get(i).setSizes(SerializationUtils.deserialize(datalstSizeDTO));
+	public ProductDTO findByColorAndName(ColorDTO colorDTO) {
+		Product product = proDAO.findByColorAndName(colorDTO.getName(), colorDTO.getColor());
+		ProductDTO productdto = modelMapper.map(product, ProductDTO.class);
+		List<Product> lst = this.proDAO.findByName(colorDTO.getName());
+		List<ColorDTO> colors = new ArrayList<ColorDTO>();
+		for (int i = 0; i < lst.size(); i++) {
+			ColorDTO newColor = new ColorDTO();
+			newColor.setColor(lst.get(i).getColor());
+			colors.add(newColor);
 		}
-		return proDTO;
+		productdto.setColors(colors);
+		List<MediaDTO> media = this.mediaService.findAllByPro_Id(product.getId());
+		byte[] datamedia = SerializationUtils.serialize(media);
+		List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(product.getId());
+		byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
+		productdto.setName_cate(product.getCategory().getNamecate());
+		productdto.setImage(media.get(0).getUrl());
+		productdto.setMedias(SerializationUtils.deserialize(datamedia));
+		productdto.setSizes(SerializationUtils.deserialize(datalstSizeDTO));
+		return productdto;
+	}
+
+	@Override
+	public ProductDTO findByName(ColorDTO colorDTO) {
+		List<Product> lst = this.proDAO.findByName(colorDTO.getName());
+		Product product = proDAO.findByColorAndName(colorDTO.getName(), lst.get(0).getColor());
+		ProductDTO productdto = modelMapper.map(product, ProductDTO.class);
+		List<ColorDTO> colors = new ArrayList<ColorDTO>();
+		for (int i = 0; i < lst.size(); i++) {
+			ColorDTO newColor = new ColorDTO();
+			newColor.setColor(lst.get(i).getColor());
+			colors.add(newColor);
+		}
+		productdto.setColors(colors);
+		List<MediaDTO> media = this.mediaService.findAllByPro_Id(product.getId());
+		byte[] datamedia = SerializationUtils.serialize(media);
+		List<SizeDTO> lstSizeDTO = this.sizeService.findSizeByPro_Id(product.getId());
+		byte[] datalstSizeDTO = SerializationUtils.serialize(lstSizeDTO);
+		productdto.setName_cate(product.getCategory().getNamecate());
+		productdto.setImage(media.get(0).getUrl());
+		productdto.setMedias(SerializationUtils.deserialize(datamedia));
+		productdto.setSizes(SerializationUtils.deserialize(datalstSizeDTO));
+		return productdto;
 	}
 
 }

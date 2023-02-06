@@ -202,10 +202,10 @@ const Product = () => {
     theme: "colored",
   };
 
-  const editProduct = async (id) => {
+  const editProduct = async (name) => {
     try {
-      const res = await axios.get(
-        `http://localhost:8080/admin/product/find/${id}`,
+      const res = await axios.post(
+        `http://localhost:8080/admin/product/findByName`, { name: name },
         { headers: { "Authorization": `Bearer ${token}` } }
       );
       setProduct(res.data);
@@ -215,14 +215,13 @@ const Product = () => {
   };
 
   const deleteProduct = async (id) => {
-    // e.preventDefault();
     try {
-      await axios.get(
-        `http://localhost:8080/admin/product/updateStatusFalse/${id}`,
+      await axios.post(
+        `http://localhost:8080/admin/product/updateStatusFalse`, { name: id },
         { headers: { "Authorization": `Bearer ${token}` } }
       );
       let copyList = dataProduct;
-      copyList = copyList.filter((item) => item.id !== id);
+      copyList = copyList.filter((item) => item.name !== id);
       setData(copyList);
       toggleNested();
       toast.success("Xóa thành công", styleToast);
@@ -315,6 +314,7 @@ const Product = () => {
         imageUrls={imageUrls}
         setImageUrls={setImageUrls}
         product={product}
+        imageFiles={imageFiles}
       />
       <CreateProduct
         isCreateModal={isCreateModal}
@@ -392,8 +392,7 @@ const Product = () => {
                       <td
                         id="category"
                         onClick={() => {
-                          editProduct(item.id);
-                          detailsModal();
+
                         }}
                       >
                         {item.name}
@@ -421,18 +420,18 @@ const Product = () => {
                           type="buttom"
                           id="update"
                           onClick={() => {
-                            editProduct(item.id);
-                            updateModal();
+                            editProduct(item.name);
+                            detailsModal();
                           }}
                         >
-                          Cập nhật
+                          Chi tiết
                         </button>
                       </td>
                       <td>
                         <button
                           class="btn btn-danger delete"
                           id="delete"
-                          onClick={() => toggleNested(item.id)}
+                          onClick={() => toggleNested(item.name)}
                         >
                           Xóa
                         </button>

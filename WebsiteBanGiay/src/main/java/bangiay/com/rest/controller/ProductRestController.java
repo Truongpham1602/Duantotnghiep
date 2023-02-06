@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import bangiay.com.DTO.ColorDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.service.ProductService;
 
@@ -31,7 +32,6 @@ public class ProductRestController {
 		return productService.findAll();
 	}
 
-	
 	@GetMapping("/select")
 	public Page<ProductDTO> findAll(@RequestParam(name = "size", defaultValue = "7") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page) {
@@ -66,9 +66,9 @@ public class ProductRestController {
 		return productService.searchByKeyword(size, page, keyword);
 	}
 
-	@GetMapping("/updateStatusFalse/{id}")
-	public void updateStatusFalse(@PathVariable("id") int id) {
-		productService.updateStatusFalse(id);
+	@PostMapping("/updateStatusFalse")
+	public void updateStatusFalse(@RequestBody ColorDTO colordto) {
+		productService.updateStatusFalse(colordto);
 	}
 
 	@PostMapping("/searchClient")
@@ -87,5 +87,15 @@ public class ProductRestController {
 	@GetMapping("/findTop3Bill")
 	public List<ProductDTO> findTop3Bill() {
 		return this.productService.top3BillProduct();
+	}
+
+	@PostMapping("/findByName")
+	public ProductDTO findByName(@RequestBody ColorDTO colordto) {
+		return this.productService.findByName(colordto);
+	}
+
+	@PostMapping("/findByNameAndColor")
+	public ProductDTO findByColorAndName(@RequestBody ColorDTO colordto) {
+		return this.productService.findByColorAndName(colordto);
 	}
 }
