@@ -5,6 +5,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase";
+import useCallGetAPI from '../../customHook/CallGetApi';
 import {
   Button,
   Modal,
@@ -48,6 +49,15 @@ const UpdateUser = (props) => {
   useEffect(() => {
     setUser(props.user);
   }, [props.user]);
+
+  const token = localStorage.getItem('token');
+  const [lstRole, setlstRole] = useState([]);
+  const { data: roles } = useCallGetAPI(
+    `http://localhost:8080/role/get`, { headers: { "Authorization": `Bearer ${token}` } }
+  );
+  useEffect(() => {
+    setlstRole(roles);
+  }, [roles]);
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
@@ -112,20 +122,20 @@ const UpdateUser = (props) => {
     theme: "colored",
   };
 
-  const arrRole = [
-    {
-      id: 1,
-      title: "Quản lý",
-    },
-    {
-      id: 2,
-      title: "Nhân viên",
-    },
-    {
-      id: 3,
-      title: "Khách hàng",
-    },
-  ];
+  // const arrRole = [
+  //   {
+  //     id: 1,
+  //     title: "Quản lý",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Nhân viên",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Khách hàng",
+  //   },
+  // ];
 
   const status = [
     {
@@ -306,26 +316,26 @@ const UpdateUser = (props) => {
                   </Col>
                   <Col md={12}>
                     <FormGroup>
-                      <Label for="roleId">Vai trò</Label>
+                      <Label for="roleId">Quyền</Label>
                       <Input
                         id="roleId"
                         name="roleId"
                         placeholder=""
                         type="select"
-                        value={user.roleId}
+                        // value={user.roleId}
                         onChange={(event) =>
                           handleOnchangeInput(event, "roleId")
                         }
                       >
-                        {arrRole.map((item) => {
-                          if (user.roleId === item.id) {
+                        {lstRole.map((item, index) => {
+                          if (item.id === user.roleId) {
                             return (
-                              <option selected value={item.id}>
-                                {item.title}
+                              <option selected key={index} value={item.id}>
+                                {item.description}
                               </option>
                             );
                           }
-                          return <option value={item.id}>{item.title}</option>;
+                          return <option key={index} value={item.id}>{item.description}</option>;
                         })}
                       </Input>
                     </FormGroup>

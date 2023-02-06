@@ -331,7 +331,7 @@ const User = () => {
               toggle={toggleNested}
             // size='lg'
             >
-              <ModalHeader>Delete</ModalHeader>
+              <ModalHeader>Tạm dừng</ModalHeader>
               <ModalBody>
                 Bạn có chắc chắn chuyển sang không hoạt động không ?
               </ModalBody>
