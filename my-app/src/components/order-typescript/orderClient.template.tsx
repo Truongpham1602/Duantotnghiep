@@ -86,8 +86,6 @@ export default function OrederClientTemplate({ self }: OrederClientTemplate) {
             disablePadding: false,
             label: 'Ảnh sản phẩm',
             component: (item: any) => {
-                console.log(item);
-
                 return <>
                     <img src={item.imageUrl} width="150px" height="auto" />
                 </>

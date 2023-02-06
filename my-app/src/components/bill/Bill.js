@@ -207,18 +207,21 @@ const Bill = (props) => {
 
   const createOrder = async () => {
     let ch0 = { ...check };
+    let fullName = account.first + " " + account.last
+    console.log(fullName);
+    account.nameRecipient = fullName
     if (account.email == 0) {
-      ch0["email"] = "Cần nhập Email";
+      ch0["first"] = "Cần nhập họ người nhận";
       setCheck({ ...ch0 });
     } else if (check.email == 0) {
-      ch0["email"] = "";
+      ch0["first"] = "";
       setCheck({ ...ch0 });
     }
     if (account.nameRecipient == 0) {
-      ch0["nameRecipient"] = "Cần nhập họ tên người nhận";
+      ch0["last"] = "Cần nhập tên người nhận";
       setCheck({ ...ch0 });
     } else if (check.nameRecipient == 0) {
-      ch0["nameRecipient"] = "";
+      ch0["last"] = "";
       setCheck({ ...ch0 });
     }
     if (account.telephone == 0) {
@@ -244,6 +247,7 @@ const Bill = (props) => {
       return;
     }
     try {
+      console.log(account);
       let userLogin = await axios.get(`http://localhost:8080/auth/information`,
         { headers: { "Authorization": `Bearer ${token}` } }
       );
@@ -251,7 +255,7 @@ const Bill = (props) => {
         `http://localhost:8080/api/order/create?user_Id=${userLogin.data.id}&voucher_Id=${voucherSelect.id ? voucherSelect.id : ""}`,
         account, { headers: { "Authorization": `Bearer ${token}` } }
       );
-      window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${account.telephone}&txt_billing_email=${account.email}&txt_billing_fullname=${account.nameRecipient}&txt_inv_addr1=${account.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=${res.data.id}`;
+      window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${account.telephone}&txt_billing_email=Email@gmail.com&txt_billing_fullname=${account.nameRecipient}&txt_inv_addr1=${account.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=${res.data.id}`;
     } catch (error) {
       console.log(error);
     }
@@ -425,13 +429,13 @@ const Bill = (props) => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="email">Email</Label>
+                  <Label for="email">Họ</Label>
                   <Input
                     id="email"
                     nameRecipient="email"
                     placeholder=""
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "email")}
+                    onChange={(event) => handleOnchangeInput(event, "first")}
                   />
                   {check.email && check.email.length > 0 && (
                     <p className="checkError1">{check.email}</p>
@@ -440,13 +444,13 @@ const Bill = (props) => {
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="color">Họ tên</Label>
+                  <Label for="color">Tên</Label>
                   <Input
                     id="nameRecipient"
                     nameRecipient="nameRecipient"
-                    placeholder=""
+                    placeholder="VD: Nguyên Nguyễn"
                     type="text"
-                    onChange={(event) => handleOnchangeInput(event, "nameRecipient")}
+                    onChange={(event) => handleOnchangeInput(event, "last")}
                   />
                   {check.nameRecipient && check.nameRecipient.length > 0 && (
                     <p className="checkError1">{check.nameRecipient}</p>

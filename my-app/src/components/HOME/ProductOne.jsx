@@ -142,6 +142,9 @@ const ProductOne = () => {
         if (value > quantitySize) {
             toast.warning('Số lượng lớn hơn số lượng đang có!!!')
             return
+        } else if (value <= 0) {
+            toast.warning('Cần tối thiểu 1 sản phẩm để thêm vào giỏ hàng')
+            return
         }
         setValueNumberInout(value)
     }
