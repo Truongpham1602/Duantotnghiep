@@ -201,7 +201,7 @@ const UpdateUser = (props) => {
           }
         }
         const res = await axios.put(`http://localhost:8080/admin/user/put/${user.id}`,
-          config, user
+          user, config
         );
         let data = res && res.data ? res.data : [];
         data.created = moment(data.created).format("DD/MM/YYYY HH:mm:ss");

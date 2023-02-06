@@ -2,10 +2,13 @@ package bangiay.com.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import bangiay.com.DTO.RoleDTO;
 import bangiay.com.utils.ObjectMapperUtils;
 
+import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +44,8 @@ public class RoleServiceImpl implements RoleService {
 			throw new Exception("Role id không tồn tại");
 		}else {
 			role.get().setDescription(roleDTO.getDescription());
+			List<Premission> p = roleDTO.getPremission().stream().map(c-> modelMapper.map(c, Premission.class)).collect(Collectors.toList());
+			role.get().setPremission(p);
 			Role r = roleDAO.save(role.get());
 			return modelMapper.map(r, RoleDTO.class);
 		}

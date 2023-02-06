@@ -63,7 +63,7 @@ const Voucher = () => {
             }
             console.log(token);
             const updateStatusFalse = async () => {
-                const res = await axios.put(`http://localhost:8080/role/delete/${id}`, config)
+                const res = await axios.post(`http://localhost:8080/role/delete/${id}`, config)
                 let copyList = [...dataRoles]
                 let getIndex = copyList.findIndex((p) => { return p.id === res.data.id });
                 copyList.fill(res.data, getIndex, getIndex + 1);

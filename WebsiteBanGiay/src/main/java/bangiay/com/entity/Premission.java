@@ -23,7 +23,7 @@ public class Premission {
 	private Integer id;
 
 	@Column(name = "PREMISSION_NAME")
-	private String premission_name;
+	private String premissionName;
 	
 	@Column(name = "DESCRIPTION")
 	private String description;

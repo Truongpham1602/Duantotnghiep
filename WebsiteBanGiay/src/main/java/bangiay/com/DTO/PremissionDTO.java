@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class PremissionDTO {
 	private Integer id;
-	private String roleName;
+	private String premissionName;
 	private String description;
 }
