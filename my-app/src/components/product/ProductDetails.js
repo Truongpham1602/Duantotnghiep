@@ -278,6 +278,7 @@ const ProductDetails = (props) => {
     const toggleNewColor = () => {
         setIsCreateModal(!isCreateModal)
         setNewColor({ color: '', quantity: '', price: '' })
+        setLstSizeSelect([]);
     }
 
     const createProduct = () => {
@@ -808,166 +809,452 @@ const ProductDetails = (props) => {
 
 
 
-            <Modal isOpen={isCreateModal} toggle={() => toggleNewColor()} size="lg" centered>
-                <Form >
-                    <ModalHeader toggle={() => toggleNewColor()}>Thêm màu</ModalHeader>
+            <Modal isOpen={isCreateModal} toggle={() => toggleNewColor()} size="xl" centered>
+                <Form onSubmit={handleSubmit(createProduct)} innerRef={ref}>
+                    <ModalHeader toggle={() => toggleNewColor()}>Thêm</ModalHeader>
                     <ModalBody>
                         <Row>
-                            <Row>
-                                <Col md={6}>
-                                    <FormGroup>
-                                        <Label for="name">Tên</Label>
-                                        <div>
-                                            <input
-                                                style={{
-                                                    border: "1px solid",
-                                                    width: "100%",
-                                                    borderRadius: "5px",
+                            <Col md={7}>
+                                <Row>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label for="name">Tên</Label>
+                                            <div>
+                                                <input
+                                                    style={{
+                                                        border: "1px solid",
+                                                        width: "100%",
+                                                        borderRadius: "5px",
 
-                                                }}
-                                                disabled
-                                                id="name"
-                                                name="name"
-                                                placeholder=""
-                                                type="text"
-                                                value={newColor.name}
-                                            />
-                                            {check.name && check.name.length > 0 && (
-                                                <p className="checkError">{check.name}</p>
-                                            )}
-                                        </div>
-                                    </FormGroup>
-                                </Col>
-                                <Col md={6}>
-                                    <FormGroup>
-                                        <Label for="color">Màu</Label>
-                                        <div>
-                                            <input
+                                                    }}
+                                                    disabled
+                                                    id="name"
+                                                    name="name"
+                                                    placeholder=""
+                                                    type="text"
+                                                    value={newColor.name}
+                                                />
+                                                {check.name && check.name.length > 0 && (
+                                                    <p className="checkError">{check.name}</p>
+                                                )}
+                                            </div>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label for="color">Màu</Label>
+                                            <div>
+                                                <input
+                                                    style={{
+                                                        border: "1px solid",
+                                                        width: "100%",
+                                                        borderRadius: "5px",
+                                                    }}
+                                                    id="name"
+                                                    name="name"
+                                                    placeholder=""
+                                                    type="text"
+                                                    value={newColor.color}
+                                                    onChange={(event) =>
+                                                        handelInputNewColor(event, "color")
+                                                    }
+                                                />
+                                                {check.color && check.color.length > 0 && (
+                                                    <p className="checkError">{check.color}</p>
+                                                )}
+                                            </div>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label for="price">Giá</Label>
+                                            <div>
+                                                <input
+                                                    style={{
+                                                        border: "1px solid",
+                                                        width: "100%",
+                                                        borderRadius: "5px",
+                                                    }}
+                                                    id="price"
+                                                    name="price"
+                                                    placeholder=""
+                                                    type="text"
+                                                    value={newColor.price}
+                                                    onChange={(event) =>
+                                                        handelInputNewColor(event, "price")
+                                                    }
+                                                />
+                                                {check.price && check.price.length > 0 && (
+                                                    <p className="checkError">{check.price}</p>
+                                                )}
+                                            </div>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label for="quantity">Số lượng</Label>
+                                            <div>
+                                                <input
+                                                    style={{
+                                                        border: "1px solid",
+                                                        width: "100%",
+                                                        borderRadius: "5px",
+                                                    }}
+                                                    id="quantity"
+                                                    name="quantity"
+                                                    placeholder=""
+                                                    type="text"
+                                                    value={newColor.quantity}
+                                                    onChange={(event) =>
+                                                        handelInputNewColor(event, "quantity")
+                                                    }
+                                                />
+                                                {check.quantity && check.quantity.length > 0 && (
+                                                    <p className="checkError">{check.quantity}</p>
+                                                )}
+                                            </div>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col md={6}>
+                                        <Row>
+                                            <Col md={12}>
+                                                <FormGroup>
+                                                    <Label for="namecate">Danh mục</Label>
+                                                    <div>
+                                                        <input
+                                                            style={{
+                                                                border: "1px solid",
+                                                                width: "100%",
+                                                                borderRadius: "5px",
+                                                            }}
+                                                            disabled
+                                                            id="quantity"
+                                                            name="quantity"
+                                                            placeholder=""
+                                                            type="text"
+                                                            value={newColor.cateName}
+                                                        />
+                                                    </div>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col
+                                                md={2}
                                                 style={{
-                                                    border: "1px solid",
-                                                    width: "100%",
-                                                    borderRadius: "5px",
+                                                    padding: "0px 12px 0px 0px",
+                                                    marginLeft: "0%",
                                                 }}
-                                                id="name"
-                                                name="name"
-                                                placeholder=""
-                                                type="text"
-                                                value={newColor.color}
-                                                onChange={(event) =>
-                                                    handelInputNewColor(event, "color")
-                                                }
-                                            />
-                                            {check.color && check.color.length > 0 && (
-                                                <p className="checkError">{check.color}</p>
-                                            )}
-                                        </div>
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={6}>
-                                    <FormGroup>
-                                        <Label for="price">Giá</Label>
-                                        <div>
-                                            <input
-                                                style={{
-                                                    border: "1px solid",
-                                                    width: "100%",
-                                                    borderRadius: "5px",
-                                                }}
-                                                id="price"
-                                                name="price"
-                                                placeholder=""
-                                                type="text"
-                                                value={newColor.price}
-                                                onChange={(event) =>
-                                                    handelInputNewColor(event, "price")
-                                                }
-                                            />
-                                            {check.price && check.price.length > 0 && (
-                                                <p className="checkError">{check.price}</p>
-                                            )}
-                                        </div>
-                                    </FormGroup>
-                                </Col>
-                                <Col md={6}>
-                                    <FormGroup>
-                                        <Label for="quantity">Số lượng</Label>
-                                        <div>
-                                            <input
-                                                style={{
-                                                    border: "1px solid",
-                                                    width: "100%",
-                                                    borderRadius: "5px",
-                                                }}
-                                                id="quantity"
-                                                name="quantity"
-                                                placeholder=""
-                                                type="text"
-                                                value={newColor.quantity}
-                                                onChange={(event) =>
-                                                    handelInputNewColor(event, "quantity")
-                                                }
-                                            />
-                                            {check.quantity && check.quantity.length > 0 && (
-                                                <p className="checkError">{check.quantity}</p>
-                                            )}
-                                        </div>
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={12}>
+                                            >
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Row>
+                                            <Col md={12}>
+                                                <FormGroup>
+                                                    <Label for="sizes">Số lượng size</Label>
+                                                    <div>
+                                                        <select
+                                                            style={{
+                                                                border: "1px solid",
+                                                                width: "100%",
+                                                                borderRadius: "5px",
+                                                            }}
+                                                            id="sizes"
+                                                            name="sizes"
+                                                            placeholder=""
+                                                            type="select"
+                                                            onChange={(event) => {
+                                                                handleOnchangeinput(event, "sizes");
+                                                                checkSize(event);
+                                                            }}
+                                                        >
+                                                            <option value="" disabled selected>Chọn size</option>
+                                                            {sizeCheck.map((item, index) => {
+                                                                return <option value={item}>{item}</option>;
+                                                            })}
+                                                        </select>
+                                                        {check.sizes && check.sizes.length > 0 && (
+                                                            <p className="checkError">{check.sizes}</p>
+                                                        )}
+                                                    </div>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+
+                                </Row>
+                                {lstsizeSelect.length >= 1 && (
                                     <Row>
-                                        <Col md={12}>
-                                            <FormGroup>
-                                                <Label for="namecate">Danh mục</Label>
-                                                <div>
-                                                    <input
-                                                        style={{
-                                                            border: "1px solid",
-                                                            width: "100%",
-                                                            borderRadius: "5px",
-                                                        }}
-                                                        disabled
-                                                        id="quantity"
-                                                        name="quantity"
-                                                        placeholder=""
-                                                        type="text"
-                                                        value={newColor.cateName}
-                                                    />
-                                                </div>
-                                            </FormGroup>
-                                        </Col>
-
+                                        {lstsizeSelect.map((item) => {
+                                            return (
+                                                <Col md={6}>
+                                                    <Row>
+                                                        <Col md={4}>
+                                                            <FormGroup>
+                                                                <Label for="description">Kích Cỡ</Label>
+                                                                <div>
+                                                                    <select
+                                                                        style={{
+                                                                            border: "1px solid",
+                                                                            width: "100%",
+                                                                            borderRadius: "5px",
+                                                                        }}
+                                                                        id="size"
+                                                                        name="size"
+                                                                        placeholder=""
+                                                                        type="select"
+                                                                        {...register(`size${item}`)}
+                                                                    >
+                                                                        {size.map((size) => {
+                                                                            return (
+                                                                                <option value={size}>{size}</option>
+                                                                            );
+                                                                        })}
+                                                                    </select>
+                                                                </div>
+                                                            </FormGroup>
+                                                        </Col>
+                                                        <Col md={8}>
+                                                            <FormGroup>
+                                                                <Label for="description">Số Lượng</Label>
+                                                                <div>
+                                                                    <input
+                                                                        style={{
+                                                                            border: "1px solid",
+                                                                            width: "100%",
+                                                                            borderRadius: "5px",
+                                                                        }}
+                                                                        {...register(`quantity${item}`)}
+                                                                    />
+                                                                </div>
+                                                            </FormGroup>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                            );
+                                        })}
                                     </Row>
-                                </Col>
-
-                                <Col md={12}>
-                                    <FormGroup>
-                                        <Label for="description">Mô tả</Label>
+                                )}
+                            </Col>
+                            <Col md={5}>
+                                <Row>
+                                    <Col md={12}>
+                                        <Label>Ảnh</Label>
                                         <div>
-                                            <textarea
+                                            <input
+                                                type="file"
+                                                multiple
+                                                onChange={(e) => { handleImages(e, 'medias'); handleOnchangeinput(e, 'medias') }}
                                                 style={{
                                                     border: "1px solid",
                                                     width: "100%",
                                                     borderRadius: "5px",
-                                                    height: "100px",
-                                                }}
-                                                id="description"
-                                                name="description"
-                                                onChange={(event) => {
-                                                    handelInputNewColor(event, 'description');
                                                 }}
                                             />
-                                            {check.description && check.description.length > 0 && (
-                                                <p className="checkError">{check.description}</p>
-                                            )}
                                         </div>
-                                    </FormGroup>
-                                </Col>
-                            </Row>
+                                        {check.medias &&
+                                            check.medias.length > 0 && (
+                                                <p className="checkError">{check.medias}</p>
+                                            )}
+                                    </Col>
+                                    <Col md={12} style={{ marginTop: "1%" }}>
+                                        {imageFiles.length > 0 &&
+                                            imageFiles &&
+                                            imageFiles.map((item, index) => {
+                                                return (
+                                                    <>
+                                                        {imageFiles.length === 1 && (
+                                                            <img
+                                                                src={URL.createObjectURL(item)}
+                                                                width="100%"
+                                                                height="285rem"
+                                                                style={{
+                                                                    borderRadius: "15px",
+                                                                    border: "1px solid",
+                                                                }}
+                                                            />
+                                                        )}
+                                                        {imageFiles.length === 2 && (
+                                                            <div style={{ padding: "0 20% 0 20%" }}>
+                                                                <img
+                                                                    src={URL.createObjectURL(item)}
+                                                                    width="100%"
+                                                                    height="142rem"
+                                                                    style={{
+                                                                        borderRadius: "15px",
+                                                                        border: "1px solid",
+                                                                        marginBottom: "5px",
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                        {imageFiles.length === 3 && (
+                                                            <>
+                                                                {index === 0 && (
+                                                                    <div style={{ padding: "0 20% 0 20%" }}>
+                                                                        <img
+                                                                            src={URL.createObjectURL(item)}
+                                                                            width="100%"
+                                                                            height="142rem"
+                                                                            style={{
+                                                                                borderRadius: "15px",
+                                                                                border: "1px solid",
+                                                                                marginBottom: "5px",
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                )}
+                                                                {index > 0 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="48.883%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                            marginRight: "5px",
+                                                                        }}
+                                                                    />
+                                                                )}
+                                                            </>
+                                                        )}
+                                                        {imageFiles.length === 4 && (
+                                                            <>
+                                                                {index === 0 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="49%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                            marginBottom: "5px",
+                                                                            marginRight: "5px",
+                                                                        }}
+                                                                    />
+                                                                )}
+                                                                {index === 1 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="49%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                            marginBottom: "5px",
+                                                                        }}
+                                                                    />
+                                                                )}
 
+                                                                {index === 2 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="49%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                            marginRight: "5px",
+                                                                        }}
+                                                                    />
+                                                                )}
+                                                                {index === 3 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="49%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                        }}
+                                                                    />
+                                                                )}
+                                                            </>
+                                                        )}
+                                                        {imageFiles.length === 5 && (
+                                                            <>
+                                                                {index === 0 && (
+                                                                    <div style={{ padding: "0 20% 0 20%" }}>
+                                                                        <img
+                                                                            src={URL.createObjectURL(item)}
+                                                                            width="100%"
+                                                                            height="142rem"
+                                                                            style={{
+                                                                                borderRadius: "15px",
+                                                                                border: "1px solid",
+                                                                                marginBottom: "5px",
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                )}
+                                                                {index === 1 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="49%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                            marginBottom: "5px",
+                                                                            marginRight: "5px",
+                                                                        }}
+                                                                    />
+                                                                )}
+                                                                {index === 2 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="49%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                            marginBottom: "5px",
+                                                                        }}
+                                                                    />
+                                                                )}
+
+                                                                {index === 3 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="49%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                            marginRight: "5px",
+                                                                        }}
+                                                                    />
+                                                                )}
+                                                                {index === 4 && (
+                                                                    <img
+                                                                        src={URL.createObjectURL(item)}
+                                                                        width="49%"
+                                                                        height="142rem"
+                                                                        style={{
+                                                                            borderRadius: "15px",
+                                                                            border: "1px solid",
+                                                                        }}
+                                                                    />
+                                                                )}
+                                                            </>
+                                                        )}
+                                                    </>
+                                                );
+                                            })}
+                                        {imageFiles.length <= 0 && (
+                                            <img
+                                                width="100%"
+                                                height="285rem"
+                                                style={{ borderRadius: "15px", border: "1px solid" }}
+                                            />
+                                        )}
+                                    </Col>
+                                </Row>
+                            </Col>
                         </Row>
                     </ModalBody>
                     <ModalFooter>
@@ -975,7 +1262,7 @@ const ProductDetails = (props) => {
                             color="primary"
                             type="submit"
                             onClick={() => {
-                                createProduct();
+                                // createProduct();
                             }}
                         >
                             Thêm Mới
@@ -985,6 +1272,7 @@ const ProductDetails = (props) => {
                         </Button>
                     </ModalFooter>
                 </Form>
+
             </Modal>
         </div>
     );
