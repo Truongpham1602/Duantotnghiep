@@ -202,9 +202,9 @@ const ProductOne = () => {
                 <div className="product-content row">
                     <div className="product-content-left row col-lg-7">
                         <div className="product-content-left-big-img" style={{ padding: '0px 2% 0px 0px' }}>
-                            {imageUrls.map((img, index1) => {
+                            {imageUrls?.map((img, index1) => {
                                 return (
-                                    product.medias.map((item, index2) => {
+                                    product?.medias?.map((item, index2) => {
                                         return (
                                             <>
                                                 {index2 === 0 && img.nameImg === item.url &&

@@ -147,11 +147,12 @@ const CreateProduct = (props) => {
 
   const checkAddPro = async () => {
 
-    console.log(product.name);
+    
     const res = await axios.post(
       `http://localhost:8080/admin/product/findByName`, { name: product.name },
       { headers: { "Authorization": `Bearer ${token}` } }
     );
+    console.log(res.data)
     if (res.data) {
       return true
     } else {
