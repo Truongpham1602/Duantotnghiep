@@ -47,7 +47,7 @@ public class UserServicelmpl implements UserService {
 		user.setRole(this.roleDao.findById(userDTO.getRole().getId()).get());
 
 		user.setCreated(Timestamp.from(Instant.now()));
-//		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		this.userDao.save(user);
 		userDTO.setId(user.getId());
 //		userDTO.setNameRole(user.getRole().getRoleName());

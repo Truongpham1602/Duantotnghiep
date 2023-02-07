@@ -144,10 +144,12 @@ public class ProductServiceImpl implements ProductService {
 		}
 		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
 		for (int i = 0; i < lstProduct.size(); i++) {
+			String name1 = lstProduct.get(i).getName().replaceAll(" ", "");
 			ProductDTO pro = new ProductDTO();
 			boolean x = true;
 			for (int j = 0; j < lstProDTO.size(); j++) {
-				if (lstProduct.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+				String name2 = lstProDTO.get(j).getName().replaceAll(" ", "");
+				if (name2.equalsIgnoreCase(name1)) {
 					x = false;
 					break;
 				}
@@ -187,20 +189,22 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> lst = this.proDAO.findByStatus();
 		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
 		for (int i = 0; i < lst.size(); i++) {
+			String name1 = lst.get(i).getName().replaceAll(" ", "");
 			ProductDTO pro = new ProductDTO();
 			boolean x = true;
 			for (int j = 0; j < lstProDTO.size(); j++) {
-				if (lst.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+				String name2 = lstProDTO.get(j).getName().replaceAll(" ", "");
+				if (name2.equalsIgnoreCase(name1)) {
 					x = false;
 					break;
 				}
 			}
 			if (x) {
 				pro = modelMapper.map(lst.get(i), ProductDTO.class);
+				pro.setName_cate(lst.get(i).getCategory().getNamecate());
 				lstProDTO.add(pro);
 			}
 		}
-
 		List<Product> lstPro = lstProDTO.stream().map(d -> modelMapper.map(d, Product.class))
 				.collect(Collectors.toList());
 		int start = (int) pageable.getOffset();
@@ -211,11 +215,13 @@ public class ProductServiceImpl implements ProductService {
 			public ProductDTO apply(Product entity) {
 				ProductDTO dto = new ProductDTO();
 				dto = modelMapper.map(entity, ProductDTO.class);
+				Category  cate =  cateDao.findById(entity.getCategory().getId()).get();
 				List<Media> media = mediaDao.findMediaByProduct_Id(entity.getId());
 				if (media.size() > 0) {
 					dto.setImage(media.get(0).getUrl());
 				}
-				dto.setName_cate(entity.getCategory().getNamecate());
+				
+				dto.setName_cate(cate.getNamecate());
 				dto.setId(entity.getId());
 				return dto;
 			}
@@ -235,16 +241,19 @@ public class ProductServiceImpl implements ProductService {
 		}
 		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
 		for (int i = 0; i < lstProduct.size(); i++) {
+			String name1 = lstProduct.get(i).getName().replaceAll(" ", "");
 			ProductDTO pro = new ProductDTO();
 			boolean x = true;
 			for (int j = 0; j < lstProDTO.size(); j++) {
-				if (lstProduct.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+				String name2 = lstProDTO.get(j).getName().replaceAll(" ", "");
+				if (name2.equalsIgnoreCase(name1)) {
 					x = false;
 					break;
 				}
 			}
 			if (x) {
 				pro = modelMapper.map(lstProduct.get(i), ProductDTO.class);
+				pro.setName_cate(lstProduct.get(i).getCategory().getNamecate());
 				lstProDTO.add(pro);
 			}
 		}
@@ -277,16 +286,19 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> pros = this.proDAO.findByStatus();
 		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
 		for (int i = 0; i < pros.size(); i++) {
+			String name1 = pros.get(i).getName().replaceAll(" ", "");
 			ProductDTO pro = new ProductDTO();
 			boolean x = true;
 			for (int j = 0; j < lstProDTO.size(); j++) {
-				if (pros.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+				String name2 = lstProDTO.get(j).getName().replaceAll(" ", "");
+				if (name2.equalsIgnoreCase(name1)) {
 					x = false;
 					break;
 				}
 			}
 			if (x) {
 				pro = modelMapper.map(pros.get(i), ProductDTO.class);
+				pro.setName_cate(pros.get(i).getCategory().getNamecate());
 				lstProDTO.add(pro);
 			}
 		}
@@ -320,10 +332,12 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> pros = this.proDAO.findTop3Bill();
 		List<ProductDTO> lstProDTO = new ArrayList<ProductDTO>();
 		for (int i = 0; i < pros.size(); i++) {
+			String name1 = pros.get(i).getName().replaceAll(" ", "");
 			ProductDTO pro = new ProductDTO();
 			boolean x = true;
 			for (int j = 0; j < lstProDTO.size(); j++) {
-				if (pros.get(i).getName().equalsIgnoreCase(lstProDTO.get(j).getName())) {
+				String name2 = lstProDTO.get(j).getName().replaceAll(" ", "");
+				if (name2.equalsIgnoreCase(name1)) {
 					x = false;
 					break;
 				}
@@ -378,6 +392,9 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDTO findByName(ColorDTO colorDTO) {
 		List<Product> lst = this.proDAO.findByName(colorDTO.getName());
+		if(lst.size() <= 0){
+			return null;
+		}
 		Product product = proDAO.findByColorAndName(colorDTO.getName(), lst.get(0).getColor());
 		ProductDTO productdto = modelMapper.map(product, ProductDTO.class);
 		List<ColorDTO> colors = new ArrayList<ColorDTO>();

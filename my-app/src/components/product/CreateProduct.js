@@ -145,21 +145,6 @@ const CreateProduct = (props) => {
     toast.error(text, styleToast);
   };
 
-  const checkAddPro = async () => {
-
-    
-    const res = await axios.post(
-      `http://localhost:8080/admin/product/findByName`, { name: product.name },
-      { headers: { "Authorization": `Bearer ${token}` } }
-    );
-    console.log(res.data)
-    if (res.data) {
-      return true
-    } else {
-      return false
-    }
-  }
-
   const styleToast = {
     position: "top-right",
     autoClose: 5000,
@@ -171,8 +156,9 @@ const CreateProduct = (props) => {
     theme: "colored",
   };
 
-  const createProduct = (data) => {
+  const createProduct = async (data) => {
     try {
+      handleUpdateImages()
       let ch0 = { ...check };
       if (product.name.trim().length == 0) {
         ch0["name"] = "Tên không được để trống";
@@ -202,7 +188,11 @@ const CreateProduct = (props) => {
       ) {
         return;
       }
-      if (checkAddPro()) {
+      const res = await axios.post(
+        `http://localhost:8080/admin/product/findByName`, { name: product.name },
+        { headers: { "Authorization": `Bearer ${token}` } }
+      );
+      if (res.data) {
         notifyWarning("Sản phẩm đã tồn tại");
         return
       }
