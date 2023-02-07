@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import bangiay.com.DTO.CartDTO;
+import bangiay.com.DTO.OrderCancelDTO;
 import bangiay.com.DTO.OrderDTO;
 import bangiay.com.dao.CartDao;
 import bangiay.com.dao.OrderDao;
@@ -61,6 +62,12 @@ public class OrderSeviceImpl implements OrderService {
 	public List<Order> findByStatus(Integer status) {
 		if (status == 99)
 			return orderDao.findAll();
+		else if (status == 11)
+			return orderDao.findByReturnStatus(1);
+		else if (status == 12)
+			return orderDao.findByReturnStatus(2);
+		else if (status == 13)
+			return orderDao.findByReturnStatus(3);
 		else
 			return orderDao.findByStatus(status);
 	}
@@ -178,6 +185,17 @@ public class OrderSeviceImpl implements OrderService {
 
 		return orders.stream().map(o -> modelMapper.map(o, OrderDTO.class)).collect(Collectors.toList());
 
+	}
+
+	@Override
+	public OrderDTO updateReturnStatus(OrderCancelDTO orderCancelDTO) {
+		Order order = this.orderDao.findById(orderCancelDTO.getId()).orElse(null);
+		if (orderCancelDTO.getStatus() == 4) {
+			order.setReturnAtDate(Timestamp.from(Instant.now()));
+		}
+		order.setReturnStatus(orderCancelDTO.getStatus());
+		this.orderDao.save(order);
+		return modelMapper.map(order, OrderDTO.class);
 	}
 
 }
