@@ -23,7 +23,7 @@ import { Navbar } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 const Header = (props) => {
     // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
-    const { dataCart, imageUrls, searchButton, handleInputSearch, keyword, dataUser } = props
+    const { dataCart, imageUrls, searchButton, handleInputSearch, keyword, dataUser, logOut } = props
     const [dataUser1, setDataUser1] = useState()
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
@@ -104,6 +104,7 @@ const Header = (props) => {
         setcart(false)
         setnavbar(false)
     }
+
     const navigate = useNavigate();
     const logout = () => {
         localStorage.removeItem('name');
@@ -195,7 +196,7 @@ const Header = (props) => {
                                 <DropdownItem><NavLink to="/order" >Đơn hàng</NavLink></DropdownItem>
                                 <DropdownItem><NavLink to="/order/type3" >Lịch sử đặt hàng</NavLink></DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem onClick={() => { logout() }}> <NavLink to="/login" >Đăng xuất</NavLink></DropdownItem>
+                                <DropdownItem onClick={() => { logOut() }}>Đăng xuất</DropdownItem>
                             </>
                         }
                         {!dataUser.fullName &&

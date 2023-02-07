@@ -100,6 +100,10 @@
     color: orangered;
 }
 
+.color-button {
+    text-align: center;
+}
+
 .product .box-container .box .btn {
     text-decoration: none;
     padding: 0.7rem 2rem;
@@ -229,5 +233,6 @@
 .MuiBox-root {
     padding-top: 10px;
 }
+
 
 /* end featured  */

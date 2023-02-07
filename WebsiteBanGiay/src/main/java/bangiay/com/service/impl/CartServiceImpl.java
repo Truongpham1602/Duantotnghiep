@@ -109,6 +109,7 @@ public class CartServiceImpl implements CartService {
 			}
 			lstCartDTO.get(i).setProduct_ID(lstCart.get(i).getSize().getProduct().getId());
 			lstCartDTO.get(i).setName_Product(lstCart.get(i).getSize().getProduct().getName());
+			lstCartDTO.get(i).setName_Cate(lstCart.get(i).getSize().getProduct().getCategory().getNamecate());
 			lstCartDTO.get(i).setColor_Product(lstCart.get(i).getSize().getProduct().getColor());
 			lstCartDTO.get(i).setPrice(lstCart.get(i).getSize().getProduct().getPrice());
 			lstCartDTO.get(i).setSize_Id(lstCart.get(i).getSize().getId());

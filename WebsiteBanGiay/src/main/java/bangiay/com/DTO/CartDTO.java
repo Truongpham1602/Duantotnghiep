@@ -17,6 +17,7 @@ public class CartDTO implements Serializable {
 	private Integer user_Id;
 	private Integer product_ID;
 	private String name_Product;
+	private String name_Cate;
 	private String color_Product;
 	private Integer size_Id;
 

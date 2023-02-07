@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import bangiay.com.DTO.ColorDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.service.ProductService;
 
@@ -74,9 +75,9 @@ public class ProductRestController {
 	}
 
 	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
-	@GetMapping("/updateStatusFalse/{id}")
-	public void updateStatusFalse(@PathVariable("id") int id) {
-		productService.updateStatusFalse(id);
+	@PostMapping("/updateStatusFalse")
+	public void updateStatusFalse(@RequestBody ColorDTO colordto) {
+		productService.updateStatusFalse(colordto);
 	}
 
 	@PreAuthorize("hasPermission(#req, 'PRODUCT_EDIT') or hasPermission(#req, 'ADMIN')")
@@ -98,5 +99,15 @@ public class ProductRestController {
 	@GetMapping("/findTop3Bill")
 	public List<ProductDTO> findTop3Bill() {
 		return this.productService.top3BillProduct();
+	}
+
+	@PostMapping("/findByName")
+	public ProductDTO findByName(@RequestBody ColorDTO colordto) {
+		return this.productService.findByName(colordto);
+	}
+
+	@PostMapping("/findByNameAndColor")
+	public ProductDTO findByColorAndName(@RequestBody ColorDTO colordto) {
+		return this.productService.findByColorAndName(colordto);
 	}
 }

@@ -3,8 +3,18 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import {
-    Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Input
-} from 'reactstrap';
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    FormGroup,
+    Label,
+    Row,
+    Col,
+    Form,
+    Input,
+} from "reactstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import NumericInput from 'react-numeric-input';
 import '../css/detailsProduct.scss';
@@ -22,13 +32,19 @@ import { storage } from "../../Firebase";
 import { async } from "@firebase/util";
 const ProductDetails = (props) => {
     // const [modal, setModal] = useState(false);
+    const token = localStorage.getItem('token');
+    axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
     // const toggle = () => setModal(!modal);
     const navigate = useNavigate()
+    const [check, setCheck] = useState({});
+    const [newColor, setNewColor] = useState({ color: '', quantity: '', print: '' });
+    const [lstsizeSelect, setLstSizeSelect] = useState([]);
     const size = [37, 38, 39, 40, 41, 42, 43, 44, 45];
-    const { isDetailsModal, toggleModal, updateData, handleUpdateImages, handleImages, imageUrls, setImageUrls } = props;
+    const { isDetailsModal, toggleModal, updateData, handleUpdateImages, handleImages, imageUrls, setImageUrls, imageFiles } = props;
     const [isSizeModal, setIsSizeModal] = useState(false);
     const [isImageModal, setisImageModal] = useState(false);
     const [product, setProduct] = useState(props.product);
+
     const imagesListRef = ref(storage, "images/");
     // const [imageUrls, setImageUrls] = useState([]);
     const [sizePro, setSizePro] = useState({});
@@ -39,6 +55,13 @@ const ProductDetails = (props) => {
     const [imageUpload, setImageUpload] = useState();
     const [sizeProQuantity, setSizeProQuantity] = useState({});
     const [sizes, setSizes] = useState([
+    ])
+
+    const [isCreateModal, setIsCreateModal] = useState(false)
+
+    const { register, handleSubmit } = useForm();
+
+    const sizeList = [
         {
             title: 36,
             status: false
@@ -82,28 +105,98 @@ const ProductDetails = (props) => {
         {
             title: 46,
             status: false
-        }
+        }]
+
+    const [colorSt, setColorST] = useState([
     ])
+    const sizeCheck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    const ColorList = [
+        {
+            id: 'Trắng',
+            status: false
+        },
+        {
+            id: 'Đỏ',
+            status: false
+        },
+        {
+            id: 'Xanh dương',
+            status: false
+        },
+        {
+            id: 'Cam',
+            status: false
+        },
+        {
+            id: 'Đen',
+            status: false
+        },
+        {
+            id: 'Hồng',
+            status: false
+        },
+        {
+            id: 'Nâu',
+            status: false
+        },
+        {
+            id: 'Tím',
+            status: false
+        },
+        {
+            id: 'Xanh lá',
+            status: false
+        }]
 
     useEffect(() => {
         setProduct(props.product)
-        // setImageUrls([])
-        // listAll(imagesListRef).then((response) => {
-        //     response.items.forEach((item) => {
-        //         let nameImg = item.name;
-        //         getDownloadURL(item).then((url) => {
-        //             setImageUrls((prev) => [...prev, { nameImg, url }]);
-        //         });
-        //     });
-        // });
+        //size
         props.product.sizes?.map(item => {
-            let copydata = sizes;
+            let copydata = sizeList;
             let getIndex = copydata.findIndex((p) => { return p.title == item.size });
             let size = { id: item.id, title: item.size, quantity: item.quantity, status: true }
             copydata.fill(size, getIndex, getIndex + 1);
             setSizes(copydata)
         })
+
     }, [props.product])
+
+
+
+    const checkSize = (e) => {
+        let Select = e.target.value;
+        setSizeSelect(Select);
+        setLstSizeSelect([]);
+        for (let i = 1; i <= Select; i++) {
+            setLstSizeSelect((prev) => [...prev, i]);
+        }
+    };
+
+    const setShowSize = (product) => {
+        product.sizes?.map(item => {
+            let copydata = sizeList;
+            let getIndex = copydata.findIndex((p) => { return p.title == item.size });
+            let size = { id: item.id, title: item.size, quantity: item.quantity, status: true }
+            copydata.fill(size, getIndex, getIndex + 1);
+            setSizes(copydata)
+        })
+    }
+
+    // const setShowColor = (product) => {
+    //     let copyc;
+    //     product.colors?.map(item => {
+    //         let copydata = ColorList;
+    //         let getIndex = copydata.findIndex((p) => { return p.id == item.color });
+    //         let color = { id: item.color, status: true, select: false }
+    //         copydata.fill(color, getIndex, getIndex + 1);
+    //         setColorST(copydata)
+    //         copyc = copydata
+    //     })
+    //     let getIndexSelect = copyc.findIndex((p) => { return p.id == product.color });
+    //     let color = { id: product.color, status: true, select: true }
+    //     copyc.fill(color, getIndexSelect, getIndexSelect + 1);
+    //     setColorST(copyc)
+    // }
 
     const styleToast = {
         position: "top-right",
@@ -115,6 +208,123 @@ const ProductDetails = (props) => {
         progress: undefined,
         theme: "colored",
     }
+
+    const checkColor = async () => {
+        const res = await axios.post(
+            `http://localhost:8080/admin/product/findByName`, { name: product.name },
+            { headers: { "Authorization": `Bearer ${token}` } }
+        );
+        res.data.colors.map(item => {
+            if (item.color == newColor.color) {
+                return true
+            } else {
+                return false
+            }
+        })
+    }
+
+    const handelInputNewColor = (event, id) => {
+        let soluong = /^\d+$/;
+        let gia = /^\d*(\.\d+)?$/
+        let copyProduct = { ...newColor };
+        copyProduct[id] = event.target.value;
+        try {
+            let ch0 = { ...check };
+            if (id == "color") {
+                if (copyProduct[id].trim().length == 0) {
+                    ch0["color"] = "Giá không được để trống";
+                } else {
+                    ch0["color"] = "";
+                }
+            } else if (id == "price") {
+                if (copyProduct[id].trim().length > 0 && gia.test(event.target.value) == false || Number(copyProduct[id]) < 5000) {
+                    ch0["price"] = "Giá phải trên 1k VNĐ và phải là số";
+                } else if (copyProduct[id].trim().length == 0) {
+                    ch0["price"] = "Giá không được để trống";
+                } else {
+                    ch0["price"] = "";
+                }
+            } else if (id == "quantity") {
+                if (copyProduct[id].trim().length > 0 && soluong.test(event.target.value) == false || Number(copyProduct[id]) <= 0) {
+                    ch0["quantity"] = "Số lượng phải là số và lớn hơn 0";
+                } else if (copyProduct[id].trim().length == 0) {
+                    ch0["quantity"] = "Số lượng không được để trống";
+                } else {
+                    ch0["quantity"] = "";
+                }
+            } else {
+                ch0[id] = "";
+            }
+            setCheck({
+                ...ch0,
+            });
+            setNewColor({
+                ...copyProduct,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    const setNew = () => {
+        let copyNew = { ...newColor }
+        copyNew['name'] = product.name
+        copyNew['categoryId'] = product.categoryId
+        copyNew['cateName'] = product.name_cate
+        setNewColor(copyNew)
+    }
+
+    const toggleNewColor = () => {
+        setIsCreateModal(!isCreateModal)
+        setNewColor({ color: '', quantity: '', price: '' })
+    }
+
+    const createProduct = () => {
+        try {
+
+            let ch0 = { ...check };
+            if (newColor.price.trim().length == 0) {
+                ch0["price"] = "Giá không được để trống";
+                setCheck({ ...ch0 });
+            } if (newColor.quantity.trim().length == 0) {
+                ch0["quantity"] = "Số lượng không được để trống";
+                setCheck({ ...ch0 });
+            }
+            if (newColor.color.trim().length == 0) {
+                ch0["color"] = "Màu không được để trống";
+                setCheck({ ...ch0 });
+            }
+            if (
+                check.price.trim().length > 0 ||
+                check.quantity.trim().length > 0
+            ) {
+                return;
+            }
+            if (checkColor()) {
+                notifyWarning("Màu này đã tồn tại");
+                return
+            }
+            const createPro = async () => {
+                let res = await axios.post("http://localhost:8080/admin/product/post", newColor);
+                let datares = res && res.data ? res.data : [];
+                datares.created = moment(datares.created).format(
+                    "DD/MM/YYYY HH:mm:ss"
+                );
+                if (datares.modified > 0) {
+                    datares.modified = moment(datares.modified).format(
+                        "DD/MM/YYYY HH:mm:ss"
+                    );
+                }
+                createPro();
+                notifySuccess("Thêm thành công");
+                toggleNewColor();
+                findByNameAndColor(res.data.color)
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const notifySuccess = (text) => {
         toast.success(text, styleToast)
@@ -377,6 +587,13 @@ const ProductDetails = (props) => {
         }
     }
 
+    const findByNameAndColor = async (event) => {
+        const res = await axios.post(`http://localhost:8080/admin/product/findByNameAndColor`, { name: props.product.name, color: event.target.value })
+        setProduct(res.data ? res.data : [])
+        setShowSize(res.data ? res.data : [])
+        // setShowColor(res.data ? res.data : [])
+    }
+
     return (
         <div>
             <Modal isOpen={isDetailsModal} toggle={() => toggle()} size='xl' centered>
@@ -424,7 +641,36 @@ const ProductDetails = (props) => {
                                 <h1>{product.name}</h1>
                             </div>
                             <div className="product-details-right-product-color">
-                                <p className="color"><span className="colorDetails">Màu: </span>{product.color}</p>
+                                <p className="color"><span className="colorDetails">Màu: <select
+                                    style={{
+                                        border: "1px solid",
+                                        width: "70%",
+                                        borderRadius: "5px",
+                                    }}
+                                    id="namecate"
+                                    name="namecate"
+                                    placeholder=""
+                                    type="select"
+                                    onChange={(event) =>
+                                        findByNameAndColor(event)
+                                    }
+                                >
+                                    {product?.colors?.map((item) => {
+                                        if (item.color === product.color) {
+                                            return (
+                                                <option key={item.color} selected value={item.color}>
+                                                    {item.color}
+                                                </option>
+                                            );
+                                        } else {
+                                            return (
+                                                <option key={item.color} value={item.color} >
+                                                    {item.color}
+                                                </option>
+                                            );
+                                        }
+                                    })}
+                                </select><button onClick={() => { toggleNewColor(); setNew() }} style={{ backgroundColor: 'cyan', marginLeft: '2%', borderRadius: '20px' }} className="btn">+</button></span></p>
                             </div>
                             <div className="product-details-right-product-color">
                                 <p className="color"><span className="colorDetails">Loại: </span>{product.name_cate}</p>
@@ -550,6 +796,187 @@ const ProductDetails = (props) => {
                         Hủy
                     </Button>
                 </ModalFooter>
+            </Modal>
+
+
+
+            <Modal isOpen={isCreateModal} toggle={() => toggleNewColor()} size="lg" centered>
+                <Form >
+                    <ModalHeader toggle={() => toggleNewColor()}>Thêm màu</ModalHeader>
+                    <ModalBody>
+                        <Row>
+                            <Row>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <Label for="name">Tên</Label>
+                                        <div>
+                                            <input
+                                                style={{
+                                                    border: "1px solid",
+                                                    width: "100%",
+                                                    borderRadius: "5px",
+
+                                                }}
+                                                disabled
+                                                id="name"
+                                                name="name"
+                                                placeholder=""
+                                                type="text"
+                                                value={newColor.name}
+                                            />
+                                            {check.name && check.name.length > 0 && (
+                                                <p className="checkError">{check.name}</p>
+                                            )}
+                                        </div>
+                                    </FormGroup>
+                                </Col>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <Label for="color">Màu</Label>
+                                        <div>
+                                            <input
+                                                style={{
+                                                    border: "1px solid",
+                                                    width: "100%",
+                                                    borderRadius: "5px",
+                                                }}
+                                                id="name"
+                                                name="name"
+                                                placeholder=""
+                                                type="text"
+                                                value={newColor.color}
+                                                onChange={(event) =>
+                                                    handelInputNewColor(event, "color")
+                                                }
+                                            />
+                                            {check.color && check.color.length > 0 && (
+                                                <p className="checkError">{check.color}</p>
+                                            )}
+                                        </div>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <Label for="price">Giá</Label>
+                                        <div>
+                                            <input
+                                                style={{
+                                                    border: "1px solid",
+                                                    width: "100%",
+                                                    borderRadius: "5px",
+                                                }}
+                                                id="price"
+                                                name="price"
+                                                placeholder=""
+                                                type="text"
+                                                value={newColor.price}
+                                                onChange={(event) =>
+                                                    handelInputNewColor(event, "price")
+                                                }
+                                            />
+                                            {check.price && check.price.length > 0 && (
+                                                <p className="checkError">{check.price}</p>
+                                            )}
+                                        </div>
+                                    </FormGroup>
+                                </Col>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <Label for="quantity">Số lượng</Label>
+                                        <div>
+                                            <input
+                                                style={{
+                                                    border: "1px solid",
+                                                    width: "100%",
+                                                    borderRadius: "5px",
+                                                }}
+                                                id="quantity"
+                                                name="quantity"
+                                                placeholder=""
+                                                type="text"
+                                                value={newColor.quantity}
+                                                onChange={(event) =>
+                                                    handelInputNewColor(event, "quantity")
+                                                }
+                                            />
+                                            {check.quantity && check.quantity.length > 0 && (
+                                                <p className="checkError">{check.quantity}</p>
+                                            )}
+                                        </div>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={12}>
+                                    <Row>
+                                        <Col md={12}>
+                                            <FormGroup>
+                                                <Label for="namecate">Danh mục</Label>
+                                                <div>
+                                                    <input
+                                                        style={{
+                                                            border: "1px solid",
+                                                            width: "100%",
+                                                            borderRadius: "5px",
+                                                        }}
+                                                        disabled
+                                                        id="quantity"
+                                                        name="quantity"
+                                                        placeholder=""
+                                                        type="text"
+                                                        value={newColor.cateName}
+                                                    />
+                                                </div>
+                                            </FormGroup>
+                                        </Col>
+
+                                    </Row>
+                                </Col>
+
+                                <Col md={12}>
+                                    <FormGroup>
+                                        <Label for="description">Mô tả</Label>
+                                        <div>
+                                            <textarea
+                                                style={{
+                                                    border: "1px solid",
+                                                    width: "100%",
+                                                    borderRadius: "5px",
+                                                    height: "100px",
+                                                }}
+                                                id="description"
+                                                name="description"
+                                                onChange={(event) => {
+                                                    handelInputNewColor(event, 'description');
+                                                }}
+                                            />
+                                            {check.description && check.description.length > 0 && (
+                                                <p className="checkError">{check.description}</p>
+                                            )}
+                                        </div>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
+                        </Row>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                            color="primary"
+                            type="submit"
+                            onClick={() => {
+                                createProduct();
+                            }}
+                        >
+                            Thêm Mới
+                        </Button>
+                        <Button color="secondary" onClick={() => toggleNewColor()}>
+                            Hủy
+                        </Button>
+                    </ModalFooter>
+                </Form>
             </Modal>
         </div>
     );
