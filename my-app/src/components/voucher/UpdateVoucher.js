@@ -120,6 +120,9 @@ const UpdateVoucher = (props) => {
     const notifySuccess = (text) => {
         toast.success(text, styleToast)
     };
+    const notifyError = (text) => {
+        toast.error(text, styleToast);
+    };
     const notifyWarning = (text) => {
         toast.warning(text, styleToast);
     };
@@ -178,8 +181,8 @@ const UpdateVoucher = (props) => {
                 return
             }
             else if (
-                check.effectUntil.trim().length > 0
-                || check.effectFrom.trim().length > 0
+                check.effectUntil?.trim().length > 0
+                || check.effectFrom?.trim().length > 0
                 || check.name?.trim().length > 0
                 || check.value.trim().length > 0
                 || check.quantity.trim().length > 0
@@ -197,6 +200,7 @@ const UpdateVoucher = (props) => {
             notifySuccess("Cập nhập thành công")
         } catch (error) {
             console.log(error.message);
+            notifyError("Cập nhập không thành công")
         }
     }
 

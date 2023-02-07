@@ -182,7 +182,9 @@ const NewVoucher = (props) => {
                     return
                 }
 
-                let res = await axios.post(VouCher_Rest_API_URL + '/create', voucher)
+
+
+                let res = await axios.post(VouCher_Rest_API_URL + '/create', voucher, { headers: { "Authorization": `Bearer ${token}` } })
                 let datares = (res && res.data) ? res.data : []
                 datares.effectFrom = moment(datares.effectFrom).format('DD/MM/YYYY HH:mm:ss');
                 if (datares.effectUntil > 0) {
@@ -328,7 +330,7 @@ const NewVoucher = (props) => {
                                         // {...register("isActive", { required: false })}
                                         >
                                             <option value="" disabled selected>
-                                                Select category
+                                                Chọn danh mục
                                             </option>
                                             {
                                                 lstcate.map((item, index) => {
