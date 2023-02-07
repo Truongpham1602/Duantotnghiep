@@ -59,4 +59,7 @@ public class Order {
 
 	@Column(name = "RETURNATDATE")
 	private java.sql.Timestamp returnAtDate;
+
+	@Column(name = "RETURNSTATUS")
+	private Integer returnStatus;
 }

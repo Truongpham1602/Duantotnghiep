@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import bangiay.com.DTO.OrderCancelDTO;
 import bangiay.com.DTO.OrderDTO;
 import bangiay.com.entity.Order;
 
@@ -43,4 +44,6 @@ public interface OrderService {
 	OrderDTO create(OrderDTO orderDTO, Integer user_Id, Integer voucher_Id);
 
 	public OrderDTO updateCompletedOrder(Integer id);
+
+	public OrderDTO updateReturnStatus(OrderCancelDTO orderCancelDTO);
 }

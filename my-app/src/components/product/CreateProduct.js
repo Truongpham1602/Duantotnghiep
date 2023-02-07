@@ -145,23 +145,6 @@ const CreateProduct = (props) => {
     toast.error(text, styleToast);
   };
 
-  let checkaddPro = false
-  const checkAddPro = async () => {
-    checkaddPro = true
-    const res = await axios.post(
-      `http://localhost:8080/admin/product/findByName`, { name: product.name },
-      { headers: { "Authorization": `Bearer ${token}` } }
-    );
-    console.log(res.data.length);
-    console.log(res.data);
-    if (res.data.length > 0) {
-      checkaddPro = true
-    } else {
-      console.log(res.data);
-      checkaddPro = false
-    }
-  }
-
   const styleToast = {
     position: "top-right",
     autoClose: 5000,

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import bangiay.com.DTO.OrderCancelDTO;
 import bangiay.com.DTO.OrderDTO;
 import bangiay.com.doMain.constant;
 import bangiay.com.entity.Order;
@@ -93,6 +94,11 @@ public class OrderRestController {
 	public ResponseEntity<?> updateOrderWithStatus(@RequestParam("id") Integer id,
 			@RequestParam("status") Integer status) {
 		return new ResponseEntity<>(orderService.updateOrderWithStatus(id, status), HttpStatus.OK);
+	}
+
+	@PostMapping("/updateReturnStatus")
+	public ResponseEntity<?> updateReturnStatus(@RequestBody OrderCancelDTO params) {
+		return new ResponseEntity<>(orderService.updateReturnStatus(params), HttpStatus.OK);
 	}
 
 }
