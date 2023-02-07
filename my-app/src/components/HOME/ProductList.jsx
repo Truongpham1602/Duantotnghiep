@@ -34,7 +34,7 @@ const ProductList = () => {
                 <h1 class="heading">sản phẩm <span>mới nhất</span></h1>
                 <div class="box-container">
                     {top5ProNew.map((item, index) => {
-                        if (index <= 5) {
+                        if (index <= 4) {
                             return (
                                 <div class="box">
                                     <div class="content">
