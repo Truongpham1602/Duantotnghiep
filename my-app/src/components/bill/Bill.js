@@ -8,6 +8,7 @@ import {
   getMetadata,
 } from "firebase/storage";
 import { storage } from "../../Firebase";
+import moment from 'moment';
 import axios from "axios";
 import "../css/ship.css";
 import useCallGetAPI from "../../customHook/CallGetApi";
@@ -63,7 +64,7 @@ const Bill = (props) => {
   const [lstVoucher, setLstVoucher] = useState([]);
 
   const [voucherSelect, setVoucherSelect] = useState({});
-  const [sealer, setSealer] = useState();
+  const [sealer, setSealer] = useState(0);
   const imagesListRef = ref(storage, "images/");
   const [account, setAccount] = useState({
     email: "",
@@ -78,14 +79,7 @@ const Bill = (props) => {
       title: "Ngân hàng",
       card: "NCB",
     },
-    {
-      title: "Loại thẻ quốc tế",
-      card: "VISA",
-    },
-    {
-      title: "Loại thẻ quốc tế",
-      card: "MasterCard",
-    },
+
   ];
   // const [user, setUser] = useState({})
   const handleOnchangeInput = (e, id) => {
@@ -96,36 +90,36 @@ const Bill = (props) => {
       let vnf_regex = /((09|03|07|08|028|024|05)+([0-9]{8})\b)/g;
       let re = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
 
-      if (id == "email") {
-        if (re.test(e.target.value) == false) {
+      if (id == "first") {
+        if (copy[id] == 0) {
           //ch0["email"] = "This is a valid email address";
-          ch0["email"] = "Invalid email, please enter correct email format";
+          ch0["first"] = "Họ không được để trống";
         } else {
-          ch0["email"] = "";
+          ch0["first"] = "";
         }
         setCheck({
           ...ch0,
         });
       } else {
-        if (id == "nameRecipient") {
+        if (id == "last") {
           if (copy[id] == 0) {
-            ch0[id] = "nameRecipient not null";
+            ch0[id] = "Tên không được để trống";
           } else {
             ch0[id] = "";
           }
         } else if (id == "telephone") {
           if (copy[id] == 0) {
-            ch0["telephone"] = "Phone Number not null";
+            ch0["telephone"] = "Số điện thoại không được để trống";
           } else {
             if (vnf_regex.test(e.target.value) == false) {
-              ch0["telephone"] = "please enter correct phone format";
+              ch0["telephone"] = "Số điện thoại sai định dạng";
             } else {
               ch0["telephone"] = "";
             }
           }
         } else if (id == "address") {
           if (copy[id] == 0) {
-            ch0["address"] = "address not null";
+            ch0["address"] = "Địa chỉ không được để trống";
           } else {
             ch0["address"] = "";
           }
@@ -174,6 +168,11 @@ const Bill = (props) => {
         let user = await axios.get(`http://localhost:8080/auth/information`,
           { headers: { "Authorization": `Bearer ${token}` } }
         );
+        let copy = user.data
+        let fullString = user.data.fullName.split(" ");
+        copy['first'] = fullString[0]
+        copy['last'] = fullString[fullString.length - 1]
+        setAccount(copy)
         const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
           { headers: { "Authorization": `Bearer ${token}` } })
         setLstCart(res.data);
@@ -210,17 +209,17 @@ const Bill = (props) => {
     let fullName = account.first + " " + account.last
     console.log(fullName);
     account.nameRecipient = fullName
-    if (account.email == 0) {
+    if (account.first == 0) {
       ch0["first"] = "Cần nhập họ người nhận";
       setCheck({ ...ch0 });
-    } else if (check.email == 0) {
+    } else if (check.first == 0) {
       ch0["first"] = "";
       setCheck({ ...ch0 });
     }
-    if (account.nameRecipient == 0) {
+    if (account.last == 0) {
       ch0["last"] = "Cần nhập tên người nhận";
       setCheck({ ...ch0 });
-    } else if (check.nameRecipient == 0) {
+    } else if (check.last == 0) {
       ch0["last"] = "";
       setCheck({ ...ch0 });
     }
@@ -240,14 +239,14 @@ const Bill = (props) => {
     }
     if (
       check.email > 0 ||
-      check.nameRecipient > 0 ||
+      check.first > 0 ||
+      check.last > 0 ||
       check.telephone > 0 ||
       check.address > 0
     ) {
       return;
     }
     try {
-      console.log(account);
       let userLogin = await axios.get(`http://localhost:8080/auth/information`,
         { headers: { "Authorization": `Bearer ${token}` } }
       );
@@ -304,10 +303,10 @@ const Bill = (props) => {
         });
         if (res.data.type === 1) {
           total = total - (totalSealer * res.data.value) / 100;
-          setSealer((totalSealer * res.data.value) / 100);
+          setSealer((Number(totalSealer * res.data.value) / 100));
         } else {
           total = total - res.data.value;
-          setSealer(res.data.value);
+          setSealer(Number(res.data.value));
         }
         setTotalPrice(total);
         toggle();
@@ -319,7 +318,7 @@ const Bill = (props) => {
         });
         setTotalPrice(total);
         setVoucherSelect({});
-        setSealer();
+        setSealer(0);
       }
       toggle();
     }
@@ -435,10 +434,11 @@ const Bill = (props) => {
                     nameRecipient="email"
                     placeholder=""
                     type="text"
+                    value={account.first}
                     onChange={(event) => handleOnchangeInput(event, "first")}
                   />
-                  {check.email && check.email.length > 0 && (
-                    <p className="checkError1">{check.email}</p>
+                  {check.first && check.first.length > 0 && (
+                    <p className="checkError1">{check.first}</p>
                   )}
                 </FormGroup>
               </Col>
@@ -448,12 +448,13 @@ const Bill = (props) => {
                   <Input
                     id="nameRecipient"
                     nameRecipient="nameRecipient"
-                    placeholder="VD: Nguyên Nguyễn"
+                    placeholder=""
                     type="text"
+                    value={account.last}
                     onChange={(event) => handleOnchangeInput(event, "last")}
                   />
-                  {check.nameRecipient && check.nameRecipient.length > 0 && (
-                    <p className="checkError1">{check.nameRecipient}</p>
+                  {check.last && check.last.length > 0 && (
+                    <p className="checkError1">{check.last}</p>
                   )}
                 </FormGroup>
               </Col>
@@ -467,6 +468,7 @@ const Bill = (props) => {
                     nameRecipient="telephone"
                     placeholder=""
                     type="text"
+                    value={account.telephone}
                     onChange={(event) =>
                       handleOnchangeInput(event, "telephone")
                     }
@@ -483,6 +485,7 @@ const Bill = (props) => {
                     id="address"
                     nameRecipient="address"
                     placeholder=""
+                    value={account.address}
                     type="text"
                     onChange={(event) => handleOnchangeInput(event, "address")}
                   />
@@ -540,12 +543,12 @@ const Bill = (props) => {
                         });
                       })}
                     </Col>
-                    <Col md={3}>
+                    <Col md={4}>
                       <p>
-                        {lstcart.name_Product} / {lstcart.sizeName}
+                        {lstcart.name_Product} / {lstcart.sizeName} <br />Loại: {lstcart.name_Cate}
                       </p>
                     </Col>
-                    <Col md={3}>
+                    <Col md={2}>
                       <p>
                         {lstcart.color_Product}
                       </p>
@@ -553,6 +556,7 @@ const Bill = (props) => {
                     <Col md={3}>
                       <p>{toltal.toLocaleString()} VNĐ</p>
                     </Col>
+
                   </Row>
                 </>
               );
@@ -599,6 +603,7 @@ const Bill = (props) => {
             <ModalBody>
               <Row>
                 {lstVoucher.map((item, index) => {
+                  let effectUntil = moment(item.effectUntil).format('DD/MM/YYYY');
                   if (
                     item.status != 0 &&
                     Number(item.status) > 0 &&
@@ -616,25 +621,32 @@ const Bill = (props) => {
                         }}
                       >
                         <Row>
-                          <Col md={6}>
-                            <span>{item.nameRecipient}</span>
+                          <Col md={12}>
+                            <span>{item.name}</span>
+                          </Col>
+                          <Col md={7}>
                             <span
                               style={{
-                                marginLeft: "auto",
+                                marginLeft: "0px",
                                 marginRight: "0px",
-                                float: "right",
+                                float: "left",
                               }}
                             >
                               Còn {item.quantity} mã
                             </span>
-                            <p>{item.namecate}</p>
+                            <p style={{
+                              marginLeft: "0px",
+                              marginRight: "5%",
+                              float: "right",
+                            }}>Loại: {item.namecate}</p>
                           </Col>
-                          <Col md={5}>{item.effectUntil}</Col>
+                          <Col md={4}>Hạn: {effectUntil}</Col>
                           <Col md={1}>
                             <input
                               type="radio"
                               className="voucher"
                               value={item.id}
+                              name='radio'
                             />
                           </Col>
                         </Row>
@@ -658,14 +670,14 @@ const Bill = (props) => {
               </Button>
             </ModalFooter>
           </Modal>
-          <div className="cart-right col-5 bg-light">
+          <div className="cart-right col-8 bg-light">
             <div className="summary" style={{ textAlign: 'left' }}>
               <ul>
                 <li>
                   Tồng tiền: <span>{totalPrice.toLocaleString()} VNĐ</span>
                 </li>
                 <li>
-                  Giảm: <span>{sealer}</span>
+                  Giảm: <span>{sealer.toLocaleString()} VNĐ</span>
                 </li>
                 <li className="total">
                   Tổng: <span>{totalQuantity.toLocaleString()}</span> Sản phẩm

@@ -94,6 +94,7 @@ public class VoucherServiceImpl implements VoucherService {
 		Voucher voucher = voucherDAO.findById(id).orElseGet(null);
 		VoucherDTO vou = modelMapper.map(voucher, VoucherDTO.class);
 		vou.setCategoryId(voucher.getCategory().getId());
+		vou.setName_cate(voucher.getCategory().getNamecate());
 		return vou;
 	}
 
@@ -109,8 +110,13 @@ public class VoucherServiceImpl implements VoucherService {
 
 	@Override
 	public List<VoucherDTO> findAll() {
-		return voucherDAO.findAll().stream().map(voucher -> modelMapper.map(voucher, VoucherDTO.class))
+		List<Voucher> voucher = this.voucherDAO.findAll();
+		List<VoucherDTO> vous = voucher.stream().map(v -> modelMapper.map(v, VoucherDTO.class))
 				.collect(Collectors.toList());
+		for (int i = 0; i < vous.size(); i++) {
+			vous.get(i).setName_cate(voucher.get(i).getCategory().getNamecate());
+		}
+		return vous;
 	}
 
 }

@@ -121,32 +121,6 @@ const UpdateUser = (props) => {
     theme: "colored",
   };
 
-  // const arrRole = [
-  //   {
-  //     id: 1,
-  //     title: "Quản lý",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Nhân viên",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Khách hàng",
-  //   },
-  // ];
-
-  const status = [
-    {
-      id: 1,
-      title: "Hoạt động",
-    },
-    {
-      id: 0,
-      title: "Không hoạt động",
-    },
-  ];
-
   const updateUser = async () => {
     try {
       let validForm = true;
@@ -358,7 +332,7 @@ const UpdateUser = (props) => {
                           handleOnchangeInput(event, "status")
                         }
                       >
-                        {status.map((item) => {
+                        {/* {status.map((item) => {
                           if (user.status === item.id) {
                             return (
                               <option selected value={item.id}>
@@ -367,7 +341,7 @@ const UpdateUser = (props) => {
                             );
                           }
                           return <option value={item.id}>{item.title}</option>;
-                        })}
+                        })} */}
                       </select>
                     </FormGroup>
                   </Col>
