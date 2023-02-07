@@ -1,5 +1,6 @@
 package bangiay.com.DTO;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDTO {
+public class OrderDTO implements Serializable {
 	private Integer id;
 	private Integer userId;
 	private String code;
@@ -24,5 +25,5 @@ public class OrderDTO {
 	private Timestamp returnAtDate;
 	private String description;
 	private Integer status;
-
+	private Integer returnStatus;
 }

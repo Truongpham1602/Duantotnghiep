@@ -3,6 +3,7 @@ import moment from 'moment'
 import { Await, useNavigate } from "react-router-dom";
 // import AxiosInterceptor from './AxiosInterceptor'
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 const useCallGetAPI = (url) => {
     const token = localStorage.getItem('token');
@@ -11,6 +12,26 @@ const useCallGetAPI = (url) => {
     const [isError, setIsError] = useState(false);
     const navigate = useNavigate();
     // const ourRequest = axios.CancelToken.source()
+    const notifyWarning = (text) => {
+        toast.warning(text, styleToast);
+    };
+    const notifySuccess = (text) => {
+        toast.success(text, styleToast);
+    };
+    const notifyError = (text) => {
+        toast.error(text, styleToast);
+    };
+
+    const styleToast = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    };
 
     useEffect(() => {
         let canceled = false;
@@ -42,7 +63,7 @@ const useCallGetAPI = (url) => {
                 }
             } catch (e) {
                 if (e.response.status == 403) {
-                    alert("Bạn không có quyền truy cập !!");
+                    notifyWarning("Bạn không có quyền truy cập !!");
                     navigate("/");
                 }
                 if (axios.isCancel(e)) {

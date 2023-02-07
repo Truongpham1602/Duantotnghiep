@@ -172,9 +172,11 @@ const Bill = (props) => {
         let fullString = user.data.fullName.split(" ");
         copy['first'] = fullString[0]
         copy['last'] = fullString[fullString.length - 1]
-        setAccount(copy)
+
         const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
           { headers: { "Authorization": `Bearer ${token}` } })
+        copy['id'] = ''
+        setAccount(copy)
         setLstCart(res.data);
         setTotal(res.data);
       } catch (error) {
@@ -207,7 +209,6 @@ const Bill = (props) => {
   const createOrder = async () => {
     let ch0 = { ...check };
     let fullName = account.first + " " + account.last
-    console.log(fullName);
     account.nameRecipient = fullName
     if (account.first == 0) {
       ch0["first"] = "Cần nhập họ người nhận";
