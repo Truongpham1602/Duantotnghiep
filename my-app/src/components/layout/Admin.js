@@ -114,7 +114,7 @@ const Admin = () => {
                     </div>
                     Tài khoản
                     <div className="sb-sidenav-collapse-arrow">
-                      <i className="fas fa-angle-down"></i>
+                      {/* <i className="fas fa-angle-down"></i> */}
                     </div>
                   </NavLink>
                   <NavLink

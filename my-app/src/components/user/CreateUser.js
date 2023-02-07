@@ -212,7 +212,7 @@ const CreateUser = (props) => {
             { headers: { "Authorization": `Bearer ${token}` } })
             .catch((error) => {
               if (error.response.status == 403) {
-                alert("Bạn không có quyền thêm mới !!");
+                notifyWarning("Bạn không có quyền thêm mới !!")
               }
             });
           let data = res && res.data ? res.data : [];
