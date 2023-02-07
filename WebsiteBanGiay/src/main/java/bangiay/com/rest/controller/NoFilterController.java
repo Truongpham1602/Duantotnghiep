@@ -53,7 +53,7 @@ public class NoFilterController {
 	@PostMapping("/post")
 	public UserDTO post(@RequestBody UserDTO userDTO) {
 		return userService.create(userDTO);
-	}
+	} 
 
 	@PostMapping("/searchClient")
 	public Page<ProductDTO> searchClient(@RequestParam(name = "size", defaultValue = "11") Integer size,

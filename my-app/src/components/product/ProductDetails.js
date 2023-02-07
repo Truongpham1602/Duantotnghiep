@@ -624,13 +624,21 @@ const ProductDetails = (props) => {
                                 {product.name?.length > 0 && imageUrls.map((img, index1) => {
                                     return (
                                         product.medias.map((item, index2) => {
-                                            return (
-                                                <>
-                                                    {index2 === 0 && img.nameImg === item.url &&
+                                            let im = true;
+                                            if (index2 === 0 && img.nameImg === item.url) {
+                                                return (
+                                                    <>
                                                         <img onClick={() => { findImageById(item.id, 'select'); toggleImage() }} src={img.url} style={{ height: '353px', width: '100%' }} />
-                                                    }
-                                                </>
-                                            )
+                                                    </>
+                                                )
+                                            }
+                                            // else if (index1 === 0 && index2 === 0 && im === true) {
+                                            //     return (
+                                            //         <>
+                                            //             <img onClick={() => { findImageById(item.id, 'select'); toggleImage() }} style={{ height: '353px', width: '100%' }} />
+                                            //         </>
+                                            //     )
+                                            // }
                                         })
                                     )
                                 })}
