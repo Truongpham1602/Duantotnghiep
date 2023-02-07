@@ -313,6 +313,7 @@ const Product = () => {
         handleUpdateImages={handleUpdateImages}
         imageUrls={imageUrls}
         setImageUrls={setImageUrls}
+        setImageFiles={setImageFiles}
         product={product}
         imageFiles={imageFiles}
       />

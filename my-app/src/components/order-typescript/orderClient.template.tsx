@@ -68,10 +68,13 @@ export default function OrederClientTemplate({ self }: OrederClientTemplate) {
                     {item.status === 1 && <button onClick={() => self.paymentOrder(item.id)}>
                         <BsBank2 title='Thanh toán đơn hàng' />
                     </button>}
+                    {item.status === 3 && <button onClick={() => self.handCompletedOrder(item.id)}>
+                        <BsCheckCircle title='Đã nhận hàng' />
+                    </button>}
                     {/* {item.status === 3 && <button onClick={() => self.handDeliveredOrder(item.id)}>
                                                 <BsCheckCircle title='Xác nhận đã giao hàng' />
                                             </button>} */}
-                    {item.status !== 0 && <button onClick={() => self.handCancelOrder(item.id)}>
+                    {item.status === 1 && item.status === 2 && <button onClick={() => self.handCancelOrder(item.id)}>
                         <BsXCircle title='Hủy đơn hàng' />
                     </button>}
                 </>

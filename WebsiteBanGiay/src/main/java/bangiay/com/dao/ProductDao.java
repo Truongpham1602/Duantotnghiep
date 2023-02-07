@@ -24,10 +24,10 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 			+ "p.price, ' ', p.quantity, ' ', p.description, ' ') LIKE %?1% and p.category.id = ?2 and p.status =1 AND p.quantity > 0")
 	public List<Product> searchClient(String keyword, Integer cate_Id, Pageable pageable);
 
-	@Query("SELECT p FROM Product p WHERE p.name = ?1 and p.status =1 AND p.quantity > 0")
+	@Query("SELECT p FROM Product p WHERE p.name = trim(?1) and p.status =1 AND p.quantity > 0")
 	public List<Product> findByName(String name);
 
-	@Query("SELECT p FROM Product p WHERE p.name=?1 and p.color=?2 and p.status =1 AND p.quantity > 0")
+	@Query("SELECT p FROM Product p WHERE p.name=?1 and p.color=trim(?2) and p.status =1 AND p.quantity > 0")
 	public Product findByColorAndName(String name, String color);
 
 	@Query("SELECT p FROM Product p WHERE concat_ws(p.category.namecate, ' ', p.color, ' ', p.name, ' ', "
@@ -47,7 +47,7 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 	@Query("SELECT COUNT(p) FROM Product p")
 	long countAllProduct();
 
-	@Query(value = "SELECT p.ID, p.NAME, d.ORDER_QUANTITY, d.TOTAL, (SELECT url FROM media WHERE PRODUCT_ID = p.ID LIMIT 1) as image FROM product p LEFT JOIN size s ON p.ID = s.PRODUCT_ID LEFT JOIN ("
+	@Query(value = "SELECT p.ID, p.NAME, p.COLOR, d.ORDER_QUANTITY, d.TOTAL, (SELECT url FROM media WHERE PRODUCT_ID = p.ID LIMIT 1) as image FROM product p LEFT JOIN size s ON p.ID = s.PRODUCT_ID LEFT JOIN ("
 			+ "SELECT od.SIZE_ID,SUM(od.QUANTITY) as ORDER_QUANTITY, SUM(od.QUANTITY*od.PRICE) as TOTAL FROM order_detail od, orders o WHERE o.status = 4 AND  o.returnStatus != 5 AND od.ORDER_ID = o.id "
 			+ ") as d ON s.ID = d.SIZE_ID" + " ORDER BY d.TOTAL DESC", nativeQuery = true)
 	List<Map<String, Object>> getListProductOrderByRevenue();

@@ -95,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDTO create(ProductDTO productDTO) {
 		Product product = modelMapper.map(productDTO, Product.class);
-		product.setCategory(this.cateDao.findById(1).get());
+		product.setCategory(this.cateDao.findById(productDTO.getCategoryId()).get());
 		product.setCreated(Timestamp.from(Instant.now()));
 		this.proDAO.save(product);
 		productDTO.setId(product.getId());
@@ -215,12 +215,12 @@ public class ProductServiceImpl implements ProductService {
 			public ProductDTO apply(Product entity) {
 				ProductDTO dto = new ProductDTO();
 				dto = modelMapper.map(entity, ProductDTO.class);
-				Category  cate =  cateDao.findById(entity.getCategory().getId()).get();
+				Category cate = cateDao.findById(entity.getCategory().getId()).get();
 				List<Media> media = mediaDao.findMediaByProduct_Id(entity.getId());
 				if (media.size() > 0) {
 					dto.setImage(media.get(0).getUrl());
 				}
-				
+
 				dto.setName_cate(cate.getNamecate());
 				dto.setId(entity.getId());
 				return dto;
@@ -392,7 +392,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDTO findByName(ColorDTO colorDTO) {
 		List<Product> lst = this.proDAO.findByName(colorDTO.getName());
-		if(lst.size() <= 0){
+		if (lst.size() <= 0) {
 			return null;
 		}
 		Product product = proDAO.findByColorAndName(colorDTO.getName(), lst.get(0).getColor());
