@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +23,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;/
 import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.web.SecurityFilterChain;
@@ -30,77 +31,65 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bangiay.com.DTO.AuthenticationDto;
 import bangiay.com.dao.UserDao;
-import bangiay.com.entity.Role;
 import bangiay.com.entity.User;
-//import bangiay.com.jwt.JwtEntrypoint;
-//import bangiay.com.jwt.JwtFilter;
-//import bangiay.com.service.AccountService;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Value;
 
 @Service
 //@Configuration
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AuthenticationService implements UserDetailsService{
+public class AuthenticationService implements UserDetailsService {
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Value("${secret}")
 	private String secset;
-	
-	public ResponseEntity<?> auth(String userEmail , String password) throws Exception {
+
+	public ResponseEntity<?> auth(String userEmail, String password) throws Exception {
 		User user = userDao.findUsersByUserEmail(userEmail);
-		if(user == null) {
+		if (user == null) {
 			throw new UsernameNotFoundException("Email not found");
 		}
-//		if(!passwordEncoder.matches(password, user.getPassword())) {
-//			throw new Exception("Password is correct");
-//		}
-		if(!password.equals(user.getPassword())) {
+		if (!passwordEncoder.matches(password, user.getPassword())) {
 			throw new Exception("Password is correct");
 		}
-		
-		List<String> permission = user.getRole().getPremission().stream().map(c->c.getPremissionName()).collect(Collectors.toList());
-		
+//		if (!password.equals(user.getPassword())) {
+//			throw new Exception("Password is correct");
+//		}
+
+		List<String> permission = user.getRole().getPremission().stream().map(c -> c.getPremissionName())
+				.collect(Collectors.toList());
+
 		Algorithm algorithm = Algorithm.HMAC256(secset.getBytes());
-		String access_token = JWT.create()
-				.withSubject(user.getEmail())
+		String access_token = JWT.create().withSubject(user.getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
-				.withClaim("permission", permission)
-				.sign(algorithm);
-		String refresh_token = JWT.create()
-				.withSubject(user.getEmail())
-				.withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
-				.sign(algorithm);
+				.withClaim("permission", permission).sign(algorithm);
+		String refresh_token = JWT.create().withSubject(user.getEmail())
+				.withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000)).sign(algorithm);
 		Map<String, String> tokens = new HashMap<>();
 		tokens.put("access_token", access_token);
 		tokens.put("refresh_token", refresh_token);
-		return ResponseEntity.ok().body(new AuthenticationDto(access_token, user.getFullName(), userEmail, user.getRole().getRoleName(), user.getImage()));
+		return ResponseEntity.ok().body(new AuthenticationDto(access_token, user.getFullName(), userEmail,
+				user.getRole().getRoleName(), user.getImage()));
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userDao.findUsersByUserEmail(username);
-		if(user == null) {
+		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
-		org.springframework.security.core.userdetails.User user1 = new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+		org.springframework.security.core.userdetails.User user1 = new org.springframework.security.core.userdetails.User(
+				user.getEmail(), user.getPassword(), authorities);
 		return user1;
 	}
-	
-	
-	
-	
+
 //	@Autowired
 //	JwtEntrypoint jwtEntrypoint;
 //	@Autowired
@@ -109,10 +98,10 @@ public class AuthenticationService implements UserDetailsService{
 //	@Autowired
 //	JwtFilter jwtFilter;
 //
-//	@Bean
-//	public PasswordEncoder passwordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 //
 //	@Bean
 //	public AuthenticationManager authenticationManagerBean(HttpSecurity httpSecurity) throws Exception {
@@ -124,7 +113,7 @@ public class AuthenticationService implements UserDetailsService{
 //	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 //		http.csrf().disable().cors();
 //		http.authorizeHttpRequests().antMatchers("/auth/login").permitAll().anyRequest().authenticated();
-		
+
 //
 //		http.authorizeHttpRequests().antMatchers("/auth/**", "/admin/user/**,/cart/**").permitAll().anyRequest()
 //				.authenticated().and().exceptionHandling().authenticationEntryPoint(jwtEntrypoint).and()
