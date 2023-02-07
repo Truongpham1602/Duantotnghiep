@@ -90,36 +90,36 @@ const Bill = (props) => {
       let vnf_regex = /((09|03|07|08|028|024|05)+([0-9]{8})\b)/g;
       let re = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
 
-      if (id == "email") {
-        if (re.test(e.target.value) == false) {
+      if (id == "first") {
+        if (copy[id] == 0) {
           //ch0["email"] = "This is a valid email address";
-          ch0["email"] = "Invalid email, please enter correct email format";
+          ch0["first"] = "Họ không được để trống";
         } else {
-          ch0["email"] = "";
+          ch0["first"] = "";
         }
         setCheck({
           ...ch0,
         });
       } else {
-        if (id == "nameRecipient") {
+        if (id == "last") {
           if (copy[id] == 0) {
-            ch0[id] = "nameRecipient not null";
+            ch0[id] = "Tên không được để trống";
           } else {
             ch0[id] = "";
           }
         } else if (id == "telephone") {
           if (copy[id] == 0) {
-            ch0["telephone"] = "Phone Number not null";
+            ch0["telephone"] = "Số điện thoại không được để trống";
           } else {
             if (vnf_regex.test(e.target.value) == false) {
-              ch0["telephone"] = "please enter correct phone format";
+              ch0["telephone"] = "Số điện thoại sai định dạng";
             } else {
               ch0["telephone"] = "";
             }
           }
         } else if (id == "address") {
           if (copy[id] == 0) {
-            ch0["address"] = "address not null";
+            ch0["address"] = "Địa chỉ không được để trống";
           } else {
             ch0["address"] = "";
           }
@@ -168,6 +168,11 @@ const Bill = (props) => {
         let user = await axios.get(`http://localhost:8080/auth/information`,
           { headers: { "Authorization": `Bearer ${token}` } }
         );
+        let copy = user.data
+        let fullString = user.data.fullName.split(" ");
+        copy['first'] = fullString[0]
+        copy['last'] = fullString[fullString.length - 1]
+        setAccount(copy)
         const res = await axios.get(`http://localhost:8080/cart/getCart?user_Id=${user.data.id}`,
           { headers: { "Authorization": `Bearer ${token}` } })
         setLstCart(res.data);
@@ -204,10 +209,10 @@ const Bill = (props) => {
     let fullName = account.first + " " + account.last
     console.log(fullName);
     account.nameRecipient = fullName
-    if (account.email == 0) {
+    if (account.first == 0) {
       ch0["first"] = "Cần nhập họ người nhận";
       setCheck({ ...ch0 });
-    } else if (check.email == 0) {
+    } else if (check.first == 0) {
       ch0["first"] = "";
       setCheck({ ...ch0 });
     }
@@ -234,14 +239,14 @@ const Bill = (props) => {
     }
     if (
       check.email > 0 ||
-      check.nameRecipient > 0 ||
+      check.first > 0 ||
+      check.last > 0 ||
       check.telephone > 0 ||
       check.address > 0
     ) {
       return;
     }
     try {
-      console.log(account);
       let userLogin = await axios.get(`http://localhost:8080/auth/information`,
         { headers: { "Authorization": `Bearer ${token}` } }
       );
@@ -429,6 +434,7 @@ const Bill = (props) => {
                     nameRecipient="email"
                     placeholder=""
                     type="text"
+                    value={account.first}
                     onChange={(event) => handleOnchangeInput(event, "first")}
                   />
                   {check.first && check.first.length > 0 && (
@@ -444,6 +450,7 @@ const Bill = (props) => {
                     nameRecipient="nameRecipient"
                     placeholder=""
                     type="text"
+                    value={account.last}
                     onChange={(event) => handleOnchangeInput(event, "last")}
                   />
                   {check.last && check.last.length > 0 && (
@@ -461,6 +468,7 @@ const Bill = (props) => {
                     nameRecipient="telephone"
                     placeholder=""
                     type="text"
+                    value={account.telephone}
                     onChange={(event) =>
                       handleOnchangeInput(event, "telephone")
                     }
@@ -477,6 +485,7 @@ const Bill = (props) => {
                     id="address"
                     nameRecipient="address"
                     placeholder=""
+                    value={account.address}
                     type="text"
                     onChange={(event) => handleOnchangeInput(event, "address")}
                   />
