@@ -44,6 +44,7 @@ public class MediaServiceImpl implements MediaService {
 		this.mediaDao.saveAll(media);
 		for (int i = 0; i < media.size(); i++) {
 			mediaDTO.get(i).setId(media.get(i).getId());
+			mediaDTO.get(i).setId(1);
 		}
 		return mediaDTO;
 	}
