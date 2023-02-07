@@ -8,6 +8,7 @@ import {
   getMetadata,
 } from "firebase/storage";
 import { storage } from "../../Firebase";
+import moment from 'moment';
 import axios from "axios";
 import "../css/ship.css";
 import useCallGetAPI from "../../customHook/CallGetApi";
@@ -63,7 +64,7 @@ const Bill = (props) => {
   const [lstVoucher, setLstVoucher] = useState([]);
 
   const [voucherSelect, setVoucherSelect] = useState({});
-  const [sealer, setSealer] = useState();
+  const [sealer, setSealer] = useState(0);
   const imagesListRef = ref(storage, "images/");
   const [account, setAccount] = useState({
     email: "",
@@ -78,14 +79,7 @@ const Bill = (props) => {
       title: "Ngân hàng",
       card: "NCB",
     },
-    {
-      title: "Loại thẻ quốc tế",
-      card: "VISA",
-    },
-    {
-      title: "Loại thẻ quốc tế",
-      card: "MasterCard",
-    },
+
   ];
   // const [user, setUser] = useState({})
   const handleOnchangeInput = (e, id) => {
@@ -217,10 +211,10 @@ const Bill = (props) => {
       ch0["first"] = "";
       setCheck({ ...ch0 });
     }
-    if (account.nameRecipient == 0) {
+    if (account.last == 0) {
       ch0["last"] = "Cần nhập tên người nhận";
       setCheck({ ...ch0 });
-    } else if (check.nameRecipient == 0) {
+    } else if (check.last == 0) {
       ch0["last"] = "";
       setCheck({ ...ch0 });
     }
@@ -304,10 +298,10 @@ const Bill = (props) => {
         });
         if (res.data.type === 1) {
           total = total - (totalSealer * res.data.value) / 100;
-          setSealer((totalSealer * res.data.value) / 100);
+          setSealer((Number(totalSealer * res.data.value) / 100));
         } else {
           total = total - res.data.value;
-          setSealer(res.data.value);
+          setSealer(Number(res.data.value));
         }
         setTotalPrice(total);
         toggle();
@@ -319,7 +313,7 @@ const Bill = (props) => {
         });
         setTotalPrice(total);
         setVoucherSelect({});
-        setSealer();
+        setSealer(0);
       }
       toggle();
     }
@@ -437,8 +431,8 @@ const Bill = (props) => {
                     type="text"
                     onChange={(event) => handleOnchangeInput(event, "first")}
                   />
-                  {check.email && check.email.length > 0 && (
-                    <p className="checkError1">{check.email}</p>
+                  {check.first && check.first.length > 0 && (
+                    <p className="checkError1">{check.first}</p>
                   )}
                 </FormGroup>
               </Col>
@@ -448,12 +442,12 @@ const Bill = (props) => {
                   <Input
                     id="nameRecipient"
                     nameRecipient="nameRecipient"
-                    placeholder="VD: Nguyên Nguyễn"
+                    placeholder=""
                     type="text"
                     onChange={(event) => handleOnchangeInput(event, "last")}
                   />
-                  {check.nameRecipient && check.nameRecipient.length > 0 && (
-                    <p className="checkError1">{check.nameRecipient}</p>
+                  {check.last && check.last.length > 0 && (
+                    <p className="checkError1">{check.last}</p>
                   )}
                 </FormGroup>
               </Col>
@@ -540,12 +534,12 @@ const Bill = (props) => {
                         });
                       })}
                     </Col>
-                    <Col md={3}>
+                    <Col md={4}>
                       <p>
-                        {lstcart.name_Product} / {lstcart.sizeName}
+                        {lstcart.name_Product} / {lstcart.sizeName} <br />Loại: {lstcart.name_Cate}
                       </p>
                     </Col>
-                    <Col md={3}>
+                    <Col md={2}>
                       <p>
                         {lstcart.color_Product}
                       </p>
@@ -553,6 +547,7 @@ const Bill = (props) => {
                     <Col md={3}>
                       <p>{toltal.toLocaleString()} VNĐ</p>
                     </Col>
+
                   </Row>
                 </>
               );
@@ -599,6 +594,7 @@ const Bill = (props) => {
             <ModalBody>
               <Row>
                 {lstVoucher.map((item, index) => {
+                  let effectUntil = moment(item.effectUntil).format('DD/MM/YYYY');
                   if (
                     item.status != 0 &&
                     Number(item.status) > 0 &&
@@ -616,25 +612,32 @@ const Bill = (props) => {
                         }}
                       >
                         <Row>
-                          <Col md={6}>
-                            <span>{item.nameRecipient}</span>
+                          <Col md={12}>
+                            <span>{item.name}</span>
+                          </Col>
+                          <Col md={7}>
                             <span
                               style={{
-                                marginLeft: "auto",
+                                marginLeft: "0px",
                                 marginRight: "0px",
-                                float: "right",
+                                float: "left",
                               }}
                             >
                               Còn {item.quantity} mã
                             </span>
-                            <p>{item.namecate}</p>
+                            <p style={{
+                              marginLeft: "0px",
+                              marginRight: "5%",
+                              float: "right",
+                            }}>Loại: {item.namecate}</p>
                           </Col>
-                          <Col md={5}>{item.effectUntil}</Col>
+                          <Col md={4}>Hạn: {effectUntil}</Col>
                           <Col md={1}>
                             <input
                               type="radio"
                               className="voucher"
                               value={item.id}
+                              name='radio'
                             />
                           </Col>
                         </Row>
@@ -658,14 +661,14 @@ const Bill = (props) => {
               </Button>
             </ModalFooter>
           </Modal>
-          <div className="cart-right col-5 bg-light">
+          <div className="cart-right col-8 bg-light">
             <div className="summary" style={{ textAlign: 'left' }}>
               <ul>
                 <li>
                   Tồng tiền: <span>{totalPrice.toLocaleString()} VNĐ</span>
                 </li>
                 <li>
-                  Giảm: <span>{sealer}</span>
+                  Giảm: <span>{sealer.toLocaleString()} VNĐ</span>
                 </li>
                 <li className="total">
                   Tổng: <span>{totalQuantity.toLocaleString()}</span> Sản phẩm
