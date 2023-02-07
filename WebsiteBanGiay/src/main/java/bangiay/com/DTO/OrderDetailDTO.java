@@ -1,5 +1,7 @@
 package bangiay.com.DTO;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetailDTO {
+public class OrderDetailDTO implements Serializable {
 	private Integer id;
 	private Integer orderId;
 	private Integer voucherId;

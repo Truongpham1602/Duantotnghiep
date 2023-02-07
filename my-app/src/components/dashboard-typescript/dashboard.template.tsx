@@ -326,6 +326,7 @@ export default function DashboardTemplate({ self }: DashboardTemplate) {
                                     </div>
                                 </Link>
                             </Col>
+
                             <Col md={4} className='order-box br-t-2 br-r-2'>
                                 <Link to={'/admin/order?status=11'}>
                                     <div className='order-icon'>
