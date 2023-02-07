@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,11 +33,13 @@ public class BillRestController {
 
 //	private static Logger logger = LoggerFactory.getLogger(BillController.class);
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/getAll")
 	public ResponseEntity<List<BillDTO>> getAll() {
 		return ResponseEntity.ok().body(billService.findAll());
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/select")
 	public ResponseEntity<Page<BillDTO>> getPage(
 			@RequestParam(name = constant.PAGE, defaultValue = constant.DEFAULT_PAGE) int page,
@@ -45,6 +48,7 @@ public class BillRestController {
 		return ResponseEntity.ok(billService.findAll(pageable));
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/getOneById")
 	@CrossOrigin
 	public ResponseEntity<BillDTO> getOneById(@RequestParam("id") Integer id) {
@@ -53,17 +57,20 @@ public class BillRestController {
 		return ResponseEntity.ok().body(responBillDTO);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PostMapping(value = "/update")
 	public ResponseEntity<BillDTO> update(@RequestParam(name = "id") Integer id, @RequestBody BillDTO billDTO) {
 		billDTO.setId(id);
 		return ResponseEntity.ok().body(billService.updateBill(billDTO));
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PostMapping(value = "/create/{user_IdOrTelephone}")
 	public ResponseEntity<BillDTO> create(@PathVariable("user_IdOrTelephone") Integer user_IdOrTelephone) {
 		return ResponseEntity.ok().body(billService.createBill(user_IdOrTelephone));
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN')")
 	@PostMapping(value = "/delete")
 	public ResponseEntity<String> delete(@RequestParam(name = "id") Integer id) {
 //		logger.info("Deleted bill with id : " + id);
