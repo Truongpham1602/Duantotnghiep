@@ -95,6 +95,11 @@ public class OrderRestController {
 		return this.orderService.findByUser_Id(user_Id);
 	}
 
+	@GetMapping("/completed/{id}")
+	public OrderDTO updateCompletedOrder(@PathVariable("id") Integer id) {
+		return this.orderService.updateCompletedOrder(id);
+	}
+
 	@PostMapping("updateStatus")
 	public ResponseEntity<?> updateOrderWithStatus(@RequestParam("id") Integer id,
 			@RequestParam("status") Integer status) {

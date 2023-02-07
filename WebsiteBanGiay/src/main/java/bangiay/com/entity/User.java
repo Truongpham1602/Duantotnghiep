@@ -1,7 +1,5 @@
 package bangiay.com.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,10 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Table(name = "user")
 public class User {
 	@Id
@@ -33,7 +33,7 @@ public class User {
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ROLER_ID")
+	@JoinColumn(name = "ROLER_ID")
 	private Role role;
 
 	@Column(name = "FullNAME")

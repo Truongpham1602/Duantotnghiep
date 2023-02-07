@@ -34,7 +34,7 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
 	@Query("SELECT COUNT(o) FROM Order o WHERE o.status = ?1")
 	long countOrderByStatus(Integer status);
 
-	@Query(value = "SELECT o.id, o.created, od.quantity, od.price from Orders o, Order_detail od where o.id=od.order_id and date(o.created) >= ?1 and date(o.created) <= now() and o.status != 0 and o.returnStatus != 3", nativeQuery = true)
+	@Query(value = "SELECT o.id, o.created, od.quantity, od.price from Orders o, Order_detail od where o.id=od.order_id and date(o.created) >= ?1 and date(o.created) <= now() and o.status != 0 and (o.returnStatus != 3 or o.returnStatus is null)", nativeQuery = true)
 	List<Map<String, Object>> getOrderDetailDashboard(Date date);
 
 	@Query("SELECT o FROM Order o WHERE o.created <= now() and o.created >= ?1 and o.status != 0")

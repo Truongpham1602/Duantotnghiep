@@ -14,7 +14,6 @@ export default class OrderComponent extends React.Component {
                                 </div>
                                 <div className="content">
                                     <h1>Thanh toán thành công !</h1>
-                                    <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. </p>
                                     <NavLink className="nav-link goHome" to="/">Quay lại trang chủ</NavLink>
                                 </div>
 
