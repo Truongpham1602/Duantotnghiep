@@ -76,11 +76,17 @@ const CreateUser = (props) => {
     email: "",
     telephone: "",
     address: "",
-    roleId: 2,
+    roleId: '',
     image: "",
     status: 1,
   });
-  const [check, setCheck] = useState({ fullName: "" });
+  const [check, setCheck] = useState({
+    fullName: "",
+    password: "",
+    email: "",
+    telephone: "",
+    address: "",
+  });
 
   // const arrRole = [
   //   {
@@ -95,23 +101,27 @@ const CreateUser = (props) => {
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
+    let checkr = { ...check };
     copyUser[id] = event.target.value;
-
+    const sdt = /((09|03|07|08|028|024|05)+([0-9]{8})\b)/g;
+    const mail = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
     try {
       // console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
       if (id != "image") {
-        let ch0 = { ...check };
-        if (copyUser[id].trim().length <= 0) {
-          ch0[id] = `${id} không được để trống !!`;
-          setCheck({
-            ...ch0,
-          });
+        if (copyUser[id] == 0) {
+          if (id === 'fullName') checkr[id] = "Họ tên không được để trống"
+          if (id === 'password') checkr[id] = "Mật khẩu không được để trống"
+          if (id === 'email') checkr[id] = "Email không được để trống"
+          if (id === 'telephone') checkr[id] = "Số điện thoại không được để trống"
+          if (id === 'address') checkr[id] = "Địa chỉ không được để trống"
+        } else if (id == 'email' && !mail.test(copyUser[id])) {
+          checkr[id] = "Email không đúng định dạng"
+        } else if (id == 'telephone' && !sdt.test(copyUser[id])) {
+          checkr[id] = "Số điện thoại không đúng định dạng"
         } else {
-          ch0[id] = "";
+          checkr[id] = ''
         }
-        setCheck({
-          ...ch0,
-        });
+        setCheck({ ...checkr })
       }
       if (id == "image") {
         if (copyUser["image"].trim().length <= 0) setImageUpload("");
