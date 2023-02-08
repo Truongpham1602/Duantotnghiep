@@ -96,11 +96,11 @@ const ProductOne = () => {
         if (token) {
             try {
                 const res = await axios.get(
-                    `http://localhost:8080/admin/product/find/${id}`,
+                    `http://localhost:8080/nofilter/find/${id}`,
                     { headers: { "Authorization": `Bearer ${token}` } }
                 );
                 const resp = await axios.post(
-                    `http://localhost:8080/admin/product/findByName`, { name: res.data.name },
+                    `http://localhost:8080/nofilter/findByName`, { name: res.data.name },
                     { headers: { "Authorization": `Bearer ${token}` } }
                 );
                 setProduct(resp.data);

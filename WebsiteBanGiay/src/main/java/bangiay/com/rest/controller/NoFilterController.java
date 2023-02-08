@@ -16,10 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import bangiay.com.DTO.CategoryDTO;
+import bangiay.com.DTO.ColorDTO;
+import bangiay.com.DTO.OrderDTO;
 import bangiay.com.DTO.ProductDTO;
 import bangiay.com.DTO.UserDTO;
+import bangiay.com.DTO.VoucherDTO;
+import bangiay.com.service.OrderService;
 import bangiay.com.service.ProductService;
 import bangiay.com.service.UserService;
+import bangiay.com.service.VoucherService;
 import bangiay.com.service.impl.CategoryServiceImpl;
 
 @RestController
@@ -32,6 +37,10 @@ public class NoFilterController {
 	ProductService productService;
 	@Autowired
 	CategoryServiceImpl categoryService;
+	@Autowired
+	VoucherService voucherService;
+	@Autowired
+	OrderService orderService;
 
 	@GetMapping("/category/select")
 	public Page<CategoryDTO> findAllCategory(@RequestParam(name = "size", defaultValue = "7") Integer size,
@@ -44,6 +53,14 @@ public class NoFilterController {
 	public Page<ProductDTO> findAll(@RequestParam(name = "size", defaultValue = "7") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page) {
 		return productService.findAll(size, page);
+	}
+	@GetMapping("/find/{id}")
+	public ProductDTO finByID(@RequestBody @PathVariable("id") int id, ProductDTO productDTO) {
+		return productService.finById(id);
+	}
+	@PostMapping("/findByName")
+	public ProductDTO findByName(@RequestBody ColorDTO colordto) {
+		return this.productService.findByName(colordto);
 	}
 	
 	@GetMapping("/findAll")
@@ -71,5 +88,20 @@ public class NoFilterController {
 	@GetMapping("/product/findTop3Bill")
 	public List<ProductDTO> findTop3Bill() {
 		return this.productService.top3BillProduct();
+	}
+	@GetMapping("/findAll/voucher")
+	public List<VoucherDTO> findAllVoucher() {
+		return voucherService.findAll();
+	}
+	@GetMapping("/get/{id}")
+	public VoucherDTO findById(@PathVariable Integer id) {
+		return voucherService.findById(id);
+	}
+	
+	@PostMapping("/create")
+	public OrderDTO create(@RequestParam(value = "user_Id", required = false, defaultValue = "0") Integer user_Id,
+			@RequestParam(value = "voucher_Id", required = false, defaultValue = "0") Integer voucher_Id,
+			@RequestBody OrderDTO orderDTO) {
+		return this.orderService.create(orderDTO, user_Id, voucher_Id);
 	}
 }

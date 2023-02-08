@@ -160,7 +160,7 @@ const Home = () => {
     }
     if (token) {
       const res = await axios.get(
-        `http://localhost:8080/admin/product/find/${id}`, config
+        `http://localhost:8080/nofilter/find/${id}`, config
       );
       setProduct(res.data);
       navigate(`/productOne/${id}`);

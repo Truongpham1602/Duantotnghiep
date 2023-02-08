@@ -57,10 +57,16 @@ const Bill = (props) => {
   // const [Products, setProducts] = useState("null");
   // const [user, setUser] = useState({});
   const [isModalVoucher, setIsModalVoucher] = useState(false);
-  const { data: dataVoucher, isLoading } = useCallGetAPI(
-    `http://localhost:8080/api/voucher/findAll`,
-    { headers: { "Authorization": `Bearer ${token}` } }
-  );
+
+  // const { data: dataVoucher, isLoading } = useCallGetAPI(
+  //   `http://localhost:8080/api/voucher/findAll`,
+  //   { headers: { "Authorization": `Bearer ${token}` } }
+  // );
+  const dataVoucher1 = async () => {
+    let dataVoucher = await axios.get(`http://localhost:8080/nofilter/findAll/voucher`);
+    console.log(dataVoucher.data);
+    setLstVoucher(dataVoucher.data)
+  }
   const [lstVoucher, setLstVoucher] = useState([]);
 
   const [voucherSelect, setVoucherSelect] = useState({});
@@ -191,8 +197,8 @@ const Bill = (props) => {
   }, []);
 
   useEffect(() => {
-    setLstVoucher(dataVoucher);
-  }, [dataVoucher]);
+    dataVoucher1()
+  }, []);
 
   useEffect(() => {
     setImageUrls([]);
@@ -252,7 +258,7 @@ const Bill = (props) => {
         { headers: { "Authorization": `Bearer ${token}` } }
       );
       let res = await axios.post(
-        `http://localhost:8080/api/order/create?user_Id=${userLogin.data.id}&voucher_Id=${voucherSelect.id ? voucherSelect.id : ""}`,
+        `http://localhost:8080/nofilter/create?user_Id=${userLogin.data.id}&voucher_Id=${voucherSelect.id ? voucherSelect.id : ""}`,
         account, { headers: { "Authorization": `Bearer ${token}` } }
       );
       window.location.href = `http://localhost:8080/thanh-toan-vnpay?amount=${totalPrice}&bankcode=NCB&language=vi&txt_billing_mobile=${account.telephone}&txt_billing_email=Email@gmail.com&txt_billing_fullname=${account.nameRecipient}&txt_inv_addr1=${account.address}&txt_bill_city=ha%20noi&txt_bill_country=viet%20nam&txt_bill_state=ha%20noi&txt_inv_mobile=0389355471&txt_inv_email=quanganhsaker@gmail.com&txt_inv_customer=Nguy%E1%BB%85n%20Van%20A&txt_inv_addr1=ha%20noi&city&txt_inv_company=fsoft&txt_inv_taxcode=10&cbo_inv_type=other&vnp_OrderType=other&vnp_OrderInfo=${res.data.id}`;
@@ -281,7 +287,7 @@ const Bill = (props) => {
     for (let i = 0; i < radio.length; i++) {
       if (radio.item(i).checked) {
         let res = await axios.get(
-          `http://localhost:8080/api/voucher/get/${radio.item(i).value}`,
+          `http://localhost:8080/nofilter/get/${radio.item(i).value}`,
           { headers: { "Authorization": `Bearer ${token}` } }
         );
         let x = true;
@@ -603,7 +609,7 @@ const Bill = (props) => {
             <ModalHeader toggle={() => toggle()}>Mã giảm giá</ModalHeader>
             <ModalBody>
               <Row>
-                {lstVoucher.map((item, index) => {
+                {lstVoucher.length > 0 && lstVoucher?.map((item, index) => {
                   let effectUntil = moment(item.effectUntil).format('DD/MM/YYYY');
                   if (
                     item.status != 0 &&
