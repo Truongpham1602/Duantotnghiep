@@ -77,11 +77,13 @@ public class OrderRestController {
 		return this.orderService.updateDeliveredOrder(id);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@GetMapping("/find/{id}")
 	public OrderDTO finByID(@PathVariable("id") Integer id) {
 		return this.orderService.findById(id);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@GetMapping("/findOrderBySize_ID")
 	public List<OrderDTO> findOrderBySize_ID(
 			@RequestParam(value = "user_Id", required = false, defaultValue = "0") Integer user_Id,
@@ -89,12 +91,14 @@ public class OrderRestController {
 		return this.orderService.findByUser_IdOrTelephone(user_Id, telephone);
 	}
 
+	@PreAuthorize("hasPermission(#req, 'USER_EDIT') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@GetMapping("/findOrderByUser_Id")
 	public List<OrderDTO> findOrderByUser_ID(
 			@RequestParam(value = "user_Id", required = false, defaultValue = "0") Integer user_Id) {
 		return this.orderService.findByUser_Id(user_Id);
 	}
 
+	
 	@GetMapping("/completed/{id}")
 	public OrderDTO updateCompletedOrder(@PathVariable("id") Integer id) {
 		return this.orderService.updateCompletedOrder(id);

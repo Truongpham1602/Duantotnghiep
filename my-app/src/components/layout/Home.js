@@ -150,18 +150,17 @@ const Home = () => {
 
 
 
+
   const nextProductDetail = async (id) => {
-    if (token) {
-      axios.defaults.headers.common = { 'Authorization': `Bearer ${token}` }
-      let config = {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
+    let config = {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       }
+    }
+    if (token) {
       const res = await axios.get(
-        `http://localhost:8080/admin/product/find/${id}`,
-        config
+        `http://localhost:8080/admin/product/find/${id}`, config
       );
       setProduct(res.data);
       navigate(`/productOne/${id}`);
@@ -169,6 +168,9 @@ const Home = () => {
       navigate("/login");
     }
   };
+
+
+
   const addToCart = async (size_Id, quantity) => {
     if (size_Id == null) {
       toast.warning("Bạn chưa chọn size!", styleToast)
