@@ -22,4 +22,6 @@ public interface BillService {
 	public BillDTO findByID(Integer id);
 
 	public List<BillDTO> statisticsByYear();
+
+	public void updateStatusFalse(Integer id);
 }
