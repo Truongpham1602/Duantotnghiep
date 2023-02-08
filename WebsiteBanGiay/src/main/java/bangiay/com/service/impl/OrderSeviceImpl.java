@@ -24,6 +24,7 @@ import bangiay.com.entity.Order;
 import bangiay.com.entity.Product;
 import bangiay.com.entity.Size;
 import bangiay.com.entity.User;
+import bangiay.com.service.BillService;
 import bangiay.com.service.CartService;
 import bangiay.com.service.OrderDetailService;
 import bangiay.com.service.OrderService;
@@ -33,6 +34,9 @@ public class OrderSeviceImpl implements OrderService {
 
 	@Autowired
 	private OrderDao orderDao;
+
+	@Autowired
+	private BillService billService;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -154,6 +158,7 @@ public class OrderSeviceImpl implements OrderService {
 		order.setStatus(4);
 		order.setReturnStatus(0);
 		this.orderDao.save(order);
+		billService.createBill(order.getId());
 		return modelMapper.map(order, OrderDTO.class);
 	}
 
@@ -196,6 +201,8 @@ public class OrderSeviceImpl implements OrderService {
 		}
 		order.setReturnStatus(orderCancelDTO.getStatus());
 		this.orderDao.save(order);
+
+//		this.billService.updateStatusFalse(null);
 		return modelMapper.map(order, OrderDTO.class);
 	}
 

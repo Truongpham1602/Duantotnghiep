@@ -49,7 +49,7 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public BillDTO createBill(Integer id) {
 		Order order = this.orderDao.findById(id).orElse(null);
-		if (order.getStatus() == 3) {
+		if (order.getStatus() == 4) {
 			List<OrderDetail> lstOrderDetail = this.orderDetailDao.findByOrder_Id(id);
 			Bill bill = new Bill();
 			bill.setUSER_ID(order.getUser());
@@ -134,4 +134,13 @@ public class BillServiceImpl implements BillService {
 		}
 		return null;
 	}
+
+	@Override
+	public void updateStatusFalse(Integer id) {
+
+		Bill bill = billDao.findById(id).orElseThrow(() -> new RuntimeException("Bill isn't existed"));
+		bill.setStatus(0);
+		this.billDao.save(bill);
+	}
+
 }

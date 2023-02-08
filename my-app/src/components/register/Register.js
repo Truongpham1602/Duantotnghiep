@@ -70,18 +70,30 @@ const Register = (props) => {
     theme: "colored",
   }
 
-  const [check, setCheck] = useState({ fullName: '' });
+  const [check, setCheck] = useState({
+    fullName: "",
+    password: "",
+    email: "",
+    telephone: "",
+    address: "",
+  });
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
     let checkr = { ...check };
     copyUser[id] = event.target.value;
+    const sdt = /((09|03|07|08|028|024|05)+([0-9]{8})\b)/g;
+    const mail = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
     if (copyUser[id] == 0) {
       if (id === 'fullName') checkr[id] = "Họ tên không được để trống"
       if (id === 'password') checkr[id] = "Mật khẩu không được để trống"
       if (id === 'email') checkr[id] = "Email không được để trống"
       if (id === 'telephone') checkr[id] = "Số điện thoại không được để trống"
       if (id === 'address') checkr[id] = "Địa chỉ không được để trống"
+    } else if (id == 'email' && !mail.test(copyUser[id])) {
+      checkr[id] = "Email không đúng định dạng"
+    } else if (id == 'telephone' && !sdt.test(copyUser[id])) {
+      checkr[id] = "Số điện thoại không đúng định dạng"
     } else {
       checkr[id] = ''
     }
@@ -97,6 +109,7 @@ const Register = (props) => {
     try {
       let validForm = true;
       let checkr = { ...check };
+
       const create = async () => {
         if (user.fullName?.trim().length <= 0) {
           checkr["fullName"] = "Họ tên không được để trống"
@@ -139,6 +152,15 @@ const Register = (props) => {
           notifyWarning('Số điện thoại đã tồn tại!')
           return
         }
+        if (
+          check.fullName.length > 0 ||
+          check.password.length > 0 ||
+          check.telephone.length > 0 ||
+          check.email.length > 0 ||
+          check.email.address > 0
+        ) {
+          return
+        }
         if (validForm) {
           let res = await axios.post(User_Rest_API_URL + '/post', {
             role: {
@@ -161,7 +183,7 @@ const Register = (props) => {
           if (data.modified > 0) {
             data.modified = moment(data.modified).format('DD/MM/YYYY HH:mm:ss');
           }
-          updateData(data, `create`)
+          // updateData(data, `create`)
           notifySuccess("Đăng ký thành công")
         }
       }

@@ -15,6 +15,9 @@ export interface OrderItem {
     code: String,
     address: String,
     created: String,
+    paymentAtDate: String,
+    recaiveAtDate: String,
+    completedAtDate: String,
     nameRecipient: String,
     status: number,
     statusName: string,
@@ -235,7 +238,10 @@ export default class OrderClientComponent extends React.Component {
             isModal: true,
             orderDetailItem: {
                 ...res.data,
-                created: moment(res.data.created as any).format('DD/MM/YYYY HH:mm:ss')
+                created: moment(res.data.created as any).format('DD/MM/YYYY HH:mm:ss'),
+                paymentAtDate: res.data.paymentAtDate ? moment(res.data.paymentAtDate as any).format('DD/MM/YYYY HH:mm:ss') : '',
+                completedAtDate: res.data.completedAtDate ? moment(res.data.completedAtDate as any).format('DD/MM/YYYY HH:mm:ss') : '',
+                recaiveAtDate: res.data.recaiveAtDate ? moment(res.data.recaiveAtDate as any).format('DD/MM/YYYY HH:mm:ss') : ''
             },
             orderDetailList,
             totalPrice,
