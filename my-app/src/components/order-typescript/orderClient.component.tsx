@@ -3,7 +3,7 @@ import { getDownloadURL, listAll, ref } from 'firebase/storage';
 import moment from 'moment';
 import React from 'react'
 import { confirmAlert } from 'react-confirm-alert';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { storage } from '../../Firebase';
 import { STATUS_ORDER, styleToast } from '../common/const';
@@ -155,9 +155,54 @@ export default class OrderClientComponent extends React.Component {
     render() {
         return (
             <>
+                <div style={{ textAlign: 'left', paddingLeft: '5%' }}>
+                    <Link className="" to={"/"}>
+                        Trang Chủ
+                    </Link> /
+                    <Link className="" to={"/order"}>
+                        Đơn hàng
+                    </Link> /
+                    <Link className="" to={"/order/type3"}>
+                        Lịch sử đặt hàng
+                    </Link>
+                </div>
                 <OrederClientTemplate self={this} />
             </>
         )
+    }
+
+
+    /**
+     * 
+     * @param id 
+     * Delivered order
+     */
+    handCompletedOrder = (id: number) => {
+        confirmAlert({
+            title: '',
+            message: 'Xác nhận hoàn tất đơn hàng!',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: async () => {
+                        let res = await axios.get(
+                            `${process.env.REACT_APP_API_KEY}/order/completed/${id}`, this.config
+                        );
+                        if (res.status === 200) {
+                            toast.success("Xác nhận thành công", styleToast);
+                            this.init()
+                        } else {
+                            toast.error("Xác nhận thất bại", styleToast);
+                        }
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => { }
+                },
+            ]
+        });
+
     }
 
     /**

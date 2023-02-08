@@ -104,6 +104,11 @@ public class OrderRestController {
 		return this.orderService.updateCompletedOrder(id);
 	}
 
+	@GetMapping("/return/{id}")
+	public OrderDTO updateReturnOrder(@PathVariable("id") Integer id) {
+		return this.orderService.updateReturnOrder(id);
+	}
+
 	@PostMapping("updateStatus")
 	public ResponseEntity<?> updateOrderWithStatus(@RequestParam("id") Integer id,
 			@RequestParam("status") Integer status) {

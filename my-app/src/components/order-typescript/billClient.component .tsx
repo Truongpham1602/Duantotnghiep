@@ -3,10 +3,10 @@ import { getDownloadURL, listAll, ref } from 'firebase/storage';
 import moment from 'moment';
 import React from 'react'
 import { confirmAlert } from 'react-confirm-alert';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { storage } from '../../Firebase';
-import { STATUS_ORDER, styleToast } from '../common/const';
+import { RETURN_STATUS_ORDER, STATUS_ORDER, styleToast } from '../common/const';
 import BillClientTemplate from './billClient.template'
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -16,6 +16,7 @@ export interface OrderItem {
     address: String,
     created: String,
     nameRecipient: String,
+    returnStatus: number,
     status: number,
     statusName: string,
     telephone: String,
@@ -99,15 +100,26 @@ export default class BillClientComponent extends React.Component {
         // Map lstOrder
         const lstOrder = res.data && res.data.map((item: OrderItem) => {
             let statusName = ''
-            switch (item.status) {
-                case 0:
+            switch (item.returnStatus) {
                 case 1:
                 case 2:
                 case 3:
-                case 4:
-                    statusName = STATUS_ORDER[item.status]
+                case 5:
+                    statusName = RETURN_STATUS_ORDER[item.returnStatus]
                     break
             }
+            if (!statusName) {
+                switch (item.status) {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        statusName = STATUS_ORDER[item.status]
+                        break
+                }
+            }
+
             return {
                 ...item,
                 created: moment(item.created as any).format('DD/MM/YYYY HH:mm:ss'),
@@ -154,6 +166,17 @@ export default class BillClientComponent extends React.Component {
     render() {
         return (
             <>
+                <div style={{ textAlign: 'left', paddingLeft: '5%' }}>
+                    <Link className="" to={"/"}>
+                        Trang Chủ
+                    </Link> /
+                    <Link className="" to={"/order"}>
+                        Đơn hàng
+                    </Link> /
+                    <Link className="" to={"/order/type3"}>
+                        Lịch sử đặt hàng
+                    </Link>
+                </div>
                 <BillClientTemplate self={this} />
             </>
         )
@@ -216,22 +239,22 @@ export default class BillClientComponent extends React.Component {
      * @param id 
      * cancel order
      */
-    handCancelOrder = (id: number) => {
+    handReturnOrder = (id: number) => {
         confirmAlert({
             title: '',
-            message: 'Bạn có chắc chán muốn hủy đơn hàng?',
+            message: 'Bạn có chắc chán muốn trả đơn hàng?',
             buttons: [
                 {
                     label: 'Yes',
                     onClick: async () => {
                         let res = await axios.get(
-                            `${process.env.REACT_APP_API_KEY}/order/cancel/${id}`, this.config
+                            `${process.env.REACT_APP_API_KEY}/order/return/${id}`, this.config
                         );
                         if (res.status === 200) {
-                            toast.success("Hủy đơn hàng thành công", styleToast);
+                            toast.success("Trả đơn hàng thành công", styleToast);
                             this.init()
                         } else {
-                            toast.error("Hủy đơn hàng thất bại", styleToast);
+                            toast.error("Trả đơn hàng thất bại", styleToast);
                         }
                     }
                 },

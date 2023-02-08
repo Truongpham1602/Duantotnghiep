@@ -152,6 +152,7 @@ public class OrderSeviceImpl implements OrderService {
 		Order order = this.orderDao.findById(id).orElse(null);
 		order.setCompletedAtDate(Timestamp.from(Instant.now()));
 		order.setStatus(4);
+		order.setReturnStatus(0);
 		this.orderDao.save(order);
 		return modelMapper.map(order, OrderDTO.class);
 	}
@@ -194,6 +195,15 @@ public class OrderSeviceImpl implements OrderService {
 			order.setReturnAtDate(Timestamp.from(Instant.now()));
 		}
 		order.setReturnStatus(orderCancelDTO.getStatus());
+		this.orderDao.save(order);
+		return modelMapper.map(order, OrderDTO.class);
+	}
+
+	@Override
+	public OrderDTO updateReturnOrder(Integer id) {
+		Order order = this.orderDao.findById(id).orElse(null);
+		order.setCompletedAtDate(Timestamp.from(Instant.now()));
+		order.setReturnStatus(1);
 		this.orderDao.save(order);
 		return modelMapper.map(order, OrderDTO.class);
 	}

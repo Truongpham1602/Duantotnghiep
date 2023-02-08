@@ -258,7 +258,8 @@ public class DashboardSeviceImpl implements DashboardService {
 			} else {
 				keyMap.add((Integer) item.get("id"));
 				mapProduct.put((Integer) item.get("id"),
-						new DashboardOrderDetailDTO((Integer) item.get("id"), (String) item.get("name"),
+						new DashboardOrderDetailDTO((Integer) item.get("id"),
+								(String) item.get("name") + " - " + item.get("color"),
 								((BigDecimal) item.get("order_quantity")) != null
 										? ((BigDecimal) item.get("order_quantity")).intValue()
 										: 0,

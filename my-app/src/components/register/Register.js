@@ -54,7 +54,7 @@ const Register = (props) => {
     email: "",
     telephone: "",
     address: "",
-    roleId: 2,
+    roleId: 16,
     image: "",
     status: 1,
   });
@@ -74,14 +74,21 @@ const Register = (props) => {
 
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
-    if (id === 'image') {
-      copyUser[id] = event.target.files[0].name;
+    let checkr = { ...check };
+    copyUser[id] = event.target.value;
+    if (copyUser[id] == 0) {
+      if (id === 'fullName') checkr[id] = "Họ tên không được để trống"
+      if (id === 'password') checkr[id] = "Mật khẩu không được để trống"
+      if (id === 'email') checkr[id] = "Email không được để trống"
+      if (id === 'telephone') checkr[id] = "Số điện thoại không được để trống"
+      if (id === 'address') checkr[id] = "Địa chỉ không được để trống"
     } else {
-      copyUser[id] = event.target.value;
+      checkr[id] = ''
     }
+    setCheck({ ...checkr })
     setUser({
-      ...copyUser
-    })
+      ...copyUser,
+    });
   }
 
 
@@ -91,43 +98,28 @@ const Register = (props) => {
       let validForm = true;
       let checkr = { ...check };
       const create = async () => {
-        if (
-          user.fullName?.trim().length <= 0 &&
-          user.password?.trim().length <= 0 &&
-          user.email?.trim().length <= 0 &&
-          user.telephone?.trim().length <= 0 &&
-          user.address?.trim().length <= 0
-        ) {
-          checkr["fullName"] = "Fullname không để trống"
-          checkr["password"] = "Password không để trống"
-          checkr["email"] = "Email không để trống"
-          checkr["telephone"] = "Telephone không để trống"
-          checkr["address"] = "Address không để trống"
-          setCheck({ ...checkr })
-          return;
-        }
         if (user.fullName?.trim().length <= 0) {
-          checkr["fullName"] = "Fullname không để trống"
+          checkr["fullName"] = "Họ tên không được để trống"
           setCheck({ ...checkr })
           validForm = false;
         }
         if (user.password?.trim().length <= 0) {
-          checkr["password"] = "Password không để trống"
+          checkr["password"] = "Mật khẩu không được để trống"
           setCheck({ ...checkr })
           validForm = false;
         }
         if (user.email?.trim().length <= 0) {
-          checkr["email"] = "Email không để trống"
+          checkr["email"] = "Email không được để trống"
           setCheck({ ...checkr })
           validForm = false;
         }
         if (user.telephone?.trim().length <= 0) {
-          checkr["telephone"] = "Telephone không để trống"
+          checkr["telephone"] = "Số điện thoại không được để trống"
           setCheck({ ...checkr })
           validForm = false;
         }
         if (user.address?.trim().length <= 0) {
-          checkr["address"] = "Address không để trống"
+          checkr["address"] = "Địa chỉ không được để trống"
           setCheck({ ...checkr })
           validForm = false;
         }
@@ -194,7 +186,7 @@ const Register = (props) => {
 
                 <h2 className="fw-bold mb-2 text-center">Đăng ký</h2>
 
-                <MDBInput wrapperClass='mb-4 w-100' placeholder="Fullname" id='formControlLg' type='fullname' size="lg"
+                <MDBInput wrapperClass='mb-4 w-100' placeholder="Họ tên" id='formControlLg' type='fullname' size="lg"
                   value={user.fullName}
                   onChange={(event) => handleOnchangeInput(event, 'fullName')}
                 />
@@ -208,21 +200,21 @@ const Register = (props) => {
                 {check.email && check.email.length > 0 && (
                   <p className="checkError1">{check.email}</p>
                 )}
-                <MDBInput wrapperClass='mb-4 w-100' placeholder="Password" id='formControlLg' type='password' size="lg"
+                <MDBInput wrapperClass='mb-4 w-100' placeholder="Mật khẩu" id='formControlLg' type='password' size="lg"
                   value={user.password}
                   onChange={(event) => handleOnchangeInput(event, 'password')}
                 />
                 {check.password && check.password.length > 0 && (
                   <p className="checkError1">{check.password}</p>
                 )}
-                <MDBInput wrapperClass='mb-4 w-100' placeholder="Telephone" id='formControlLg' type='telephone' size="lg"
+                <MDBInput wrapperClass='mb-4 w-100' placeholder="Số điện thoại" id='formControlLg' type='telephone' size="lg"
                   value={user.telephone}
                   onChange={(event) => handleOnchangeInput(event, 'telephone')}
                 />
                 {check.telephone && check.telephone.length > 0 && (
                   <p className="checkError1">{check.telephone}</p>
                 )}
-                <MDBInput wrapperClass='mb-4 w-100' placeholder="Address" id='formControlLg' type='address' size="lg"
+                <MDBInput wrapperClass='mb-4 w-100' placeholder="Địa chỉ" id='formControlLg' type='address' size="lg"
                   value={user.address}
                   onChange={(event) => handleOnchangeInput(event, 'address')}
                 />

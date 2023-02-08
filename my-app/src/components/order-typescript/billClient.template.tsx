@@ -4,7 +4,7 @@ import { Container, Table } from 'reactstrap';
 import BillClientComponent, { OrderDetailItem, OrderItem } from './billClient.component ';
 import '../css/styles.css';
 import { Button, Modal, Row } from 'react-bootstrap';
-import { BsBagCheck, BsCheck, BsCheckCircle, BsFillEyeFill, BsTruck, BsXCircle } from "react-icons/bs";
+import { BsBagCheck, BsCheck, BsCheckCircle, BsFillEyeFill, BsTruck, BsXCircle, BsHandThumbsDownFill } from "react-icons/bs";
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 import { STATUS_ORDER } from '../common/const';
 import EnhancedTable from '../common/table/table';
@@ -69,6 +69,9 @@ export default function BillClientTemplate({ self }: BillClientTemplate) {
                     {/* {item.status === 2 && <button onClick={() => self.handDeliveredOrder(item.id)}>
                         <BsTruck title='Xác nhận đang giao hàng' />
                     </button>} */}
+                    {item.status === 4 && item.returnStatus == 0 && <button onClick={() => self.handReturnOrder(item.id)}>
+                        <BsHandThumbsDownFill title='Trả hàng' />
+                    </button>}
                     {/* {item.status === 3 && <button onClick={() => self.handDeliveredOrder(item.id)}>
                                                 <BsCheckCircle title='Xác nhận đã giao hàng' />
                                             </button>} */}

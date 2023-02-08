@@ -23,6 +23,9 @@ public interface OrderService {
 	// Cập nhật đơn hàng bị hủy
 	public OrderDTO updateCancelOrder(Integer id);
 
+	// Cập nhật yêu cầu trả đơn hàng
+	public OrderDTO updateReturnOrder(Integer id);
+
 	// Cập nhật đơn hàng đã giao
 	public OrderDTO updateDeliveredOrder(Integer id);
 

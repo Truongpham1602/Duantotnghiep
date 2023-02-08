@@ -24,7 +24,7 @@ export default function OrederTemplate({ self }: OrederTemplate) {
 
     const headCells = [
         {
-            id: 'id',
+            id: 'code',
             align: 'center',
             disablePadding: false,
             label: 'Mã',
@@ -90,7 +90,7 @@ export default function OrederTemplate({ self }: OrederTemplate) {
                         </button>
                     </>}
                     {item.returnStatus === 2 && <button onClick={() => self.handUpdateReturnStatusOrder(item.id, 3, 'Xác nhận hoàn tất trả hàng!')}>
-                        <BsCheckCircle title='Xác nhận hoàn tất đơn hàng' />
+                        <BsCheckCircle title='Xác nhận hoàn tất trả hàng!' />
                     </button>}
                 </>
             }
