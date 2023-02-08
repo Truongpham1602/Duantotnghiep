@@ -61,7 +61,7 @@ const UpdateUser = (props) => {
   const handleOnchangeInput = (event, id) => {
     const copyUser = { ...user };
     copyUser[id] = event.target.value;
-
+    const mail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     try {
       // console.log(new Date(new Date(copyVoucher["effectFrom"]).toDateString()) < new Date(new Date().toDateString()));
       if (id != "image") {

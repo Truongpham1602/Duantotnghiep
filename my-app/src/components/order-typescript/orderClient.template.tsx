@@ -157,6 +157,38 @@ export default function OrederClientTemplate({ self }: OrederClientTemplate) {
                                     </td>
                                 </tr>
                                 <tr>
+                                    {state.orderDetailItem.paymentAtDate != '' &&
+                                        <>
+                                            <td width={'5%'} style={{ 'whiteSpace': 'nowrap' }}>
+                                                <label>Ngày thanh toán:</label>
+                                            </td>
+                                            <td width={'25%'}>
+                                                <p>{state.orderDetailItem.paymentAtDate}</p>
+                                            </td>
+                                        </>
+                                    }
+                                    {state.orderDetailItem.recaiveAtDate != '' &&
+                                        <>
+                                            <td width={'5%'} style={{ 'whiteSpace': 'nowrap' }}>
+                                                <label>Ngày giao:</label>
+                                            </td>
+                                            <td width={'25%'}>
+                                                {state.orderDetailItem.recaiveAtDate}
+                                            </td>
+                                        </>
+                                    }
+                                    {state.orderDetailItem.completedAtDate != '' &&
+                                        <>
+                                            <td width={'5%'} style={{ 'whiteSpace': 'nowrap' }}>
+                                                <label>Ngày nhận:</label>
+                                            </td>
+                                            <td width={'25%'}>
+                                                {state.orderDetailItem.completedAtDate}
+                                            </td>
+                                        </>
+                                    }
+                                </tr>
+                                <tr>
                                     <td width={'10%'} style={{ 'whiteSpace': 'nowrap' }}>
                                         <label>Địa chỉ:</label>
                                     </td>
