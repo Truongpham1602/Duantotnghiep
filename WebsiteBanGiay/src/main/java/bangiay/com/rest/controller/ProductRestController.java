@@ -28,13 +28,13 @@ public class ProductRestController {
 	@Autowired
 	ProductService productService;
 
-	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@GetMapping("/index")
 	public List<ProductDTO> findAll() {
 		return productService.findAll();
 	}
 
-	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@GetMapping("/select")
 	public Page<ProductDTO> findAll(@RequestParam(name = "size", defaultValue = "7") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page) {
@@ -60,7 +60,7 @@ public class ProductRestController {
 		return productService.update(productDTO);
 	}
 
-	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
+	@PreAuthorize("hasPermission(#req, 'CUSTOMER') or hasPermission(#req, 'ADMIN')")
 	@GetMapping("/find/{id}")
 	public ProductDTO finByID(@RequestBody @PathVariable("id") int id, ProductDTO productDTO) {
 		return productService.finById(id);
@@ -80,7 +80,7 @@ public class ProductRestController {
 		productService.updateStatusFalse(colordto);
 	}
 
-	@PreAuthorize("hasPermission(#req, 'PRODUCT_EDIT') or hasPermission(#req, 'ADMIN')")
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_EDIT') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@PostMapping("/searchClient")
 	public Page<ProductDTO> searchClient(@RequestParam(name = "size", defaultValue = "11") Integer size,
 			@RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -89,23 +89,25 @@ public class ProductRestController {
 		return productService.searchByKeywordAndCate_Id(size, page, keyword, cate_Id);
 	}
 
-	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@GetMapping("/findTop5New")
 	public List<ProductDTO> findTop5New() {
 		return this.productService.top5NewProduct();
 	}
 
-	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN')")
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@GetMapping("/findTop3Bill")
 	public List<ProductDTO> findTop3Bill() {
 		return this.productService.top3BillProduct();
 	}
 
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@PostMapping("/findByName")
 	public ProductDTO findByName(@RequestBody ColorDTO colordto) {
 		return this.productService.findByName(colordto);
 	}
-
+	
+	@PreAuthorize("hasPermission(#req, 'PRODUCT_VIEW') or hasPermission(#req, 'ADMIN') or hasPermission(#req, 'CUSTOMER')")
 	@PostMapping("/findByNameAndColor")
 	public ProductDTO findByColorAndName(@RequestBody ColorDTO colordto) {
 		return this.productService.findByColorAndName(colordto);
