@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { storage } from '../../Firebase';
 import { STATUS_ORDER, styleToast } from '../common/const';
 import OrederTemplate from './dashboard.template'
-
+import { useNavigate } from "react-router-dom";
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export interface OrderItem {
     id: number,
@@ -114,82 +114,94 @@ export default class DashboardComponent extends React.Component {
 
     /**
      * function call api init
-     */
+    */
+    // navigate: any = useNavigate();
     init = async () => {
+        try {
+            // Set Loadding
 
-        // Set Loadding
-        this.setState({
-            ...this.state,
-            isLoading: true
-        })
+            this.setState({
+                ...this.state,
+                isLoading: true
+            })
 
-        // Call Api order/findAll
-        const res = await axios.get(
-            `${process.env.REACT_APP_API_KEY}/dashboard`, this.config
-        );
+            const res = await axios.get(
+                `${process.env.REACT_APP_API_KEY}/dashboard`, this.config
+            );
+            console.log(res);
 
-        //Get list image
-        const imagesListRef = ref(storage, "images/");
-        listAll(imagesListRef).then((response) => {
-            let images = [] as any[]
-            response.items.forEach((item, index) => {
-                getDownloadURL(item).then((url) => {
-                    images.push({
-                        nameImg: item.name,
-                        url,
-                    })
 
-                    if (index === response.items.length - 1) {
-                        // Set state
-                        this.setState({
-                            ...this.state,
-                            images,
-                            count: res.data.count,
-                            revenue: res.data.revenue,
-                            dataChartOrder: res.data.dataChartOrder,
-                            countOrder: res.data.countOrder,
-                            dataChartRevenueByDay: res.data.dataChartRevenueByDay,
-                            dataChartRevenueByMonth: res.data.dataChartRevenueByMonth,
-                            listProduct: res.data.listProduct.map((item: any) => {
+            // Call Api order/findAll
 
-                                const itemImage = images.find(e => e.nameImg === item.image)
-                                return {
-                                    ...item,
-                                    imageUrl: itemImage ? itemImage.url : '',
-                                }
-                            }),
-                            isLoading: false,
+            //Get list image
+            const imagesListRef = ref(storage, "images/");
+            listAll(imagesListRef).then((response) => {
+                let images = [] as any[]
+                response.items.forEach((item, index) => {
+                    getDownloadURL(item).then((url) => {
+                        images.push({
+                            nameImg: item.name,
+                            url,
                         })
-                    }
+
+                        if (index === response.items.length - 1) {
+                            // Set state
+                            this.setState({
+                                ...this.state,
+                                images,
+                                count: res.data.count,
+                                revenue: res.data.revenue,
+                                dataChartOrder: res.data.dataChartOrder,
+                                countOrder: res.data.countOrder,
+                                dataChartRevenueByDay: res.data.dataChartRevenueByDay,
+                                dataChartRevenueByMonth: res.data.dataChartRevenueByMonth,
+                                listProduct: res.data.listProduct.map((item: any) => {
+
+                                    const itemImage = images.find(e => e.nameImg === item.image)
+                                    return {
+                                        ...item,
+                                        imageUrl: itemImage ? itemImage.url : '',
+                                    }
+                                }),
+                                isLoading: false,
+                            })
+                        }
+                    });
                 });
             });
-        });
 
 
 
-        // setTimeout(() => {
-        //     // Set state
-        //     this.setState({
-        //         ...this.state,
-        //         count: res.data.count,
-        //         revenue: res.data.revenue,
-        //         dataChartOrder: res.data.dataChartOrder,
-        //         countOrder: res.data.countOrder,
-        //         dataChartRevenueByDay: res.data.dataChartRevenueByDay,
-        //         dataChartRevenueByMonth: res.data.dataChartRevenueByMonth,
-        //         listProduct: res.data.listProduct.map((item: any) => {
-        //             console.log(this.state.images);
+            // setTimeout(() => {
+            //     // Set state
+            //     this.setState({
+            //         ...this.state,
+            //         count: res.data.count,
+            //         revenue: res.data.revenue,
+            //         dataChartOrder: res.data.dataChartOrder,
+            //         countOrder: res.data.countOrder,
+            //         dataChartRevenueByDay: res.data.dataChartRevenueByDay,
+            //         dataChartRevenueByMonth: res.data.dataChartRevenueByMonth,
+            //         listProduct: res.data.listProduct.map((item: any) => {
+            //             console.log(this.state.images);
 
-        //             const itemImage = this.state.images.find(e => e.nameImg === item.image)
-        //             return {
-        //                 ...item,
-        //                 imageUrl: itemImage ? itemImage.url : '',
-        //             }
-        //         }),
-        //         isLoading: false,
-        //     })
-        // }, 100);
+            //             const itemImage = this.state.images.find(e => e.nameImg === item.image)
+            //             return {
+            //                 ...item,
+            //                 imageUrl: itemImage ? itemImage.url : '',
+            //             }
+            //         }),
+            //         isLoading: false,
+            //     })
+            // }, 100);
+        } catch (e: any) {
 
+            if (e.response.status == 403) {
+                console.log(e);
+                window.location.href = "/";
+            }
+            // navigate("/");
+        }
 
 
     }
@@ -324,4 +336,5 @@ export default class DashboardComponent extends React.Component {
         });
 
     }
+
 }
