@@ -2270,3 +2270,10 @@ java.io.FileNotFoundException: D:\Du an tot nghiep\git\Duantotnghiep\.metadata\.
 2023-02-08 09:06:06,845 [Worker-247: Building Workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2023-02-08 09:06:06,845 [Worker-247: Building Workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
 2023-02-08 09:06:06,845 [Worker-247: Building Workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\Du an tot nghiep\git\Duantotnghiep\WebsiteBanGiay\src\test\resources
+2023-02-08 11:55:15,676 [Worker-253: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2023-02-08 11:55:15,694 [Worker-253: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2023-02-08 11:55:15,697 [Worker-253: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2023-02-08 11:55:16,077 [Worker-253: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 6 resources
+2023-02-08 11:55:16,083 [Worker-253: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2023-02-08 11:55:16,083 [Worker-253: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2023-02-08 11:55:16,083 [Worker-253: Launching WebsiteBanGiay - WebsiteBanGiayApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\Du an tot nghiep\git\Duantotnghiep\WebsiteBanGiay\src\test\resources
