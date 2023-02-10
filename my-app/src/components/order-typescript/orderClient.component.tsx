@@ -95,7 +95,7 @@ export default class OrderClientComponent extends React.Component {
         );
         // Call Api order/findAll
         const res = await axios.get(
-            `${process.env.REACT_APP_API_KEY}/order/findOrderBySize_ID/?user_Id=${user.data.id}&telephone=${0}`, this.config
+            `http://localhost:8080/nofilter/findOrderBySize_ID?user_Id=${user.data.id}&telephone=${0}`, this.config
         );
 
         console.log(res.data)
@@ -189,7 +189,7 @@ export default class OrderClientComponent extends React.Component {
                     label: 'Yes',
                     onClick: async () => {
                         let res = await axios.get(
-                            `${process.env.REACT_APP_API_KEY}/order/completed/${id}`, this.config
+                            `http://localhost:8080/nofilter/completed/${id}`, this.config
                         );
                         if (res.status === 200) {
                             toast.success("Xác nhận thành công", styleToast);
@@ -216,12 +216,12 @@ export default class OrderClientComponent extends React.Component {
     openModalDetail = async (id: Number) => {
         // Call Api order/find/id
         const res = await axios.get(
-            `${process.env.REACT_APP_API_KEY}/order/find/${id}`, this.config
+            `http://localhost:8080/nofilter/findOrder/${id}`, this.config
         ) as any;
 
         // Call Api order/find/id
         const resDetail = await axios.get(
-            `${process.env.REACT_APP_API_KEY}/orderDetail/findByOrder_Id/${id}`, this.config
+            `http://localhost:8080/nofilter/findByOrder_Id/${id}`, this.config
         );
 
         let totalPrice = 0
@@ -260,12 +260,12 @@ export default class OrderClientComponent extends React.Component {
 
     paymentOrder = async (id: number,) => {
         const res = await axios.get(
-            `${process.env.REACT_APP_API_KEY}/order/find/${id}`, this.config
+            `http://localhost:8080/nofilter/findOrder/${id}`, this.config
         ) as any;
 
         // Call Api order/find/id
         const resDetail = await axios.get(
-            `${process.env.REACT_APP_API_KEY}/orderDetail/findByOrder_Id/${id}`, this.config
+            `http://localhost:8080/nofilter/findByOrder_Id/${id}`, this.config
         );
 
         let totalPrice = 0
@@ -299,7 +299,7 @@ export default class OrderClientComponent extends React.Component {
                     label: 'Yes',
                     onClick: async () => {
                         let res = await axios.get(
-                            `${process.env.REACT_APP_API_KEY}/order/cancel/${id}`, this.config
+                            `http://localhost:8080/nofilter/cancel/${id}`, this.config
                         );
                         if (res.status === 200) {
                             toast.success("Hủy đơn hàng thành công", styleToast);
@@ -333,7 +333,7 @@ export default class OrderClientComponent extends React.Component {
                     label: 'Yes',
                     onClick: async () => {
                         let res = await axios.get(
-                            `${process.env.REACT_APP_API_KEY}/order/delivered/${id}`, this.config
+                            `http://localhost:8080/nofilter/delivered/${id}`, this.config
                         );
                         if (res.status === 200) {
                             toast.success("Xác nhận thành công", styleToast);

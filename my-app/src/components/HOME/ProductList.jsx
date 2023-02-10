@@ -62,7 +62,7 @@ const ProductList = () => {
                                         <a href="#" class="fa fa-cart-plus"></a>
                                         <a href="#" class="fa fa-eye"></a>
                                     </div>
-                                    <a class="btn" onClick={() => nextProductDetail(item.id)}>Add To Cart</a>
+                                    <a class="btn" onClick={() => nextProductDetail(item.id)}>Thông tin</a>
                                 </div>
                             )
                         }
@@ -120,7 +120,7 @@ const ProductList = () => {
                                 </div>
                                 <div class="price">Giá: {item.price}</div>
                                 {/* <div class="price">Số lượng: {item.quantity}</div> */}
-                                <a class="btn" onClick={() => nextProductDetail(item.id)}>Add To Cart</a>
+                                <a class="btn" onClick={() => nextProductDetail(item.id)}>Thông tin</a>
                             </div>
                         </div>
                     )

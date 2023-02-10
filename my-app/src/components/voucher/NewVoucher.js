@@ -250,7 +250,7 @@ const NewVoucher = (props) => {
                                             type="number"
                                             className="form-control"
                                             min={0}
-                                            max={100}
+
                                             placeholder=""
                                             id="value"
                                             name="value"

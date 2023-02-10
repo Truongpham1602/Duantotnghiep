@@ -245,7 +245,7 @@ const UpdateVoucher = (props) => {
                                             placeholder=""
                                             className="form-control"
                                             min={0}
-                                            max={100}
+
                                             id="value"
                                             name="value"
                                             value={voucher.value}

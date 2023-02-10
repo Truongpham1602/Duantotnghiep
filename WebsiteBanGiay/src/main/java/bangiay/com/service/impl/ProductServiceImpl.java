@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ProductDTO finById(Integer id) {
-		Product product = proDAO.findById(id).get();
+		Product product = proDAO.findById(id).orElse(null);
 		ProductDTO productdto = modelMapper.map(product, ProductDTO.class);
 		List<MediaDTO> media = this.mediaService.findAllByPro_Id(product.getId());
 		byte[] datamedia = SerializationUtils.serialize(media);

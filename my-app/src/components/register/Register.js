@@ -185,6 +185,7 @@ const Register = (props) => {
           }
           // updateData(data, `create`)
           notifySuccess("Đăng ký thành công")
+          window.location.href = '/login'
         }
       }
       create()

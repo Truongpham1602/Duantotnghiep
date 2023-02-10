@@ -25,6 +25,7 @@ const Header = (props) => {
     // const { data: dataCart } = useCallGetAPI(`http://localhost:8080/cart/getCart?user_Id=`)
     const { dataCart, imageUrls, searchButton, handleInputSearch, keyword, dataUser, logOut } = props
     const [dataUser1, setDataUser1] = useState()
+    const rol = localStorage.getItem('role')
     const [totalPrice, setTotalPrice] = useState()
     const [lstcart, setLstCart] = useState([])
     const [slides, setslides] = useState()
@@ -75,6 +76,7 @@ const Header = (props) => {
 
     useEffect(() => {
         let total = 0;
+        { console.log(rol) }
         const setTotal = () => {
             setLstCart(dataCart)
             dataCart.map(item => {
@@ -155,14 +157,16 @@ const Header = (props) => {
         <header class="header">
             <ToastContainer />
             {/* <a href="home.html" class="logo"> <i class="fas fa-shopping-basket"></i> laTra shoes </a> */}
-            <NavLink to="/" class="logo"><img src={logo} alt="" width="50px" height="50px" /> laTra shoes </NavLink>
+            <NavLink style={{ float: 'left' }} to="/" class="logo"><img src={logo} alt="" width="50px" height="50px" /> laTra shoes </NavLink>
             <nav class="navbar">
                 <NavLink className="navbar-brand ps-3" to="/" end >Mẫu Mới</NavLink>
                 <NavLink className="navbar-brand ps-3" to="/shop" >danh mục</NavLink>
                 {/* <a href="about.html">about</a>
                             <a href="review.html">review</a>
                             <a href="blog.html">blog</a> */}
-                <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Quản lý</NavLink>
+                {rol != 'CUSTOMER' && dataUser.id &&
+                    <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Quản lý</NavLink>
+                }
             </nav>
             {navbar &&
                 <nav class="navbar active">
@@ -171,7 +175,9 @@ const Header = (props) => {
                     {/* <a href="about.html">about</a>
                                 <a href="review.html">review</a>
                                 <a href="blog.html">blog</a> */}
-                    <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Quản lý</NavLink>
+                    {rol != 'CUSTOMER' && dataUser.id &&
+                        <NavLink className="navbar-brand ps-3" to="/admin" activeClassName="selected">Quản lý</NavLink>
+                    }
                 </nav>
             }
 
