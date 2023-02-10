@@ -154,6 +154,7 @@ public class OrderSeviceImpl implements OrderService {
 	@Override
 	public OrderDTO updateCompletedOrder(Integer id) {
 		Order order = this.orderDao.findById(id).orElse(null);
+		System.out.println(order.getCode());
 		order.setCompletedAtDate(Timestamp.from(Instant.now()));
 		order.setStatus(4);
 		order.setReturnStatus(0);

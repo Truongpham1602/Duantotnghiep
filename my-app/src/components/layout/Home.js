@@ -241,7 +241,7 @@ const Home = () => {
       // clearUser={clearUser}
       />
       <Outlet context={[nextProductDetail, addToCart, product, dataProduct, pageable, searchButton, totalPage, setKeyword, handleCate, top3ProBill, top5ProNew]} />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
