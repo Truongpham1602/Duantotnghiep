@@ -6,6 +6,9 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="D:\Lap trinh Java4\baitap_nghianqph15373"/>
+			<item value="D:\Lap trinh Java4\PH15225_PhamVanTruong_Lap5"/>
+			<item value="E:\eclipse\PH15225_PhamVanTruong_Assignment"/>
 			<item value="C:\Users\Admin\Desktop\DuAnTN\datn-be"/>
 			<item value="C:\Users\Admin\Desktop\demoUser\git\demo"/>
 			<item value="D:\Du an tot nghiep\git\Duantotnghiep\WebsiteBanGiay"/>
@@ -54,5 +57,7 @@
 		<item key="DIALOG_WIDTH" value="500"/>
 		<item key="DIALOG_HEIGHT" value="467"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="NewWizardAction">
 	</section>
 </section>
